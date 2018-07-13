@@ -1,0 +1,555 @@
+<!--
+/*
+* Copyright 2010 ClanTemplates.com
+* Total Qontrol is a free template by Agressions and Wex at ClanTemplates.com
+* No part of this file may be redistributed without written permission
+* Design by Agressions - http://agressions.com
+* Coded by Wex - http://www.wexcode.com/
+*/
+-->
+
+@import "games.css";
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: white;
+	color: #170000;
+	font-family: Tahoma;
+	text-align: center;
+	font-size: 0.625em; /* 10px */
+}
+
+img { border: 0; margin: 0; padding: 0; }
+
+img, div, a, input, li, ul, dt, em, span, h1, h2, h3, fieldset, label, p, strong { behavior: url(scripts/iepngfix.htc); padding: 0; } /* IE PNG Fix */
+
+/*-------------------------
+ Links & Colors
+-------------------------*/
+
+
+a {
+	color: #ffrrff;
+	/*color: #fff;*/
+	text-decoration: none
+}
+a:hover {
+	text-decoration: underline;
+}
+
+/*-------------------------
+ Misc
+-------------------------*/
+
+/*----- Forms and Input ----------*/
+input {
+	font-family: Tahoma;
+	font-size: 0.909em;
+	color: #4f4f4f;
+	padding: 0;
+	margin: 0;
+}
+
+/*-------------------------
+ Container
+-------------------------*/
+
+#container {
+	background: #fff;
+	width: 983px; /* 985 - 2 */
+	padding: 1px;
+	margin: 0 auto;
+	text-align: left;
+	clear: both;
+}
+
+/*-------------------------
+ Header
+-------------------------*/
+
+#header {
+	background: url(../images/bg_header.gif) 0 0 repeat-x;
+	height: 54px;
+}
+
+/*----- Welcome Message ----------*/
+
+h3.welcome {
+	background: url(../images/bg_header_left.gif) 0 0 no-repeat;
+	float: left;
+	width: 600px;
+	height: 54px;
+}
+h3.welcome span {
+	background: url(../images/welcome.png) 11px 24px no-repeat;
+	float: left;
+	width: 600px;
+	height: 54px;
+	text-indent: -10000px;
+	display: block;
+}
+
+/*----- Quick Login ----------*/
+
+fieldset.quick-login {
+	background: url(../images/userlogin.png) 0 50% no-repeat;
+	height: 15px; /* 54 - 17 */
+	padding: 17px 0 0 59px;
+	margin: 0 16px 0 0;
+	float: right;
+	border: 0;
+}
+.quick-login legend, .quick-login label {
+	display: none;
+}
+.quick-login input.loginbox {
+	background: url(../images/bg_loginbox.gif) 0 0 no-repeat;
+	color: #e1e1e1;
+	float: left;
+	width: 84px; /* 98 - 14 */
+	height: 16px; /* 18 - 2 */
+	margin: 1px 4px 0 0;
+	padding: 2px 7px 0 7px;
+	border: 0;
+}
+* html .quick-login input.loginbox, .quick-login input.loginbox:focus {
+	color: #171717;
+}
+.quick-login input.login {
+	background: url(../images/go.png) 0 0 no-repeat;
+	float: left;
+	width: 32px;
+	height: 20px;
+	text-indent: -10000px;
+	line-height: 0;
+	font-size: 0;
+	border: 0;
+	cursor: pointer;
+	display: block;
+}
+.quick-login span {
+	font-size: 0.909em; /* 10px */
+	font-weight: bold;
+	color: #5a5a5a;
+	text-transform: uppercase;
+	float: left;
+	width: 100%;
+	word-spacing: .25em;
+	clear: both;
+}
+.quick-login a {
+	color: #5a5a5a;
+	word-spacing: 0;
+}
+
+/*-------------------------
+ Banner
+-------------------------*/
+/* Suggested banner width: 983px */
+/* Suggested banner height: Any */
+/* Edit the width and height attributes of #banner to match your image. */
+/* NOTE: Banner will not resize if the size of your image does not match the dimensions set below. */
+
+/*----- Banner Image ----------*/
+/* If you use a different name than banner.jpg for your image, change it below. */
+/* NOTE: Your image does NOT have to have rounded corners. See "Banner Corners" to add rounded corners */
+
+#banner {
+	background: #fff url(../images/banner.jpg) 50% 50% no-repeat;
+	width: 983px; /* Edit this to match the width of your banner */
+	height: 156px; /* Edit this to match the height of your banner */
+	margin: 0 auto;
+	position: relative;
+	display: block;
+	clear: both;
+}
+
+/*----- Logo Image ----------*/
+/* If you have two images, such as a banner and a logo, use this for the uppermost image. */
+/* Make sure you edit the width and height of #logo and #logo a to match #banner */
+/* If you would like to change the placement of logo, change the background-position attribute when noted. 
+   Can use pixels or percentages, for instance 48px 53px, or 10% 50%. 50% will vertically or horizontally center the image. */
+/* NOTE: If you choose not to use this, just change "background: none" when noted */
+
+#logo {
+	background: url(../images/logo.png) no-repeat; /* Set to "background: none" if you are not using this feature */
+	background-position: 21px 55px; /* Edit this to change the position of your logo. Changes the distance from LEFT and TOP respectivly. */
+	width: 983px; /* Edit this to match the width of your banner */
+	height: 156px; /* Edit this to match the height of your banner */
+	text-indent: -10000px;
+	display: block;
+}
+#logo a {
+	width: 983px; /* Edit this to match the width of your banner */
+	height: 156px; /* Edit this to match the height of your banner */
+	display: block;
+}
+
+/*-------------------------
+ Navigation
+-------------------------*/
+
+ul#navigation {
+	background: url(../images/bg_navigation.gif) 0 0 no-repeat;
+	width: 982px; /* 983 - 1 */
+	height: 10px;
+	padding: 0 0 0 1px;
+	margin: 0 0 2px 0;
+	list-style: none;
+	clear: both;
+}
+#navigation li {
+	background: url(../images/divider.png) 100% 2px no-repeat;
+	float: left;
+	width: 123px;
+	height: 55px;
+}
+#navigation li.last {
+	background: none;
+	width: 121px;
+}
+#navigation li a {
+	background: none 50% 21px no-repeat;
+	width: 123px;
+	height: 55px;
+	text-indent: -10000px;
+	display: block;
+}
+#navigation li.last a {
+	width: 121px;
+}
+
+/*----- Navigation Images ----------*/
+/* To add another image to the navigation, add the following code to the HTML: */
+/* <li class="btn-nameofpage"><a href="#" title="Name of Page">Name of Page</a></li> */
+/* Then, add the following code to the CSS below: */
+/* #navigation li.btn-nameofpage a { background-image: url(../images/btn_nameofpage.png); width: XXXpx; } */
+/* Change "nameofpage" and "Name of Page" to the name of your page, 
+   for instance "about" and "About Us" respectively.
+   Change XXXpx to the width of the image that you are adding, and "#" to the link to the page. */
+   
+#navigation li.btn-home a { background-image: url(../images/btn_home.png); }
+#navigation li.btn-forums a { background-image: url(../images/btn_forums.png); }
+#navigation li.btn-members a { background-image: url(../images/btn_members.png); }
+#navigation li.btn-matches a { background-image: url(../images/btn_matches.png); }
+#navigation li.btn-media a { background-image: url(../images/btn_media.png); }
+#navigation li.btn-sponsors a { background-image: url(../images/btn_sponsors.png); }
+#navigation li.btn-about a { background-image: url(../images/btn_about.png); }
+#navigation li.btn-contact a { background-image: url(../images/btn_contact.png); }
+
+
+/*-------------------------
+ Main
+-------------------------*/
+
+/*-------------------------
+ Content
+-------------------------*/
+
+#content {
+	float: left;
+	width: 717px; /* 721 - 4 */
+	padding: 0 2px;
+	margin-left: 263px;
+}
+
+.article {
+	background: url(../images/bg_article.gif) 1px 1px no-repeat;
+	color: #171717;
+	padding: 1px;
+	margin: 0 0 2px 0;
+	border: 1px solid #e8e8e8;
+	clear: both;
+	height: 1%;
+}
+html >/**/ body .article { overflow: auto; }
+.article a {
+	color: #171717;
+}
+.story {
+	font-size: 1.1em; /* 11px */
+	float: left;
+	width: 551px; /* 559 - 8 */
+	padding: 4px; 
+	margin-left: 155px;
+}
+.story a {
+	text-decoration: underline;
+}
+h4.title {
+	background: url(../images/bg_article_title.gif) 0 100% no-repeat;
+	color: #ff8400;
+	font-weight: bold;
+	font-style: italic;
+	font-size: 1.636em; /* 18px */
+	padding: 0 0 3px 0;
+}
+.story p {
+	margin: 7px 0 8px 0;
+}
+.story ul {
+	margin: 7px 0 8px 40px;
+	list-style: square;
+	clear: both;
+}
+.more {
+	float: left;
+	text-align: center;
+	width: 155px;
+	margin-left: -714px;
+}
+.more .author-image {
+	margin: 6px auto;
+	text-align: center;
+	display: block;
+	clear: both;
+}
+.more .author-image img {
+	border: 2px solid #000;
+	text-align: center;
+}
+.more .author {
+	font-weight: bold;
+	text-transform: uppercase;
+	clear: both;
+}
+.more .post-date {
+	color: #939393;
+	margin: 2px 0;
+	display: block;
+	clear: both;
+}
+.more ul {
+	list-style: none;
+	padding-left: 23px;
+}
+.more ul li {
+	background: url(../images/bg_button.gif) 0 0 no-repeat;
+	float: left;
+	width: 51px;
+	height: 17px;
+	margin: 0 0 0 2px;
+}
+.more li a {
+	color: #ff8300;
+	font-weight: bold;
+	text-transform: lowercase;
+	width: 51px;
+	height: 15px; /* 17 - 2 */
+	padding: 2px 0 0 0;
+	display: block;
+}
+/*-------------------------
+ Sidebar
+-------------------------*/
+
+#left-sidebar {
+	float: left;
+	width: 263px;
+	margin-left: -984px;
+}
+
+.block {
+	background: #eeeeee url(../images/bg_bottom.gif) 0 100% no-repeat;
+	width: 263px;
+	padding: 0 0 2px 0;
+	margin: 0 0 2px 0;
+}
+.block .block-title {
+	background: url(../images/bg_block_title.gif) 0 0 no-repeat;
+	width: 263px;
+	height: 38px;
+}
+.block .block-title-pakito{
+	width: 263px;
+	height: 38px;
+}
+.block .block-title span {
+	background: none 5px 7px no-repeat;
+	width: 263px;
+	height: 38px;
+	text-indent: -10000px;
+	display: block;
+}
+.members .block-title span { background-image: url(../images/members.png); }
+.sponsors .block-title span { }
+.recent-matches .block-title span { background-image: url(../images/recentmatches.png); }
+.recent-threads .block-title span { background-image: url(../images/recentforumthreads.png); }
+
+/*----- Roster ----------*/
+
+#roster {
+	margin: 0 0 8px 2px;
+	clear: both; }
+#roster_current, #roster_next, #roster_previous, .roster-previous, .roster-next { float: left; }
+.roster-previous, .roster-next { 
+	background: url(../images/bg_arrow_left.gif) 0 0 no-repeat;
+	width: 17px;
+	height: 17px; 
+	margin: 69px 7px 0;
+	text-indent: -10000px;
+	display: block; }
+.roster-next { background-image: url(../images/bg_arrow_right.gif); }
+#roster_current_image img { 
+	border: 2px solid #000;
+	width: 94px;
+	height: 136px;
+	margin: 0 3px; }
+#roster_current_info {
+	color: #fff;
+	text-align: center;
+	font-weight: bold;
+	clear: both; }
+#roster_current_info_title { color: #ff8300; }
+#roster_current_info_extra { 
+	color: #5c5b5b;
+	text-align: center;
+	clear: both; }
+#roster_next img, #roster_previous img {
+	width: 42px;
+	height: 62px; 
+	margin: 45px 0 0;
+	border: 2px solid #161616; }
+
+/*----- Sponsors ----------*/
+
+.sponsors .block-title { margin-bottom: -13px; }
+
+.sponsor-image a {
+	background: url(../images/bg_sponsor.gif) 50% 100% no-repeat;
+	text-align: center;
+	width: 263px;
+	min-height: 9px;
+	height: auto !important;
+	height: 9px;
+	padding: 11px 0 13px 0;
+	display: block;
+}
+
+/*----- Matches ----------*/
+
+ul.list-matches {
+	list-style: none;
+	clear: both;
+}
+.list-matches li {
+	background: url(../images/list_matches.gif) 0 0 no-repeat;
+	text-align: left;
+	width: 263px;
+	height: 16px;
+	margin: 1px 0 4px 0;
+	display: block;
+	clear: both;
+}
+/* Update games.css to add game thumbnails. */
+a.game-thumb {
+	background: #eeeeee 2px 50% no-repeat;
+	font-weight: bold;
+	color: #000000;
+	width: 219px; /* 263 - 44 */
+	padding: 0 0 0 44px;
+	height: 16px;
+	text-decoration: none;
+	display: block;
+}
+.list-matches li span {
+	background: none 210px 50% no-repeat;
+	float: left;
+	height: 16px;
+	display: block;
+}
+
+.list-maches li strong {
+	display: block;
+}
+.list-matches li a strong {
+	color: #000000;
+		font-size: 12px; /*metido pakito*/
+}
+.list-matches li a:hover strong {
+	text-decoration: underline;
+		font-size: 12px; /*metido pakito*/
+}
+.list-matches li dfn {
+	display: none;
+}
+.list-matches li em {
+	float: right;
+	margin-right: 4px;
+	line-height: 1em;
+	font-style: normal;
+	color: #fd6e00;
+	display: block;
+}
+
+/*----- Threads ----------*/
+
+ul.list-threads {
+	list-style: none;
+	clear: both;	
+}
+.list-threads li {
+	width: 259px;
+}
+.list-threads li a {
+	background: url(../images/icons/arrow.gif) 4px 50% no-repeat;
+	width: 248px; /* 263 - 15 */
+	padding: 6px 0 6px 15px;
+	display: block;
+	color: black;
+	font-size: 12px; /*metido pakito*/
+}
+
+/*-------------------------
+ Footer
+-------------------------*/
+
+#footer {
+	background: url(../images/bg_footer.gif) 0 0 no-repeat;
+	position: relative;
+	width: 983px;
+	height: 54px;
+	clear: both; }
+#footer #credits {
+	float: right;
+	margin: 11px 8px 0 0; }
+#footer #credits span {	display: none; }
+#credits p { 
+	float: right;
+	clear: both; }
+#credits .design-code a { 
+	height: 11px;
+	text-indent: -10000px;
+	display: inline-block; 
+	color: #000000;}
+#credits a.design-by {
+	margin: 0 75px 0 0;
+	width: 62px; }
+#credits a.coding-by { width: 47px; }
+#credits .ct { clear: both; }
+#credits .ct a {
+	width: 163px;
+	height: 15px;
+	margin: 4px;
+	text-indent: -10000px;
+	display: block; }
+#footer #copyright { 
+	float: left;
+	padding: 16px 0 0 11px; }
+#copyright .copyright-message { 
+	color: #ff8300;
+	font-size: 10px;
+	font-weight: bold;
+	display: block; }
+#copyright .navigation {
+	color: #000000;
+	font-weight: bold;
+	text-transform: uppercase; }
+	
+.pakitoboton{
+	background: url(../images/bg_button.gif) 0 0 no-repeat;
+}

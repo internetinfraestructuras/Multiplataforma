@@ -1,0 +1,102 @@
+Name/username              Host            Dyn Nat ACL Port     Status               
+troncalonosherry           89.140.201.40        N      5060     OK (28 ms)           
+troncalono                 89.140.201.40        N      5060     OK (23 ms)           
+CACAROjas78848esdewwH/CAC  (Unspecified)    D   N   A  0        UNKNOWN              
+BARba3435uDD00/BARba3435u  (Unspecified)    D   N   A  0        UNKNOWN              
+marALEdsa3433av/marALEdsa  (Unspecified)    D   N   A  0        UNKNOWN              
+tresBR3543aves/tresBR3543  (Unspecified)    D   N   A  0        UNKNOWN              
+IMdilop3543AERSVae/IMdilo  (Unspecified)    D   N   A  0        UNKNOWN              
+PECHObobs015/PECHObobs015  (Unspecified)    D   N   A  0        UNKNOWN              
+COell000435435/COell00043  (Unspecified)    D   N   A  0        UNKNOWN              
+JOPEBer78eavv3245H/JOPEBe  (Unspecified)    D   N   A  0        UNKNOWN              
+InmmmGZ7854eeVZ/InmmmGZ78  88.148.122.10    D   N   A  60446    OK (100 ms)           
+JOsanCH4354v/JOsanCH4354v  (Unspecified)    D   N   A  0        UNKNOWN              
+pemora8484ASEVV5/pemora84  (Unspecified)    D   N   A  0        UNKNOWN              
+ASEVVe784MMont4/ASEVVe784  (Unspecified)    D   N   A  0        UNKNOWN              
+sherrybcn7845PRS/sherrybc  (Unspecified)    D   N   A  0        UNKNOWN              
+sherrydepilite/sherrydepi  (Unspecified)    D   N   A  0        UNKNOWN              
+sherryjerezsip06/sherryje  (Unspecified)    D   N   A  0        UNKNOWN              
+sherryjerezsip05/sherryje  (Unspecified)    D   N   A  0        UNKNOWN              
+sherryjerezsip04/sherryje  (Unspecified)    D   N   A  0        UNKNOWN              
+sherryjerezsip03/sherryje  (Unspecified)    D   N   A  0        UNKNOWN              
+sherryjerezsip02/sherryje  (Unspecified)    D   N   A  0        UNKNOWN              
+sherryjerezsip/sherryjere  (Unspecified)    D   N   A  0        UNKNOWN              
+JJcoL1r884VVdz/JJcoL1r884  95.39.24.25      D   N   A  28992    OK (500 ms)           
+MESev784aaave98V/MESev784  95.39.24.25      D   N   A  33242    OK (84 ms)           
+CA784RRe4dvae/CA784RRe4dv  88.148.122.10    D   N   A  60445    OK (137 ms)           
+ORTORT874898eev/ORTORT874  (Unspecified)    D   N   A  0        UNKNOWN              
+RRdfead845/RRdfead845      (Unspecified)    D   N   A  0        UNKNOWN              
+PPPfgr815a/PPPfgr815a      95.39.24.25      D   N   A  25185    OK (94 ms)           
+JJOOag748VV/JJOOag748VV    95.39.24.232     D   N   A  5060     OK (54 ms)           
+xx845v8123qz/xx845v8123qz  82.159.135.5     D   N   A  2238     OK (184 ms)           
+TATAmonte848833v/TATAmont  95.39.24.25      D   N   A  5060     OK (107 ms)           
+30850/30850                85.136.197.110   D   N   A  1035     OK (44 ms)           
+iber251CRA77h/iber251CRA7  88.26.183.19     D   N   A  10560    OK (69 ms)           
+IsIasdfe884V/IsIasdfe884V  95.39.24.232     D   N   A  1035     OK (60 ms)           
+LLiokjhnn26/LLiokjhnn26    (Unspecified)    D   N   A  0        UNKNOWN              
+PrIEEET7481/PrIEEET7481    (Unspecified)    D   N   A  0        UNKNOWN              
+HH78748unt/HH78748unt      95.39.24.25      D   N   A  14248    OK (215 ms)           
+748xespirvPP/748xespirvPP  88.148.122.10    D   N   A  1024     OK (45 ms)           
+JJCC7845iipo/JJCC7845iipo  95.39.24.25      D   N   A  1024     OK (33 ms)           
+DD451298eV/DD451298eV      95.39.24.232     D   N   A  1029     OK (66 ms)           
+rf7489Ta412/rf7489Ta412    (Unspecified)    D   N   A  0        UNKNOWN              
+RRopij481vbr/RRopij481vbr  (Unspecified)    D   N   A  0        UNKNOWN              
+JJiujAA745mi/JJiujAA745mi  95.39.24.201     D   N   A  5060     OK (60 ms)           
+BBu748212X/BBu748212X      82.159.135.5     D   N   A  61007    OK (39 ms)           
+GG78421po12/GG78421po12    (Unspecified)    D   N   A  0        UNKNOWN              
+qq7845kk21j/qq7845kk21j    82.159.135.5     D   N   A  2260     OK (47 ms)           
+bu848dokf9f/bu848dokf9f    (Unspecified)    D   N   A  0        UNKNOWN              
+CCaG84441FFo/CCaG84441FFo  82.159.135.5     D   N   A  2251     OK (63 ms)           
+viviOJASD85/viviOJASD85    82.159.135.5     D   N   A  1024     OK (46 ms)           
+ssgg7854GGij8v/ssgg7854GG  88.148.122.10    D   N   A  61660    OK (60 ms)           
+MMm841v/MMm841v            82.159.135.5     D   N   A  1042     OK (45 ms)           
+RR84181Xu/RR84181Xu        82.159.135.100   D   N   A  5060     OK (38 ms)           
+ccLLO907hve4/ccLLO907hve4  88.148.122.48    D   N   A  5060     OK (75 ms)           
+maMA8745To/maMA8745To      (Unspecified)    D   N   A  0        UNKNOWN              
+74Tt74U412/74Tt74U412      (Unspecified)    D   N   A  0        UNKNOWN              
+SS87418ant/SS87418ant      95.39.23.5       D   N   A  1024     OK (23 ms)           
+miMi874Ef98/miMi874Ef98    88.148.122.65    D   N   A  5060     OK (70 ms)           
+FF7844*oiiOI/FF7844*oiiOI  88.148.122.10    D   N   A  60419    OK (66 ms)           
+iOk34006978Y/iOk34006978Y  88.148.122.10    D   N   A  60448    OK (57 ms)           
+MM78PO87v/MM78PO87v        88.148.122.10    D   N   A  60439    OK (60 ms)           
+dO0848*os0/dO0848*os0      88.148.122.10    D   N   A  60424    OK (64 ms)           
+84884CADDE/84884CADDE      (Unspecified)    D   N   A  0        UNKNOWN              
+MMJOIU848ee/MMJOIU848ee    (Unspecified)    D   N   A  0        UNKNOWN              
+jo84SE4841Tt/jo84SE4841Tt  (Unspecified)    D   N   A  0        UNKNOWN              
+SS874915tT/SS874915tT      (Unspecified)    D   N   A  0        UNKNOWN              
+TT8749Oh1/TT8749Oh1        (Unspecified)    D   N   A  0        UNKNOWN              
+445*MasThEE8/445*MasThEE8  88.148.122.10    D   N   A  60434    OK (76 ms)           
+goSA78148T/goSA78148T      88.148.122.10    D   N   A  60440    OK (176 ms)           
+GAGA7848l1n/GAGA7848l1n    88.148.122.10    D   N   A  60447    OK (53 ms)           
+JmMj849*7/JmMj849*7        88.148.122.10    D   N   A  60441    OK (89 ms)           
+lUiSa874*fe/lUiSa874*fe    88.148.122.10    D   N   A  60449    OK (73 ms)           
+manOSO*78/manOSO*78        88.148.122.10    D   N   A  60460    OK (63 ms)           
+oM848POtt0/oM848POtt0      88.148.122.10    D   N   A  60435    OK (90 ms)           
+manDEL8794/manDEL8794      (Unspecified)    D   N   A  0        UNKNOWN              
+Rul784PPTrqMx/Rul784PPTrq  (Unspecified)    D   N   A  0        UNKNOWN              
+L45**Miguel78/L45**Miguel  88.148.122.10    D   N   A  60458    OK (71 ms)           
+manuel7895MMora/manuel789  (Unspecified)    D   N   A  0        UNKNOWN              
+jesusCA8998/jesusCA8998    (Unspecified)    D   N   A  0        UNKNOWN              
+IV87*nn23/IV87*nn23        88.148.122.10    D   N   A  60577    OK (1066 ms)           
+emilio8874PPERA15/emilio8  88.148.122.10    D   N   A  60422    OK (72 ms)           
+cristobalCARM78/cristobal  88.148.122.10    D   N   A  60450    OK (59 ms)           
+GonZZ89TT*1/GonZZ89TT*1    88.148.122.10    D   N   A  60442    OK (61 ms)           
+JUAN854re/JUAN854re        85.136.197.110   D   N   A  1026     OK (85 ms)           
+rafael845**RR/rafael845**  88.148.122.10    D   N   A  5060     OK (60 ms)           
+alacris12256/alacris12256  85.136.197.110   D   N   A  5061     OK (32 ms)           
+pbxEL856I/pbxEL856I        (Unspecified)    D   N   A  0        UNKNOWN              
+josegomez15t/josegomez15t  95.39.24.232     D   N   A  5061     OK (51 ms)           
+15manuelTTalvarez/15manue  95.39.24.25      D   N   A  1050     OK (25 ms)           
+fAM815valle/fAM815valle    85.136.197.110   D   N   A  1024     OK (47 ms)           
+ope3COM/ope3COM            85.136.197.110   D   N   A  5060     OK (55 ms)           
+rubialeszambrana65*/rubia  95.39.23.5       D   N   A  1125     OK (20 ms)           
+REpepito8562/REpepito8562  95.39.23.249     D   N   A  18066    OK (103 ms)           
+jescam_enryloli15/jescam_  85.136.197.110   D   N   A  1025     OK (48 ms)           
+pepe85/pepe85              (Unspecified)    D   N   A  0        UNKNOWN              
+objetivodos/objetivodos    (Unspecified)    D   N   A  0        UNKNOWN              
+plenotrunk12/plenotrunk12  (Unspecified)    D   N   A  0        UNKNOWN              
+ezejemplotrunk15/ezejempl  95.39.24.226     D   N   A  31672    OK (49 ms)           
+camasteltrunk/camasteltru  85.136.197.110   D   N   A  1028     OK (36 ms)           
+tronc051KL/tronc051KL      (Unspecified)    D   N   A  0        UNKNOWN              
+cliente1USR/cliente1USR    (Unspecified)    D   N   A  0        UNKNOWN              
+100 sip peers [Monitored: 56 online, 44 offline Unmonitored: 0 online, 0 offline]

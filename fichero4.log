@@ -1,0 +1,32 @@
+Backing up `aprovisionados` table....................................... OK
+Backing up `clientes` table............................................. OK
+Backing up `comandos` table............................................. OK
+Backing up `comandosiniciales` table.................................... OK
+Backing up `comunidades` table.......................................... OK
+Backing up `control_id_ont` table....................................... OK
+Backing up `equipos` table.............................................. OK
+Backing up `equipos_olt` table.......................................... OK
+Backing up `estado_olts` table.......................................... OK
+Backing up `iconos` table............................................... OK
+Backing up `informe_cron` table......................................... OK
+Backing up `lineprofiles` table......................................... OK
+Backing up `log_inserts` table.......................................... OK
+Backing up `logs` table................................................. OK
+Backing up `logs_telnet` table.......................................... OK
+Backing up `mensajes` table............................................. OK
+Backing up `modelos_ont` table.......................................... OK
+Backing up `modulos_plataforma` table................................... OK
+Backing up `municipios` table........................................... OK
+Backing up `olts` table................................................. OK
+Backing up `paquetes` table............................................. OK
+Backing up `perfil_internet` table...................................... OK
+Backing up `provincias` table........................................... OK
+Backing up `provision` table............................................ OK
+Backing up `revendedores` table......................................... OK
+Backing up `srvprofilesname` table...................................... OK
+Backing up `tipos_usuarios` table....................................... OK
+Backing up `usuarios` table............................................. OK
+
+Gzipping backup file to myphp-backup-files/myphp-backup-fibra-20180425_150001.sql.gz... OK
+
+Backup result: OK

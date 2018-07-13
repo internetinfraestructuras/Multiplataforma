@@ -1,0 +1,204 @@
+			 
+table {
+
+	width: 90%;
+
+	margin:0; 
+
+ 	padding:0;
+
+	font-family: Trebuchet MS, Trebuchet, Arial, sans-serif;	
+
+	color: black;
+
+}
+
+table, tr, th, td {
+
+	border-collapse: collapse;
+	text-align : center;
+
+}
+
+caption {
+
+    margin:0; 
+
+ 	padding:0;
+
+
+	height: 40px;
+
+	line-height: 40px;
+
+	text-indent: 28px;
+
+	font-family: Trebuchet MS, Trebuchet, Arial, sans-serif;	
+
+	font-size: 14px;
+
+	font-weight: bold;
+
+	color: black;
+
+	text-align: center;
+
+	letter-spacing: 3px;
+
+	/*border-top: dashed 1px 	black;
+
+	border-bottom: dashed 1px black;*/
+
+}
+
+
+
+/* HEAD */
+
+
+
+thead {
+
+
+
+	/*border: none;*/
+	border: solid 1px black;
+	text-align:center;
+	color: black;
+	font-size: 10px;
+	background: #acaaa7;
+
+}
+
+thead tr th {
+
+	height: 25px;
+
+	line-height: 25px;
+
+	text-align: center;
+
+	color: #1c5d79;
+
+	background: #acaaa7;
+	
+
+	background-repeat: repeat-x;
+
+	border-left:solid 1px #FF9900;
+
+	border-right:solid 1px #FF9900;	
+
+	border-collapse: collapse;
+    		
+	text-align:center;
+
+	
+
+}
+
+
+
+/* BODY */
+
+
+
+tbody tr {
+
+	background: #dadcdc;
+
+	font-size: 11px;
+	
+
+}
+
+tbody tr.odd {
+
+	background: #f3d4b2;
+
+}
+
+tbody tr.up{
+	background: #77ff77;
+}
+
+tbody tr.down{
+	background: #ff7777;
+}
+
+tbody tr.deshabilitado {
+
+	background: #f65656;
+	
+	hover.background: #f65656;
+	
+}
+
+tbody tr.deshabilitado:hover{
+
+background: #f65656;
+
+}
+
+tbody tr.bloqueado {
+
+	background: #dbe355;
+
+}
+
+tbody tr.bloqueado:hover{
+
+	background: #dbe355;
+
+}
+
+tbody tr.total {
+
+	background: #ff8400;
+
+}
+
+tbody tr:hover, tbody tr.odd:hover {
+
+	background: #ffffff;
+
+}
+
+tbody tr th, tbody tr td {
+
+	padding: 6px;
+
+	border: solid 1px black;
+
+}
+
+tbody tr th select{
+
+	background: #1c5d79;
+
+	font-family: Trebuchet MS, Trebuchet, Arial, sans-serif;	
+
+	font-size: 11px;
+
+	padding: 6px;
+
+	text-align: center;
+
+	font-weight: bold;
+
+	color: #FFFFFF;
+
+	border-bottom: solid 1px white;
+
+}
+
+tbody tr th:hover {
+
+	/*background: #ffffff;
+*/
+
+
+}		 
+			 
+		 
+		 
