@@ -38,10 +38,27 @@ require_once('config/define.php');
             <i class="main-icon fa fa-shopping-cart"></i><span><?php echo MNU_ITEM_8; ?> </span>
         </a>
         <ul><!-- submenus -->
-            <li><a href="add-clie.php">Agregar</a></li>
-            <li><a href="edit-clie.php">Modificar</a></li>
-            <li><a href="list-clie.php">Listar</a></li>
-            <li><a href="del-clie.php">Borrar</a></li>
+            <li><a href="content/almacen/agregar.php">Agregar</a></li>
+            <li><a href="content/almacen/agregar.php">Agregar</a></li>
+            <li><a href="content/almacen/agregar.php">Agregar</a></li>
+            <li><a href="content/almacen/agregar.php">Agregar</a></li>
+
+            <!--            <li><a href="cons-clie.php">Consultar</a></li>-->
+        </ul>
+    </li>
+
+    <li>
+        <a href="#">
+            <i class="fa fa-menu-arrow pull-right"></i>
+            <i class="main-icon"><img src="img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_10; ?> </span>
+        </a>
+        <ul><!-- submenus -->
+            <li><a href="content/productos/internet.php">Internet</a></li>
+            <li><a href="content/productos/fijo.php">Fijo</a></li>
+            <li><a href="content/productos/movil.php">Móvil</a></li>
+            <li><a href="content/productos/tv.php">Televisión</a></li>
+            <li><a href="content/productos/otros.php">Otros</a></li>
+
             <!--            <li><a href="cons-clie.php">Consultar</a></li>-->
         </ul>
     </li>

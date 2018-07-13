@@ -29,8 +29,9 @@ define('MNU_ITEM_4','Configuración');
 define('MNU_ITEM_5','Aprovisionamiento');
 define('MNU_ITEM_6','Cabeceras');
 define('MNU_ITEM_7','Herramientas');
-define('MNU_ITEM_8','Almacen');
+define('MNU_ITEM_8','Stock');
 define('MNU_ITEM_9','Servicios');
+define('MNU_ITEM_10','Productos');
 
 date_default_timezone_set('Europe/Madrid');
 
