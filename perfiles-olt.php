@@ -692,3 +692,20 @@ check_session(0);
 </script>
 </body>
 </html>
+
+<!--file-server auto-backup configuration primary 5.40.80.11 sftp path olt_cpd/config.config user
+
+autosave time on
+autosave time 23:00:00
+autosave type all
+
+file-server auto-backup configuration primary 192.168.150.100 ftp path olt/huawei-olt.config user
+
+User Name(<=40 chars): 'type username'
+
+User Password(<=40 chars): 'type password'
+
+auto-backup period configuration interval 1 time 01:00
+
+auto-backup period configuration enable
+-->
