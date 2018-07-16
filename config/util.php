@@ -582,7 +582,7 @@ class util {
     }
 
 
-    function carga_select($tabla='', $value='', $campos='', $orden='', $where='', $cuantos='',$title=''){
+    function carga_select($tabla='', $value='', $campos='', $orden='', $where='', $cuantos='',$title='',$agregar=''){
 
         try {
             $link = $this->conectar();
@@ -603,7 +603,10 @@ class util {
                 else if($cuantos == 3)
                     $valores= $row[1] . " / " .$row[2]. " / " .$row[3];
 
-                echo "<option value='".$row[0]."'>".$valores."</option>";
+                if($agregar!='')
+                    echo "<option value='".$row[0]."'>".$valores.$agregar."</option>";
+                else
+                    echo "<option value='".$row[0]."'>".$valores."</option>";
                 $valores='';
             }
 
