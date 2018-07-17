@@ -12,6 +12,9 @@
     ╚════════════════════════════════════════════════════════════╝
 */
 
+//error_reporting(E_ALL);
+//ini_set("display_errors", 1);
+
 if (!isset($_SESSION)) {
     @session_start();
 }
@@ -199,5 +202,5 @@ if(
 
     }
 }
-//header('Content-type: application/json; charset=utf-8');
-//echo json_encode($aItems);
+header('Content-type: application/json; charset=utf-8');
+echo json_encode($aItems);
