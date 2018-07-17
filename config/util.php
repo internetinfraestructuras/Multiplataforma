@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Created by PhpStorm.
  * User: rcc
@@ -170,11 +170,12 @@ class util {
 
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
-//echo $query;
+            echo $query;
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectJoin.');
 
             $link->close();
+
             return $result;
 
         } catch (Exception $e) {
@@ -260,16 +261,58 @@ class util {
 
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
-//            echo $query;
+           // echo $query;
             if (!($result = $link->query($query)))
                 throw new Exception();
 
             $fieldNames=array();
 
-            while ($row = mysqli_fetch_array($result)){
+            while ($row = mysqli_fetch_array($result))
+            {
                 array_push($fieldNames, $row[0]);
             }
+           // var_dump($fieldNames);
+            $link->close();
 
+            return $fieldNames;
+
+        } catch (Exception $e) {
+            $this->log('Error SelectWhere 2: ' . $query);
+
+        }
+        return $fieldNames;
+
+    }
+
+    public function selectWhere3($tabla, $campos, $where=null, $order=null, $group=null){
+
+
+        try {
+
+            $link = $this->conectar();
+            $columnas = implode($campos, ",");
+
+            $query = 'SELECT '. $columnas . ' FROM ' . $tabla;
+
+            if($where != null)
+                $query = $query  . " WHERE " . $where;
+
+            if($group != null)
+                $query = $query . " GROUP BY ".$group ;
+
+            if ($order != null)
+                $query = $query . " ORDER BY ".$order ;
+             echo $query;
+            if (!($result = $link->query($query)))
+                throw new Exception();
+
+            $fieldNames=array();
+
+            while ($row = mysqli_fetch_array($result))
+            {
+                array_push($fieldNames, $row);
+            }
+            // var_dump($fieldNames);
             $link->close();
 
             return $fieldNames;
@@ -372,7 +415,7 @@ class util {
             $valores = implode($valor, "', '");
 
             $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
-//echo $query;
+            //echo $query;
             $query = str_replace("º","",$query);
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
