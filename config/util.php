@@ -755,16 +755,16 @@ function check_session($nivel=0){
 //        $nivel=0;
 
         if(intval($_SESSION['USER_LEVEL'])>intval($nivel))
-            header("Location:index.php");
+            header("Location:/index.php");
 
     $now = time();
     if ($now > $_SESSION['expire']) {
         session_destroy();
-        header("Location:login.php");
+        header("Location:/login.php");
     }
 
     if(!isset($_SESSION['USER_ID']) || !intval($_SESSION['USER_ID'])>0)
-        header("Location:login.php");
+        header("Location:/login.php");
 
     $_SESSION['start'] = time();
     $_SESSION['expire'] = $_SESSION['start'] + (30 * 60);

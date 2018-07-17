@@ -69,6 +69,8 @@ require_once('config/define.php');
             <i class="main-icon"><img src="img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_9; ?> </span>
         </a>
         <ul><!-- submenus -->
+            <li><a href="contratar.php">Contratar Servicios</a></li>
+            <li><a href=".php">Modificar Contrato</a></li>
             <li><a href=".php">Solicitar Portabilidad</a></li>
             <li><a href="edit-clie.php">Ver Estado Portabilidad</a></li>
             <li><a href="list-clie.php"></a></li>
