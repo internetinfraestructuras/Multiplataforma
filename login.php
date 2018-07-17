@@ -53,24 +53,29 @@ error_reporting('E_ALL');
                 isset($_POST['email']) && $_POST['email']!='' &&
                 isset($_POST['password']) && $_POST['password']!=''
         ) {
+
             $email = $util->cleanstring($_POST['email']);
             $pass = md5($util->cleanstring($_POST['password']));
+
             $where = ' (usuarios.email="' . $email . '" and usuarios.clave="' . $pass . '") OR (usuarios.usuario="' . $email . '" and usuarios.clave="' . $pass . '") ';
-            $result = $util->selectJoin("usuarios", array("usuarios.id", "usuarios.nombre", "usuarios.apellidos", "nivel", " usuarios.revendedor", "revendedores.logo as logo"), "join revendedores on usuarios.revendedor = revendedores.id","",$where);
+            $result = $util->selectJoin("usuarios",array("usuarios.id", "usuarios.nombre", "usuarios.apellidos", "nivel", " usuarios.id_empresa", "empresas.logo as logo"), "join empresas on usuarios.id_empresa = empresas.id","",$where);
 
             $row = mysqli_fetch_array($result);
-            if (intval($row[0]) > 0) {
+
+            if (intval($row[0]) > 0)
+            {
+
                 $_SESSION['USER_ID'] = $row['id'];
                 $_SESSION['NOM_USER'] = $row['nombre'] . " " . $row['apellidos'];
                 $_SESSION['USER_LEVEL'] = $row['nivel'];
-                $_SESSION['REVENDEDOR'] = $row['revendedor'];
+                $_SESSION['REVENDEDOR'] = $row['id_empresa'];
                 $_SESSION['LOGO'] = $row['logo'];
                 $_SESSION['start'] = time();
                 $_SESSION['expire'] = $_SESSION['start'] + (30 * 60);
                 date_default_timezone_set('Europe/Madrid');
                 $date = date('Y/m/d H:i:s');
                 $result = $util->update('usuarios', array('ultimo_acceso'), array($date), "id=".$row['id']);
-                header("Location:index.php");
+               header("Location:index.php");
             } else {
                 $login_fail = true;
             }
