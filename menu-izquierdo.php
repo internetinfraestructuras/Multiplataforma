@@ -38,10 +38,10 @@ require_once('config/define.php');
             <i class="main-icon fa fa-shopping-cart"></i><span><?php echo MNU_ITEM_8; ?> </span>
         </a>
         <ul><!-- submenus -->
-            <li><a href="content/almacen/agregar.php">Agregar</a></li>
-            <li><a href="content/almacen/agregar.php">Agregar</a></li>
-            <li><a href="content/almacen/agregar.php">Agregar</a></li>
-            <li><a href="content/almacen/agregar.php">Agregar</a></li>
+            <li><a href="content/almacen/agregar.php">Productos</a></li>
+            <li><a href="content/almacen/proveedores.php">Proveedores</a></li>
+            <li><a href="content/almacen/tipos.php">Tipos</a></li>
+            <li><a href="content/almacen/modelos.php">Modelos</a></li>
 
             <!--            <li><a href="cons-clie.php">Consultar</a></li>-->
         </ul>
@@ -53,11 +53,11 @@ require_once('config/define.php');
             <i class="main-icon"><img src="img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_10; ?> </span>
         </a>
         <ul><!-- submenus -->
-            <li><a href="content/productos/internet.php">Internet</a></li>
-            <li><a href="content/productos/fijo.php">Fijo</a></li>
-            <li><a href="content/productos/movil.php">Móvil</a></li>
-            <li><a href="content/productos/tv.php">Televisión</a></li>
-            <li><a href="content/productos/otros.php">Otros</a></li>
+            <li><a href="content/servicios/internet.php">Internet</a></li>
+            <li><a href="content/servicios/telefonia-fija.php.php">Telefonía fija</a></li>
+            <li><a href="content/servicios/telefonia-movil.php">Telefonia Móvil</a></li>
+            <li><a href="content/servicios/television.php">Televisión</a></li>
+            <li><a href="content/servicios/otros.php">Otros</a></li>
 
             <!--            <li><a href="cons-clie.php">Consultar</a></li>-->
         </ul>
