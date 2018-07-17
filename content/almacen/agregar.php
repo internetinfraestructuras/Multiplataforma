@@ -173,6 +173,113 @@ check_session(3);
 
             </div>
 
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <!-- ------ -->
+                    <div class="panel panel-default">
+
+                        <div class="panel-body" id="listado">
+                            <div id="panel-1" class="panel panel-default">
+                                <div class="panel-heading">
+							<span class="title elipsis">
+								<strong>LISTADO DE <?php echo DEF_ALMACEN; ?></strong> <!-- panel title -->
+							</span>
+
+                                    <!-- right options -->
+                                    <ul class="options pull-right list-inline">
+                                        <li><a href="#" class="opt panel_colapse" data-toggle="tooltip" title="Colapse" data-placement="bottom"></a></li>
+                                        <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen" data-placement="bottom"><i class="fa fa-expand"></i></a></li>
+                                        <li><a href="#" class="opt panel_close" data-confirm-title="Confirm" data-confirm-message="¿Deseas eleminar este panel?" data-toggle="tooltip" title="Close" data-placement="bottom"><i class="fa fa-times"></i></a></li>
+                                    </ul>
+                                    <!-- /right options -->
+
+                                </div>
+
+                                <!-- panel content -->
+                                <div class="panel-body">
+
+                                    <table id="example2" class="table table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>NUMERO SERIE</th>
+                                            <th>TIPO DE PRODUCTO</th>
+                                            <th>MODELO DE PRODUCTO</th>
+                                            <th>OPCIONES</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                        $listado= $util->selectWhere3('productos,productos_tipos,productos_modelos,almacenes',
+                                            array("productos.id",
+                                                  "productos.numero_serie",
+                                                  "productos_tipos.nombre as Tipo",
+                                                  "productos_modelos.nombre as Modelo"),
+                                            "productos.id_tipo_producto=productos_tipos.id
+                                                    AND productos.id_modelo_producto=productos_modelos.id 
+                                                    AND almacenes.id=productos.id_almacen 
+                                                    AND almacenes.id_empresa=".$_SESSION['REVENDEDOR']."");
+
+
+                                        for($i=0;$i<count($listado);$i++)
+                                        {
+
+                                            $id=$listado[$i][0];
+                                            $numeroSerie=$listado[$i][1];
+                                            $tipo=$listado[$i][2];
+                                            $modelo=$listado[$i][3];
+
+
+                                            echo "<tr>";
+                                            echo "<td>$id</td><td>$numeroSerie</td><td>$tipo</td><td>$modelo</td>";
+
+                                            ?>
+                                            <td class="td-actions text-right">
+                                                <button type="button" rel="tooltip" class="btn btn-info btn-simple btn-icon btn-sm">
+                                                    <i class="now-ui-icons users_single-02"></i>
+                                                </button>
+                                                <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
+                                                    <i class="now-ui-icons ui-2_settings-90"></i>
+                                                </button>
+                                                <button type="button" rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
+                                                    <i class="now-ui-icons ui-1_simple-remove"></i>
+                                                </button>
+                                            </td>
+                                            </tr>
+
+                                            <?php
+                                        }
+                                        ?>
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+                                <!-- /panel content -->
+
+                                <!-- panel footer -->
+                                <div class="panel-footer">
+
+
+                                </div>
+                                <!-- /panel footer -->
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <!-- /----- -->
+
+                </div>
+
+
+
+            </div>
+
         </div>
     </section>
     <!-- /MIDDLE -->

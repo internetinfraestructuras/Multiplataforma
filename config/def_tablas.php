@@ -11,7 +11,7 @@
 $t_usuarios=array('dni','nombre','apellidos','email','telefono','nivel','clave','notas','fecha_alta','ultima_modificacion','ultimo_acceso','activo','hash');
 
 $t_revendedores=array('hash','dni','nombre','apellidos','empresa','direccion','localidad','provincia','region', 'cp','tel1','tel2','email','web','logo','notas');
-
+$t_proveedores=array('nombre',"id_empresa");
 $t_clientes=array('dni','nombre','apellidos','direccion','localidad','provincia','region', 'cp','tel1','tel2','email','notas','fecha_alta','fecha_modificacion','user_create');
 
 $t_logs=array('log','ip','tipo');

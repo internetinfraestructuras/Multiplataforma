@@ -952,7 +952,8 @@
 
 					if(jQuery().validate) {
 
-						jQuery('form.validate').each(function() {
+						jQuery('form.validate').each(function()
+						{
 
 							var _t 			= jQuery(this),
 								_Smessage 	= _t.attr('data-success') 			|| "Operación realizada correctamente",
