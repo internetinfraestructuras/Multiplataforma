@@ -24,6 +24,7 @@ require_once('config/define.php');
             <i class="main-icon fa fa-users"></i><span><?php echo MNU_ITEM_3; ?> </span>
         </a>
         <ul><!-- submenus -->
+
             <li><a href="add-clie.php">Agregar</a></li>
             <li><a href="edit-clie.php">Modificar</a></li>
             <li><a href="list-clie.php">Listar</a></li>
