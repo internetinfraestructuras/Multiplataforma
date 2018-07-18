@@ -1,7 +1,10 @@
 <?php
 /*
     ╔════════════════════════════════════════════════════════════╗
-    ║ Interfaz que permite editar los datos de clientes ║
+    ║ PERMITE REALIZAR CONTRATOS DE TODOS LOS SERVICIOS ║
+    ║ El procedimiento es seleccionar un cliente e ir   ║
+    ║ Agregando servicios. Despues se generan las ordenes
+    ║ de trabajos
     ╚════════════════════════════════════════════════════════════╝
 */
 if (!isset($_SESSION)) {
@@ -16,7 +19,7 @@ check_session(2);
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
-    <title><?php echo OWNER; ?> <?php echo DEF_CLIENTES; ?> / Altas</title>
+    <title>Contratación de servicios</title>
     <meta name="description" content=""/>
     <meta name="Author" content="<?php echo AUTOR; ?>" />
 
@@ -74,8 +77,8 @@ check_session(2);
         <header id="page-header">
             <h1>Usted esta en</h1>
             <ol class="breadcrumb">
-                <li><a href="#"><?php echo DEF_CLIENTES; ?></a></li>
-                <li class="active">Agregar</li>
+                <li><a href="#">Contratos</a></li>
+                <li class="active">Contratar</li>
             </ol>
         </header>
         <!-- /page title -->
