@@ -107,11 +107,11 @@ check_session(3);
                             <!-- todo: ******************************************************************************* -->
 
 
-                            <form class="validate" action="php/guardar-cli.php" method="post"
+                            <form class="validate" action="guardar-modelo.php" method="post"
                                   enctype="multipart/form-data">
                                 <fieldset>
                                     <!-- required [php action request] -->
-                                    <input type="hidden" name="action" value="clientes"/>
+                                    <input type="hidden" name="action" value="modelos"/>
 
                                     <div class="row">
                                         <div class="form-group">

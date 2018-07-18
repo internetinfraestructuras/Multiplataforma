@@ -137,7 +137,7 @@ check_session(3);
                                         <div class="col-md-12">
                                             <button type="submit"
                                                     class="btn btn-3d btn-teal btn-xlg btn-block margin-top-30">
-                                                CREAR NUEVO TIPO DE PRODUCTO
+                                                CREAR NUEVO PROVEEDOR
                                             </button>
                                         </div>
                                     </div>
@@ -160,7 +160,98 @@ check_session(3);
 
             </div>
 
+            <div class="row">
 
+                <div class="col-md-12">
+
+                    <!-- ------ -->
+                    <div class="panel panel-default">
+
+                        <div class="panel-body" id="listado">
+                            <div id="panel-1" class="panel panel-default">
+                                <div class="panel-heading">
+							<span class="title elipsis">
+								<strong>LISTADO DE <?php echo DEF_PROVEEDORES; ?></strong> <!-- panel title -->
+							</span>
+
+                                    <!-- right options -->
+                                    <ul class="options pull-right list-inline">
+                                        <li><a href="#" class="opt panel_colapse" data-toggle="tooltip" title="Colapse" data-placement="bottom"></a></li>
+                                        <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen" data-placement="bottom"><i class="fa fa-expand"></i></a></li>
+                                        <li><a href="#" class="opt panel_close" data-confirm-title="Confirm" data-confirm-message="¿Deseas eleminar este panel?" data-toggle="tooltip" title="Close" data-placement="bottom"><i class="fa fa-times"></i></a></li>
+                                    </ul>
+                                    <!-- /right options -->
+
+                                </div>
+
+                                <!-- panel content -->
+                                <div class="panel-body">
+
+                                    <table id="example2" class="table table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>NOMBRE PROVEEDOR</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                       $listado= $util->selectWhere3('proveedores', array("id","nombre"),"id_empresa=".(int)$_SESSION['REVENDEDOR'],"nombre");
+
+                                        for($i=0;$i<count($listado);$i++)
+                                        {
+
+                                            $id=$listado[$i][0];
+                                            $nombre=$listado[$i][1];
+
+
+                                            echo "<tr>";
+                                            echo "<td>$id</td><td>$nombre</td>";
+
+                                            ?>
+                                            <td class="td-actions text-right">
+                                                <button type="button" rel="tooltip" class="btn btn-info btn-simple btn-icon btn-sm">
+                                                    <i class="now-ui-icons users_single-02"></i>
+                                                </button>
+                                                <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
+                                                    <i class="now-ui-icons ui-2_settings-90"></i>
+                                                </button>
+                                                <button type="button" rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
+                                                    <i class="now-ui-icons ui-1_simple-remove"></i>
+                                                </button>
+                                            </td>
+                                            </tr>
+
+                                            <?php
+                                        }
+                                        ?>
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+                                <!-- /panel content -->
+
+                                <!-- panel footer -->
+                                <div class="panel-footer">
+
+
+                                </div>
+                                <!-- /panel footer -->
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <!-- /----- -->
+
+                </div>
+
+
+
+            </div>
 
         </div>
     </section>
@@ -172,6 +263,88 @@ check_session(3);
 <script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 <script type="text/javascript" src="../../assets/js/app.js"></script>
+
+
+<script>
+
+    // carga los modelos al combo correspondiente
+
+    function carga_modelos(id)
+    {
+        var select = jQuery("#modelos");
+        select.empty();
+        select.append('<option value="">--- Seleccionar una ---</option>');
+        jQuery.ajax({
+            url: 'carga_modelos.php',
+            type: 'POST',
+            cache: false,
+            async:true,
+            data:{id:id},
+            success: function(data)
+            {
+                $.each(data, function(i){
+                    select.append('<option value="'+data[i].id+'">'+data[i].nombre+'</option>');
+                });
+            }
+        });
+    }
+    function carga_tipos(id)
+    {
+        var select = jQuery("#tipos");
+        select.empty();
+        select.append('<option value="">--- Seleccionar una ---</option>');
+        jQuery.ajax({
+            url: 'cargar_tipos.php',
+            type: 'POST',
+            cache: false,
+            async:true,
+            data:{id:id},
+            success: function(data)
+            {
+                $.each(data, function(i){
+                    select.append('<option value="'+data[i].id+'">'+data[i].nombre+'</option>');
+                });
+            }
+        });
+    }
+
+
+
+</script>
+
+<script>
+    $(function () {
+        $('#example1').DataTable()
+        $('#example2').DataTable({
+            'paging'      : true,
+            'lengthChange': false,
+            'searching'   : true,
+            'ordering'    : true,
+            'info'        : true,
+            'autoWidth'   : true,
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar : ",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            },
+        })
+    });
+</script>
 
 
 

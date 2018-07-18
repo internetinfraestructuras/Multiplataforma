@@ -38,10 +38,11 @@ require_once('config/define.php');
             <i class="main-icon fa fa-shopping-cart"></i><span><?php echo MNU_ITEM_8; ?> </span>
         </a>
         <ul><!-- submenus -->
-            <li><a href="content/almacen/agregar.php">Alta Productos</a></li>
-            <li><a href="content/almacen/proveedores.php">Proveedores</a></li>
-            <li><a href="content/almacen/tipos.php">Tipos</a></li>
-            <li><a href="content/almacen/modelos.php">Modelos</a></li>
+            <li><a href="http://127.0.0.1/MultiplataformaGIT/content/almacen/agregar.php">Alta Productos</a></li>
+            <li><a href="http://127.0.0.1/MultiplataformaGIT/content/almacen/proveedores.php">Proveedores</a></li>
+            <li><a href="http://127.0.0.1/MultiplataformaGIT/content/almacen/tipos.php">Tipos</a></li>
+            <li><a href="http://127.0.0.1/MultiplataformaGIT/content/almacen/modelos.php">Modelos</a></li>
+            <li><a href="http://127.0.0.1/MultiplataformaGIT/content/almacen/atributos.php">Atributos</a></li>
 
             <!--            <li><a href="cons-clie.php">Consultar</a></li>-->
         </ul>
