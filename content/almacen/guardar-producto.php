@@ -21,10 +21,11 @@ date_default_timezone_set('Etc/UTC');
 // cuando el cliente es creado por primera vez
 // todo: --------------------------------------------
 
-var_dump($_POST);
+
 
 if(isset($_POST['action']) && $_POST['action'] == 'productos')
 {
+
 
 
     $array = $required = array();
@@ -63,26 +64,69 @@ if(isset($_POST['action']) && $_POST['action'] == 'productos')
         $tipo = $util->cleanstring($post_data['tipo']);
         $modelo = $util->cleanstring($post_data['modelo']);
         $numeroSerie = $util->cleanstring($post_data['numero-serie']);
+        $precioProv=$util->cleanstring($post_data['precio-proveedor']);
+        $beneficio=$util->cleanstring($post_data['beneficio']);
+        $pvp=$util->cleanstring($post_data['precio-pvp']);
+        $impuesto=$util->cleanstring($post_data['impuesto']);
 
-        var_dump($post_data);
-
-        $ls=$util->selectWhere3("ALMACENES","ID","ID_EMPRESA=".$_SESSION['REVENDEDOR']);
-
-
-        while ($row = mysqli_fetch_array($ls)) {
-            $almacen=$row[0];
-
-        }
 
     }
 
+    $ls=$util->selectWhere3("ALMACENES",array("ID"),"ID_EMPRESA=".$_SESSION['REVENDEDOR']);
 
-    $values = array( $almacen,$proveedor,$tipo,$modelo,0,$numeroSerie);
+    foreach($ls as $row)
+        $almacen=$row;
+
+
+    $values = array( $almacen[0],$proveedor,$tipo,$modelo,0,$numeroSerie,$precioProv,$beneficio,$pvp,$impuesto);
 
     // llama a la funcion insertInto de la clase util que recibe la tabla (string) y dos arrays (campos y valores)
 
     $result = $util->insertInto('PRODUCTOS', $t_productos, $values);
+
+
     $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado el cliente:'.$dni.' con el resultado:'.$result);
+
+    /*
+     * UNA VEZ CREADO EL PRODUCTO ASOCIAMOS LOS ATRIBUTOS A DICHO PRODUCTO $RESULT TIENE EL ID DEL PRODUCTO
+     */
+
+    $post_data = isset($_POST['atributos']) ? $_POST['atributos'] : null;
+    $is_ajax = (isset($_POST['is_ajax']) && $_POST['is_ajax'] == 'true') ? true : false;
+
+    // check post data
+    /*
+    if ($post_data === null) {
+        if ($is_ajax === false) {
+            _redirect('#alert_mandatory');
+        } else {
+            die('_mandatory_');
+        }
+    }*/
+    $idProducto=$result;
+    // EXTRACT DATA FROM POST
+
+    foreach ($post_data as $key => $value)
+    {
+        $key_title = ucfirst($key);
+
+        $explode = @explode('_', $key_title);
+        if (!isset($explode[1]))
+            $explode = @explode('-', $key_title);
+
+        if (isset($explode[1])) {
+            $key_title = implode(' ', $explode);
+            $key_title = ucwords(strtolower($key_title));
+        }
+
+
+        $valor = $util->cleanstring($post_data['atributo']);
+        $id= $util->cleanstring($post_data['id']);
+        $values=array($id,$idProducto,$valor);
+
+        $result = $util->insertInto('PRODUCTOS_ATRIBUTOS', $t_productos_atributos, $values);
+
+    }
 
     if(intval($result)>0){
         if($is_ajax === false) {

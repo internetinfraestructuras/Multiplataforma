@@ -158,22 +158,22 @@ check_session(3);
                                             </div>
                                             <div class="col-md-2 col-sm-6">
                                                 <label>Precio proveedor: </label>
-                                                <input type="text" name="producto[precio-proveedor]" value=""
-                                                       class="form-control ">
+                                                <input type="number" name="producto[precio-proveedor]" value="" id="precio-prov"
+                                                       class="form-control " onchange="calcularPVP(this.value)">
                                             </div>
                                             <div class="col-md-2 col-sm-6">
                                                 <label>Margen %: </label>
                                                 <input type="number" name="producto[beneficio]" value=""
-                                                       class="form-control ">
+                                                       class="form-control " onchange="calcularPVP(this.value)">
                                             </div>
                                             <div class="col-md-2 col-sm-6">
                                                 <label>PVP: </label>
-                                                <input type="text" name="producto[precio-pvp]" value=""
+                                                <input type="number" name="producto[precio-pvp]" value="" id="precio-pvp" onchange="calcularPVP(this.value)"
                                                        class="form-control ">
                                             </div>
                                             <div class="col-md-2 col-sm-6">
                                                 <label>Impuestos: </label>
-                                                <input type="text" name="producto[impuesto]" value=""
+                                                <input type="number" name="producto[impuesto]" value="21" id="impuestos" onchange="calcularPVP(this.value)"
                                                        class="form-control ">
                                             </div>
                                         </div>
@@ -270,9 +270,11 @@ check_session(3);
 
                                             ?>
                                             <td class="td-actions text-right">
+                                                <a href="ficha-producto.php?idProducto=<?php echo $id; ?>">
                                                 <button type="button" rel="tooltip" class="btn btn-info btn-simple btn-icon btn-sm">
                                                     <i class="now-ui-icons users_single-02"></i>
                                                 </button>
+                                                </a>
                                                 <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
                                                     <i class="now-ui-icons ui-2_settings-90"></i>
                                                 </button>
@@ -314,19 +316,20 @@ check_session(3);
             </div>
 
         </div>
+
     </section>
     <!-- /MIDDLE -->
 
 </div>
 
-<!-- JAVASCRIPT FILES
-<script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
+<!-- JAVASCRIPT FILES-->
+
 
 <script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
 
-<!-- <script type="text/javascript" src="../../assets/js/app.js"></script> -->
+ <script type="text/javascript" src="../../assets/js/app.js"></script>
 
-
+<script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 <script>
 
 
@@ -385,11 +388,24 @@ function carga_atributos(id)
         {
             $.each(data, function(i)
             {
-                div.append('<div class="col-md-1 col-sm-1"> <label>'+data[i].NOMBRE+'</label><input type="text" name="atributos[atributo-'+data[i].ID+']"  class="form-control " /></div>');
+                div.append('<div class="col-md-1 col-sm-1"> <label>'+data[i].NOMBRE+'</label><input type="text" name="atributos[atributo]["+data[i].ID+"]"  class="form-control " /><input type="text" value="'+data[i].ID+'" hidden name="atributos[id]"/></div>');
             });
         }
     });
+
+
 }
+    function calcularPVP(val)
+    {
+        var precioProv=jQuery("#precio-prov").val();
+        var pvp=((precioProv*val)/100);
+        pvp=(parseFloat(precioProv)+parseFloat(pvp));
+        var tax=parseFloat(jQuery("#impuestos").val());
+
+        pvp=(pvp*parseFloat((100+tax)/100));
+
+        jQuery("#precio-pvp").val(pvp);
+    }
 
 
 

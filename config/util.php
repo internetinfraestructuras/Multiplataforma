@@ -290,6 +290,7 @@ class util {
         try {
 
             $link = $this->conectar();
+
             $columnas = implode($campos, ",");
 
             $query = 'SELECT '. $columnas . ' FROM ' . $tabla;
@@ -302,7 +303,9 @@ class util {
 
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
-            // echo $query;
+
+             //echo $query;
+
             if (!($result = $link->query($query)))
                 throw new Exception();
 
@@ -318,7 +321,7 @@ class util {
             return $fieldNames;
 
         } catch (Exception $e) {
-            $this->log('Error SelectWhere 2: ' . $query);
+            $this->log('Error SelectWhere 3: ' . $query);
 
         }
         return $fieldNames;
@@ -415,7 +418,7 @@ class util {
             $valores = implode($valor, "', '");
 
             $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
-            //echo $query;
+            echo $query;
             $query = str_replace("º","",$query);
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
