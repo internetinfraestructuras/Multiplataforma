@@ -66,19 +66,7 @@ check_session(4);
 			</aside>
                 <!-- cargo menu superior, está declarado una sola vez para mejorar su mantenimiento-->
                 <?php require_once ('menu-superior.php'); ?>
-            <?php
 
-            // creo un objeto de la clase util para poder realizar operaciones de consultas a base de datos
-            $util = new util();
-
-            // si el usuario es root cargará siempre los datos de todos
-            if ($_SESSION['USER_LEVEL'] == 0) {
-                $cabeceras = $util->selectWhere('olts', array('id', 'descripcion'), '', 'descripcion');
-            } else {    // si no es root cargara solo los datos de este usuario y todos los que pertenezcan al mismo revendedor
-                $cabeceras = $util->selectWhere('olts', array('id', 'descripcion'), ' wifero = (SELECT revendedor FROM usuarios WHERE usuarios.id=' . $_SESSION["USER_ID"] . ')', 'descripcion');
-            }
-
-            ?>
 			<section id="middle" style="margin-top:60px;">
 				<div id="content" class="dashboard padding-20">
 
@@ -105,7 +93,7 @@ check_session(4);
 		<!-- JAVASCRIPT FILES -->
 		<script type="text/javascript">var plugin_path = 'assets/plugins/';</script>
         <!-- jQuery library -->
-<!--        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script
                 src="https://code.jquery.com/jquery-2.2.4.min.js"
                 integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="

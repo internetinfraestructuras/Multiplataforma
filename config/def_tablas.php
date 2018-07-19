@@ -14,7 +14,9 @@ $t_revendedores=array('hash','dni','nombre','apellidos','empresa','direccion','l
 
 $t_proveedores=array('nombre',"id_empresa");
 
-$t_productos=array("ID_ALMACEN","ID_PROVEEDOR","ID_TIPO_PRODUCTO","ID_MODELO_PRODUCTO","ESTADO","NUMERO_SERIE");
+$t_productos=array("ID_ALMACEN","ID_PROVEEDOR","ID_TIPO_PRODUCTO","ID_MODELO_PRODUCTO","ESTADO","NUMERO_SERIE","PRECIO_PROV","MARGEN","PVP","IMPUESTOS");
+
+$t_productos_atributos=array("ID_ATRIBUTO","ID_PRODUCTO","VALOR");
 
 $t_productos_modelos=array("ID_TIPO","NOMBRE");
 
