@@ -328,7 +328,8 @@ check_session(2);
     ╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
 */
 
-    function borrar1(id){
+    function borrar1(id)
+    {
         var hash = md5(id);
         var respuesta = confirmar("¿Seguro/a de querer borrar esta ONT de la base de datos?");
         if(respuesta){

@@ -158,22 +158,22 @@ check_session(3);
                                             </div>
                                             <div class="col-md-2 col-sm-6">
                                                 <label>Precio proveedor: </label>
-                                                <input type="number" name="producto[precio-proveedor]" value="" id="precio-prov"
+                                                <input type="number" name="producto[precio-proveedor]" value="" id="precio-prov" step=".01"
                                                        class="form-control " onchange="calcularPVP(this.value)">
                                             </div>
                                             <div class="col-md-2 col-sm-6">
                                                 <label>Margen %: </label>
-                                                <input type="number" name="producto[beneficio]" value=""
+                                                <input type="number" name="producto[beneficio]" value="" step=".01"
                                                        class="form-control " onchange="calcularPVP(this.value)">
                                             </div>
                                             <div class="col-md-2 col-sm-6">
                                                 <label>PVP: </label>
-                                                <input type="number" name="producto[precio-pvp]" value="" id="precio-pvp" onchange="calcularPVP(this.value)"
+                                                <input type="number" name="producto[precio-pvp]" value="" id="precio-pvp" onchange="calcularPVP(this.value)" step=".01"
                                                        class="form-control ">
                                             </div>
                                             <div class="col-md-2 col-sm-6">
                                                 <label>Impuestos: </label>
-                                                <input type="number" name="producto[impuesto]" value="21" id="impuestos" onchange="calcularPVP(this.value)"
+                                                <input type="number" name="producto[impuesto]" value="21" id="impuestos" onchange="calcularPVP(this.value)" step=".01"
                                                        class="form-control ">
                                             </div>
                                         </div>
@@ -271,16 +271,14 @@ check_session(3);
                                             ?>
                                             <td class="td-actions text-right">
                                                 <a href="ficha-producto.php?idProducto=<?php echo $id; ?>">
-                                                <button type="button" rel="tooltip" class="btn btn-info btn-simple btn-icon btn-sm">
-                                                    <i class="now-ui-icons users_single-02"></i>
+                                                <button type="button" rel="tooltip" >
+                                                    <i class="fa fa-pencil"></i>
                                                 </button>
                                                 </a>
-                                                <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
-                                                    <i class="now-ui-icons ui-2_settings-90"></i>
+                                                <button type="button" rel="tooltip" class="">
+                                                    <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>');"></i>
                                                 </button>
-                                                <button type="button" rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
-                                                    <i class="now-ui-icons ui-1_simple-remove"></i>
-                                                </button>
+
                                             </td>
                                             </tr>
 
@@ -404,7 +402,44 @@ function carga_atributos(id)
 
         pvp=(pvp*parseFloat((100+tax)/100));
 
-        jQuery("#precio-pvp").val(pvp);
+        jQuery("#precio-pvp").val(redondearDecimales(pvp,2));
+    }
+    function redondearDecimales(numero, decimales) {
+        numeroRegexp = new RegExp('\\d\\.(\\d){' + decimales + ',}');   // Expresion regular para numeros con un cierto numero de decimales o mas
+        if (numeroRegexp.test(numero)) {         // Ya que el numero tiene el numero de decimales requeridos o mas, se realiza el redondeo
+            return Number(numero.toFixed(decimales));
+        } else {
+            return Number(numero.toFixed(decimales)) === 0 ? 0 : numero;  // En valores muy bajos, se comprueba si el numero es 0 (con el redondeo deseado), si no lo es se devuelve el numero otra vez.
+        }
+    }
+
+    function borrar(id)
+    {
+       // var hash = md5(id);
+        var respuesta = confirmar("¿Seguro/a de querer borrar este producto?");
+        if(respuesta)
+        {
+
+            jQuery.ajax({
+                url: 'borrar_producto.php',
+                type: 'POST',
+                cache: false,
+                async: true,
+                data: {
+                    a: 'borrar_producto',
+                    p:id
+                },
+                success: function (data) {
+
+                    location.reload();
+                }
+            });
+        }
+    }
+    function confirmar(text){
+
+        return confirm(text);
+
     }
 
 

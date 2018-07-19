@@ -78,7 +78,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'productos')
         $almacen=$row;
 
 
-    $values = array( $almacen[0],$proveedor,$tipo,$modelo,0,$numeroSerie,$precioProv,$beneficio,$pvp,$impuesto);
+    $values = array( $almacen[0],$proveedor,$tipo,$modelo,1,$numeroSerie,$precioProv,$beneficio,$pvp,$impuesto);
 
     // llama a la funcion insertInto de la clase util que recibe la tabla (string) y dos arrays (campos y valores)
 
