@@ -31,7 +31,7 @@ define('MNU_ITEM_5','Aprovisionamiento');
 define('MNU_ITEM_6','Cabeceras');
 define('MNU_ITEM_7','Herramientas');
 define('MNU_ITEM_8','Almacén');
-define('MNU_ITEM_9','Estados de servicios');
+define('MNU_ITEM_9','Ventas');
 define('MNU_ITEM_10','Servicios');
 
 date_default_timezone_set('Europe/Madrid');

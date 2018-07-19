@@ -33,8 +33,9 @@ if(isset($_POST['filtro'])) {
     else
         $where = " clientes.id > 0";
 }
+//              0           1       2           3           4       5           6           7           8       9       10          11    12    13      14      15          16
+$campos=array('clientes.ID','DNI','NOMBRE','APELLIDOS','DIRECCION','LOCALIDAD','PROVINCIA','COMUNIDAD','IBAN','SWIFT','ID_EMPRESA','CP','FIJO','MOVIL','EMAIL','FECHA_ALTA','BANCO');
 
-$campos=array('clientes.id','dni','nombre','apellidos','direccion','municipios.municipio','provincias.provincia', 'cp','tel1','tel2','email','notas','fecha_alta','fecha_modificacion','clientes.region','clientes.provincia','clientes.localidad');
 
 /*
     ╔═══════════════════════════════════╗
@@ -46,11 +47,13 @@ if($_SESSION['USER_LEVEL']==0) {
 
     // si se indica el id del cliente, solo cargo ese cliente
     if (isset($_POST['idcliente']) && $_POST['idcliente'] != '') {
-        $result = $util->selectJoin("clientes", $campos, "LEFT JOIN municipios ON municipios.id = clientes.localidad LEFT JOIN provincias ON provincias.id=clientes.provincia", "nombre", 'clientes.id = ' . $_POST['idcliente']);
+        $result = $util->selectWhere("clientes", $campos, 'clientes.id = ' . $_POST['idcliente'],'apellidos, nombre');
         $provision = $util->selectWhere("aprovisionados",array('id_en_olt','c','t','p','serial','num_pon','caja','puerto'),"id_cliente=".$_POST['idcliente']);
         $rowprovision = mysqli_fetch_array($provision);
     } else { // si no se cargan todos
-        $result = $util->selectJoin("clientes", $campos, "LEFT JOIN municipios ON municipios.id = clientes.localidad LEFT JOIN provincias ON provincias.id=clientes.provincia", "nombre",$where);
+//        $result = $util->selectJoin("clientes", $campos, "LEFT JOIN municipios ON municipios.id = clientes.localidad LEFT JOIN provincias ON provincias.id=clientes.provincia", "nombre",$where);
+        $result = $util->selectWhere("clientes", $campos, $where,'apellidos, nombre');
+
     }
 }else{ // no es root
 
@@ -76,17 +79,16 @@ if($_SESSION['USER_LEVEL']==0) {
                 'direccion' => $row[4],
                 'municipio' => $row[5],
                 'provincia' => $row[6],
-                'cp' => $row[7],
-                'tel1' => $row[8],
-                'tel2' => $row[9],
-                'email' => $row[10],
+                'cp' => $row[11],
+                'tel1' => $row[12],
+                'tel2' => $row[13],
+                'email' => $row[14],
                 'notas' => $row[11],
-                'alta' => $row[12],
-                'modifica' => $row[13],
-                'region' => $row[14],
-                'provincia0' => $row[15],
-                'localidad' => $row[16],
-                'provision' => $rowprovision
+                'alta' => $row[15],
+                'region' => $row[7],
+                'iban' => $row[8],
+                'swift' => $row[9],
+                'banco' => $row[16]
             );
             array_push($aItems, $aItem);
         }
@@ -100,13 +102,13 @@ if($_SESSION['USER_LEVEL']==0) {
                 'direccion' => $row[4],
                 'municipio' => $row[5],
                 'provincia' => $row[6],
-                'cp' => $row[7],
-                'tel1' => $row[8],
-                'tel2' => $row[9],
-                'email' => $row[10],
+                'cp' => $row[11],
+                'tel1' => $row[12],
+                'tel2' => $row[13],
+                'email' => $row[14],
                 'notas' => $row[11],
-                'alta' => $row[12],
-                'modifica' => $row[13]
+                'alta' => $row[15],
+                'region' => $row[7]
             );
             array_push($aItems, $aItem);
         }
