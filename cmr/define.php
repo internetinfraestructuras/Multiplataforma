@@ -16,6 +16,7 @@ define('DEF_REVENDEDORES','Revendedores');
 define('DEF_REVENDEDOR','Revendedor');
 define('DEF_USUARIOS','Usuarios');
 define('DEF_CLIENTES','Clientes');
+define('DEF_ALMACEN','Almacén');
 define('DEF_OLT','Cabeceras');
 define('DEF_PROVISIONES','Provisiones');
 

@@ -12,6 +12,13 @@ $t_usuarios=array('dni','nombre','apellidos','email','telefono','nivel','clave',
 
 $t_revendedores=array('hash','dni','nombre','apellidos','empresa','direccion','localidad','provincia','region', 'cp','tel1','tel2','email','web','logo','notas');
 
+$t_proveedores=array('nombre',"id_empresa");
+
+$t_productos=array("ID_ALMACEN","ID_PROVEEDOR","ID_TIPO_PRODUCTO","ID_MODELO_PRODUCTO","ESTADO","NUMERO_SERIE");
+
+$t_productos_modelos=array("ID_TIPO","NOMBRE");
+
+$t_productos_modelos_atributos=array("ID_MODELO","NOMBRE");
 $t_clientes=array('dni','nombre','apellidos','direccion','localidad','provincia','region', 'cp','tel1','tel2','email','notas','fecha_alta','fecha_modificacion','user_create');
 
 $t_logs=array('log','ip','tipo');

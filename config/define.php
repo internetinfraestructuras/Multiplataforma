@@ -18,6 +18,7 @@ define('DEF_REVENDEDORES','Revendedores');
 define('DEF_REVENDEDOR','Revendedor');
 define('DEF_USUARIOS','Usuarios');
 define('DEF_CLIENTES','Clientes');
+define('DEF_PROVEEDORES','Proveedores');
 define('DEF_OLT','Cabeceras');
 define('DEF_PROVISIONES','Provisiones');
 
@@ -29,9 +30,9 @@ define('MNU_ITEM_4','Configuración');
 define('MNU_ITEM_5','Aprovisionamiento');
 define('MNU_ITEM_6','Cabeceras');
 define('MNU_ITEM_7','Herramientas');
-define('MNU_ITEM_8','Stock');
-define('MNU_ITEM_9','Servicios');
-define('MNU_ITEM_10','Productos');
+define('MNU_ITEM_8','Almacén');
+define('MNU_ITEM_9','Estados de servicios');
+define('MNU_ITEM_10','Servicios');
 
 date_default_timezone_set('Europe/Madrid');
 

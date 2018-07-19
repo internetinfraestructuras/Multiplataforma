@@ -61,13 +61,15 @@ class util {
 
     return $string;
 }
-    public function conectar(){
+    public function conectar()
+    {
         $link = new mysqli(DB_SERVER, DB_USER, DB_PASSWORD,DB_DATABASENAME);
 
-        if (mysqli_connect_errno()) {
+        if (mysqli_connect_errno())
+        {
            printf("Falló la conexión: %s\n", mysqli_connect_error());
            exit();
-       }
+        }
 //        mysqli_select_db($link, DB_DATABASENAME)
 //        or die ("Error al seleccionar base datos.");
 
@@ -81,6 +83,8 @@ class util {
 
 
     }
+
+
     public function selectSome($tabla, $campos, $order){
         $link = $this->conectar();
         
@@ -101,6 +105,7 @@ class util {
 
         return $fieldNames;
     }
+
 
 
     public function selectAll($tabla, $campos='', $order=null){
@@ -170,7 +175,7 @@ class util {
 
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
-//echo $query;
+            echo $query;
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectJoin.'. $query);
 
