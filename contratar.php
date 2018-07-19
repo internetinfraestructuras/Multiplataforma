@@ -104,10 +104,10 @@ check_session(2);
             border-radius: 25px;
             cursor: pointer;
             padding: 10px 5px;
-            margin: 10px 5px;
+            /*margin: 10px 5px;*/
             bottom:10px;
             position: absolute;
-
+            right:10px;
         }
 
         #msform .action-button:hover, #msform .action-button:focus {
@@ -124,10 +124,10 @@ check_session(2);
             border-radius: 25px;
             cursor: pointer;
             padding: 10px 5px;
-            margin: 10px 5px;
+            /*margin: 10px 5px;*/
             bottom:10px;
             position: absolute;
-            margin-left:-120px;
+            left:10px;
 
         }
 
@@ -511,6 +511,7 @@ check_session(2);
     function nuevo_cliente() {
         $(".ocultar").css('display','block');
         $("#atras1").css('display','block');
+        $("#atras1").css('position','absolute');
         $("#atras1").val('Cancelar');
         $("#next1").val('Guardar Cliente');
 
