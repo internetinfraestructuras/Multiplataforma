@@ -5,6 +5,7 @@
  * Date: 15/02/2018
  * Time: 8:07
  */
+
 require_once('config/define.php');
 ?>
 <nav id="sideNav"><!-- MAIN MENU -->
