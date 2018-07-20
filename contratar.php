@@ -51,10 +51,10 @@ check_session(2);
 
         #msform fieldset {
             background: white;
-            border: 0 none;
-            border-radius: 0px;
+            border: 1px solid #c9c9c9;
+            border-radius: 2px;
             box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
-            padding: 10px 10px;
+            padding: 5px 5px;
             box-sizing: border-box;
             width: 96%;
             margin: 0 2%;
@@ -71,9 +71,9 @@ check_session(2);
         /*inputs*/
         #msform input, #msform textarea {
             padding: 15px;
-            border: 1px solid #ccc;
-            border-radius: 0px;
-            margin-bottom: 10px;
+            border: 2px solid #ddd;
+            border-radius: 3px;
+            margin-bottom: 7px;
             width: 100%;
             box-sizing: border-box;
             font-family: montserrat;
@@ -85,7 +85,7 @@ check_session(2);
             -moz-box-shadow: none !important;
             -webkit-box-shadow: none !important;
             box-shadow: none !important;
-            border: 1px solid #ee0979;
+            border: 2px solid #1D9FC1;
             outline-width: 0;
             transition: All 0.5s ease-in;
             -webkit-transition: All 0.5s ease-in;
@@ -101,7 +101,7 @@ check_session(2);
             font-weight: bold;
             color: white;
             border: 0 none;
-            border-radius: 25px;
+            border-radius: 6px;
             cursor: pointer;
             padding: 10px 5px;
             /*margin: 10px 5px;*/
@@ -121,7 +121,7 @@ check_session(2);
             font-weight: bold;
             color: white;
             border: 0 none;
-            border-radius: 25px;
+            border-radius: 6px;
             cursor: pointer;
             padding: 10px 5px;
             /*margin: 10px 5px;*/
@@ -240,7 +240,7 @@ check_session(2);
             display: none;
         }
         .caja{
-            min-height:420px;
+            min-height:490px;
 
         }
 
@@ -296,7 +296,7 @@ check_session(2);
 
         <div id="content" class="">
 
-            <form id="msform">
+            <form id="msform" class="validate">
                 <!-- progressbar -->
                 <ul id="progressbar">
                     <li class="active">Cliente</li>
@@ -326,24 +326,24 @@ check_session(2);
                         <div class="row ocultar">
                             <div class="form-group">
                                 <div class="col-md-3 col-sm-3">
-                                    <label>Nombre *</label>
+                                    <label>Nombre</label>
                                     <input type="text" name="nombre" value="" id="nombre"
-                                           class="form-control required">
+                                           class="form-control required datoscli">
                                 </div>
                                 <div class="col-md-4 col-sm-4">
-                                    <label>Apellidos </label>
+                                    <label>Apellidos</label>
                                     <input type="text" name="apellidos" id="apellidos"
-                                           class="form-control ">
+                                           class="form-control datoscli">
                                 </div>
                                 <div class="col-md-2 col-sm-3">
-                                    <label>Dni </label>
+                                    <label>Dni</label>
                                     <input type="text" name="dni" id="dni"
-                                           class="form-control " placeholder="99999999A">
+                                           class="form-control datoscli " placeholder="99999999A">
                                 </div>
                                 <div class="col-md-3 col-sm-6">
-                                    <label>Dirección </label>
+                                    <label>Dirección</label>
                                     <input type="text" name="direccion" id="direccion"
-                                           class="form-control ">
+                                           class="form-control datoscli ">
                                 </div>
                             </div>
                         </div>
@@ -354,7 +354,7 @@ check_session(2);
                                     <label>Región</label>
                                     <select name="region" id="regiones"
                                             class="form-control pointer " onchange="carga_provincias(this.value)">
-                                        <option value="">--- Seleccionar una ---</option>
+                                        <option value="-1">--- Seleccionar una ---</option>
                                         <?php $util->carga_select('comunidades', 'id', 'comunidad', 'comunidad'); ?>
                                     </select>
                                 </div>
@@ -362,20 +362,20 @@ check_session(2);
                                     <label>Provincia </label>
                                     <select name="provincia" id="provincias"
                                             class="form-control pointer " onchange="carga_poblaciones(this.value)">
-                                        <option value="">--- Seleccionar una ---</option>
+                                        <option value="-1">--- Seleccionar una ---</option>
                                     </select>
                                 </div>
                                 <div class="col-md-4 col-sm-4">
                                     <label>Localidad </label>
                                     <select name="localidad" id="localidades"
                                             class="form-control pointer ">
-                                        <option value="">--- Seleccionar una ---</option>
+                                        <option value="-1">--- Seleccionar una ---</option>
                                     </select>
                                 </div>
                                 <div class="col-md-2 col-sm-2">
                                     <label>CP </label>
                                     <input type="number" min="0" max="99999" name="cp" id="cp"
-                                           class="form-control ">
+                                           class="form-control datoscli required" >
                                 </div>
                             </div>
                         </div>
@@ -385,31 +385,46 @@ check_session(2);
                                 <div class="col-md-4 col-sm-6">
                                     <label>Email </label>
                                     <input type="email" name="email" id="email"
-                                           class="form-control ">
+                                           class="form-control datoscli required">
                                 </div>
                                 <div class="col-md-3 col-sm-3">
                                     <label>Tel Fijo</label>
                                     <input type="tel" name="tel1" id="tel1"
-                                           class="form-control">
+                                           class="form-control datoscli required">
                                 </div>
                                 <div class="col-md-3 col-sm-3">
                                     <label>Tel Móvil</label>
-                                    <input type="tel" name="tel2" id="tel2" class="form-control">
+                                    <input type="tel" name="tel2" id="tel2" class="form-control datoscli">
                                 </div>
                             </div>
                         </div>
-                        <input type="button" name="previous ocultar" id="atras1" class="previous action-button-previous"
+                        <div class="row ocultar">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label>Notas </label>
+                                    <input type="text" name="notas" id="notas"
+                                           class="form-control datoscli required">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="error"></div>
+                        <input type="button" name="" id="atras1" onclick="cancelar();" class="ocultar action-button-previous"
                                value="Paso Anterior"/>
                         <input type="button" name="next" id="next1" class="next action-button" value="Continuar"/>
 
                     </fieldset>
                     <fieldset class="caja">
-                        <label>Paquete contratado</label>
-                        <select name="paquete_fibra" id="paquete_fibra"
-                                class="form-control pointer " onchange="paquete_fibra_seleccionado(this.value)">
+                        <label>Seleccione el paquete que desea contratar</label>
+                        <select name="paquete" id="paquete"
+                                class="form-control pointer " onchange="paquete_seleccionado(this.value)">
                             <option value="">--- Seleccionar uno ---</option>
                             <?php $util->carga_select('paquetes', 'id', 'NOMBRE', 'NOMBRE'); ?>
                         </select>
+
+                        <!-- aqui se cargarán los servicios que contiene el paquete seleccionado-->
+                        <div id="aqui_los_servicios"></div>
+
                         <input type="button" name="previous" class="previous action-button-previous"
                                value="Paso Anterior"/>
                         <input type="button" name="next" class="next action-button" value="Continuar"/>
@@ -441,12 +456,15 @@ check_session(2);
 
 
 <script>
+    var nuevo=0;
+    var id_cliente_seleccionado=0;
+
     // cargo las provincias por Ajax, cada vez que se cambia la comunidad
     function carga_provincias(id, sel = 0) {
         var select = $("#provincias");
         select.empty();
         select.empty();
-        select.append('<option value="">--- Seleccionar una ---</option>');
+        select.append('<option value="-1">--- Seleccionar una ---</option>');
         $.ajax({
             url: 'carga_prov.php',
             type: 'POST',
@@ -469,7 +487,7 @@ check_session(2);
     function carga_poblaciones(id, sel = 0) {
         var select = $("#localidades");
         select.empty();
-        select.append('<option value="">--- Seleccionar una ---</option>');
+        select.append('<option value="-1">--- Seleccionar una ---</option>');
         $.ajax({
             url: 'carga_pobla.php',
             type: 'POST',
@@ -491,7 +509,7 @@ check_session(2);
     function carga_clientes() {
         var select = $("#id");
         select.empty();
-        select.append('<option value="">--- Seleccionar uno ---</option>');
+        select.append('<option value="-1">--- Seleccionar uno ---</option>');
         $.ajax({
             url: 'carga_cli.php',
             type: 'POST',
@@ -507,20 +525,38 @@ check_session(2);
     }
 
 
-    // cargo los clientes para que pueda seleccionarse y editarlo
+    // cuando se pulsa el boton de cliente nuevo, muestro los campos, pongo nuevo a 1
     function nuevo_cliente() {
+        nuevo=1;
         $(".ocultar").css('display','block');
         $("#atras1").css('display','block');
+        $("#next1").css('display','block');
         $("#atras1").css('position','absolute');
         $("#atras1").val('Cancelar');
         $("#next1").val('Guardar Cliente');
+        $("#id").val(0);
+        $(".datoscli").val('');
+        $('[name=id]').val( '' );
+        $('[name=region]').val( '' );
+        $('[name=provincia]').val( '' );
+        $('[name=localidad]').val( '' );
+    }
 
+    // cuando se pulsa el boton cancelar despues de haber pulsado el de nuevo, oculto los campos y pongo nuevo a 0
+    function cancelar(){
+        nuevo=0;
+        $(".ocultar").css('display','none');
+        $("#atras1").css('display','none');
+        $("#atras1").css('position','absolute');
+        $("#atras1").val('Cancelar');
+        $("#next1").val('Continuar');
     }
 
 
     $(document).ready(function () {
         carga_clientes(false);
         $("#atras1").css('display','none');
+        $("#next1").css('display','none');
     });
 
 
@@ -528,6 +564,9 @@ check_session(2);
     // solo devuelve ese registro
 
     function seleccionado(id) {
+
+        nuevo=0;
+
         $.ajax({
             url: 'carga_cli.php',
             type: 'POST',
@@ -563,7 +602,12 @@ check_session(2);
                 $(".ocultar").css('display','block');
             }
         });
+
+        id_cliente_seleccionado = id;
+        $("#next1").css('display','block');
+
     }
+
 
     /*
         -------------------------------------------------
@@ -576,43 +620,170 @@ check_session(2);
     var animating; //flag to prevent quick multi-click glitches
 
     $(".next").click(function () {
+
         if (animating) return false;
         animating = true;
 
         current_fs = $(this).parent();
         next_fs = $(this).parent().next();
 
-        //activate next step on progressbar using the index of next_fs
-        $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
-        $("#progressbar li").eq($("fieldset").index(next_fs) - 1).addClass("completed");
+        var avanzar=true;
 
-        //show the next fieldset
-        next_fs.show();
-        //hide the current fieldset with style
-        current_fs.animate({opacity: 0}, {
-            step: function (now, mx) {
-                //as the opacity of current_fs reduces to 0 - stored in "now"
-                //1. scale current_fs down to 80%
-                scale = 1 - (1 - now) * 0.2;
-                //2. bring next_fs from the right(50%)
-                left = (now * 50) + "%";
-                //3. increase opacity of next_fs to 1 as it moves in
-                opacity = 1 - now;
-                current_fs.css({
-                    'transform': 'scale(' + scale + ')',
-                    'position': 'absolute'
+        if (this.id=='next1' && nuevo==0){
+            if(parseInt($("#id")[0].selectedIndex)==-1){
+                alert("Debe seleccionar un cliente o crear uno nuevo");
+                avanzar=false;
+                return;
+            } else if ( nuevo==1){
+                $("#next1").css('display','none');
+
+                var nom = $("#nombre").val();
+                var ape = $("#apellidos").val();
+                var dni = $("#dni").val();
+                var dir = $("#direccion").val();
+                var reg = $("#regiones").val();
+                var pro = $("#provincias").val();
+                var loc = $("#localidades").val();
+                var cp = $("#cp").val();
+                var mail = $("#email").val();
+                var tl1 = $("#tel1").val();
+                var tl2 = $("#tel2").val();
+
+                if(nom==''){
+                    alert('Debe teclear el nombre del cliente');
+                    $("#nombre").focus();
+                    return;
+                }
+                if(ape==''){
+                    alert('Debe teclear los apellidos del cliente');
+                    $("#apellidos").focus();
+                    return;
+                }
+                if(dni==''){
+                    alert('Debe teclear el DNI del cliente');
+                    $("#dni").focus();
+                    return;
+                }
+                if(dir==''){
+                    alert('Debe teclear la dirección del cliente');
+                    $("#direccion").focus();
+                    return;
+                }
+                if(reg==-1){
+                    alert('Debe seleccionar la región del cliente');
+                    $("#regiones").focus();
+                    return;
+                }
+                if(pro==-1){
+                    alert('Debe seleccionar la provincia del cliente');
+                    $("#provincias").focus();
+                    return;
+                }
+                if(loc==-1){
+                    alert('Debe seleccionar la localidad del cliente');
+                    $("#localidades").focus();
+                    return;
+                }
+                if(cp==''){
+                    alert('Debe teclear el código postal del cliente');
+                    $("#cp").focus();
+                    return;
+                }
+                if(mail=='' || !validateEmail(mail)){
+                    alert('Debe teclear el email válido');
+                    $("#email").focus();
+                    return;
+                }
+                if(tl1=='' && tl2==''){
+                    alert('Debe teclear al menos un número de teléfono');
+                    $("#tel1").focus();
+                    return;
+                }
+
+                if(guardar_cliente()) {
+                    avanzar=true;
+                }
+
+            }
+        }
+
+            if(avanzar){
+                //activate next step on progressbar using the index of next_fs
+                $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+                $("#progressbar li").eq($("fieldset").index(next_fs) - 1).addClass("completed");
+
+                //show the next fieldset
+                next_fs.show();
+                //hide the current fieldset with style
+                current_fs.animate({opacity: 0}, {
+                    step: function (now, mx) {
+                        //as the opacity of current_fs reduces to 0 - stored in "now"
+                        //1. scale current_fs down to 80%
+                        scale = 1 - (1 - now) * 0.2;
+                        //2. bring next_fs from the right(50%)
+                        left = (now * 50) + "%";
+                        //3. increase opacity of next_fs to 1 as it moves in
+                        opacity = 1 - now;
+                        current_fs.css({
+                            'transform': 'scale(' + scale + ')',
+                            'position': 'absolute'
+                        });
+                        next_fs.css({'left': left, 'opacity': opacity});
+                    },
+                    duration: 800,
+                    complete: function () {
+                        current_fs.hide();
+                        animating = false;
+                    },
+                    //this comes from the custom easing plugin
+                    easing: 'easeInOutBack'
                 });
-                next_fs.css({'left': left, 'opacity': opacity});
-            },
-            duration: 800,
-            complete: function () {
-                current_fs.hide();
-                animating = false;
-            },
-            //this comes from the custom easing plugin
-            easing: 'easeInOutBack'
-        });
+            }
     });
+
+
+    function guardar_cliente(){
+
+        var nom = $("#nombre").val();
+        var ape = $("#apellidos").val();
+        var dni = $("#dni").val();
+        var dir = $("#direccion").val();
+        var reg = $("#regiones").val();
+        var pro = $("#provincias").val();
+        var loc = $("#localidades").val();
+        var cp = $("#cp").val();
+        var mail = $("#email").val();
+        var tl1 = $("#tel1").val();
+        var tl2 = $("#tel2").val();
+        var notas = $("#notas").val();
+
+        var clientes = {nombre: nom,apellidos:ape,dni:dni,dir:dir,cp:cp,region:reg,provincia:pro,
+                        localidad:loc,email:mail,tel1:tl1,tel2:tl2,notas:notas,alta:Date.now()};
+
+        var ok=false;
+        $.ajax({
+            url: 'php/guardar-cli.php',
+            type: 'POST',
+            cache: false,
+            async: false,
+            data: {
+                action: 'clientes',
+                clientes:clientes,
+                is_ajax: true
+            },
+            success: function (data) {
+                if(parseInt(data)>0) {
+                    ok = true;
+                    id_cliente_seleccionado=data;
+                }
+                else {
+                    alert("ERROR: Posible datos duplicados, revise los clientes actuales.");
+                    $("#next1").css('display', 'block');
+                    }
+                }
+        });
+        return ok;
+    }
 
     $(".previous").click(function () {
         if (animating) return false;
@@ -649,10 +820,15 @@ check_session(2);
         });
     });
 
-    $(".submit").click(function () {
-        return false;
-    })
+    // $(".submit").click(function () {
+    //     return false;
+    // });
 
+    function validateEmail(email)
+    {
+        var re = /^(?:[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;
+        return re.test(email);
+    }
 
 </script>
 

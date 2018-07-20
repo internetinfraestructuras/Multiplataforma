@@ -21,7 +21,9 @@ $t_productos_atributos=array("ID_ATRIBUTO","ID_PRODUCTO","VALOR");
 $t_productos_modelos=array("ID_TIPO","NOMBRE");
 
 $t_productos_modelos_atributos=array("ID_MODELO","NOMBRE");
-$t_clientes=array('dni','nombre','apellidos','direccion','localidad','provincia','region', 'cp','tel1','tel2','email','notas','fecha_alta','fecha_modificacion','user_create');
+
+//$t_clientes=array('dni','nombre','apellidos','direccion','localidad','provincia','region', 'cp','tel1','tel2','email','notas','fecha_alta','fecha_modificacion','user_create');
+$t_clientes=array('NOMBRE','APELLIDOS','DNI','DIRECCION','LOCALIDAD','PROVINCIA','COMUNIDAD','IBAN','SWIFT','ID_EMPRESA','CP','FIJO','MOVIL','EMAIL','FECHA_ALTA','FECHA_MODIFICA','NOTAS','BAJA','BANCO');
 
 $t_logs=array('log','ip','tipo');
 

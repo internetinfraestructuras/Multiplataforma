@@ -69,23 +69,30 @@ date_default_timezone_set('Etc/UTC');
             $tel1 = $util->cleanstring($post_data['tel1']);
             $tel2 = $util->cleanstring($post_data['tel2']);
             $notas = $util->cleanstring($post_data['notas']);
+            $banco = $util->cleanstring($post_data['banco']);
+            $iban = $util->cleanstring($post_data['iban']);
+            $swift = $util->cleanstring($post_data['swift']);
             $alta = $post_data['alta'];
 
         }
 
-        $values = array( $dni, $nombre, $apellidos, $dir, $localidad, $provincia, $region, $cp, $tel1, $tel2, $email, $notas, $alta, $alta, $_SESSION['USER_ID']);
+        $campos=array('NOMBRE','APELLIDOS','DNI','DIRECCION','LOCALIDAD','PROVINCIA','COMUNIDAD','CP','FIJO','MOVIL',
+            'EMAIL','FECHA_ALTA','NOTAS','BAJA','ID_EMPRESA','BANCO','IBAN','SWIFT');
+
+        $values = array( $nombre, $apellidos, $dni, $dir, $localidad, $provincia, $region, $cp, $tel1, $tel2,
+            $email, $alta, $notas,0, $_SESSION['REVENDEDOR'], $banco, $iban, $swift);
 
         // llama a la funcion insertInto de la clase util que recibe la tabla (string) y dos arrays (campos y valores)
 
-        $result = $util->insertInto('clientes', $t_clientes, $values);
-        $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado el cliente:'.$dni.' con el resultado:'.$result);
+        $result = $util->insertInto('clientes', $campos, $values);
+        $util->log('El administrador:'.$_SESSION['REVENDEDOR'].' ha creado el cliente:'.$dni.' con el resultado:'.$result);
 
         if(intval($result)>0){
             if($is_ajax === false) {
                 _redirect('#alert_success');
                 exit;
             } else {
-                die('_success_');
+                die($result);
             }
         } else{
             if($is_ajax === false) {

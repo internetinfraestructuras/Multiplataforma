@@ -224,24 +224,24 @@ require_once('config/define.php');
     <br><br>
     <div id="aquiprocesando"></div>
 </nav>
-
-<script>
-    function salvarcabecera() {
-        trabajando();
-        trabajando(1);
-        $.ajax({
-            url: 'salvar_cabeceras.php',
-            type: 'POST',
-            cache: false,
-            async: true,
-            data: {
-                cabecera: id
-            },
-            success: function () {
-                trabajando(0);
-            }
-        });
-    }
-</script>
+<!---->
+<!--<script>-->
+<!--    function salvarcabecera() {-->
+<!--        trabajando();-->
+<!--        trabajando(1);-->
+<!--        $.ajax({-->
+<!--            url: 'salvar_cabeceras.php',-->
+<!--            type: 'POST',-->
+<!--            cache: false,-->
+<!--            async: true,-->
+<!--            data: {-->
+<!--                cabecera: id-->
+<!--            },-->
+<!--            success: function () {-->
+<!--                trabajando(0);-->
+<!--            }-->
+<!--        });-->
+<!--    }-->
+<!--</script>-->
 
 
