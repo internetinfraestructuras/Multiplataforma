@@ -82,7 +82,7 @@ check_session(3);
             <h1>Usted esta en</h1>
             <ol class="breadcrumb">
                 <li><a href="#"><?php echo DEF_ALMACEN; ?></a></li>
-                <li class="active">Agregar producto</li>
+                <li class="active">Agregar un servicio</li>
             </ol>
         </header>
         <!-- /page title -->
@@ -97,7 +97,7 @@ check_session(3);
                     <!-- ------ -->
                     <div class="panel panel-default">
                         <div class="panel-heading panel-heading-transparent">
-                            <strong>Nuevo producto</strong>
+                            <strong>Nuevo servicio</strong>
                         </div>
 
                         <div class="panel-body">
@@ -107,82 +107,66 @@ check_session(3);
                             <!-- todo: ******************************************************************************* -->
 
 
-                            <form class="validate" action="guardar-producto.php" method="post"
+                            <form class="validate" action="guardar-servicio.php" method="post"
                                   enctype="multipart/form-data">
                                 <fieldset>
                                     <!-- required [php action request] -->
-                                    <input type="hidden" name="action" value="productos"/>
+                                    <input type="hidden" name="action" value="servicios"/>
 
                                     <div class="row">
                                         <div class="form-group">
                                             <div class="col-md-4 col-sm-4">
-                                                <label>Proveedor:</label>
-                                                <select name="producto[proveedor]" id="proveedores" onchange="carga_tipos(this.value)"
+                                                <label>Servicio:</label>
+                                                <select name="servicio[tipo-servicio]" id="servicios" onchange="carga_atributos(this.value)"
                                                         class="form-control pointer ">
                                                     <option value="">--- Seleccionar una ---</option>
                                                     <?php
-                                                    $util->carga_select('proveedores', 'id', 'nombre', 'nombre',"id_empresa=".(int)$_SESSION['REVENDEDOR']); ?>
+                                                    $util->carga_select('servicios_tipos', 'id', 'nombre', 'nombre'); ?>
                                                 </select>
                                             </div>
-                                            <div class="col-md-4 col-sm-4">
+                                            <div class="col-md-4 col-sm-6">
+                                                <label>Nombre: </label>
+                                                <input type="text" name="servicio[nombre]" value=""
+                                                       class="form-control ">
+                                            </div>
 
-                                                <label>Tipo:</label>
-                                                <select name="producto[tipo]" id="tipos"
-                                                        class="form-control pointer " onchange="carga_modelos(this.value)">
-                                                    <option value="">--- Seleccionar una ---</option>
-
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4 col-sm-4">
-                                                <label>Modelos </label>
-                                                <select name="producto[modelo]" id="modelos"  onchange="carga_atributos(this.value)"
-                                                        class="form-control pointer ">
-                                                    <option value="">--- Seleccionar una ---</option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="row" >
                                         <div class="form-group" id="atributos">
-
                                         </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="form-group">
-
-                                            <div class="col-md-4 col-sm-6">
-                                                <label>Número Serie: </label>
-                                                <input type="text" name="producto[numero-serie]" value=""
-                                                       class="form-control ">
-                                            </div>
                                             <div class="col-md-2 col-sm-6">
                                                 <label>Precio proveedor: </label>
-                                                <input type="number" name="producto[precio-proveedor]" value="" id="precio-prov" step=".01"
+                                                <input type="number" name="servicio[precio-proveedor]" value="" id="precio-prov" step=".01"
                                                        class="form-control " onchange="calcularPVP(this.value)">
                                             </div>
                                             <div class="col-md-2 col-sm-6">
                                                 <label>Margen %: </label>
-                                                <input type="number" name="producto[beneficio]" value="" step=".01"
+                                                <input type="number" name="servicio[beneficio]" value="" step=".01"
                                                        class="form-control " onchange="calcularPVP(this.value)">
                                             </div>
                                             <div class="col-md-2 col-sm-6">
-                                                <label>PVP: </label>
-                                                <input type="number" name="producto[precio-pvp]" value="" id="precio-pvp" onchange="calcularPVP(this.value)" step=".01"
+                                                <label>Impuestos: </label>
+                                                <input type="number" name="servicio[impuesto]" value="21" id="impuestos" onchange="calcularPVP(this.value)" step=".01"
                                                        class="form-control ">
                                             </div>
                                             <div class="col-md-2 col-sm-6">
-                                                <label>Impuestos: </label>
-                                                <input type="number" name="producto[impuesto]" value="21" id="impuestos" onchange="calcularPVP(this.value)" step=".01"
+                                                <label>PVP: </label>
+                                                <input type="number" name="servicio[precio-pvp]" value="" id="precio-pvp" onchange="calcularPVP(this.value)" step=".01"
                                                        class="form-control ">
                                             </div>
+
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <button type="submit"
                                                     class="btn btn-3d btn-teal btn-xlg btn-block margin-top-30">
-                                                CREAR PRODUCTO
+                                                CREAR SERVICIO
                                             </button>
                                         </div>
                                     </div>
@@ -209,13 +193,16 @@ check_session(3);
             <div class="row">
 
                 <div class="col-md-12">
+
+                    <!-- ------ -->
                     <div class="panel panel-default">
+
                         <div class="panel-body" id="listado">
                             <div id="panel-1" class="panel panel-default">
                                 <div class="panel-heading">
-							    <span class="title elipsis">
-								    <strong>LISTADO DE <?php echo DEF_ALMACEN; ?></strong>
-							    </span>
+							<span class="title elipsis">
+								<strong>LISTADO DE <?php echo DEF_SERVICIOS; ?></strong> <!-- panel title -->
+							</span>
 
                                     <!-- right options -->
                                     <ul class="options pull-right list-inline">
@@ -234,43 +221,38 @@ check_session(3);
                                         <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>NUMERO SERIE</th>
-                                            <th>TIPO DE PRODUCTO</th>
-                                            <th>MODELO DE PRODUCTO</th>
+                                            <th>TIPO DE SERVICIO</th>
+                                            <th>NOMBRE SERVICIO</th>
+                                            <th>PVP</th>
                                             <th>OPCIONES</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <?php
-                                        $listado= $util->selectWhere3('productos,productos_tipos,productos_modelos,almacenes',
-                                            array("productos.id",
-                                                  "productos.numero_serie",
-                                                  "productos_tipos.nombre as Tipo",
-                                                  "productos_modelos.nombre as Modelo"),
-                                            "productos.id_tipo_producto=productos_tipos.id
-                                                    AND productos.id_modelo_producto=productos_modelos.id 
-                                                    AND almacenes.id=productos.id_almacen 
-                                                    AND almacenes.id_empresa=".$_SESSION['REVENDEDOR']."");
+                                        $listado= $util->selectWhere3('SERVICIOS,SERVICIOS_TIPOS',
+                                            array("servicios.id","servicios.nombre_comercial","servicios.pvp","servicios_tipos.nombre as tipo"),
+                                            "servicios.id_empresa=".$_SESSION['REVENDEDOR']."
+                                                     AND servicios.id_servicio_tipo=servicios_tipos.id");
 
 
                                         for($i=0;$i<count($listado);$i++)
                                         {
 
                                             $id=$listado[$i][0];
-                                            $numeroSerie=$listado[$i][1];
-                                            $tipo=$listado[$i][2];
-                                            $modelo=$listado[$i][3];
+                                            $nombre=$listado[$i][1];
+                                            $pvp=$listado[$i][2];
+                                            $tipo=$listado[$i][3];
 
 
                                             echo "<tr>";
-                                            echo "<td>$id</td><td>$numeroSerie</td><td>$tipo</td><td>$modelo</td>";
+                                            echo "<td>$id</td><td>$tipo</td><td>$nombre</td><td>$pvp</td>";
 
                                             ?>
                                             <td class="td-actions text-right">
                                                 <a href="ficha-producto.php?idProducto=<?php echo $id; ?>">
-                                                <button type="button" rel="tooltip" >
-                                                    <i class="fa fa-pencil"></i>
-                                                </button>
+                                                    <button type="button" rel="tooltip" >
+                                                        <i class="fa fa-pencil"></i>
+                                                    </button>
                                                 </a>
                                                 <button type="button" rel="tooltip" class="">
                                                     <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>');"></i>
@@ -297,9 +279,13 @@ check_session(3);
                                 <!-- /panel footer -->
 
                             </div>
+
+
                         </div>
 
                     </div>
+                    <!-- /----- -->
+
                 </div>
 
 
@@ -314,13 +300,9 @@ check_session(3);
 </div>
 
 <!-- JAVASCRIPT FILES-->
-
-
 <script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
-
-<script type="text/javascript" src="../../assets/js/app.js"></script>
-
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="../../assets/js/app.js"></script>
 <script>
 
 
@@ -331,6 +313,7 @@ check_session(3);
         var select = jQuery("#modelos");
         select.empty();
         select.append('<option value="">--- Seleccionar una ---</option>');
+
         jQuery.ajax({
             url: 'carga_modelos.php',
             type: 'POST',
@@ -345,47 +328,35 @@ check_session(3);
             }
         });
     }
-    function carga_tipos(id)
+
+
+    function carga_atributos(id)
     {
-        var select = jQuery("#tipos");
-        select.empty();
-        select.append('<option value="">--- Seleccionar una ---</option>');
+
+        var div = jQuery("#atributos");
+        div.empty();
+
         jQuery.ajax({
-            url: 'cargar_tipos.php',
+            url: 'cargar_atributos.php',
             type: 'POST',
             cache: false,
             async:true,
             data:{id:id},
             success: function(data)
             {
+
                 $.each(data, function(i){
-                    select.append('<option value="'+data[i].id+'">'+data[i].nombre+'</option>');
+                    div.append('<div class="col-md-1 col-sm-1"> <label>'+data[i].NOMBRE+'</label><input type="text" name="atributos[atributo]["+data[i].ID+"]"  class="form-control " /><input type="text" value="'+data[i].ID+'" hidden name="atributos[id]"/></div>');
                 });
+            },
+            error:function(data)
+            {
+                alert("ERROR"+data.responseText);
             }
         });
+
+
     }
-
-function carga_atributos(id)
-{
-    var div = jQuery("#atributos");
-    div.empty();
-    jQuery.ajax({
-        url: 'cargar_atributos.php',
-        type: 'POST',
-        cache: false,
-        async:true,
-        data:{id:id},
-        success: function(data)
-        {
-            $.each(data, function(i)
-            {
-                div.append('<div class="col-md-1 col-sm-1"> <label>'+data[i].NOMBRE+'</label><input type="text" name="producto[atributo][]"  class="form-control " /><input type="text" value="'+data[i].ID+'" hidden name="producto[atributo][]"/></div>');
-            });
-        }
-    });
-
-
-}
     function calcularPVP(val)
     {
         var precioProv=jQuery("#precio-prov").val();
@@ -408,7 +379,7 @@ function carga_atributos(id)
 
     function borrar(id)
     {
-       // var hash = md5(id);
+        // var hash = md5(id);
         var respuesta = confirmar("¿Seguro/a de querer borrar este producto?");
 
         if(respuesta)

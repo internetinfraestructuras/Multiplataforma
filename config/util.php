@@ -170,7 +170,7 @@ class util {
 
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
-//            echo $query;
+            echo $query;
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectJoin.');
 
@@ -418,9 +418,8 @@ class util {
             $valores = implode($valor, "', '");
 
             $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
-
-//            echo $query;
-
+            echo "<br/>";
+            echo $query;
             $query = str_replace("º","",$query);
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
@@ -630,7 +629,7 @@ class util {
     }
 
 
-    function carga_select($tabla='', $value='', $campos='', $orden='', $where='', $cuantos='',$title='',$agregar=''){
+    function carga_select($tabla='', $value='', $campos='', $orden='', $where='', $cuantos='',$title=''){
 
         try {
             $link = $this->conectar();
@@ -651,10 +650,7 @@ class util {
                 else if($cuantos == 3)
                     $valores= $row[1] . " / " .$row[2]. " / " .$row[3];
 
-                if($agregar!='')
-                    echo "<option value='".$row[0]."'>".$valores.$agregar."</option>";
-                else
-                    echo "<option value='".$row[0]."'>".$valores."</option>";
+                echo "<option value='".$row[0]."'>".$valores."</option>";
                 $valores='';
             }
 
@@ -803,16 +799,16 @@ function check_session($nivel=0){
 //        $nivel=0;
 
         if(intval($_SESSION['USER_LEVEL'])>intval($nivel))
-            header("Location:/index.php");
+            header("Location:index.php");
 
     $now = time();
     if ($now > $_SESSION['expire']) {
         session_destroy();
-        header("Location:/login.php");
+        header("Location:login.php");
     }
 
     if(!isset($_SESSION['USER_ID']) || !intval($_SESSION['USER_ID'])>0)
-        header("Location:/login.php");
+        header("Location:login.php");
 
     $_SESSION['start'] = time();
     $_SESSION['expire'] = $_SESSION['start'] + (30 * 60);
