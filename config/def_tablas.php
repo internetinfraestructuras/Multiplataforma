@@ -21,6 +21,10 @@ $t_productos_atributos=array("ID_ATRIBUTO","ID_PRODUCTO","VALOR");
 $t_productos_modelos=array("ID_TIPO","NOMBRE");
 
 $t_productos_modelos_atributos=array("ID_MODELO","NOMBRE");
+
+$t_paquetes=array("NOMBRE","PRECIO_COSTE","MARGEN","IMPUESTO","PVP","ID_EMPRESA");
+$t_paquetes_servicios=array("ID_PAQUETE","ID_SERVICIO");
+
 $t_clientes=array('dni','nombre','apellidos','direccion','localidad','provincia','region', 'cp','tel1','tel2','email','notas','fecha_alta','fecha_modificacion','user_create');
 
 $t_logs=array('log','ip','tipo');

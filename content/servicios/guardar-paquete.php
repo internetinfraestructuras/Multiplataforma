@@ -22,16 +22,14 @@ date_default_timezone_set('Etc/UTC');
 // todo: --------------------------------------------
 
 
-
-if(isset($_POST['action']) && $_POST['action'] == 'productos')
+if(isset($_POST['action']) && $_POST['action'] == 'paquetes')
 {
-
 
 
     $array = $required = array();
 
     // catch post data
-    $post_data = isset($_POST['producto']) ? $_POST['producto'] : null;
+    $post_data = isset($_POST['paquete']) ? $_POST['paquete'] : null;
     $is_ajax = (isset($_POST['is_ajax']) && $_POST['is_ajax'] == 'true') ? true : false;
 
     // check post data
@@ -60,57 +58,57 @@ if(isset($_POST['action']) && $_POST['action'] == 'productos')
         // se recogen los datos post y se pasan por la funcion que limpia los caracteres suceptibles de generar inyeccion SQL
 
         $nombre = $util->cleanstring($post_data['nombre']);
-        $proveedor = $util->cleanstring($post_data['proveedor']);
-        $tipo = $util->cleanstring($post_data['tipo']);
-        $modelo = $util->cleanstring($post_data['modelo']);
-        $numeroSerie = $util->cleanstring($post_data['numero-serie']);
-        $precioProv=$util->cleanstring($post_data['precio-proveedor']);
-        $beneficio=$util->cleanstring($post_data['beneficio']);
-        $pvp=$util->cleanstring($post_data['precio-pvp']);
-        $impuesto=$util->cleanstring($post_data['impuesto']);
-        $atributos=$post_data['atributo'];
+        $internet=$util->cleanstring($post_data['internet']);
+        $fijo=$util->cleanstring($post_data['fijo']);
+        $movil=$post_data['movil'];
+        $tv=$util->cleanstring($post_data['tv']);
+
+        $coste = $util->cleanstring($post_data['precio-coste']);
+
+        $margen = $util->cleanstring($post_data['precio-beneficio']);
+        $impuestos= $util->cleanstring($post_data['precio-impuestos']);
+        $pvp= $util->cleanstring($post_data['precio-pvp']);
+
 
     }
 
-    $ls=$util->selectWhere3("ALMACENES",array("ID"),"ID_EMPRESA=".$_SESSION['REVENDEDOR']);
-
-    foreach($ls as $row)
-        $almacen=$row;
-
-
-
-    $values = array( $almacen[0],$proveedor,$tipo,$modelo,1,$numeroSerie,$precioProv,$beneficio,$pvp,$impuesto);
+    $values = array( $nombre,$coste,$margen,$impuestos,$pvp,$_SESSION['REVENDEDOR']);
 
     // llama a la funcion insertInto de la clase util que recibe la tabla (string) y dos arrays (campos y valores)
 
-    $resultProducto = $util->insertInto('PRODUCTOS', $t_productos, $values);
+     $resultPaquete = $util->insertInto('paquetes', $t_paquetes, $values);
+     $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado el paquete:'.$nombre.' con el resultado:'.$resultPaquete);
 
-
-    $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado el cliente:'.$dni.' con el resultado:'.$result);
-
-    /*
-     * UNA VEZ CREADO EL PRODUCTO ASOCIAMOS LOS ATRIBUTOS A DICHO PRODUCTO $RESULT TIENE EL ID DEL PRODUCTO
-     */
-
-    // EXTRACT DATA FROM POST
-
-    $j=0;
-    for($i=0;$i<count($atributos)/2;$i++)
+     if(!empty($internet))
+     {
+         $values = array( $resultPaquete,$internet);
+         $result = $util->insertInto('paquetes_servicios', $t_paquetes_servicios, $values);
+         $util->log('El administrador:'.$_SESSION['USER_ID'].' ha asociado al paquete:'.$resultPaquete.' el servicio:'.$result);
+     }
+    if(!empty($fijo))
+    {
+        $values = array( $resultPaquete,$fijo);
+        $result = $util->insertInto('paquetes_servicios', $t_paquetes_servicios, $values);
+        $util->log('El administrador:'.$_SESSION['USER_ID'].' ha asociado al paquete:'.$resultPaquete.' el servicio:'.$result);
+    }
+    if(!empty($movil))
     {
 
-
-        $valor= $util->cleanstring($atributos[$j]);
-        $j++;
-        $id= $util->cleanstring($atributos[$j]);
-        $j++;
-        $values=array($id,$resultProducto,$valor);
-        echo $valor."<br/>";
-
-        $result = $util->insertInto('PRODUCTOS_ATRIBUTOS', $t_productos_atributos, $values);
-
+        for($i=0;$i<count($movil);$i++)
+        {
+        $values = array( $resultPaquete,$util->cleanstring($movil[$i]));
+        $result = $util->insertInto('paquetes_servicios', $t_paquetes_servicios, $values);
+        $util->log('El administrador:'.$_SESSION['USER_ID'].' ha asociado al paquete:'.$resultPaquete.' el servicio:'.$result);
+        }
+    }
+    if(!empty($tv))
+    {
+        $values = array( $resultPaquete,$tv);
+        $result = $util->insertInto('paquetes_servicios', $t_paquetes_servicios, $values);
+        $util->log('El administrador:'.$_SESSION['USER_ID'].' ha asociado al paquete:'.$resultPaquete.' el servicio:'.$result);
     }
 
-/*
+
     if(intval($result)>0){
         if($is_ajax === false) {
             _redirect('#alert_success');
@@ -125,14 +123,14 @@ if(isset($_POST['action']) && $_POST['action'] == 'productos')
         } else {
             die('_failed_');
         }
-    }*/
+    }
 
 }
 
 // todo: --------------------------------------------
 // cuando el cliente es editado
 // todo: --------------------------------------------
-
+/*
 if(
     (isset($_POST['oper']) && $_POST['oper'] == 'edit')
     &&
@@ -186,6 +184,6 @@ function _redirect($hash) {
     exit;
 }
 
-
+*/
 
 ?>

@@ -54,11 +54,9 @@ require_once('config/define.php');
             <i class="main-icon"><img src="img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_10; ?> </span>
         </a>
         <ul><!-- submenus -->
-            <li><a href="content/servicios/internet.php">Internet</a></li>
-            <li><a href="content/servicios/telefonia-fija.php.php">Telefonía fija</a></li>
-            <li><a href="content/servicios/telefonia-movil.php">Telefonia Móvil</a></li>
-            <li><a href="content/servicios/television.php">Televisión</a></li>
-            <li><a href="content/servicios/otros.php">Otros</a></li>
+            <li><a href="content/servicios/servicios.php">Servicios</a></li>
+            <li><a href="content/servicios/paquetes.php">Paquetes</a></li>
+
 
             <!--            <li><a href="cons-clie.php">Consultar</a></li>-->
         </ul>
