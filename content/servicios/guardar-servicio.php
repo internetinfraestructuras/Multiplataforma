@@ -23,7 +23,7 @@ date_default_timezone_set('Etc/UTC');
 
 
 
-if(isset($_POST['action']) && $_POST['action'] == 'productos')
+if(isset($_POST['action']) && $_POST['action'] == 'servicios')
 {
 
 
@@ -31,7 +31,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'productos')
     $array = $required = array();
 
     // catch post data
-    $post_data = isset($_POST['producto']) ? $_POST['producto'] : null;
+    $post_data = isset($_POST['servicio']) ? $_POST['servicio'] : null;
     $is_ajax = (isset($_POST['is_ajax']) && $_POST['is_ajax'] == 'true') ? true : false;
 
     // check post data
@@ -60,10 +60,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'productos')
         // se recogen los datos post y se pasan por la funcion que limpia los caracteres suceptibles de generar inyeccion SQL
 
         $nombre = $util->cleanstring($post_data['nombre']);
-        $proveedor = $util->cleanstring($post_data['proveedor']);
         $tipo = $util->cleanstring($post_data['tipo']);
-        $modelo = $util->cleanstring($post_data['modelo']);
-        $numeroSerie = $util->cleanstring($post_data['numero-serie']);
         $precioProv=$util->cleanstring($post_data['precio-proveedor']);
         $beneficio=$util->cleanstring($post_data['beneficio']);
         $pvp=$util->cleanstring($post_data['precio-pvp']);
@@ -72,18 +69,11 @@ if(isset($_POST['action']) && $_POST['action'] == 'productos')
 
     }
 
-    $ls=$util->selectWhere3("ALMACENES",array("ID"),"ID_EMPRESA=".$_SESSION['REVENDEDOR']);
-
-    foreach($ls as $row)
-        $almacen=$row;
-
-
-
-    $values = array( $almacen[0],$proveedor,$tipo,$modelo,1,$numeroSerie,$precioProv,$beneficio,$pvp,$impuesto);
+    $values = array( $tipo,$_SESSION['REVENDEDOR'],$nombre,$precioProv,$impuesto,$beneficio,$pvp);
 
     // llama a la funcion insertInto de la clase util que recibe la tabla (string) y dos arrays (campos y valores)
 
-    $resultProducto = $util->insertInto('PRODUCTOS', $t_productos, $values);
+    $resultServicio = $util->insertInto('SERVICIOS', $t_servicios, $values);
 
 
     $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado el cliente:'.$dni.' con el resultado:'.$result);
@@ -93,20 +83,19 @@ if(isset($_POST['action']) && $_POST['action'] == 'productos')
      */
 
     // EXTRACT DATA FROM POST
-
+    var_dump($atributos);
     $j=0;
     for($i=0;$i<count($atributos)/2;$i++)
     {
-
 
         $valor= $util->cleanstring($atributos[$j]);
         $j++;
         $id= $util->cleanstring($atributos[$j]);
         $j++;
-        $values=array($id,$resultProducto,$valor);
+        $values=array($id,$resultServicio,$valor);
         echo $valor."<br/>";
 
-        $result = $util->insertInto('PRODUCTOS_ATRIBUTOS', $t_productos_atributos, $values);
+        $result = $util->insertInto('SERVICIOS_ATRIBUTOS', $t_servicios_atributos, $values);
 
     }
 

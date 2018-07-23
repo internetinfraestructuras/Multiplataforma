@@ -117,7 +117,7 @@ check_session(3);
                                         <div class="form-group">
                                             <div class="col-md-4 col-sm-4">
                                                 <label>Servicio:</label>
-                                                <select name="servicio[tipo-servicio]" id="servicios" onchange="carga_atributos(this.value)"
+                                                <select name="servicio[tipo]" id="servicios" onchange="carga_atributos(this.value)"
                                                         class="form-control pointer ">
                                                     <option value="">--- Seleccionar una ---</option>
                                                     <?php
@@ -249,7 +249,7 @@ check_session(3);
 
                                             ?>
                                             <td class="td-actions text-right">
-                                                <a href="ficha-producto.php?idProducto=<?php echo $id; ?>">
+                                                <a href="ficha-servicio.php?idServicio=<?php echo $id; ?>">
                                                     <button type="button" rel="tooltip" >
                                                         <i class="fa fa-pencil"></i>
                                                     </button>
@@ -346,7 +346,7 @@ check_session(3);
             {
 
                 $.each(data, function(i){
-                    div.append('<div class="col-md-1 col-sm-1"> <label>'+data[i].NOMBRE+'</label><input type="text" name="atributos[atributo]["+data[i].ID+"]"  class="form-control " /><input type="text" value="'+data[i].ID+'" hidden name="atributos[id]"/></div>');
+                    div.append('<div class="col-md-1 col-sm-1"> <label>'+data[i].NOMBRE+'</label><input type="text" name="servicio[atributo][]"  class="form-control " /><input type="text" value="'+data[i].ID+'" hidden name="servicio[atributo][]"/></div>');
                 });
             },
             error:function(data)
@@ -386,12 +386,12 @@ check_session(3);
         {
 
             jQuery.ajax({
-                url: 'borrar_producto.php',
+                url: 'borrar_servicio.php',
                 type: 'POST',
                 cache: false,
                 async: true,
                 data: {
-                    a: 'borrar_producto',
+                    a: 'borrar_servicio',
                     p:id
                 },
                 success: function (data) {
