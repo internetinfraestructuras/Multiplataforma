@@ -10,7 +10,7 @@ require_once('config/define.php');
 <nav id="sideNav"><!-- MAIN MENU -->
 <ul class="nav nav-list">
     <li class="active"><!-- dashboard -->
-        <a class="dashboard" href="/index.php"><!-- warning - url used by default by ajax (if eneabled) -->
+        <a class="dashboard" href="<?php echo $root;?>index.php"><!-- warning - url used by default by ajax (if eneabled) -->
             <center><span style="font-size: 2em; color: #898989;">AT Control</span></center>
         </a>
     </li>
@@ -24,11 +24,11 @@ require_once('config/define.php');
             <i class="main-icon fa fa-users"></i><span><?php echo MNU_ITEM_3; ?> </span>
         </a>
         <ul><!-- submenus -->
-            <li><a href="/add-clie.php">Agregar</a></li>
-            <li><a href="/edit-clie.php">Modificar</a></li>
-            <li><a href="/list-clie.php">Listar</a></li>
-            <li><a href="/del-clie.php">Borrar</a></li>
-            <!--            <li><a href="/cons-clie.php">Consultar</a></li>-->
+            <li><a href="<?php echo $root;?>add-clie.php">Agregar</a></li>
+            <li><a href="<?php echo $root;?>edit-clie.php">Modificar</a></li>
+            <li><a href="<?php echo $root;?>list-clie.php">Listar</a></li>
+            <li><a href="<?php echo $root;?>del-clie.php">Borrar</a></li>
+            <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->
         </ul>
     </li>
 
@@ -38,13 +38,13 @@ require_once('config/define.php');
             <i class="main-icon fa fa-shopping-cart"></i><span><?php echo MNU_ITEM_8; ?> </span>
         </a>
         <ul><!-- submenus -->
-            <li><a href="/content/almacen/agregar.php">Alta Productos</a></li>
-            <li><a href="/content/almacen/proveedores.php">Proveedores</a></li>
-            <li><a href="/content/almacen/tipos.php">Tipos</a></li>
-            <li><a href="/content/almacen/modelos.php">Modelos</a></li>
-            <li><a href="/content/almacen/atributos.php">Atributos</a></li>
+            <li><a href="<?php echo $root;?>content/almacen/agregar.php">Alta Productos</a></li>
+            <li><a href="<?php echo $root;?>content/almacen/proveedores.php">Proveedores</a></li>
+            <li><a href="<?php echo $root;?>content/almacen/tipos.php">Tipos</a></li>
+            <li><a href="<?php echo $root;?>content/almacen/modelos.php">Modelos</a></li>
+            <li><a href="<?php echo $root;?>content/almacen/atributos.php">Atributos</a></li>
 
-            <!--            <li><a href="/cons-clie.php">Consultar</a></li>-->
+            <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->
         </ul>
     </li>
 
@@ -54,11 +54,11 @@ require_once('config/define.php');
             <i class="main-icon"><img src="/img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_10; ?> </span>
         </a>
         <ul><!-- submenus -->
-            <li><a href="/content/servicios/servicios.php">Servicios</a></li>
-            <li><a href="/content/servicios/paquetes.php">Paquetes</a></li>
+            <li><a href="<?php echo $root;?>content/servicios/servicios.php">Servicios</a></li>
+            <li><a href="<?php echo $root;?>content/servicios/paquetes.php">Paquetes</a></li>
 
 
-            <!--            <li><a href="/cons-clie.php">Consultar</a></li>-->
+            <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->
         </ul>
     </li>
 
@@ -68,13 +68,13 @@ require_once('config/define.php');
             <i class="main-icon"><img src="/img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_9; ?> </span>
         </a>
         <ul><!-- submenus -->
-            <li><a href="/contratar.php">Alta contrato</a></li>
-            <li><a href="/edit-contrato.php">Modificar contrato</a></li>
-            <li><a href="/promos.php">Promociones</a></li>
-            <li><a href="/.php">Solicitar Portabilidad</a></li>
-            <li><a href="/edit-clie.php">Ver Estado Portabilidad</a></li>
-            <li><a href="/del-clie.php">Borrar</a></li>
-            <!--            <li><a href="/cons-clie.php">Consultar</a></li>-->
+            <li><a href="<?php echo $root;?>contratar.php">Alta contrato</a></li>
+            <li><a href="<?php echo $root;?>edit-contrato.php">Modificar contrato</a></li>
+            <li><a href="<?php echo $root;?>promos.php">Promociones</a></li>
+            <li><a href="<?php echo $root;?>.php">Solicitar Portabilidad</a></li>
+            <li><a href="<?php echo $root;?>edit-clie.php">Ver Estado Portabilidad</a></li>
+            <li><a href="<?php echo $root;?>del-clie.php">Borrar</a></li>
+            <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->
         </ul>
     </li>
 
@@ -88,10 +88,10 @@ require_once('config/define.php');
                 <i class="main-icon fa fa-usd"></i> <span><?php echo MNU_ITEM_2; ?></span>
             </a>
             <ul><!-- submenus -->
-                <li><a href="/add-reve.php">Agregar</a></li>
-                <li><a href="/edit-reve.php">Modificar</a></li>
-                <li><a href="/list-reve.php">Listar</a></li>
-<!--                <li><a href="/cons-reve.php">Consultar</a></li>-->
+                <li><a href="<?php echo $root;?>add-reve.php">Agregar</a></li>
+                <li><a href="<?php echo $root;?>edit-reve.php">Modificar</a></li>
+                <li><a href="<?php echo $root;?>list-reve.php">Listar</a></li>
+<!--                <li><a href="<?php echo $root;?>cons-reve.php">Consultar</a></li>-->
             </ul>
         </li>
     <?php } ?>
@@ -103,12 +103,12 @@ require_once('config/define.php');
                 <i class="main-icon fa fa-user"></i> <span><?php echo MNU_ITEM_1; ?></span>
             </a>
             <ul><!-- submenus -->
-                <li><a href="/add-user.php">Agregar</a></li>
-                <li><a href="/edit-user.php">Modificar</a></li>
-                <li><a href="/list-user.php">Listar</a></li>
-<!--                <li><a href="/cons-user.php">Consultar</a></li>-->
+                <li><a href="<?php echo $root;?>add-user.php">Agregar</a></li>
+                <li><a href="<?php echo $root;?>edit-user.php">Modificar</a></li>
+                <li><a href="<?php echo $root;?>list-user.php">Listar</a></li>
+<!--                <li><a href="<?php echo $root;?>cons-user.php">Consultar</a></li>-->
                 <?php if (intval($_SESSION['USER_LEVEL'])==0){
-                    echo '<li><a href="/suplantar.php">Suplantar</a></li>';
+                    echo '<li><a href="<?php echo $root;?>suplantar.php">Suplantar</a></li>';
                 }?>
             </ul>
         </li>
@@ -126,10 +126,10 @@ require_once('config/define.php');
                 <i class="main-icon fa fa-server"></i> <span><?php echo MNU_ITEM_6; ?></span>
             </a>
             <ul><!-- submenus -->
-                <li><a href="/add-olts.php">Agregar</a></li>
-<!--                <li><a href="/list-olts.php">Listar</a></li>-->
-                <li><a href="/perfiles-olt.php">Gestionar</a></li>
-<!--                <li><a href="/cons-olts.php">Consultar</a></li>-->
+                <li><a href="<?php echo $root;?>add-olts.php">Agregar</a></li>
+<!--                <li><a href="<?php echo $root;?>list-olts.php">Listar</a></li>-->
+                <li><a href="<?php echo $root;?>perfiles-olt.php">Gestionar</a></li>
+<!--                <li><a href="<?php echo $root;?>cons-olts.php">Consultar</a></li>-->
             </ul>
         </li>
     <?php } ?>
@@ -140,12 +140,12 @@ require_once('config/define.php');
             <i class="main-icon fa fa-hdd-o"></i> <span><?php echo MNU_ITEM_5; ?></span>
         </a>
         <ul><!-- submenus -->
-            <li><a href="/asignacion.php?c=1">Órdenes de trabajo</a></li>
-            <li><a href="/asignacion.php">Dar Altas</a></li>
+            <li><a href="<?php echo $root;?>asignacion.php?c=1">Órdenes de trabajo</a></li>
+            <li><a href="<?php echo $root;?>asignacion.php">Dar Altas</a></li>
             <?php if (intval($_SESSION['USER_LEVEL'])<2) { ?>
-                <li><a href="/bajas.php">Dar Bajas</a></li>
-                <li><a href="/modificar.php">Modificar</a></li>
-                <li><a href="/listados_altas.php">Listados y consultas</a></li>
+                <li><a href="<?php echo $root;?>bajas.php">Dar Bajas</a></li>
+                <li><a href="<?php echo $root;?>modificar.php">Modificar</a></li>
+                <li><a href="<?php echo $root;?>listados_altas.php">Listados y consultas</a></li>
             <?php } ?>
 
 
@@ -157,12 +157,12 @@ require_once('config/define.php');
             <i class="main-icon fa fa-wrench"></i> <span><?php echo MNU_ITEM_7; ?></span>
         </a>
         <ul><!-- submenus -->
-            <li><a href="/ver_estado_ont.php">Comprobar Estado Ont</a></li>
-            <li><a href="/ver_ip_serial.php">Obtener IP & SERIAL</a></li>
-            <li><a href="/ver_estado_olt.php">Comprobar Estado Olt</a></li>
-            <li><a href="/salvar_cabeceras.php">Salvar configuración cabecera</a></li>
+            <li><a href="<?php echo $root;?>ver_estado_ont.php">Comprobar Estado Ont</a></li>
+            <li><a href="<?php echo $root;?>ver_ip_serial.php">Obtener IP & SERIAL</a></li>
+            <li><a href="<?php echo $root;?>ver_estado_olt.php">Comprobar Estado Olt</a></li>
+            <li><a href="<?php echo $root;?>salvar_cabeceras.php">Salvar configuración cabecera</a></li>
             <?php if (intval($_SESSION['USER_LEVEL'])==0) { ?>
-                <li><a href="/olt_commands.php">Comandos Especiales</a></li>
+                <li><a href="<?php echo $root;?>olt_commands.php">Comandos Especiales</a></li>
 
             <?php } ?>
         </ul>
@@ -176,10 +176,10 @@ require_once('config/define.php');
             </a>
             <ul><!-- submenus -->
                 <?php if (intval($_SESSION['USER_LEVEL'])==0) { ?>
-                    <li><a href="/tipos-usuarios.php">Tipos usuarios</a></li>
-                    <li><a href="/niveles.php">Niveles acceso</a></li>
+                    <li><a href="<?php echo $root;?>tipos-usuarios.php">Tipos usuarios</a></li>
+                    <li><a href="<?php echo $root;?>niveles.php">Niveles acceso</a></li>
                 <?php } ?>
-                <li><a href="/config_pppoe.php">Servidor PPPoE</a></li>
+                <li><a href="<?php echo $root;?>config_pppoe.php">Servidor PPPoE</a></li>
 
             </ul>
         </li>
@@ -193,25 +193,25 @@ require_once('config/define.php');
         <center><span style="color: #898989;">Útiles</span></center>
     </li>
     <li>
-        <a href="/calendar.php">
+        <a href="<?php echo $root;?>calendar.php">
             <i class="main-icon fa fa-calendar"></i>
             <span>Calendario</span>
         </a>
     </li>
     <li>
-        <a href="/invoice.html">
+        <a href="<?php echo $root;?>invoice.html">
             <i class="main-icon fa fa-inbox"></i>
             <span>Mensajes</span>
         </a>
     </li>
     <li>
-        <a href="/ayuda.php">
+        <a href="<?php echo $root;?>ayuda.php">
             <i class="main-icon fa fa-question"></i>
             <span>Ayuda</span>
         </a>
     </li>
     <li>
-        <a href="/novedades.php">
+        <a href="<?php echo $root;?>novedades.php">
             <i class="main-icon fa fa-newspaper-o blink"></i>
             <span class="blink">Novedades</span>
         </a>

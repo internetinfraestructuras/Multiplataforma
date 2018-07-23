@@ -8,11 +8,10 @@
 
 /*
     ╔════════════════════════════════════════════════════════════╗
-    ║ Devuelve un listado de servicios incluidos en el  ║
-    ║  paquete pasado como variable post"idpaquete"     ║
+    ║ Devuelve un listado de servicios completo         ║
+    ║       ║
     ╚════════════════════════════════════════════════════════════╝
 */
-
 if (!isset($_SESSION)) {
     @session_start();
 }
@@ -20,12 +19,11 @@ require_once('../../config/util.php');
 $util = new util();
 check_session(3);
 
-$id=$_POST['idpaquete'];
 $campos=array('servicios.ID','ID_SERVICIO_TIPO','NOMBRE_COMERCIAL','PRECIO_PROVEEDOR','IMPUESTO','BENEFICIO','PVP','servicios_tipos.NOMBRE');
 
 $provincias = $util->selectJoin('servicios', $campos, ' JOIN paquetes_servicios ON paquetes_servicios.ID_SERVICIO = servicios.ID '.
     ' JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO ',
-    'NOMBRE_COMERCIAL','paquetes_servicios.ID_PAQUETE='.$id.' AND ID_EMPRESA='.$_SESSION['REVENDEDOR']);
+    'ID_SERVICIO_TIPO',' ID_EMPRESA='.$_SESSION['REVENDEDOR']);
 
 $aItems = array();
 

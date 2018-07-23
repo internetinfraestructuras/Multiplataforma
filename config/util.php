@@ -418,7 +418,7 @@ class util {
             $valores = implode($valor, "', '");
 
             $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
-            echo "<br/>";
+
             //echo $query;
             $query = str_replace("º","",$query);
             if (!($result = $link->query($query)))
@@ -650,7 +650,7 @@ class util {
                 else if($cuantos == 3)
                     $valores= $row[1] . " / " .$row[2]. " / " .$row[3];
 
-                echo "<option value='".$row[0]."'>".$valores."</option>";
+                echo "<option data-extra= '".$row[2]."' value='".$row[0]."'>".$valores."</option>";
                 $valores='';
             }
 

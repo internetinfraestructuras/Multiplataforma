@@ -14,7 +14,7 @@ $util = new util();
 
 // solo los usuarios de nivel 3 a 0 pueden agregar clientes
 check_session(3);
-
+$root="../../";
 ?>
 <!doctype html>
 <html lang="en-US">

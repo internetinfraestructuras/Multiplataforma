@@ -13,6 +13,7 @@ require_once('../config/util.php');
 $util = new util();
 check_session(2);
 
+$root="";
 ?>
 <!doctype html>
 <html lang="en-US">
