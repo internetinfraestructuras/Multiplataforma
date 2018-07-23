@@ -419,7 +419,7 @@ check_session(2);
                         <select name="paquete" id="paquete"
                                 class="form-control pointer " onchange="paquete_seleccionado(this.value)">
                             <option value="">--- Seleccionar uno ---</option>
-                            <?php $util->carga_select('paquetes', 'id', 'NOMBRE', 'NOMBRE'); ?>
+                            <?php $util->carga_select('paquetes', 'id', 'NOMBRE, PVP', 'NOMBRE', '', 2,array('',' €')); ?>
                         </select>
 
                         <!-- aqui se cargarán los servicios que contiene el paquete seleccionado-->
@@ -458,6 +458,7 @@ check_session(2);
 <script>
     var nuevo=0;
     var id_cliente_seleccionado=0;
+    var id_paquete_seleccionado=0;
 
     // cargo las provincias por Ajax, cada vez que se cambia la comunidad
     function carga_provincias(id, sel = 0) {
@@ -605,6 +606,52 @@ check_session(2);
 
         id_cliente_seleccionado = id;
         $("#next1").css('display','block');
+
+    }
+
+    function paquete_seleccionado(id) {
+
+        $("#aqui_los_servicios").empty();
+        $("#aqui_los_servicios").append('<div class="row">');
+        $("#aqui_los_servicios").append('<div class="table-responsive">' +
+            '<table class="table table-condensed nomargin">' +
+            '<thead>' +
+            '<tr>' +
+
+            '<th></th>' +
+            '</tr>' +
+            '</thead><tbody id="aqui_la_tabla"></tbody>');
+
+
+
+        $.ajax({
+            url: 'content/servicios/carga_paquetes.php',
+            type: 'POST',
+            cache: false,
+            cache: false,
+            async: true,
+            data: {
+                idpaquete: id
+            },
+            success: function (datos) {
+
+                $.each(datos, function(i) {
+                    $("#aqui_la_tabla").append('<tr><td>'+datos[i].idservicio+'</td><td>'+datos[i].tipo+'</td><td>'+
+                        datos[i].comercial+'</td><td>'+ datos[i].coste+'</td><td>'+datos[i].impuesto+'</td><td>'+
+                        datos[i].dad_up+ 'Mb / '+
+                        datos[i].velocidad_dw + 'Mb</td><td>'+datos[i].ppoe_usuario+'</td><td>'+datos[i].caja + ' / '+
+                        datos[i].puerto+'</td><td>'+datos[i].c+ '/' +datos[i].t+ '/'+datos[i].p+
+                        '</td><td>' +
+                        '<span class="fa fa-eye" style="font-size:1em; cursor: pointer;margin-left:.5em" onclick="ver(\''+datos[i].num_pon+'\',\''+datos[i].serial+'\');"></span>' +
+                        '</td></tr>');
+                });
+
+                $(".ocultar").css('display','block');
+            }
+        });
+
+        id_paquete_seleccionado = id;
+        $("#next2").css('display','block');
 
     }
 

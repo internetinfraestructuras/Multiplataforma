@@ -170,7 +170,7 @@ class util {
 
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
-            echo $query;
+//            echo $query;
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectJoin.');
 
@@ -229,7 +229,7 @@ class util {
 
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
-//echo $query;
+////echo $query;
             if (!($result = $link->query($query)))
                 throw new Exception();
 //            $this->log($query);
@@ -261,7 +261,7 @@ class util {
 
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
-           // echo $query;
+           // //echo $query;
             if (!($result = $link->query($query)))
                 throw new Exception();
 
@@ -304,7 +304,7 @@ class util {
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
 
-             //echo $query;
+             ////echo $query;
 
             if (!($result = $link->query($query)))
                 throw new Exception();
@@ -368,7 +368,7 @@ class util {
 
         if($where!='')
             $query.= " where " . $where;
-//echo $query;
+////echo $query;
         if (!($result = $link->query($query)))
             throw new Exception('Error en selectMax.');
 
@@ -419,7 +419,7 @@ class util {
 
             $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
             echo "<br/>";
-            echo $query;
+            //echo $query;
             $query = str_replace("º","",$query);
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
@@ -503,7 +503,7 @@ class util {
             else
                 $query = "DELETE FROM ". $tabla . " WHERE " . $campo . "='" . $condicion . "'";
 
-//                        echo $query;
+//                        //echo $query;
 
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
@@ -514,7 +514,7 @@ class util {
 
             return $lastid;
         } catch (Exception $e) {
-//            echo $query;
+//            //echo $query;
 //            echo $e->getMessage();
             $this->log('Excepción capturada: ' . $e->getMessage());
         }
@@ -533,7 +533,7 @@ class util {
             else
                 $query = "DELETE FROM ". $tabla . " WHERE " . $where;
 
-//            echo $query;
+//            //echo $query;
 
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
@@ -544,7 +544,7 @@ class util {
 
             return $lastid;
         } catch (Exception $e) {
-//            echo $query;
+//            //echo $query;
 //            echo $e->getMessage();
             $this->log('Excepción capturada: ' . $e->getMessage());
         }
@@ -629,7 +629,7 @@ class util {
     }
 
 
-    function carga_select($tabla='', $value='', $campos='', $orden='', $where='', $cuantos='',$title=''){
+    function carga_select($tabla='', $value='', $campos='', $orden='', $where='', $cuantos=1,$title=''){
 
         try {
             $link = $this->conectar();

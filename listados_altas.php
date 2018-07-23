@@ -145,7 +145,7 @@ check_session(2);
                                         </div>
                                         <div class="col-xs-4">
                                             <label>Filtrar por Dni / Nombre / Apellidos / Pon </label><br>
-                                            <input type="text" id="filtro" placeholder=:"teclear 4 caracteres o más" class="form-control">
+                                            <input type="text" id="filtro" placeholder="teclear 4 caracteres o más" class="form-control">
                                         </div>
                                         <!--                                        <div class="col-xs-2">-->
                                         <!--                                            <label>Ordenar por...</label>-->
