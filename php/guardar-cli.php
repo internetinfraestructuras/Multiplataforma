@@ -72,27 +72,35 @@ date_default_timezone_set('Etc/UTC');
             $banco = $util->cleanstring($post_data['banco']);
             $iban = $util->cleanstring($post_data['iban']);
             $swift = $util->cleanstring($post_data['swift']);
+            $tdoc = $util->cleanstring($post_data['tipodoc']);
+            $tcli = $util->cleanstring($post_data['tipocli']);
+            $fnac = $util->cleanstring($post_data['nacimiento']);
+            $lopd = $util->cleanstring($post_data['lopd']);
+
+
             $alta = $post_data['alta'];
 
         }
 
         $campos=array('NOMBRE','APELLIDOS','DNI','DIRECCION','LOCALIDAD','PROVINCIA','COMUNIDAD','CP','FIJO','MOVIL',
-            'EMAIL','FECHA_ALTA','NOTAS','BAJA','ID_EMPRESA','BANCO','IBAN','SWIFT');
+            'EMAIL','FECHA_ALTA','NOTAS','BAJA','ID_EMPRESA','BANCO','IBAN','SWIFT',
+            'DOCUMENTO_URL','DOCUMENTO','TIPO_DOCUMENTO','ID_CONSENTIMIENTO','ID_TIPO_CLIENTE','FECHA_NACIMIENTO');
+
 
         $values = array( $nombre, $apellidos, $dni, $dir, $localidad, $provincia, $region, $cp, $tel1, $tel2,
-            $email, $alta, $notas,0, $_SESSION['REVENDEDOR'], $banco, $iban, $swift);
+            $email, $alta, $notas,0, $_SESSION['REVENDEDOR'], $banco, $iban, $swift, '','',$tdoc,$lopd,$tcli,$fnac);
 
         // llama a la funcion insertInto de la clase util que recibe la tabla (string) y dos arrays (campos y valores)
 
         $result = $util->insertInto('clientes', $campos, $values);
-        $util->log('El administrador:'.$_SESSION['REVENDEDOR'].' ha creado el cliente:'.$dni.' con el resultado:'.$result);
+        $util->log('Se ha creado un cliente'.$_SESSION['REVENDEDOR'].' con dni :'.$dni.' con el id:'.$result);
 
         if(intval($result)>0){
             if($is_ajax === false) {
                 _redirect('#alert_success');
                 exit;
             } else {
-                die($result);
+                echo $result;
             }
         } else{
             if($is_ajax === false) {
@@ -103,52 +111,51 @@ date_default_timezone_set('Etc/UTC');
             }
         }
 
-    }
+    } else {
 
-    // todo: --------------------------------------------
-    // cuando el cliente es editado
-    // todo: --------------------------------------------
+        // todo: --------------------------------------------
+        // cuando el cliente es editado
+        // todo: --------------------------------------------
 
-    if(
-        (isset($_POST['oper']) && $_POST['oper'] == 'edit')
-        &&
-        (isset($_POST['id']) && $_POST['id'] != '')
-        &&
-        md5($_POST['id']) ==  $_POST['hash']
-    )
-    {
+        if (
+            (isset($_POST['oper']) && $_POST['oper'] == 'edit')
+            &&
+            (isset($_POST['id']) && $_POST['id'] != '')
+            &&
+            md5($_POST['id']) == $_POST['hash']
+        ) {
 
 
-        $id = $_POST['id'];
-        $dni = $util->cleanstring($_POST['dni']);
-        $nombre = $util->cleanstring($_POST['nombre']);
-        $apellidos = $util->cleanstring($_POST['apellidos']);
-        $dir = $util->cleanstring($_POST['direccion']);
-        $cp = $util->cleanstring($_POST['cp']);
-        $email = $util->cleanstring($_POST['email']);
-        $tel1 = $util->cleanstring($_POST['tel1']);
-        $tel2 = $util->cleanstring($_POST['tel2']);
-        $email = $util->cleanstring($_POST['email']);
-        $notas = $util->cleanstring($_POST['notas']);
-        $region = $util->cleanstring($_POST['region']);
-        $provincia = $util->cleanstring($_POST['provincia']);
-        $localidad = $util->cleanstring($_POST['localidad']);
-        $alta = $util->cleanstring($_POST['alta']);
+            $id = $_POST['id'];
+            $dni = $util->cleanstring($_POST['dni']);
+            $nombre = $util->cleanstring($_POST['nombre']);
+            $apellidos = $util->cleanstring($_POST['apellidos']);
+            $dir = $util->cleanstring($_POST['direccion']);
+            $cp = $util->cleanstring($_POST['cp']);
+            $email = $util->cleanstring($_POST['email']);
+            $tel1 = $util->cleanstring($_POST['tel1']);
+            $tel2 = $util->cleanstring($_POST['tel2']);
+            $email = $util->cleanstring($_POST['email']);
+            $notas = $util->cleanstring($_POST['notas']);
+            $region = $util->cleanstring($_POST['region']);
+            $provincia = $util->cleanstring($_POST['provincia']);
+            $localidad = $util->cleanstring($_POST['localidad']);
+            $alta = $util->cleanstring($_POST['alta']);
 
-        if(isset($_POST['region'])){
-            $values = array($dni, $nombre, $apellidos, $dir, $cp, $tel1, $tel2, $email, $notas, $region, $provincia, $localidad,$alta);
-            $campos = array('dni', 'nombre', 'apellidos', 'direccion', 'cp', 'tel1', 'tel2', 'email', 'notas', 'region', 'provincia', 'localidad','fecha_alta');
+            if (isset($_POST['region'])) {
+                $values = array($dni, $nombre, $apellidos, $dir, $cp, $tel1, $tel2, $email, $notas, $region, $provincia, $localidad, $alta);
+                $campos = array('dni', 'nombre', 'apellidos', 'direccion', 'cp', 'tel1', 'tel2', 'email', 'notas', 'region', 'provincia', 'localidad', 'fecha_alta');
+            } else {
+                $values = array($dni, $nombre, $apellidos, $dir, $cp, $tel1, $tel2, $email, $notas);
+                $campos = array('dni', 'nombre', 'apellidos', 'direccion', 'cp', 'tel1', 'tel2', 'email', 'notas');
+            }
+            $result = $util->update('clientes', $campos, $values, "id=" . $id);
+            $util->log('El usuario:' . $_SESSION['USER_ID'] . ' ha modificado el cliente: ' . $dni . ' con el resultado:' . $result);
         } else {
-            $values = array($dni, $nombre, $apellidos, $dir, $cp, $tel1, $tel2, $email, $notas);
-            $campos = array('dni', 'nombre', 'apellidos', 'direccion', 'cp', 'tel1', 'tel2', 'email', 'notas');
+            echo "nose";
+            die();
         }
-        $result = $util->update('clientes', $campos, $values, "id=".$id);
-        $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el cliente: '.$dni.' con el resultado:'.$result);
-    } else{
-	    echo "nose";
-	    die();
     }
-
 
 
 function _redirect($hash) {
@@ -161,8 +168,4 @@ function _redirect($hash) {
     header("Location: {$HTTP_REFERER}{$hash}");
     exit;
 }
-
-
-
-
 ?>

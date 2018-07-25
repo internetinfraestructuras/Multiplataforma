@@ -33,8 +33,12 @@ if(isset($_POST['filtro'])) {
     else
         $where = " clientes.id > 0";
 }
-//              0           1       2           3           4       5           6           7           8       9       10          11    12    13      14      15          16
-$campos=array('clientes.ID','DNI','NOMBRE','APELLIDOS','DIRECCION','LOCALIDAD','PROVINCIA','COMUNIDAD','IBAN','SWIFT','ID_EMPRESA','CP','FIJO','MOVIL','EMAIL','FECHA_ALTA','BANCO');
+//              0           1       2           3           4       5           6           7           8
+//    9       10          11    12    13      14      15          16            17              18
+//   19                    20                   21              22
+$campos=array('clientes.ID','DNI','NOMBRE','APELLIDOS','DIRECCION','LOCALIDAD','PROVINCIA','COMUNIDAD','IBAN',
+    'SWIFT','ID_EMPRESA','CP','FIJO','MOVIL','EMAIL','FECHA_ALTA','BANCO', 'DOCUMENTO_URL','DOCUMENTO',
+    'TIPO_DOCUMENTO','ID_CONSENTIMIENTO','ID_TIPO_CLIENTE','FECHA_NACIMIENTO');
 
 
 /*
@@ -88,8 +92,15 @@ if($_SESSION['USER_LEVEL']==0) {
                 'region' => $row[7],
                 'iban' => $row[8],
                 'swift' => $row[9],
-                'banco' => $row[16]
+                'banco' => $row[16],
+                'urldoc' => $row[17],
+                'documento' => $row[18],
+                'tipodoc' => $row[19],
+                'idconsentimiento' => $row[20],
+                'tipocli' => $row[21],
+                'fnacimiento' => $row[22]
             );
+
             array_push($aItems, $aItem);
         }
     } else {
