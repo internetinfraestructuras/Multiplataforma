@@ -82,7 +82,7 @@ check_session(3);
             <h1>Usted esta en</h1>
             <ol class="breadcrumb">
                 <li><a href="#"><?php echo DEF_ALMACEN; ?></a></li>
-                <li class="active">Agregar producto</li>
+                <li class="active">Nuevo proveedor</li>
             </ol>
         </header>
         <!-- /page title -->
@@ -187,7 +187,7 @@ check_session(3);
                                         </thead>
                                         <tbody>
                                         <?php
-                                       $listado= $util->selectWhere3('proveedores', array("id","nombre"),"id_empresa=".(int)$_SESSION['REVENDEDOR'],"nombre");
+                                        $listado= $util->selectWhere3('proveedores', array("id","nombre"),"id_empresa=".(int)$_SESSION['REVENDEDOR']." AND ID_TIPO_PROVEEDOR=1","nombre");
 
                                         for($i=0;$i<count($listado);$i++)
                                         {

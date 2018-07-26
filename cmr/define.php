@@ -18,6 +18,7 @@ define('DEF_USUARIOS','Usuarios');
 define('DEF_CLIENTES','Clientes');
 define('DEF_ALMACEN','Almacén');
 define('DEF_PAQUETES','Paquete');
+define('DEF_CAMPANA','Campaña');
 define('DEF_SERVICIOS','Servicios');
 define('DEF_OLT','Cabeceras');
 define('DEF_PROVISIONES','Provisiones');

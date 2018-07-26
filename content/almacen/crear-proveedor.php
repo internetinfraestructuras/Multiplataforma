@@ -63,7 +63,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'proveedores')
 
     }
 
-    $values = array( $nombre,$_SESSION['REVENDEDOR']);
+    $values = array( $nombre,$_SESSION['REVENDEDOR'],1);
 
     // llama a la funcion insertInto de la clase util que recibe la tabla (string) y dos arrays (campos y valores)
 

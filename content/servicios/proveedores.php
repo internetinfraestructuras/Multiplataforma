@@ -1,10 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: diego
- * Date: 16/07/2018
- * Time: 18:03
- */
+// todo: -------------------------------------------------------------
+// funcion que muestra la ficha para poder agregar clientes al sistema
+// estos clientes se asocian al revendedor al que esta asociado el usuario que lo crea
+// todo: -------------------------------------------------------------
+
+
 
 if (!isset($_SESSION)) {
     @session_start();
@@ -82,7 +82,7 @@ check_session(3);
             <h1>Usted esta en</h1>
             <ol class="breadcrumb">
                 <li><a href="#"><?php echo DEF_ALMACEN; ?></a></li>
-                <li class="active">Nuevo tipo de producto</li>
+                <li class="active">Nuevo proveedor</li>
             </ol>
         </header>
         <!-- /page title -->
@@ -97,7 +97,7 @@ check_session(3);
                     <!-- ------ -->
                     <div class="panel panel-default">
                         <div class="panel-heading panel-heading-transparent">
-                            <strong>Nombre del tipo de producto</strong>
+                            <strong>Nuevo proveedor</strong>
                         </div>
 
                         <div class="panel-body">
@@ -111,24 +111,15 @@ check_session(3);
                                   enctype="multipart/form-data">
                                 <fieldset>
                                     <!-- required [php action request] -->
-                                    <input type="hidden" name="action" value="tipos_productos"/>
+                                    <input type="hidden" name="action" value="proveedores"/>
 
                                     <div class="row">
                                         <div class="form-group">
 
-                                            <div class="col-md-6 col-sm-6">
-                                                <label>Nombre tipo: </label>
-                                                <input type="text" name="tipo[nombre]" value=""
+                                            <div class="col-md-12 col-sm-6">
+                                                <label>Nombre Proveedor: </label>
+                                                <input type="text" name="proveedor[nombre]" value=""
                                                        class="form-control ">
-                                            </div>
-                                            <div class="col-md-6 col-sm-6">
-                                                <label>Proveedor:</label>
-                                                <select name="producto[proveedor]" id="proveedores" onchange="carga_tipos(this.value)"
-                                                        class="form-control pointer ">
-                                                    <option value="">--- Seleccionar una ---</option>
-                                                    <?php
-                                                    $util->carga_select('proveedores', 'id', 'nombre', 'nombre',"id_empresa=".(int)$_SESSION['REVENDEDOR']." AND ID_TIPO_PROVEEDOR=1"); ?>
-                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -196,7 +187,7 @@ check_session(3);
                                         </thead>
                                         <tbody>
                                         <?php
-                                       $listado= $util->selectWhere3('proveedores', array("id","nombre"),"id_empresa=".(int)$_SESSION['REVENDEDOR'],"nombre");
+                                       $listado= $util->selectWhere3('proveedores', array("id","nombre"),"id_empresa=".(int)$_SESSION['REVENDEDOR']." AND ID_TIPO_PROVEEDOR=2","nombre");
 
                                         for($i=0;$i<count($listado);$i++)
                                         {
@@ -288,28 +279,6 @@ check_session(3);
             }
         });
     }
-    function carga_tipos(id)
-    {
-        var select = jQuery("#tipos");
-        select.empty();
-        select.append('<option value="">--- Seleccionar una ---</option>');
-        jQuery.ajax({
-            url: 'cargar_tipos.php',
-            type: 'POST',
-            cache: false,
-            async:true,
-            data:{id:id},
-            success: function(data)
-            {
-                $.each(data, function(i){
-                    select.append('<option value="'+data[i].id+'">'+data[i].nombre+'</option>');
-                });
-            }
-        });
-    }
-
-
-
 </script>
 
 <script>

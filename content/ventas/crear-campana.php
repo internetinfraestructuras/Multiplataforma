@@ -22,16 +22,14 @@ date_default_timezone_set('Etc/UTC');
 // todo: --------------------------------------------
 
 
-
-if(isset($_POST['action']) && $_POST['action'] == 'servicios')
+if(isset($_POST['action']) && $_POST['action'] == 'campanas')
 {
-
 
 
     $array = $required = array();
 
     // catch post data
-    $post_data = isset($_POST['servicio']) ? $_POST['servicio'] : null;
+    $post_data = isset($_POST['campana']) ? $_POST['campana'] : null;
     $is_ajax = (isset($_POST['is_ajax']) && $_POST['is_ajax'] == 'true') ? true : false;
 
     // check post data
@@ -43,6 +41,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'servicios')
         }
     }
 
+    echo "LLEGAMOS".$post_data;
     // EXTRACT DATA FROM POST
     foreach ($post_data as $key => $value)
     {
@@ -60,45 +59,19 @@ if(isset($_POST['action']) && $_POST['action'] == 'servicios')
         // se recogen los datos post y se pasan por la funcion que limpia los caracteres suceptibles de generar inyeccion SQL
 
         $nombre = $util->cleanstring($post_data['nombre']);
-        $tipo = $util->cleanstring($post_data['tipo']);
-        $precioProv=$util->cleanstring($post_data['precio-proveedor']);
-        $beneficio=$util->cleanstring($post_data['beneficio']);
-        $pvp=$util->cleanstring($post_data['precio-pvp']);
-        $impuesto=$util->cleanstring($post_data['impuesto']);
-        $atributos=$post_data['atributo'];
-        $proveedor=$post_data['proveedor'];
+        $inicio = $util->cleanstring($post_data['inicio']);
+        $fin = $util->cleanstring($post_data['fin']);
+        $duracion = $util->cleanstring($post_data['duracion']);
+        $descuento = $util->cleanstring($post_data['descuento']);
 
     }
 
-    $values = array( $tipo,$_SESSION['REVENDEDOR'],$nombre,$precioProv,$impuesto,$beneficio,$pvp,$proveedor);
+    $values = array( $nombre,$_SESSION['REVENDEDOR'],$inicio,$fin,$descuento,$duracion);
 
     // llama a la funcion insertInto de la clase util que recibe la tabla (string) y dos arrays (campos y valores)
 
-    $resultServicio = $util->insertInto('SERVICIOS', $t_servicios, $values);
-
-
-    $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado el cliente:'.$dni.' con el resultado:'.$result);
-
-    /*
-     * UNA VEZ CREADO EL PRODUCTO ASOCIAMOS LOS ATRIBUTOS A DICHO PRODUCTO $RESULT TIENE EL ID DEL PRODUCTO
-     */
-
-    // EXTRACT DATA FROM POST
-    var_dump($atributos);
-    $j=0;
-    for($i=0;$i<count($atributos)/2;$i++)
-    {
-
-        $valor= $util->cleanstring($atributos[$j]);
-        $j++;
-        $id= $util->cleanstring($atributos[$j]);
-        $j++;
-        $values=array($id,$resultServicio,$valor);
-        echo $valor."<br/>";
-
-        $result = $util->insertInto('SERVICIOS_ATRIBUTOS', $t_servicios_atributos, $values);
-
-    }
+    $result = $util->insertInto('campanas', $t_campanas, $values);
+    $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado la campaña:'.$dni.' con el resultado:'.$result);
 
 
     if(intval($result)>0){

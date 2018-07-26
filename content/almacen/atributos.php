@@ -140,7 +140,7 @@ check_session(3);
                                                                                 class="form-control pointer ">
                                                                             <option value="">--- Seleccionar una ---</option>
                                                                             <?php
-                                                                            $util->carga_select('proveedores', 'id', 'nombre', 'nombre',"id_empresa=".(int)$_SESSION['REVENDEDOR']); ?>
+                                                                            $util->carga_select('proveedores', 'id', 'nombre', 'nombre',"id_empresa=".(int)$_SESSION['REVENDEDOR']." AND ID_TIPO_PROVEEDOR=1"); ?>
                                                                         </select>
                                                                     </div>
                                                                     <div class="col-md-4 col-sm-4">

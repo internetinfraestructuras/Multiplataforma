@@ -124,6 +124,15 @@ check_session(3);
                                                     $util->carga_select('servicios_tipos', 'id', 'nombre', 'nombre'); ?>
                                                 </select>
                                             </div>
+                                            <div class="col-md-4 col-sm-4">
+                                                <label>Proveedor:</label>
+                                                <select name="servicio[proveedor]" id="proveedores" onchange="carga_tipos(this.value)"
+                                                        class="form-control pointer ">
+                                                    <option value="">--- Seleccionar una ---</option>
+                                                    <?php
+                                                    $util->carga_select('proveedores', 'id', 'nombre', 'nombre',"id_empresa=".(int)$_SESSION['REVENDEDOR']." AND ID_TIPO_PROVEEDOR=2"); ?>
+                                                </select>
+                                            </div>
                                             <div class="col-md-4 col-sm-6">
                                                 <label>Nombre: </label>
                                                 <input type="text" name="servicio[nombre]" value=""
