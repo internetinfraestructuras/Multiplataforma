@@ -104,7 +104,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'productos')
         $id= $util->cleanstring($atributos[$j]);
         $j++;
         $values=array($id,$resultProducto,$valor);
-        echo $valor."<br/>";
+
 
         $result = $util->insertInto('PRODUCTOS_ATRIBUTOS', $t_productos_atributos, $values);
 
@@ -130,46 +130,80 @@ if(isset($_POST['action']) && $_POST['action'] == 'productos')
 }
 
 // todo: --------------------------------------------
-// cuando el cliente es editado
+// cuando el producto
 // todo: --------------------------------------------
 
-if(
-    (isset($_POST['oper']) && $_POST['oper'] == 'edit')
-    &&
-    (isset($_POST['id']) && $_POST['id'] != '')
-    &&
-    md5($_POST['id']) ==  $_POST['hash']
-)
+if((isset($_POST['oper']) && $_POST['oper'] == 'edit')&&(isset($_POST['id']) && $_POST['id'] != ''))
 {
 
+    $idProducto = $_POST['id'];
+    $numeroSerie = $util->cleanstring($_POST['numeroSerie']);
+    $proveedor = $util->cleanstring($_POST['proveedor']);
+    $tipo= $util->cleanstring($_POST['tipo']);
+    $modelo = $util->cleanstring($_POST['modelo']);
 
-    $id = $_POST['id'];
-    $dni = $util->cleanstring($_POST['dni']);
-    $nombre = $util->cleanstring($_POST['nombre']);
-    $apellidos = $util->cleanstring($_POST['apellidos']);
-    $dir = $util->cleanstring($_POST['direccion']);
-    $cp = $util->cleanstring($_POST['cp']);
-    $email = $util->cleanstring($_POST['email']);
-    $tel1 = $util->cleanstring($_POST['tel1']);
-    $tel2 = $util->cleanstring($_POST['tel2']);
-    $email = $util->cleanstring($_POST['email']);
-    $notas = $util->cleanstring($_POST['notas']);
-    $region = $util->cleanstring($_POST['region']);
-    $provincia = $util->cleanstring($_POST['provincia']);
-    $localidad = $util->cleanstring($_POST['localidad']);
-    $alta = $util->cleanstring($_POST['alta']);
+    $coste = $util->cleanstring($_POST['coste']);
 
-    if(isset($_POST['region'])){
-        $values = array($dni, $nombre, $apellidos, $dir, $cp, $tel1, $tel2, $email, $notas, $region, $provincia, $localidad,$alta);
-        $campos = array('dni', 'nombre', 'apellidos', 'direccion', 'cp', 'tel1', 'tel2', 'email', 'notas', 'region', 'provincia', 'localidad','fecha_alta');
-    } else {
-        $values = array($dni, $nombre, $apellidos, $dir, $cp, $tel1, $tel2, $email, $notas);
-        $campos = array('dni', 'nombre', 'apellidos', 'direccion', 'cp', 'tel1', 'tel2', 'email', 'notas');
+    $margen = $util->cleanstring($_POST['margen']);
+
+    $pvp = $util->cleanstring($_POST['pvp']);
+    $impuesto = $util->cleanstring($_POST['impuesto']);
+
+    $atributos = $_POST['atributo'];
+
+    $atributosNuevos=$_POST['atributo-nuevo'];
+
+
+    $campos=array('numero_serie',"id_proveedor","id_tipo_producto","id_modelo_producto","precio_prov","margen","pvp","impuestos");
+    $values=array($numeroSerie,$proveedor,$tipo,$modelo,$coste,$margen,$pvp,$impuesto);
+    $result = $util->update('productos', $campos, $values, "id=".$idProducto,false);
+
+    $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el producto: '.$id.' con el resultado:'.$result);
+
+    for($i=0;$i<count($atributos);$i++)
+    {
+
+        $valor= $util->cleanstring($atributos["valor"][$i]);
+
+        $id= $util->cleanstring($atributos["id"][$i]);
+
+        $values=array($valor,$idProducto);
+       // echo "Se modifica".$id." con el valor".$valor;
+        $campos=array("valor");
+
+        if(!isset($atributosNuevos))
+            $result = $util->update('productos_atributos', $campos, $values, "id_producto=".$idProducto." AND id=".$id);
+        else
+
+            $result=$util->delete('productos_atributos','id',$id);
+
     }
-    $result = $util->update('clientes', $campos, $values, "id=".$id);
-    $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el cliente: '.$dni.' con el resultado:'.$result);
+    if(isset($atributosNuevos))
+    {
+
+        for($i=0;$i<count($atributosNuevos);$i++)
+        {
+
+            $valor= $util->cleanstring($atributosNuevos["valor"][$i]);
+            $id= $util->cleanstring($atributosNuevos["id"][$i]);
+
+            // echo "Se modifica".$id." con el valor".$valor;
+
+            $values=array($valor,$idProducto,$id);
+
+
+            $result = $util->insertInto('PRODUCTOS_ATRIBUTOS', $t_productos_atributos, $values);
+
+
+        }
+    }
+
+
+
+
+
 } else{
-    echo "nose";
+    echo "nose EDIT";
     die();
 }
 

@@ -366,27 +366,27 @@ $root="../../";
         });
     }
 
-function carga_atributos(id)
-{
-    var div = jQuery("#atributos");
-    div.empty();
-    jQuery.ajax({
-        url: 'cargar_atributos.php',
-        type: 'POST',
-        cache: false,
-        async:true,
-        data:{id:id},
-        success: function(data)
-        {
-            $.each(data, function(i)
+    function carga_atributos(id)
+    {
+        var div = jQuery("#atributos");
+        div.empty();
+        jQuery.ajax({
+            url: 'cargar_atributos.php',
+            type: 'POST',
+            cache: false,
+            async:true,
+            data:{id:id},
+            success: function(data)
             {
-                div.append('<div class="col-md-1 col-sm-1"> <label>'+data[i].NOMBRE+'</label><input type="text" name="producto[atributo][]"  class="form-control " /><input type="text" value="'+data[i].ID+'" hidden name="producto[atributo][]"/></div>');
-            });
-        }
-    });
+                $.each(data, function(i)
+                {
+                    div.append('<div class="col-md-1 col-sm-1"> <label>'+data[i].NOMBRE+'</label><input type="text" name="producto[atributo][]"  class="form-control " /><input type="text" value="'+data[i].ID+'" hidden name="producto[atributo][]"/></div>');
+                });
+            }
+        });
 
 
-}
+    }
     function calcularPVP(val)
     {
         var precioProv=jQuery("#precio-prov").val();

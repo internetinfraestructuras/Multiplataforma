@@ -18,7 +18,7 @@ $t_campanas=array('nombre',"id_empresa","fecha_inicio","fecha_fin","descuento","
 
 $t_productos=array("ID_ALMACEN","ID_PROVEEDOR","ID_TIPO_PRODUCTO","ID_MODELO_PRODUCTO","ESTADO","NUMERO_SERIE","PRECIO_PROV","MARGEN","PVP","IMPUESTOS");
 
-$t_servicios=array("ID_SERVICIO_TIPO","ID_EMPRESA","NOMBRE_COMERCIAL","PRECIO_PROVEEDOR","IMPUESTO","BENEFICIO","PVP","ID_PROVEEDOR");
+$t_servicios=array("ID_SERVICIO_TIPO","ID_EMPRESA","NOMBRE","PRECIO_PROVEEDOR","IMPUESTO","BENEFICIO","PVP","ID_PROVEEDOR");
 $t_servicios_atributos=array("ID_TIPO_ATRIBUTO","ID_SERVICIO","VALOR");
 
 $t_productos_atributos=array("ID_ATRIBUTO","ID_PRODUCTO","VALOR");

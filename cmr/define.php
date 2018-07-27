@@ -20,6 +20,7 @@ define('DEF_ALMACEN','Almacén');
 define('DEF_PAQUETES','Paquete');
 define('DEF_CAMPANA','Campaña');
 define('DEF_SERVICIOS','Servicios');
+define('DEF_CONTRATOS','Contratos');
 define('DEF_OLT','Cabeceras');
 define('DEF_PROVISIONES','Provisiones');
 
