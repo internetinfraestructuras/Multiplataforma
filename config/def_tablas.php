@@ -17,15 +17,15 @@ $t_proveedores=array('nombre',"id_empresa","id_tipo_proveedor");
 $t_campanas=array('nombre',"id_empresa","fecha_inicio","fecha_fin","descuento","duracion");
 
 $t_productos=array("ID_ALMACEN","ID_PROVEEDOR","ID_TIPO_PRODUCTO","ID_MODELO_PRODUCTO","ESTADO","NUMERO_SERIE","PRECIO_PROV","MARGEN","PVP","IMPUESTOS");
-
+$t_tipos_productos=array("NOMBRE","ID_PROVEEDOR","ID_EMPRESA");
 $t_servicios=array("ID_SERVICIO_TIPO","ID_EMPRESA","NOMBRE","PRECIO_PROVEEDOR","IMPUESTO","BENEFICIO","PVP","ID_PROVEEDOR");
 $t_servicios_atributos=array("ID_TIPO_ATRIBUTO","ID_SERVICIO","VALOR");
 
 $t_productos_atributos=array("ID_ATRIBUTO","ID_PRODUCTO","VALOR");
 
-$t_productos_modelos=array("ID_TIPO","NOMBRE");
+$t_productos_modelos=array("ID_TIPO","NOMBRE","ID_EMPRESA");
 
-$t_productos_modelos_atributos=array("ID_MODELO","NOMBRE");
+$t_productos_modelos_atributos=array("ID_MODELO","NOMBRE","ID_EMPRESA");
 
 $t_paquetes=array("NOMBRE","PRECIO_COSTE","MARGEN","IMPUESTO","PVP","ID_EMPRESA");
 $t_paquetes_servicios=array("ID_PAQUETE","ID_SERVICIO");

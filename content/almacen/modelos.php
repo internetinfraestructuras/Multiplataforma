@@ -167,9 +167,95 @@ check_session(3);
 
 
 
-            </div>
 
+            </div>
+            <div class="panel panel-default">
+
+                <div class="panel-body" id="listado">
+                    <div id="panel-1" class="panel panel-default">
+                        <div class="panel-heading">
+							<span class="title elipsis">
+								<strong>LISTADO DE <?php echo DEF_MODELOS; ?></strong> <!-- panel title -->
+							</span>
+
+                            <!-- right options -->
+                            <ul class="options pull-right list-inline">
+                                <li><a href="#" class="opt panel_colapse" data-toggle="tooltip" title="Colapse" data-placement="bottom"></a></li>
+                                <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen" data-placement="bottom"><i class="fa fa-expand"></i></a></li>
+                                <li><a href="#" class="opt panel_close" data-confirm-title="Confirm" data-confirm-message="¿Deseas eleminar este panel?" data-toggle="tooltip" title="Close" data-placement="bottom"><i class="fa fa-times"></i></a></li>
+                            </ul>
+                            <!-- /right options -->
+
+                        </div>
+
+                        <!-- panel content -->
+                        <div class="panel-body">
+
+                            <table id="example2" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>NOMBRE MODELO</th>
+                                    <th>TIPO DE PRODUCTO</th>
+                                    <th>OPCIONES</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                $listado= $util->selectWhere3
+                                ('PRODUCTOS_MODELOS,PRODUCTOS_TIPOS',
+                                    array("PRODUCTOS_MODELOS.ID","PRODUCTOS_MODELOS.NOMBRE","PRODUCTOS_TIPOS.NOMBRE AS NS"),
+                                    "PRODUCTOS_MODELOS.id_tipo=productos_tipos.id","PRODUCTOS_MODELOS.ID_TIPO,PRODUCTOS_MODELOS.NOMBRE");
+
+                                for($i=0;$i<count($listado);$i++)
+                                {
+
+                                    $id=$listado[$i][0];
+                                    $nombre=$listado[$i][1];
+                                    $prov=$listado[$i][2];
+
+                                    echo "<tr>";
+                                    echo "<td>$id</td><td>$nombre</td><td>$prov</td>";
+
+                                    ?>
+                                    <td class="td-actions text-right">
+                                        <a href="ficha-modelo.php?idModelo=<?php echo $id; ?>">
+                                            <button type="button" rel="tooltip" >
+                                                <i class="fa fa-pencil"></i>
+                                            </button>
+                                        </a>
+                                        <button type="button" rel="tooltip" class="">
+                                            <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>');"></i>
+                                        </button>
+
+                                    </td>
+                                    </tr>
+
+                                    <?php
+                                }
+                                ?>
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                        <!-- /panel content -->
+
+                        <!-- panel footer -->
+                        <div class="panel-footer">
+
+
+                        </div>
+                        <!-- /panel footer -->
+
+                    </div>
+
+
+                </div>
+
+            </div>
         </div>
+
     </section>
     <!-- /MIDDLE -->
 
@@ -224,7 +310,38 @@ check_session(3);
             }
         });
     }
+    function borrar(id)
+    {
+        // var hash = md5(id);
+        var respuesta = confirmar("¿Seguro/a de querer borrar este modelo de producto?");
 
+        if(respuesta)
+        {
+
+            jQuery.ajax({
+                url: 'borrar-modelos.php',
+                type: 'POST',
+                cache: false,
+                async: true,
+                data: {
+                    a: 'borrar_modelos',
+                    p:id
+                },
+                success: function (data)
+                {
+                    if(data!="" && data!=1)
+                        alert(data);
+                    else
+                        location.reload();
+                }
+            });
+        }
+    }
+    function confirmar(text){
+
+        return confirm(text);
+
+    }
 
 
 </script>

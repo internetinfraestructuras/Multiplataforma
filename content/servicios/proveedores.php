@@ -183,11 +183,12 @@ check_session(3);
                                         <tr>
                                             <th>ID</th>
                                             <th>NOMBRE PROVEEDOR</th>
+                                            <th>OPCIONES</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <?php
-                                       $listado= $util->selectWhere3('proveedores', array("id","nombre"),"id_empresa=".(int)$_SESSION['REVENDEDOR']." AND ID_TIPO_PROVEEDOR=2","nombre");
+                                        $listado= $util->selectWhere3('proveedores', array("id","nombre"),"id_empresa=".(int)$_SESSION['REVENDEDOR']." AND ID_TIPO_PROVEEDOR=2","nombre");
 
                                         for($i=0;$i<count($listado);$i++)
                                         {
@@ -201,15 +202,15 @@ check_session(3);
 
                                             ?>
                                             <td class="td-actions text-right">
-                                                <button type="button" rel="tooltip" class="btn btn-info btn-simple btn-icon btn-sm">
-                                                    <i class="now-ui-icons users_single-02"></i>
+                                                <a href="ficha-proveedor.php?idProveedor=<?php echo $id; ?>">
+                                                    <button type="button" rel="tooltip" >
+                                                        <i class="fa fa-pencil"></i>
+                                                    </button>
+                                                </a>
+                                                <button type="button" rel="tooltip" class="">
+                                                    <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>');"></i>
                                                 </button>
-                                                <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
-                                                    <i class="now-ui-icons ui-2_settings-90"></i>
-                                                </button>
-                                                <button type="button" rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
-                                                    <i class="now-ui-icons ui-1_simple-remove"></i>
-                                                </button>
+
                                             </td>
                                             </tr>
 
@@ -313,6 +314,38 @@ check_session(3);
             },
         })
     });
+    function borrar(id)
+    {
+        // var hash = md5(id);
+        var respuesta = confirmar("¿Seguro/a de querer borrar este producto?");
+
+        if(respuesta)
+        {
+
+            jQuery.ajax({
+                url: 'borrar_provedor.php',
+                type: 'POST',
+                cache: false,
+                async: true,
+                data: {
+                    a: 'borrar_proveedor',
+                    p:id
+                },
+                success: function (data)
+                {
+                    if(data!="")
+                        alert(data);
+                    else
+                        location.reload();
+                }
+            });
+        }
+    }
+    function confirmar(text){
+
+        return confirm(text);
+
+    }
 </script>
 
 

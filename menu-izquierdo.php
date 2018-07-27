@@ -38,7 +38,7 @@ require_once('config/define.php');
             <i class="main-icon fa fa-shopping-cart"></i><span><?php echo MNU_ITEM_8; ?> </span>
         </a>
         <ul><!-- submenus -->
-            <li><a href="<?php echo $root;?>content/almacen/agregar.php">Productos</a></li>
+            <li><a href="<?php echo $root;?>content/almacen/productos.php">Productos</a></li>
             <li><a href="<?php echo $root;?>content/almacen/proveedores.php">Proveedores</a></li>
             <li><a href="<?php echo $root;?>content/almacen/tipos.php">Tipos</a></li>
             <li><a href="<?php echo $root;?>content/almacen/modelos.php">Modelos</a></li>

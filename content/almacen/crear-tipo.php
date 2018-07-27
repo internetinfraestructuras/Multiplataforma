@@ -22,14 +22,14 @@ date_default_timezone_set('Etc/UTC');
 // todo: --------------------------------------------
 
 
-if(isset($_POST['action']) && $_POST['action'] == 'proveedores')
+if(isset($_POST['action']) && $_POST['action'] == 'tipos_productos')
 {
 
 
     $array = $required = array();
 
     // catch post data
-    $post_data = isset($_POST['proveedor']) ? $_POST['proveedor'] : null;
+    $post_data = isset($_POST['tipo']) ? $_POST['tipo'] : null;
     $is_ajax = (isset($_POST['is_ajax']) && $_POST['is_ajax'] == 'true') ? true : false;
 
     // check post data
@@ -41,7 +41,6 @@ if(isset($_POST['action']) && $_POST['action'] == 'proveedores')
         }
     }
 
-    echo "LLEGAMOS".$post_data;
     // EXTRACT DATA FROM POST
     foreach ($post_data as $key => $value)
     {
@@ -59,16 +58,17 @@ if(isset($_POST['action']) && $_POST['action'] == 'proveedores')
         // se recogen los datos post y se pasan por la funcion que limpia los caracteres suceptibles de generar inyeccion SQL
 
         $nombre = $util->cleanstring($post_data['nombre']);
+        $proveedor = $util->cleanstring($post_data['proveedor']);
 
 
     }
 
-    $values = array( $nombre,$_SESSION['REVENDEDOR'],2);
+    $values = array( $nombre,$proveedor,$_SESSION['REVENDEDOR']);
 
     // llama a la funcion insertInto de la clase util que recibe la tabla (string) y dos arrays (campos y valores)
 
-    $result = $util->insertInto('proveedores', $t_proveedores, $values);
-    $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado el cliente:'.$dni.' con el resultado:'.$result);
+    $result = $util->insertInto('productos_tipos', $t_tipos_productos, $values);
+    $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado el tipo de producto:'.$result.' con el resultado:'.$result);
 
 
     if(intval($result)>0){
@@ -103,15 +103,15 @@ if(
 
     $id = $_POST['id'];
     $nombre = $util->cleanstring($_POST['nombre']);
+    $proveedor = $util->cleanstring($_POST['proveedor']);
 
 
-
-    $campos=array('nombre');
-    $values = array($nombre);
-    $result = $util->update('proveedores', $campos, $values, "id=".$id);
-    $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el proveedor: '.$dni.' con el resultado:'.$result);
+        $campos=array('nombre',"id_proveedor");
+        $values = array($nombre,$proveedor);
+        $result = $util->update('PRODUCTOS_TIPOS', $campos, $values, "id=".$id);
+            $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el tipo de producto: '.$id.' con el resultado:'.$result);
 } else
-{
+    {
     echo "nose";
     die();
 }

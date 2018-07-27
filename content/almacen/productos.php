@@ -250,7 +250,7 @@ $root="../../";
                                             "productos.id_tipo_producto=productos_tipos.id
                                                     AND productos.id_modelo_producto=productos_modelos.id 
                                                     AND almacenes.id=productos.id_almacen 
-                                                    AND almacenes.id_empresa=".$_SESSION['REVENDEDOR']."");
+                                                    AND almacenes.id_empresa=".$_SESSION['REVENDEDOR']." AND productos.estado=1");
 
 
                                         for($i=0;$i<count($listado);$i++)

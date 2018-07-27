@@ -204,8 +204,10 @@ class util {
             $link->close();
 
             return $fieldNames;
-        } catch (Exception $e) {
+        } catch (Exception $e)
+        {
             $this->log('consulta: ' . $query);
+
         }
         return $fieldNames;
 
@@ -510,13 +512,14 @@ class util {
                 throw new Exception('Error en selectWhere.');
             $lastid = mysqli_affected_rows($link);
 
-              //  echo $query;
+              // echo $query;
            $link->close();
 
             return $lastid;
         } catch (Exception $e) {
 //            //echo $query;
 //            echo $e->getMessage();
+          return $e;
             $this->log('Excepción capturada: ' . $e->getMessage());
         }
         return $lastid;

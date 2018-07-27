@@ -107,7 +107,7 @@ check_session(3);
                             <!-- todo: ******************************************************************************* -->
 
 
-                            <form class="validate" action="crear-proveedor.php" method="post"
+                            <form class="validate" action="crear-tipo.php" method="post"
                                   enctype="multipart/form-data">
                                 <fieldset>
                                     <!-- required [php action request] -->
@@ -123,7 +123,7 @@ check_session(3);
                                             </div>
                                             <div class="col-md-6 col-sm-6">
                                                 <label>Proveedor:</label>
-                                                <select name="producto[proveedor]" id="proveedores" onchange="carga_tipos(this.value)"
+                                                <select name="tipo[proveedor]" id="tipos"
                                                         class="form-control pointer ">
                                                     <option value="">--- Seleccionar una ---</option>
                                                     <?php
@@ -137,7 +137,7 @@ check_session(3);
                                         <div class="col-md-12">
                                             <button type="submit"
                                                     class="btn btn-3d btn-teal btn-xlg btn-block margin-top-30">
-                                                CREAR NUEVO PROVEEDOR
+                                                CREAR NUEVO TIPO DE PRODUCTO
                                             </button>
                                         </div>
                                     </div>
@@ -171,7 +171,7 @@ check_session(3);
                             <div id="panel-1" class="panel panel-default">
                                 <div class="panel-heading">
 							<span class="title elipsis">
-								<strong>LISTADO DE <?php echo DEF_PROVEEDORES; ?></strong> <!-- panel title -->
+								<strong>LISTADO DE <?php echo DEF_TIPOS; ?></strong> <!-- panel title -->
 							</span>
 
                                     <!-- right options -->
@@ -191,34 +191,38 @@ check_session(3);
                                         <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>NOMBRE PROVEEDOR</th>
+                                            <th>NOMBRE TIPO</th>
+                                            <th>PROVEEDOR</th>
+                                            <th>OPCIONES</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <?php
-                                       $listado= $util->selectWhere3('proveedores', array("id","nombre"),"id_empresa=".(int)$_SESSION['REVENDEDOR'],"nombre");
+                                       $listado= $util->selectWhere3
+                                       ('PRODUCTOS_TIPOS,PROVEEDORES',
+                                           array("PRODUCTOS_TIPOS.id","PRODUCTOS_TIPOS.nombre","proveedores.nombre as n"),"proveedores.id=productos_tipos.id_proveedor","PRODUCTOS_TIPOS.nombre");
 
                                         for($i=0;$i<count($listado);$i++)
                                         {
 
                                             $id=$listado[$i][0];
                                             $nombre=$listado[$i][1];
-
+                                            $prov=$listado[$i][2];
 
                                             echo "<tr>";
-                                            echo "<td>$id</td><td>$nombre</td>";
+                                            echo "<td>$id</td><td>$nombre</td><td>$prov</td>";
 
                                             ?>
                                             <td class="td-actions text-right">
-                                                <button type="button" rel="tooltip" class="btn btn-info btn-simple btn-icon btn-sm">
-                                                    <i class="now-ui-icons users_single-02"></i>
+                                                <a href="ficha-tipo.php?idTipo=<?php echo $id; ?>">
+                                                    <button type="button" rel="tooltip" >
+                                                        <i class="fa fa-pencil"></i>
+                                                    </button>
+                                                </a>
+                                                <button type="button" rel="tooltip" class="">
+                                                    <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>');"></i>
                                                 </button>
-                                                <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
-                                                    <i class="now-ui-icons ui-2_settings-90"></i>
-                                                </button>
-                                                <button type="button" rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
-                                                    <i class="now-ui-icons ui-1_simple-remove"></i>
-                                                </button>
+
                                             </td>
                                             </tr>
 
@@ -262,7 +266,7 @@ check_session(3);
 <!-- JAVASCRIPT FILES -->
 <script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
-<script type="text/javascript" src="../../assets/js/app.js"></script>
+<!--<script type="text/javascript" src="../../assets/js/app.js"></script>-->
 
 
 <script>
@@ -288,24 +292,37 @@ check_session(3);
             }
         });
     }
-    function carga_tipos(id)
+    function borrar(id)
     {
-        var select = jQuery("#tipos");
-        select.empty();
-        select.append('<option value="">--- Seleccionar una ---</option>');
-        jQuery.ajax({
-            url: 'cargar_tipos.php',
-            type: 'POST',
-            cache: false,
-            async:true,
-            data:{id:id},
-            success: function(data)
-            {
-                $.each(data, function(i){
-                    select.append('<option value="'+data[i].id+'">'+data[i].nombre+'</option>');
-                });
-            }
-        });
+        // var hash = md5(id);
+        var respuesta = confirmar("¿Seguro/a de querer borrar este producto?");
+
+        if(respuesta)
+        {
+
+            jQuery.ajax({
+                url: 'borrar-tipos.php',
+                type: 'POST',
+                cache: false,
+                async: true,
+                data: {
+                    a: 'borrar_tipos',
+                    p:id
+                },
+                success: function (data)
+                {
+                    if(data!="" && data!=1)
+                        alert(data);
+                    else
+                        location.reload();
+                }
+            });
+        }
+    }
+    function confirmar(text){
+
+        return confirm(text);
+
     }
 
 
