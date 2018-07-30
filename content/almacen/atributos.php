@@ -214,7 +214,91 @@ check_session(3);
 
 
                             </form>
+                            <div class="panel panel-default">
 
+                                <div class="panel-body" id="listado">
+                                    <div id="panel-1" class="panel panel-default">
+                                        <div class="panel-heading">
+							<span class="title elipsis">
+								<strong>LISTADO DE <?php echo DEF_ATRIBUTOS; ?></strong> <!-- panel title -->
+							</span>
+
+                                            <!-- right options -->
+                                            <ul class="options pull-right list-inline">
+                                                <li><a href="#" class="opt panel_colapse" data-toggle="tooltip" title="Colapse" data-placement="bottom"></a></li>
+                                                <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen" data-placement="bottom"><i class="fa fa-expand"></i></a></li>
+                                                <li><a href="#" class="opt panel_close" data-confirm-title="Confirm" data-confirm-message="¿Deseas eleminar este panel?" data-toggle="tooltip" title="Close" data-placement="bottom"><i class="fa fa-times"></i></a></li>
+                                            </ul>
+                                            <!-- /right options -->
+
+                                        </div>
+
+                                        <!-- panel content -->
+                                        <div class="panel-body">
+
+                                            <table id="example2" class="table table-bordered table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>MODELO PRODUCTO</th>
+                                                    <th>NOMBRE ATRIBUTO</th>
+                                                    <th>OPCIONES</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <?php
+                                                $listado= $util->selectWhere3
+                                                ('productos_modelos_atributos,productos_modelos',
+                                                    array("productos_modelos.id","productos_modelos.nombre","productos_modelos.nombre AS nom"),
+                                                    "productos_modelos.id_tipo=productos_modelos_atributos.id","productos_modelos.ID_TIPO,productos_modelos.NOMBRE");
+
+                                                for($i=0;$i<count($listado);$i++)
+                                                {
+
+                                                    $id=$listado[$i][0];
+                                                    $nombre=$listado[$i][1];
+                                                    $prov=$listado[$i][2];
+
+                                                    echo "<tr>";
+                                                    echo "<td>$id</td><td>$nombre</td><td>$prov</td>";
+
+                                                    ?>
+                                                    <td class="td-actions text-right">
+                                                        <a href="ficha-modelo.php?idModelo=<?php echo $id; ?>">
+                                                            <button type="button" rel="tooltip" >
+                                                                <i class="fa fa-pencil"></i>
+                                                            </button>
+                                                        </a>
+                                                        <button type="button" rel="tooltip" class="">
+                                                            <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>');"></i>
+                                                        </button>
+
+                                                    </td>
+                                                    </tr>
+
+                                                    <?php
+                                                }
+                                                ?>
+                                                </tbody>
+
+                                            </table>
+
+                                        </div>
+                                        <!-- /panel content -->
+
+                                        <!-- panel footer -->
+                                        <div class="panel-footer">
+
+
+                                        </div>
+                                        <!-- /panel footer -->
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
                         </div>
 
                     </div>

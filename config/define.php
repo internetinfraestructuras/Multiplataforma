@@ -21,6 +21,7 @@ define('DEF_CLIENTES','Clientes');
 define('DEF_PRODUCTO','Producto');
 define('DEF_TIPOS','Tipos de productos');
 define('DEF_MODELOS','Modelos de productos');
+define('DEF_ATRIBUTOS','Atributos de productos');
 define('DEF_PROVEEDORES','Proveedores');
 define('DEF_OLT','Cabeceras');
 define('DEF_PROVISIONES','Provisiones');

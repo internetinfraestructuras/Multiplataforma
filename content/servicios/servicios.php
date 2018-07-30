@@ -238,8 +238,8 @@ check_session(3);
                                         </thead>
                                         <tbody>
                                         <?php
-                                        $listado= $util->selectWhere3('SERVICIOS,SERVICIOS_TIPOS',
-                                            array("servicios.id","servicios.nombre_comercial","servicios.pvp","servicios_tipos.nombre as tipo"),
+                                        $listado= $util->selectWhere3('servicios,servicios_tipos',
+                                            array("servicios.id","servicios.nombre","servicios.pvp","servicios_tipos.nombre as tipo"),
                                             "servicios.id_empresa=".$_SESSION['REVENDEDOR']."
                                                      AND servicios.id_servicio_tipo=servicios_tipos.id");
 
