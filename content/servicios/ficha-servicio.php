@@ -1,7 +1,7 @@
 <?php
 /*
     ╔════════════════════════════════════════════════════════════╗
-    ║ Interfaz que permite editar los datos de clientes ║
+    ║ Interfaz que permite editar la ficha de servicios ║
     ╚════════════════════════════════════════════════════════════╝
 */
 if (!isset($_SESSION)) {
@@ -35,7 +35,6 @@ $coste=$listado[0][3];
 $impuesto=$listado[0][4];
 $beneficio=$listado[0][5];
 $idTipoServicio=$listado[0][6];
-
 
 
 ?>
@@ -140,14 +139,14 @@ $idTipoServicio=$listado[0][6];
                                             </div>
                                             <div class="col-md-6 col-sm-5">
                                                 <label>Nombre:</label>
-                                                <input type="text" name="apellidos" id="nombre"
+                                                <input type="text" name="nombre" id="nombre"
                                                        class="form-control " value="<?php echo $nombre; ?>">
                                             </div>
                                             <div class="col-md-4 col-sm-4">
                                                 <label>Tipo de Servicio:</label>
                                                 <select name="tipo" id="tipo"
                                                         class="form-control pointer "  onchange="carga_tipos(this.value)">
-                                                    <option value="<?php echo $idProveedor;?>">--- Seleccionar una ---</option>
+                                                    <option value="<?php echo $idTipoServicio;?>">--- Seleccionar una ---</option>
                                                     <?php $util->carga_select('servicios_tipos', 'id', 'nombre', 'nombre','','','',$idTipoServicio); ?>
                                                 </select>
                                             </div>
@@ -161,22 +160,22 @@ $idTipoServicio=$listado[0][6];
                                             <div class="col-md-3 col-sm-4">
                                                 <label>Precio Proveedor</label>
                                                 <input type="text" name="coste" id="dni"
-                                                       class="form-control " placeholder="99999999A"  value=<?php echo $coste; ?>>
+                                                       class="form-control " placeholder="0.00"  value=<?php echo $coste; ?>>
                                             </div>
                                             <div class="col-md-3 col-sm-4">
                                                 <label>Margen</label>
                                                 <input type="text" name="beneficio" id="dni"
-                                                       class="form-control " placeholder="99999999A" value=<?php echo $beneficio; ?>>
-                                            </div>
-                                            <div class="col-md-3 col-sm-4">
-                                                <label>PVP</label>
-                                                <input type="text" name="impuesto" id="dni"
-                                                       class="form-control " placeholder="99999999A" value=<?php echo $impuesto; ?>>
+                                                       class="form-control " placeholder="0" value=<?php echo $beneficio; ?>>
                                             </div>
                                             <div class="col-md-3 col-sm-4">
                                                 <label>IMPUESTOS</label>
+                                                <input type="text" name="impuesto" id="dni"
+                                                       class="form-control " placeholder="0" value=<?php echo $impuesto; ?>>
+                                            </div>
+                                            <div class="col-md-3 col-sm-4">
+                                                <label>PVP</label>
                                                 <input type="text" name="pvp" id="dni"
-                                                       class="form-control " placeholder="99999999A" value=<?php echo $pvp; ?>>
+                                                       class="form-control " placeholder="0" value=<?php echo $pvp; ?>>
                                             </div>
                                         </div>
                                     </div>
@@ -234,14 +233,21 @@ $idTipoServicio=$listado[0][6];
 
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-12 col-sm-4">
+
+                                        <input type="checkbox" name="cascada"  placeholder="0" > ¿Realizar una actualización de precios a todos los clientes con dicho servicio contratado?
+                                        El precio no incluye cambios en los precios de los paquetes.
+                                    </div>
+                                </div>
+                                    <div class="row">
+                                     <div class="col-md-12">
                                         <button type="submit"
                                                 class="btn btn-3d btn-teal btn-xlg btn-block margin-top-30">
                                             VALIDAR Y GUARDAR
                                             <span class="block font-lato">verifique que toda la información es correcta</span>
                                         </button>
                                     </div>
-                                </div>
+                                    </div>
 
                             </form>
 
@@ -290,7 +296,7 @@ $idTipoServicio=$listado[0][6];
 <script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 
-<!--<script type="text/javascript" src="../../assets/js/app.js"></script>-->
+<script type="text/javascript" src="../../assets/js/app.js"></script>
 
 
 <script>

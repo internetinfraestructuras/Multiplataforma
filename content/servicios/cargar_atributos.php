@@ -21,7 +21,7 @@ check_session(3);
 
 $id=$_POST['id'];
 $campos=array('ID','NOMBRE');
-$provincias = $util->selectWhere('SERVICIOS_TIPOS_ATRIBUTOS', $campos,'SERVICIOS_TIPOS_ATRIBUTOS.ID_SERVICIO='.$id,'NOMBRE');
+$provincias = $util->selectWhere('servicios_tipos_atributos', $campos,'servicios_tipos_atributos.ID_SERVICIO='.$id,'NOMBRE');
 
 $aItems = array();
 

@@ -178,6 +178,7 @@ if((isset($_POST['oper']) && $_POST['oper'] == 'edit')&&(isset($_POST['id']) && 
             $result=$util->delete('productos_atributos','id',$id);
 
     }
+
     if(isset($atributosNuevos))
     {
 

@@ -178,7 +178,7 @@ $root="../../";
                                         </thead>
                                         <tbody>
                                         <?php
-                                        $listado= $util->selectWhere3('CAMPANAS',
+                                        $listado= $util->selectWhere3('campanas',
                                             array("ID","NOMBRE","FECHA_INICIO","FECHA_FIN","DESCUENTO"),
                                             "campanas.id_empresa=".$_SESSION['REVENDEDOR']);
 

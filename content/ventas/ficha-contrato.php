@@ -11,7 +11,7 @@ require_once('../../config/util.php');
 $util = new util();
 check_session(2);
 /*
-     * SELECT contratos_lineas.ID,contratos_lineas_tipo.NOMBRE as Nombre,contratos.
+     * SELECT contratos_lineas.id,contratos_lineas_tipo.nombre as Nombre,contratos.
     FROM contratos_lineas,contratos,contratos_lineas_tipo
     WHERE contratos_lineas.ID_CONTRATO=CONTRATOS.ID
     AND contratos_lineas_tipo.ID=contratos_lineas.ID_TIPO
@@ -124,7 +124,7 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos',
                         array("ID","FECHA_INICIO","FECHA_FIN","ESTADO"),
                         "contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND contratos.id_cliente="-$_GET['idCliente']);*/
 
-
+$totalContrato=0;
                     for($i=0;$i<count($lineas);$i++)
                     {
                         $id=$lineas[$i][0];
@@ -132,12 +132,15 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos',
                         $idTipo=$lineas[$i][2];
                         $idAsociado=$lineas[$i][3];
                         $pvp=$lineas[$i][4];
+                        $totalContrato+=$pvp;
 
+                        $tipo=strtolower($tipo);
 
                         if($idTipo!=3)
                             $listado= $util->selectWhere3($tipo, array("ID","nombre"),  $tipo.".id_empresa=".$_SESSION['REVENDEDOR']." AND ".$tipo.".id=".$idAsociado);
                         else
                             $listado= $util->selectWhere3($tipo.",almacenes", array("productos.ID","numero_serie"),  "almacenes.id=productos.id_almacen AND almacenes.id_empresa=".$_SESSION['REVENDEDOR']." AND ".$tipo.".id=".$idAsociado);
+
 
                         $nombre=$listado[0][1];
 
@@ -148,11 +151,11 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos',
                         <td class="td-actions text-right">
                             <?php
                             if($idTipo==1)
-                                 echo '<a href="/mul/content/servicios/ficha-paquete.php?idPaquete='.$id.'">';
+                                echo "<a href='/mul/content/servicios/ficha-paquete.php?idPaquete=".$idAsociado."&idContrato=".$_GET['idContrato']."'>";
                             else if($idTipo==2)
-                                echo '<a href="/mul/content/servicios/ficha-servicio.php?idServicio='.$id.'">';
+                                echo "<a href='/mul/content/servicios/ficha-servicio.php?idServicio=".$idAsociado."&idContrato=".$_GET['idContrato']."'>";
                             if($idTipo==3)
-                                echo '<a href="/mul/content/almacen/ficha-producto.php?idProducto='.$id.'">';
+                                echo '<a href="/mul/content/almacen/ficha-producto.php?idProducto='.$idAsociado.'">';
                             ?>
 
                                 <button type="button" rel="tooltip" >
@@ -168,10 +171,23 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos',
 
                         <?php
                     }
+
                     ?>
+                    <tr>
+                        <td colspan="3"></td>
+                        <td><strong>Total: </strong><?php echo $totalContrato; ?>€</td>
+                        <td>
+                            <button type="button" rel="tooltip" class="">
+                                <i class="fa  fa-file-archive-o" style="font-size:1em; color:green; cursor: pointer" onclick="facturar('<?php echo $id;?>');"></i>
+                            </button>
+                        </td>
+                    </tr>
                     </tbody>
 
+
                 </table>
+                <hr/>
+
 
             </div>
 
@@ -188,50 +204,7 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos',
 
 
 <script>
-    // cargo las provincias por Ajax, cada vez que se cambia la comunidad
-    function carga_provincias(id,sel=0){
-        var select = $("#provincias");
-        select.empty();
-        select.empty();
-        select.append('<option value="">--- Seleccionar una ---</option>');
-        $.ajax({
-            url: 'carga_prov.php',
-            type: 'POST',
-            cache: false,
-            async:true,
-            data:{id:id},
-            success: function(data) {
-                $.each(data, function(i){
-                    if(sel>0 && sel==data[i].id)
-                        select.append('<option value="'+data[i].id+'" selected>'+data[i].provincia+'</option>');
-                    else
-                        select.append('<option value="'+data[i].id+'">'+data[i].provincia+'</option>');
 
-                });
-            }
-        });
-    }
-    // cargo las localidades por Ajax cada vez que se cambia de provincia
-    function carga_poblaciones(id,sel=0){
-        var select = $("#localidades");
-        select.empty();
-        select.append('<option value="">--- Seleccionar una ---</option>');
-        $.ajax({
-            url: 'carga_pobla.php',
-            type: 'POST',
-            cache: false,
-            async:true,
-            data:{id:id},
-            success: function(data) {
-                $.each(data, function(i){
-                    if(sel>0 && sel==data[i].id)
-                        select.append('<option value="'+data[i].id+'" selected>'+data[i].municipio+'</option>');
-                    else
-                        select.append('<option value="'+data[i].id+'">'+data[i].municipio+'</option>');
-                });
-            }
-        });
-    }
 
     // cargo los clientes para que pueda seleccionarse y editarlo
     function carga_clientes(){
@@ -260,42 +233,6 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos',
     // cuando se selecciona un cliente, recibo el id y lo cargo por ajax desde carga_cli que al pasarle una id
     // solo devuelve ese registro
 
-    function seleccionado(id){
-        $.ajax({
-            url: 'carga_cli.php',
-            type: 'POST',
-            cache: false,
-            cache: false,
-            async: true,
-            data: {
-                idcliente: id
-            },
-            success: function (data) {
-                $("#regiones").val(parseInt(data[0].region)).change();
-                $("#provincias").empty();
-
-                carga_provincias(parseInt(data[0].region),parseInt(data[0].provincia0));
-                $("#dni").val(data[0].dni);
-                $("#nombre").val(data[0].nombre);
-                $("#apellidos").val(data[0].apellidos);
-                $("#direccion").val(data[0].direccion);
-                $("#cp").val(data[0].cp);
-
-                //$("#provincias").val(parseInt(data[0].provincia0)).change();
-                carga_poblaciones(parseInt(data[0].provincia0),parseInt(data[0].localidad));
-
-
-                $("#tel1").val(data[0].tel1);
-                $("#tel2").val(data[0].tel2);
-                $("#email").val(data[0].email);
-                $("#notas").val(data[0].notas);
-                $("#fechalta").val(data[0].alta);
-                // $("#fechalta").attr('disabled','disabled');
-
-                $("#hash").val(md5(id));
-            }
-        });
-    }
 
 </script>
 

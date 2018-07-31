@@ -74,10 +74,10 @@ if(isset($_POST['action']) && $_POST['action'] == 'servicios')
 
     // llama a la funcion insertInto de la clase util que recibe la tabla (string) y dos arrays (campos y valores)
 
-    $resultServicio = $util->insertInto('SERVICIOS', $t_servicios, $values);
+    $resultServicio = $util->insertInto('servicios', $t_servicios, $values);
 
 
-    $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado el cliente:'.$dni.' con el resultado:'.$result);
+    $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado el servicio:'.$resultServicio.' con el resultado:'.$result);
 
     /*
      * UNA VEZ CREADO EL PRODUCTO ASOCIAMOS LOS ATRIBUTOS A DICHO PRODUCTO $RESULT TIENE EL ID DEL PRODUCTO
@@ -96,7 +96,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'servicios')
         $values=array($id,$resultServicio,$valor);
         echo $valor."<br/>";
 
-        $result = $util->insertInto('SERVICIOS_ATRIBUTOS', $t_servicios_atributos, $values);
+        $result = $util->insertInto('servicios_atributos', $t_servicios_atributos, $values);
 
     }
 
@@ -129,33 +129,75 @@ if(
     (isset($_POST['id']) && $_POST['id'] != '')
 )
 {
-
+    $idServicio=$util->cleanstring($_POST['id']);
     $nombre = $util->cleanstring($_POST['nombre']);
     $tipo = $util->cleanstring($_POST['tipo']);
-    $precioProv=$util->cleanstring($_POST['precio-proveedor']);
+    $precioProv=$util->cleanstring($_POST['coste']);
     $beneficio=$util->cleanstring($_POST['beneficio']);
-    $pvp=$util->cleanstring($_POST['precio-pvp']);
+    $pvp=$util->cleanstring($_POST['pvp']);
     $impuesto=$util->cleanstring($_POST['impuesto']);
     $atributos=$_POST['atributo'];
+    $cascada=$_POST['cascada'];
 
-    $values=array($nombre,$tipo,$precioProv,$beneficio,$pvp,$impuesto);
-    $campos=array("nombre","id_servicio_tipo","");
-    if(isset($_POST['region'])){
-        $values = array($dni, $nombre, $apellidos, $dir, $cp, $tel1, $tel2, $email, $notas, $region, $provincia, $localidad,$alta);
-        $campos = array('dni', 'nombre', 'apellidos', 'direccion', 'cp', 'tel1', 'tel2', 'email', 'notas', 'region', 'provincia', 'localidad','fecha_alta');
-    } else {
-        $values = array($dni, $nombre, $apellidos, $dir, $cp, $tel1, $tel2, $email, $notas);
-        $campos = array('dni', 'nombre', 'apellidos', 'direccion', 'cp', 'tel1', 'tel2', 'email', 'notas');
+
+
+    $values=array($nombre,$tipo,$precioProv,$impuesto,$beneficio,$pvp);
+    $campos=array("nombre","id_servicio_tipo","precio_proveedor","impuesto","beneficio","pvp");
+
+    $result = $util->update('servicios', $campos, $values, "id=".$idServicio);
+
+    $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el servicio: '.$idServicio.' con el resultado:'.$result);
+
+
+    if($cascada=="on")
+    {
+        $campos=array("precio_proveedor","beneficio","impuesto","pvp");
+        $values=array($precioProv,$beneficio,$impuesto,$pvp);
+       $ls= buscarContratosConServicio($idServicio);
+       for($i=0;$i<count($ls);$i++)
+        $result = $util->update('contratos_lineas', $campos, $values, "contratos_lineas.id=".$ls[$i]['id']);
+
     }
-    $result = $util->update('clientes', $campos, $values, "id=".$id);
-    $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el cliente: '.$dni.' con el resultado:'.$result);
+
+    for($i=0;$i<count($atributos);$i++)
+    {
+
+        $valor= $util->cleanstring($atributos["valor"][$i]);
+
+        $id= $util->cleanstring($atributos["id"][$i]);
+
+        $values=array($valor,$idProducto);
+        // echo "Se modifica".$id." con el valor".$valor;
+        $campos=array("valor");
+
+        if(!isset($atributosNuevos))
+            $result = $util->update('servicios_atributos', $campos, $values, "servicios_atributos.id_servicio=".$idServicio." AND servicios_atributos.id=".$id);
+        else
+
+            $result=$util->delete('servicios_atributos','id',$id);
+
+    }
+
+
 } else{
     echo "nose";
     die();
 }
 
 
-
+function buscarContratosConServicio($idServicio)
+{
+            /*
+             * SELECT *
+        FROM contratos,contratos_lineas
+        WHERE contratos.id=contratos_lineas.ID_CONTRATO
+        AND contratos.ID_EMPRESA=1 AND contratos_lineas.ID_TIPO=2 AND contratos_lineas.ID_ASOCIADO=24;
+     */
+    $util = new util();
+    return $util->selectWhere3('contratos,contratos_lineas',
+        array("contratos_lineas.id"),
+        "contratos.id=contratos_lineas.id_contrato AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND contratos_lineas.id_tipo=2 AND contratos_lineas.id_asociado=".$idServicio);
+}
 function _redirect($hash) {
 
     $HTTP_REFERER = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;

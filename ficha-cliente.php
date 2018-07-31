@@ -344,9 +344,9 @@ $fechaNac=$producto[0][21];
                                         <tbody>
                                         <?php
 
-                                        $listado= $util->selectWhere3('CONTRATOS',
-                                            array("ID","FECHA_INICIO","FECHA_FIN","ESTADO"),
-                                            "contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND contratos.id_cliente=".$_GET['idCliente']);
+                                        $listado= $util->selectWhere3('contratos,estados_contratos',
+                                            array("contratos.ID","contratos.FECHA_INICIO","contratos.FECHA_FIN","estados_contratos.nombre"),
+                                            "contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND contratos.id_cliente=".$_GET['idCliente']." and contratos.estado=estados_contratos.id");
 
 
                                         for($i=0;$i<count($listado);$i++)
@@ -357,10 +357,21 @@ $fechaNac=$producto[0][21];
                                             $fin=$listado[$i][2];
                                             $estado=$listado[$i][3];
 
+                                            if($estado=="ALTA")
+                                            {
+                                                $bColor="green";
+                                                $color="white";
+                                            }
+
+                                            else
+                                            {
+                                                $bColor="Yellow";
+                                                $color="black";
+                                            }
 
 
                                             echo "<tr>";
-                                            echo "<td>$id</td><td>$inicio</td><td>$fin</td><td>$estado</td>";
+                                            echo "<td>$id</td><td>$inicio</td><td>$fin</td><td style='background-color:$bColor;color:$color;'>$estado</td>";
 
                                             ?>
                                             <td class="td-actions text-right">

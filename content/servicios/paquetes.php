@@ -112,7 +112,7 @@ $root="../../";
                     <select id="internet" multiple="multiple" name="paquete[internet]" style="height:260px" class="form-control" onchange="calcularPVP(this)">
                         <?php
                         // carga el listado de cabeceras en el select
-                        $cabeceras = $util->selectWhere('SERVICIOS', array('id', 'NOMBRE','PRECIO_PROVEEDOR'), 'ID_EMPRESA='.$_SESSION['REVENDEDOR'].' AND ID_SERVICIO_TIPO=1', 'NOMBRE');
+                        $cabeceras = $util->selectWhere('servicios', array('id', 'nombre','precio_proveedor'), 'id_empresa='.$_SESSION['REVENDEDOR'].' AND id_servicio_tipo=1', 'nombre');
 
                         $c = 0;
 
@@ -121,7 +121,7 @@ $root="../../";
                                 $ultimo = $row;
                                 $c = 1;
                             }
-                            echo "<option data-coste='".$row['PRECIO_PROVEEDOR']."' value='" . $row['id'] . "'>" . $row['NOMBRE']. "</option>";
+                            echo "<option data-coste='".$row['precio_proveedor']."' value='" . $row['id'] . "'>" . $row['nombre']. "</option>";
                         }
                         ?>
                     </select>
@@ -138,7 +138,7 @@ $root="../../";
                     <select id="fijo" multiple="multiple" style="height:260px" class="form-control" name="paquete[fijo]" onchange="calcularPVP(this)" >
                         <?php
                         // carga el listado de cabeceras en el select
-                        $cabeceras = $util->selectWhere('SERVICIOS', array('id', 'NOMBRE','PRECIO_PROVEEDOR'), 'ID_EMPRESA='.$_SESSION['REVENDEDOR'].' AND ID_SERVICIO_TIPO=2', 'NOMBRE');
+                        $cabeceras = $util->selectWhere('servicios', array('id', 'NOMBRE','PRECIO_PROVEEDOR'), 'ID_EMPRESA='.$_SESSION['REVENDEDOR'].' AND ID_SERVICIO_TIPO=2', 'NOMBRE');
 
                         $c = 0;
 
@@ -166,7 +166,7 @@ $root="../../";
                     <select id="movil"  multiple="multiple" style="height:260px" class="form-control" name="paquete[movil][]" onchange="calcularPVP(this)">
                         <?php
                         // carga el listado de cabeceras en el select
-                        $cabeceras = $util->selectWhere('SERVICIOS', array('id', 'NOMBRE','PRECIO_PROVEEDOR'), 'ID_EMPRESA='.$_SESSION['REVENDEDOR'].' AND ID_SERVICIO_TIPO=3', 'NOMBRE');
+                        $cabeceras = $util->selectWhere('servicios', array('id', 'NOMBRE','PRECIO_PROVEEDOR'), 'ID_EMPRESA='.$_SESSION['REVENDEDOR'].' AND ID_SERVICIO_TIPO=3', 'NOMBRE');
 
                         $c = 0;
 
@@ -193,7 +193,7 @@ $root="../../";
                     <select id="tv" multiple="multiple"  style="height:260px" class="form-control" name="paquete[tv]" onchange="calcularPVP(this)">
                         <?php
                         // carga el listado de cabeceras en el select
-                        $cabeceras = $util->selectWhere('SERVICIOS', array('id', 'NOMBRE','PRECIO_PROVEEDOR'), 'ID_EMPRESA='.$_SESSION['REVENDEDOR'].' AND ID_SERVICIO_TIPO=4', 'NOMBRE');
+                        $cabeceras = $util->selectWhere('servicios', array('id', 'NOMBRE','PRECIO_PROVEEDOR'), 'ID_EMPRESA='.$_SESSION['REVENDEDOR'].' AND ID_SERVICIO_TIPO=4', 'NOMBRE');
 
                         $c = 0;
 
@@ -281,7 +281,7 @@ $root="../../";
                                         </thead>
                                         <tbody>
                                         <?php
-                                        $listado= $util->selectWhere3('PAQUETES',
+                                        $listado= $util->selectWhere3('paquetes',
                                             array("ID","NOMBRE","PVP"),
                                             "paquetes.id_empresa=".$_SESSION['REVENDEDOR']);
 
