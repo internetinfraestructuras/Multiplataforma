@@ -19,23 +19,20 @@ require_once('../../config/util.php');
 $util = new util();
 check_session(3);
 
-$campos=array('servicios.ID','ID_SERVICIO_TIPO','servicios.NOMBRE','PRECIO_PROVEEDOR','IMPUESTO','BENEFICIO','PVP','servicios_tipos.NOMBRE');
+$campos=array('ID','NOMBRE','FECHA_INICIO','FECHA_FIN','DURACION','DESCUENTO');
 
-$provincias = $util->selectJoin('servicios', $campos,' JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO ',
-    'servicios.NOMBRE',' ID_EMPRESA='.$_SESSION['REVENDEDOR']);
+$provincias = $util->selectWhere('campanas', $campos,' (CURRENT_DATE BETWEEN FECHA_INICIO AND FECHA_FIN) AND ID_EMPRESA='.$_SESSION['REVENDEDOR']);
 
 $aItems = array();
 
 while ($row = mysqli_fetch_array($provincias)) {
     $aItem = array(
-        'idservicio' => $row[0],
-        'id_tipo' => $row[1],
-        'comercial' => $row[2],
-        'coste' => $row[3],
-        'impuesto' => $row[4],
-        'beneficio' => $row[5],
-        'pvp' => $row[6],
-        'tipo' => $row[7]
+        'idcampana' => $row[0],
+        'nombre' => $row[1],
+        'fini' => $row[2],
+        'ffin' => $row[3],
+        'duracion' => $row[4],
+        'descuento' => $row[5]
     );
     array_push($aItems, $aItem);
 
@@ -44,8 +41,3 @@ while ($row = mysqli_fetch_array($provincias)) {
 header('Content-type: application/json; charset=utf-8');
 echo json_encode($aItems);
 
-//panaderia paco
-//francisco mariscal garcia
-//yudith
-
-//MIRIAM2018

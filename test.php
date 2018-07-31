@@ -375,18 +375,76 @@ array(1) {
 //$ont_id = intval(explode(':', $ont_ids[1]));
 include_once("config/util.php");
 
-require('clases/routeros_api.class.php');
+//require('clases/routeros_api.class.php');
+//
+//$API = new RouterosAPI();
+//
+//if ($API->connect('62.175.252.1', 'NexwrfApiPppoe', '2018apinex*')) {
+//
+//    $ARRAY = $API->comm('/ppp/profile/getall');
+////    print_r($ARRAY);
+//    foreach ($ARRAY as $clave) {
+//        echo $clave['name'];
+//    }
+//
+//    $API->disconnect();
+//
+//}
 
-$API = new RouterosAPI();
+//$cmd = 'display ont wan-info ' . $c ."/" .$t ." ". $p . " " . $idenont;
+//$cmd = 'display ont wan-info 0/0 1 1 ' ;
+//
+//$c=0;
+//while ($ip!='' && $mac!='' || $c<4){
+//    $c++;
+//    $respuesta_olt="";
+//
+//    $telnet->DoCommand($cmd . PHP_EOL .ESPACIO ."q", $respuesta_olt);
+//
+//    //echo $respuesta_olt;
+//    $rows = explode("---------------------------------------------------------------------", $respuesta_olt);
+//    if(isset($rows[2])) {
+//        $rows2 = explode(PHP_EOL, $rows[2]);
+//        $i = explode(':', $rows2[7]);
+//        $ip = $i[1];
+//        $m = explode(':', $rows2[14]);
+//        $mac = $m[1];
+//    }
+//    if($ip!='' && $mac!='')
+//        break;
+//}
+//
+//$aItems=array();
 
-if ($API->connect('62.175.252.1', 'NexwrfApiPppoe', '2018apinex*')) {
 
-    $ARRAY = $API->comm('/ppp/profile/getall');
-//    print_r($ARRAY);
-    foreach ($ARRAY as $clave) {
-        echo $clave['name'];
-    }
+//$ch = curl_init('http://10.211.2.2:7557/devices/');
+$mac='F898-EFEB-DC03';
+$mac = str_replace("-",":",$mac);
 
-    $API->disconnect();
+$mac1 = substr($mac,0,2) . ":" .substr($mac,2,3) . substr($mac,5,2) . ":" .
+    substr($mac,7,3).substr($mac,10,2). ":" .substr($mac,12,2);
 
-}
+$url='http://10.211.2.2:7557/devices/?query=%7B%22InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection.1.MACAddress%22%3A%22'.$mac1.'%22%7D';
+
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$result = curl_exec($ch);
+$json=json_decode($result,true);
+curl_close($ch);
+//echo count($json);
+//print_r($json);
+
+//for ($c=0; $c<count($json);$c++ ){
+//    echo $json[$c]['_deviceId']['_SerialNumber']." - ". $num_pon."<br>";
+
+//    if($json[0]['_deviceId']['_SerialNumber'] == $num_pon){
+        $esta = true;
+        $id_device=$json[0]['_id'];
+        $pon=$json[0]['_deviceId']['_SerialNumber'];
+        echo $pon."<br>";
+        echo $id_device."<br>";
+//        break;
+//        break;
+//    }
+//}

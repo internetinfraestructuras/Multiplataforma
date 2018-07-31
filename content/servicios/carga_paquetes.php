@@ -21,15 +21,15 @@ $util = new util();
 check_session(3);
 
 $id=$_POST['idpaquete'];
-$campos=array('servicios.ID','ID_SERVICIO_TIPO','NOMBRE_COMERCIAL','PRECIO_PROVEEDOR','IMPUESTO','BENEFICIO','PVP','servicios_tipos.NOMBRE');
+$campos=array('servicios.ID','ID_SERVICIO_TIPO','servicios.NOMBRE','PRECIO_PROVEEDOR','IMPUESTO','BENEFICIO','PVP','servicios_tipos.NOMBRE');
 
-$provincias = $util->selectJoin('servicios', $campos, ' JOIN paquetes_servicios ON paquetes_servicios.ID_SERVICIO = servicios.ID '.
+$paquetes = $util->selectJoin('servicios', $campos, ' JOIN paquetes_servicios ON paquetes_servicios.ID_SERVICIO = servicios.ID '.
     ' JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO ',
-    'NOMBRE_COMERCIAL','paquetes_servicios.ID_PAQUETE='.$id.' AND ID_EMPRESA='.$_SESSION['REVENDEDOR']);
+    'servicios.NOMBRE','paquetes_servicios.ID_PAQUETE='.$id.' AND ID_EMPRESA='.$_SESSION['REVENDEDOR']);
 
 $aItems = array();
 
-while ($row = mysqli_fetch_array($provincias)) {
+while ($row = mysqli_fetch_array($paquetes)) {
     $aItem = array(
         'idservicio' => $row[0],
         'id_tipo' => $row[1],
@@ -41,7 +41,6 @@ while ($row = mysqli_fetch_array($provincias)) {
         'tipo' => $row[7]
     );
     array_push($aItems, $aItem);
-
 }
 
 header('Content-type: application/json; charset=utf-8');

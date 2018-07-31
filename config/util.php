@@ -434,8 +434,6 @@ class util {
                 $this->loginsert($this->cleanstring($consulta),$lastid);
             }
 
-
-
             return $lastid;
 
         } catch (Exception $e) {
