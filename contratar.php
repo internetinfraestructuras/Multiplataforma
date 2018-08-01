@@ -311,7 +311,7 @@ check_session(2);
                     <li class="active">Cliente</li>
                     <li>Servicios</li>
                     <li>Campañas</li>
-                    <li>Documentación</li>
+                    <li>Asignación</li>
                     <li>Activar</li>
                 </ul>
 
@@ -320,7 +320,7 @@ check_session(2);
 
                     <div class="row">
                         <div class="col-md-8 col-sm-9">
-                            <label>Seleccione un cliente o cree uno nuevo</label>
+                            <label>Seleccione un cliente o cree uno nuevo</label><br>
                             <select id="id" name="id" onchange="seleccionado(this.value)"
                                     class="form-control select2">
                             </select>
@@ -336,12 +336,12 @@ check_session(2);
 
                     <div class="row ocultar">
                         <div class="form-group">
-                            <div class="col-md-3 col-sm-3">
+                            <div class="col-md-2 col-sm-3">
                                 <label>Nombre</label>
                                 <input type="text" name="nombre" value="" id="nombre"
                                        class="form-control required datoscli">
                             </div>
-                            <div class="col-md-3 col-sm-4">
+                            <div class="col-md-4 col-sm-4">
                                 <label>Apellidos</label>
                                 <input type="text" name="apellidos" id="apellidos"
                                        class="form-control datoscli">
@@ -442,6 +442,19 @@ check_session(2);
                     </div>
                     <div class="row ocultar">
                         <div class="form-group">
+                            <div class="col-md-3 col-sm-3">
+                                <label>Entidad </label>
+                                <input type="text" name="banco" id="banco" class="form-control datoscli required" placeholder="Nombre del banco o caja">
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <label>IBAN</label>
+                                <input type="text" name="iban" id="iban" class="form-control datoscli required">
+                            </div>
+                            <div class="col-md-2 col-sm-3">
+                                <label>Swift</label>
+                                <input type="text" name="swift" id="swift" class="form-control datoscli">
+                            </div>
+
                             <div class="col-md-3">
                                 <label>Consentimientos LOPD <a href="lopd.html" target="_blank"><i class="fa fa-question-circle"></i></a> </label>
                                 <br>
@@ -453,7 +466,13 @@ check_session(2);
                                 </select>
                             </div>
 
-                            <div class="col-md-9">
+                        </div>
+                    </div>
+
+                    <div class="row ocultar">
+                        <div class="form-group">
+
+                            <div class="col-xs-12">
                                 <label>Notas </label>
                                 <input type="text" name="notas" id="notas"
                                        class="form-control datoscli required">
@@ -479,7 +498,7 @@ check_session(2);
                 <fieldset class="caja">
                     <div class="row">
                         <div class="col-lg-5 col-xs-12">
-                            <label><b>Paquete que desea contratar</b></label>
+                            <label><b>Paquete que desea contratar</b></label><br><br>
                             <select name="paquete" id="paquete"
                                     class="form-control pointer " onchange="paquete_seleccionado(this)">
                                 <option value="">Sin paquete</option>
@@ -487,26 +506,26 @@ check_session(2);
                             </select>
                         </div>
                         <div class="col-lg-2 col-xs-12">
-                            <label><b>PVP</b></label>
+                            <label><b>PVP</b></label><br><br>
                             <span id="pvp"></span>
                         </div>
 
                         <div class="col-lg-2 col-xs-12">
-                            <label><b>Adicionales</b></label>
+                            <label><b>Adicionales</b></label><br><br>
                             <span id="pvp_extras"></span>
                         </div>
 
 
                         <div class="col-lg-3 col-xs-12 text-right">
-                            <label><b>PVP Final</b></label>
+                            <label><b>PVP Final</b></label><br><br>
                             <span name="pvp_final" id="pvp_final">
                         </div>
 
                     </div>
                     <!-- aqui se cargarán los servicios que contiene el paquete seleccionado-->
                     <div id="aqui_los_servicios"></div>
-                    <br>
-                    <b>Agregar servicios extras al paquete (solo para este contrato)</b>
+                    <br><br>
+                    <b>Agregar servicios extras al paquete (solo para este contrato)</b><br>
                     <br>
                     <div id="agregar_servicios" style="display:none">
 
@@ -519,29 +538,29 @@ check_session(2);
                 <fieldset class="caja">
                     <div class="row">
                         <div class="col-lg-4 col-xs-12">
-                            <label><b>Aplicar una campaña</b></label>
+                            <label><b>Aplicar una campaña</b></label><br><br>
                             <select name="campanas" id="campanas" class="form-control pointer " onchange="campana_seleccionada(this)">
                                 <option value="-1" data-dto="0" data-dias="0">Sin campaña</option>
                             </select>
                         </div>
                         <div class="col-lg-2 col-xs-12">
-                            <label><b>PVP</b></label>
+                            <label><b>PVP</b></label><br><br>
                             <span id="pvp2"></span>
                         </div>
 
                         <div class="col-lg-2 col-xs-12">
-                            <label><b>Adicionales</b></label>
+                            <label><b>Adicionales</b></label><br><br>
                             <span id="pvp_extras2"></span>
                         </div>
 
                         <div class="col-lg-2 col-xs-12">
-                            <label><b>Descuentos</b></label>
+                            <label><b>Descuentos</b></label><br><br>
                             <span id="descuentos"></span>
                         </div>
 
 
                         <div class="col-lg-2 col-xs-12 text-right">
-                            <label><b>PVP Final</b></label>
+                            <label><b>PVP Final</b></label><br><br>
                             <span name="pvp_final2" id="pvp_final2">
                         </div>
 
@@ -549,13 +568,13 @@ check_session(2);
 
                     <div class="row">
                         <div class="col-xs-12 ">
-                            <b>Seleccionar una promoción existente o indique nuevos descuentos</b>
+                            <b>Puede modificar tanto el porcentaje como la duración de la promo, aplicable solo a este contrato</b><br><br>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-xs-12 ">
                         <label><b>Descuento %</b></label>
-                        <select name="dto" id="dto" class="form-control" style="width:80px" >
+                        <select name="dto" id="dto" class="form-control" style="width:80px" onchange="calcular_final(this.value)">
                             <?php
                                 for($n=0;$n<=100;$n++){
                                     echo '<option value="'.$n.'">'.$n.'</option>';
@@ -566,12 +585,18 @@ check_session(2);
 
                     <div class="col-lg-3 col-xs-12 ">
                         <label><b>Días Promoción</b></label>
-                        <input type="number" name="dto_meses" id="dto_meses" class="form-control" style="max-width: 80px" onblur="calcular_final(this.value)"></input>
+                        <input type="number" name="dto_meses" id="dto_meses" class="form-control" style="max-width: 80px" onblur="calcular_fin_promo(this.value)" ></input>
                     </div>
 
                     <div class="col-lg-3 col-xs-12 ">
                         <label><b>Descuento Hasta</b></label>
                         <input type="date" min="" name="dto_hasta" id="dto_hasta" style="max-width: 150px"  class="form-control">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 ">
+                            <b>Facturas afectadaas:</b><br><br>
+                        </div>
                     </div>
 
                     <input type="button" name="previous" class="previous action-button-previous"
@@ -581,27 +606,8 @@ check_session(2);
 
                 <fieldset class="caja">
                     <div class="row ">
-                        <div class="form-group">
-                            <div class="col-md-2 col-sm-2">
-                                <label>Entidad </label>
-                                <input type="text" name="banco" id="banco" class="form-control datoscli required">
-                            </div>
-                            <div class="col-md-4 col-sm-6">
-                                <label>IBAN</label>
-                                <input type="text" name="iban" id="iban" class="form-control datoscli required">
-                            </div>
-                            <div class="col-md-2 col-sm-3">
-                                <label>Swift</label>
-                                <input type="text" name="swift" id="swift" class="form-control datoscli">
-                            </div>
-                            <div class="col-md-2 col-sm-3">
-                                <label>Tel Móvil</label>
-                                <input type="tel" name="tel2" id="tel2" class="form-control datoscli">
-                            </div>
-                            <div class="col-md-2 col-sm-3">
-                                <label>Fecha Nacimiento</label>
-                                <input type="date" name="nacim" id="nacim" class="form-control datoscli">
-                            </div>
+                        <div class="form-group" id="aqui_los_servicios_y_productos">
+
 
                         </div>
                     </div>
@@ -612,6 +618,10 @@ check_session(2);
                 </fieldset>
 
                 <fieldset class="caja">
+
+
+
+
                     <input type="button" name="previous" class="previous action-button-previous"
                            value="Paso Anterior"/>
                     <input type="button" name="next" class="next action-button" value="Finalizar y Contratar"/>
@@ -635,7 +645,7 @@ check_session(2);
     var precio = 0;
     var tot_extras = 0;
     var mostrandocoste=false;
-    var servicios_adicionales=[];
+    var servicios_contratados=[];
     var id_contrato_borrador=0;
 
 
@@ -778,6 +788,7 @@ check_session(2);
         nuevo = 0;
         $(".ocultar").css('display', 'none');
         $("#atras1").css('display', 'none');
+        $("#id").css('display', 'block');
         $("#atras1").css('position', 'absolute');
         $("#atras1").val('Cancelar');
         $("#next1").val('Continuar');
@@ -785,7 +796,7 @@ check_session(2);
 
 
     $(document).ready(function () {
-        carga_clientes(false);
+        carga_clientes();
         $("#atras1").css('display', 'none');
         $("#next1").css('display', 'none');
         $("#dto_hasta").val(hoy());
@@ -799,6 +810,13 @@ check_session(2);
         $("#pvp_final2").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
 
     }
+
+    function calcular_fin_promo(dias) {
+
+        $( "#dto_hasta" ).val(sumarDias(dias));
+
+    }
+
 
     // cuando se selecciona un cliente, recibo el id y lo cargo por ajax desde carga_cli que al pasarle una id
     // solo devuelve ese registro
@@ -872,7 +890,7 @@ check_session(2);
 
         $("#pvp_final2").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
 
-        servicios_adicionales=[];
+        servicios_contratados=[];
 
         precio = parseFloat(jQuery(item).find(':selected').data("extra")) || 0;
         var dtos = parseFloat($("#dto").val()) || 0;
@@ -895,15 +913,19 @@ check_session(2);
                 idpaquete: item.value
             },
             success: function (datos) {
-
+                servicios_contratados=[];
                 $.each(datos, function (i) {
                     $("#aqui_la_tabla").append('<tr><td>' + datos[i].idservicio + '</td><td>' + datos[i].tipo + '</td><td>' +
                         datos[i].comercial + '</td><td><span class="oculta_coste" style="display:none">' + datos[i].coste + ' &euro;</td><td>' + datos[i].impuesto + '%</td><td>' +
                         datos[i].pvp + ' &euro;</td>' +
                         '<td><span class="fa fa-eye" style="font-size:1em; cursor: pointer;margin-left:.5em" onclick="ver(\'' + datos[i].idservicio + '\');"></span></td></tr>');
 
-                });
+                    // con la p controlo que es del paquete
+                    var servicio=[datos[i].idservicio, datos[i].id_tipo, datos[i].pvp, 1, datos[i].comercial, 'p'];
+                    servicios_contratados.push(servicio);
 
+                });
+                console.log(servicios_contratados);
                 $(".ocultar").css('display', 'block');
 
             }
@@ -917,17 +939,18 @@ check_session(2);
     }
 
     function campana_seleccionada(item) {
-        var dtos = parseFloat(jQuery(item).find(':selected').data("dto"));
-        var dias = parseFloat(jQuery(item).find(':selected').data("dias"));
+        var dtos = parseFloat(jQuery(item).find(':selected').data("dto")) || 0;
+        var dias = parseFloat(jQuery(item).find(':selected').data("dias")) || 0;
         $("#dto_meses").val(dias);
         $("#dto").val(parseInt(dtos)).change();
         // var total2 = total * (dto/100);
         $("#pvp_final2").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
         $("#descuentos").html('<p style="font-size:2.5em; font-weight:600; color: #10c139; margin-top:-1px">' +  round(parseFloat((dtos / 100) * (precio + tot_extras)), 2) + ' &euro;</p>');
 
-        var date2 = $('#dto_hasta').datepicker('getDate');
-        date2.setDate(date2.getDate()+dias);
-        $( "#dto_hasta" ).datepicker("setDate", date2);
+        // var date2 = $('#dto_hasta').datepicker('getDate');
+
+        // var date2 = hoy(dias);
+        $( "#dto_hasta" ).val(sumarDias(dias));
 
 
 
@@ -955,7 +978,7 @@ check_session(2);
                         datos[i].pvp + ' &euro;</td>' +
                         '<td>' +
                         '<select style="width:40px; height:28px;font-size:1em; padding:0px" data-pvp="' + datos[i].pvp + '" id="' + datos[i].idservicio +'" ' +
-                        'data-id_servicio="' + datos[i].idservicio + '" data-id_familia="' + datos[i].id_tipo + '" + onchange="add_service(this);">'+
+                        'data-id_servicio="' + datos[i].idservicio + '" data-id_familia="' + datos[i].id_tipo +  '" data-servicio="' + datos[i].comercial + '" onchange="add_service(this);">'+
                         '<option value=0 selected>0</option>'+
                         '<option value=1>1</option>'+
                         '<option value=2>2</option>'+
@@ -1141,7 +1164,7 @@ check_session(2);
         }
 
         if (this.id == 'next2'){
-            if(id_paquete_seleccionado==0 && servicios_adicionales.length==0){
+            if(id_paquete_seleccionado==0 && servicios_contratados.length==0){
                 alert("Debe seleccionar un paquete o servicio");
                 avanzar = false;
                 return;
@@ -1219,7 +1242,7 @@ check_session(2);
                     action: 'borrador',
                     id_paquete: id_paquete_seleccionado,
                     id_borrador: id_contrato_borrador,
-                    lineas: servicios_adicionales
+                    lineas: servicios_contratados
                 },
                 success: function (data) {
                     id_contrato_borrador = data;
@@ -1232,22 +1255,26 @@ check_session(2);
 
     function add_service(objeto) {
         tot_extras=0;
-        var id_servicio = parseFloat(jQuery(objeto).data("id_servicio"));
-        var id_familia = parseFloat(jQuery(objeto).data("id_familia"));
-        var pvp_extra = parseFloat(jQuery(objeto).data("pvp"));
-        var cantidad = parseInt(objeto.value) || 0;
+        var id_servicio = jQuery(objeto).data("id_servicio");
+        var nom_servicio = jQuery(objeto).data("servicio");
+        var id_familia = jQuery(objeto).data("id_familia");
+        var pvp_extra = jQuery(objeto).data("pvp");
+        var cantidad = objeto.value || 0;
 
 
-        for (c=0;c<servicios_adicionales.length;c++){
-            if(servicios_adicionales[c][0]==id_servicio)
-                servicios_adicionales.splice(c,1);
+        for (c=0; c<servicios_contratados.length; c++){
+            if(servicios_contratados[c][0]==id_servicio && servicios_contratados[c][5]=='e')
+                servicios_contratados.splice(c,1);
         }
-        var servicio=[id_servicio,id_familia,pvp_extra,cantidad];
-        servicios_adicionales.push(servicio);
-        console.log(servicios_adicionales);
+        // con la e controlo que es un extra
+        if(parseInt(cantidad)>0) {
+            var servicio = [id_servicio, id_familia, pvp_extra, cantidad, nom_servicio, 'e'];
+            servicios_contratados.push(servicio);
+        }
+        console.log(servicios_contratados);
 
-        for (c=0;c<servicios_adicionales.length;c++){
-            tot_extras=tot_extras+(parseFloat(servicios_adicionales[c][2])*parseFloat(servicios_adicionales[c][3]));
+        for (c=0; c<servicios_contratados.length; c++){
+            tot_extras=tot_extras+(parseFloat(servicios_contratados[c][2])*parseFloat(servicios_contratados[c][3]));
         }
 
         $("#pvp_extras").html('<p style="font-size:2.5em; font-weight:600; margin-top:-1px">' + round(tot_extras, 2) + ' &euro;</p>');
@@ -1392,8 +1419,32 @@ check_session(2);
             mm = '0'+mm
         }
 
-        today = yyyy + '-' + mm + '-' + dd;
+        today = new Date(yyyy + '-' + mm + '-' + dd);
         return today;
+    }
+
+
+    function sumarDias(dias){
+
+            var date = new Date();
+            var newdate = new Date(date);
+
+            newdate.setDate(newdate.getDate() + parseInt(dias));
+
+            var dd = newdate.getDate();
+            var mm = newdate.getMonth() + 1;
+            var y = newdate.getFullYear();
+            if(dd<10) {
+                dd = '0'+dd
+            }
+
+            if(mm<10) {
+                mm = '0'+mm
+            }
+
+            var someFormattedDate = y + '-' + mm + '-' + dd;
+            return someFormattedDate;
+
     }
 
 

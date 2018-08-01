@@ -43,9 +43,3 @@ while ($row = mysqli_fetch_array($provincias)) {
 
 header('Content-type: application/json; charset=utf-8');
 echo json_encode($aItems);
-
-//panaderia paco
-//francisco mariscal garcia
-//yudith
-
-//MIRIAM2018
