@@ -84,7 +84,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'servicios')
      */
 
     // EXTRACT DATA FROM POST
-    var_dump($atributos);
+
     $j=0;
     for($i=0;$i<count($atributos)/2;$i++)
     {
@@ -141,42 +141,120 @@ if(
 
 
 
-    $values=array($nombre,$tipo,$precioProv,$impuesto,$beneficio,$pvp);
-    $campos=array("nombre","id_servicio_tipo","precio_proveedor","impuesto","beneficio","pvp");
-
-    $result = $util->update('servicios', $campos, $values, "id=".$idServicio);
-
-    $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el servicio: '.$idServicio.' con el resultado:'.$result);
-
-
-    if($cascada=="on")
-    {
-        $campos=array("precio_proveedor","beneficio","impuesto","pvp");
-        $values=array($precioProv,$beneficio,$impuesto,$pvp);
-       $ls= buscarContratosConServicio($idServicio);
-       for($i=0;$i<count($ls);$i++)
-        $result = $util->update('contratos_lineas', $campos, $values, "contratos_lineas.id=".$ls[$i]['id']);
-
-    }
-
-    for($i=0;$i<count($atributos);$i++)
+    //Si el servicio proviende de un contrato
+    if(isset($_POST['idContrato']))
     {
 
-        $valor= $util->cleanstring($atributos["valor"][$i]);
 
-        $id= $util->cleanstring($atributos["id"][$i]);
 
-        $values=array($valor,$idProducto);
-        // echo "Se modifica".$id." con el valor".$valor;
-        $campos=array("valor");
+        $tupla= $util->selectWhere3("contratos_lineas", array("ID_TIPO","ID_ASOCIADO","ID_CONTRATO","PRECIO_PROVEEDOR", "BENEFICIO","IMPUESTO","PVP","PERMANENCIA"),
+            "contratos_lineas.id_asociado=".$idServicio." AND contratos_lineas.id_contrato=".$_POST['idContrato']." AND id=".$_POST['idLinea']);
 
-        if(!isset($atributosNuevos))
-            $result = $util->update('servicios_atributos', $campos, $values, "servicios_atributos.id_servicio=".$idServicio." AND servicios_atributos.id=".$id);
-        else
+        //Obtenemos los datos necesarios para volcarlos en la nueva tupla
+        $tipo=$tupla[0][0];
+        $idAsoc=$tupla[0][1];
+        $idContrato=$tupla[0][2];
+        $permanencia=$tupla[0][7];
 
-            $result=$util->delete('servicios_atributos','id',$id);
 
+        //obtenemos los detalles del servicio para hacer que apunten a otra línea y actualizamos la actual a baja y fecha de baja a dia de hoy.
+        $listDetallesLinea=$util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO","ID_ATRIBUTO_SERVICIO","VALOR"),
+            "contratos_lineas_detalles.id_linea=".$_POST['idLinea']);
+        //SE SETEA ESTA LÍNEA DE CONTRATO A BAJA
+        $campos=array('ESTADO','FECHA_BAJA');
+        $values=array("2",date('Y-m-d '));
+        $result = $util->update('contratos_lineas_detalles', $campos, $values, "id_linea=".$_POST['idLinea']);
+
+
+
+        //SE SETEA ESTA LÍNEA DE CONTRATO A BAJA
+        $campos=array('ESTADO','FECHA_BAJA');
+        $values=array("2",date('Y-m-d '));
+        $result = $util->update('contratos_lineas', $campos, $values, "id_asociado=".$idServicio. " AND id_contrato=".$_POST['idContrato']." AND id=".$_POST['idLinea']);
+
+
+        //SE SETEA LA NUEVA LÍNEA DE CONTRATO EN ALTA
+
+        $values=array($tipo,$idAsoc,$idContrato,$coste,$beneficio,$impuesto,$pvp,$permanencia,1,date('Y-m-d '),"");
+        $idLineaNueva= $util->insertInto('contratos_lineas', $t_contratos_lineas, $values);
+
+        //Recogemos los valores de los detalles;
+        $valor="";
+       $valores=array();
+
+
+        for($i=0;$i<count($atributos);$i++)
+        {
+            echo "<br>";
+            $idAtrib=$atributos['id'][$i];
+            $valor=$atributos['valor'][$i];
+            echo "Insertamos".$idAtrib." con el valor".$valor."<br>";
+            $tipo=$listDetallesLinea[$i][0];
+            $atributo=$listDetallesLinea[$i][1];
+
+            $values=array($idLineaNueva,$tipo,$atributo,$valor,date('Y-m-d '),'',1);
+            $util->insertInto('contratos_lineas_detalles', $t_contratos_lineas_detalles, $values);
+
+        }
+
+        echo "<hr>DETALLESS<br>";
+
+
+        echo "<hr>";
+
+        echo "<hr>";
+        $values=array($precioProv,$impuesto,$beneficio,$pvp,$permanencia,1,);
+        $campos=array("precio_proveedor","impuesto","beneficio","pvp");
+        $result = $util->update('contratos_lineas', $campos, $values, "id_asociado=".$idServicio. " AND id_contrato=".$_POST['idContrato']." AND id=".$_POST['idLinea']);
+
+        $values=array($idContrato,date('Y-m-d '),"MODIFICACIÓN DEL SERVICIO:".$idServicio." PARA EL CLIENTE","");
+        $resAnexo= $util->insertInto('contratos_anexos', $t_contratos_anexos, $values);
     }
+    else
+    {
+        for($i=0;$i<count($atributos);$i++)
+        {
+
+            $valor= $util->cleanstring($atributos["valor"][$i]);
+
+            $id= $util->cleanstring($atributos["id"][$i]);
+
+            $values=array($valor,$idProducto);
+            // echo "Se modifica".$id." con el valor".$valor;
+            $campos=array("valor");
+
+            if(!isset($atributosNuevos))
+                $result = $util->update('servicios_atributos', $campos, $values, "servicios_atributos.id_servicio=".$idServicio." AND servicios_atributos.id=".$id);
+            else
+
+                $result=$util->delete('servicios_atributos','id',$id);
+
+        }
+
+        $values=array($nombre,$tipo,$precioProv,$impuesto,$beneficio,$pvp);
+        $campos=array("nombre","id_servicio_tipo","precio_proveedor","impuesto","beneficio","pvp");
+        $result = $util->update('servicios', $campos, $values, "id=".$idServicio);
+        $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el servicio: '.$idServicio.' con el resultado:'.$result);
+
+
+        if($cascada=="on")
+        {
+            $campos=array("precio_proveedor","beneficio","impuesto","pvp");
+            $values=array($precioProv,$beneficio,$impuesto,$pvp);
+            $ls= buscarContratosConServicio($idServicio);
+            for($i=0;$i<count($ls);$i++)
+            {
+                $result = $util->update('contratos_lineas', $campos, $values, "contratos_lineas.id=".$ls[$i]['id']);
+
+            $values=array($idContrato,date('Y-m-d '),"MODIFICACIÓN DEL SERVICIO:".$idServicio." PARA EL CLIENTE","");
+            $resAnexo= $util->insertInto('contratos_anexos', $t_contratos_anexos, $values);
+            }
+
+        }
+    }
+
+
+
 
 
 } else{

@@ -72,7 +72,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'productos')
 
     }
 
-    $ls=$util->selectWhere3("ALMACENES",array("ID"),"ID_EMPRESA=".$_SESSION['REVENDEDOR']);
+    $ls=$util->selectWhere3("almacenes",array("ID"),"ID_EMPRESA=".$_SESSION['REVENDEDOR']);
 
     foreach($ls as $row)
         $almacen=$row;
@@ -83,7 +83,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'productos')
 
     // llama a la funcion insertInto de la clase util que recibe la tabla (string) y dos arrays (campos y valores)
 
-    $resultProducto = $util->insertInto('PRODUCTOS', $t_productos, $values);
+    $resultProducto = $util->insertInto('productos', $t_productos, $values);
 
 
     $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado el cliente:'.$dni.' con el resultado:'.$result);
@@ -193,7 +193,7 @@ if((isset($_POST['oper']) && $_POST['oper'] == 'edit')&&(isset($_POST['id']) && 
             $values=array($valor,$idProducto,$id);
 
 
-            $result = $util->insertInto('PRODUCTOS_ATRIBUTOS', $t_productos_atributos, $values);
+            $result = $util->insertInto('productos_atributos', $t_productos_atributos, $values);
 
 
         }

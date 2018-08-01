@@ -7,6 +7,7 @@
 if (!isset($_SESSION)) {
     @session_start();
 }
+
 require_once('../../config/util.php');
 $util = new util();
 check_session(2);
@@ -21,7 +22,7 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos',
     array("contratos_lineas.id","contratos_lineas_tipo.nombre as Tipo","contratos_lineas_tipo.id","contratos_lineas.id_asociado","contratos_lineas.pvp"),
     "contratos.id=contratos_lineas.id_contrato 
             and contratos_lineas_tipo.id=contratos_lineas.id_tipo
-            AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND contratos.id=".$_GET['idContrato']."");
+            AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND contratos.id=".$_GET['idContrato']." AND contratos_lineas.estado=1");
 
 
 
@@ -153,7 +154,7 @@ $totalContrato=0;
                             if($idTipo==1)
                                 echo "<a href='/mul/content/servicios/ficha-paquete.php?idPaquete=".$idAsociado."&idContrato=".$_GET['idContrato']."'>";
                             else if($idTipo==2)
-                                echo "<a href='/mul/content/servicios/ficha-servicio.php?idServicio=".$idAsociado."&idContrato=".$_GET['idContrato']."'>";
+                                echo "<a href='/mul/content/servicios/ficha-servicio.php?idServicio=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."''>";
                             if($idTipo==3)
                                 echo '<a href="/mul/content/almacen/ficha-producto.php?idProducto='.$idAsociado.'">';
                             ?>
@@ -177,9 +178,10 @@ $totalContrato=0;
                         <td colspan="3"></td>
                         <td><strong>Total: </strong><?php echo $totalContrato; ?>€</td>
                         <td>
+                            <a href="facturar.php?idContrato="<?php echo $id;?>>
                             <button type="button" rel="tooltip" class="">
-                                <i class="fa  fa-file-archive-o" style="font-size:1em; color:green; cursor: pointer" onclick="facturar('<?php echo $id;?>');"></i>
-                            </button>
+                                <i class="fa  fa-file-archive-o" style="font-size:1em; color:green; cursor: pointer" onclick="facturar(<?php echo $id;?>)"></i>
+                            </button></a>
                         </td>
                     </tr>
                     </tbody>
@@ -228,6 +230,31 @@ $totalContrato=0;
     $(document).ready(function () {
         carga_clientes(false);
     });
+
+    function facturar(id)
+    {
+        // var hash = md5(id);
+        var respuesta = confirmar("¿Seguro/a de querer borrar este producto?");
+
+        if(respuesta)
+        {
+
+            jQuery.ajax({
+                url: 'borrar_producto.php',
+                type: 'POST',
+                cache: false,
+                async: true,
+                data: {
+                    a: 'borrar_producto',
+                    p:id
+                },
+                success: function (data) {
+
+                    location.reload();
+                }
+            });
+        }
+    }
 
 
     // cuando se selecciona un cliente, recibo el id y lo cargo por ajax desde carga_cli que al pasarle una id

@@ -25,7 +25,7 @@ else
         "servicios.id_empresa=".$_SESSION['REVENDEDOR']."
                                                      AND servicios.id_servicio_tipo=servicios_tipos.id AND contratos.id=".$_GET['idContrato']."
                                                       AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." 
-                                                      AND contratos.id=contratos_lineas.id_contrato AND servicios.id=".$_GET['idServicio']);
+                                                      AND contratos.id=contratos_lineas.id_contrato AND servicios.id=".$_GET['idServicio']." AND contratos_lineas.id=".$_GET['idLineaContrato']);
 }
 
 $id=$listado[0][0];
@@ -133,7 +133,16 @@ $idTipoServicio=$listado[0][6];
                                     <div class="row">
                                         <div class="form-group">
                                             <div class="col-md-2 col-sm-2">
+
                                                 <label>ID</label>
+                                                <?php
+                                                if(isset($_GET['idContrato']))
+                                                {
+                                                    echo '<input type="hidden" name="idContrato" value='.$_GET['idContrato'].' id="id" class="form-control">';
+                                                    echo '<input type="hidden" name="idLinea" value='.$_GET['idLineaContrato'].' id="id" class="form-control">';
+                                                }
+
+                                                ?>
                                                 <input type="text"  value="<?php echo $id;?>"  class="form-control disabled" disabled>
                                                 <input type="hidden" name="id" value="<?php echo $id;?>" id="id" class="form-control">
                                             </div>
@@ -195,16 +204,27 @@ $idTipoServicio=$listado[0][6];
                                         </thead>
                                         <tbody>
                                         <?php
-
+                                        if(!isset($_GET['idContrato']))
+                                        {
                                             $atributos= $util->selectWhere3('servicios_atributos,servicios_tipos_atributos',
-                                            array("servicios_atributos.id,servicios_tipos_atributos.nombre,servicios_tipos_atributos.id,servicios_atributos.valor"),
-                                            "servicios_atributos.id_servicio=".$_GET['idServicio']." and servicios_atributos.id_tipo_atributo=servicios_tipos_atributos.id");
+                                                array("servicios_atributos.id,servicios_tipos_atributos.nombre,servicios_tipos_atributos.id,servicios_atributos.valor"),
+                                                "servicios_atributos.id_servicio=".$_GET['idServicio']." and servicios_atributos.id_tipo_atributo=servicios_tipos_atributos.id");
+                                        }
+                                        else
+                                        {
+                                            $atributos= $util->selectWhere3('contratos_lineas,contratos_lineas_detalles,servicios_tipos_atributos',
+                                                array("contratos_lineas_detalles.id,servicios_tipos_atributos.nombre,contratos_lineas_detalles.valor"),
+                                                "servicios_tipos_atributos.id=contratos_lineas_detalles.id_atributo_servicio AND contratos_lineas_detalles.id_linea=".$_GET['idLineaContrato']
+                                            ." AND contratos_lineas.id=contratos_lineas_detalles.id_linea");
+                                        }
+
 
                                         for($i=0;$i<count($atributos);$i++)
                                         {
+
                                             $id=$atributos[$i][0];
                                             $attr=$atributos[$i][1];
-                                            $valor=$atributos[$i][3];
+                                            $valor=$atributos[$i][2];
 
 
 
@@ -296,7 +316,7 @@ $idTipoServicio=$listado[0][6];
 <script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 
-<script type="text/javascript" src="../../assets/js/app.js"></script>
+<!--<script type="text/javascript" src="../../assets/js/app.js"></script>-->
 
 
 <script>
