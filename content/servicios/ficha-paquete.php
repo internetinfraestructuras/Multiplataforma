@@ -104,7 +104,7 @@ $pvp=$listado[0][5];
                     <!-- ------ -->
                     <div class="panel panel-default">
                         <div class="panel-heading panel-heading-transparent">
-                            <strong>EDITAR <?php echo strtoupper(DEF_ALMACEN); ?></strong>
+                            <strong>EDITAR <?php echo strtoupper(DEF_PAQUETES); ?></strong>
                         </div>
 
                         <div class="panel-body">

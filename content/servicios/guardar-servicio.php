@@ -26,8 +26,6 @@ date_default_timezone_set('Etc/UTC');
 if(isset($_POST['action']) && $_POST['action'] == 'servicios')
 {
 
-
-
     $array = $required = array();
 
     // catch post data
@@ -132,13 +130,15 @@ if(
     $idServicio=$util->cleanstring($_POST['id']);
     $nombre = $util->cleanstring($_POST['nombre']);
     $tipo = $util->cleanstring($_POST['tipo']);
+
+    $servicio = $util->cleanstring($_POST['servicio']);
+
     $precioProv=$util->cleanstring($_POST['coste']);
     $beneficio=$util->cleanstring($_POST['beneficio']);
     $pvp=$util->cleanstring($_POST['pvp']);
     $impuesto=$util->cleanstring($_POST['impuesto']);
     $atributos=$_POST['atributo'];
     $cascada=$_POST['cascada'];
-
 
 
     //Si el servicio proviende de un contrato
@@ -149,6 +149,8 @@ if(
 
         $tupla= $util->selectWhere3("contratos_lineas", array("ID_TIPO","ID_ASOCIADO","ID_CONTRATO","PRECIO_PROVEEDOR", "BENEFICIO","IMPUESTO","PVP","PERMANENCIA"),
             "contratos_lineas.id_asociado=".$idServicio." AND contratos_lineas.id_contrato=".$_POST['idContrato']." AND id=".$_POST['idLinea']);
+
+
 
         //Obtenemos los datos necesarios para volcarlos en la nueva tupla
         $tipo=$tupla[0][0];
@@ -169,13 +171,13 @@ if(
 
         //SE SETEA ESTA LÍNEA DE CONTRATO A BAJA
         $campos=array('ESTADO','FECHA_BAJA');
-        $values=array("2",date('Y-m-d '));
+        $values=array("2",date('Y-m-d'));
         $result = $util->update('contratos_lineas', $campos, $values, "id_asociado=".$idServicio. " AND id_contrato=".$_POST['idContrato']." AND id=".$_POST['idLinea']);
 
 
-        //SE SETEA LA NUEVA LÍNEA DE CONTRATO EN ALTA
 
-        $values=array($tipo,$idAsoc,$idContrato,$coste,$beneficio,$impuesto,$pvp,$permanencia,1,date('Y-m-d '),"");
+        //SE SETEA LA NUEVA LÍNEA DE CONTRATO EN ALTA
+        $values=array($tipo,$servicio,$idContrato,$precioProv,$beneficio,$impuesto,$pvp,$permanencia,1,date('Y-m-d '),"");
         $idLineaNueva= $util->insertInto('contratos_lineas', $t_contratos_lineas, $values);
 
         //Recogemos los valores de los detalles;
@@ -197,6 +199,18 @@ if(
 
         }
 
+        //SE ACTUALIZAN LAS LINEAS DE PRODUCTOS ASOCIADOS A ESA LÍNEA
+
+        $listProductosLineas=$util->selectWhere3("contratos_lineas_productos", array("ID_PRODUCTO","ESTADO"),
+            "contratos_lineas_productos.id_linea=".$_POST['idLinea']);
+
+        for($i=0;$i<count($listProductosLineas);$i++)
+        {
+            $campos=array("ID_LINEA");
+            $values=array($idLineaNueva);
+            $result = $util->update('contratos_lineas_productos', $campos, $values, "id_linea=".$_POST['idLinea']);
+        }
+
         echo "<hr>DETALLESS<br>";
 
 
@@ -207,7 +221,7 @@ if(
         $campos=array("precio_proveedor","impuesto","beneficio","pvp");
         $result = $util->update('contratos_lineas', $campos, $values, "id_asociado=".$idServicio. " AND id_contrato=".$_POST['idContrato']." AND id=".$_POST['idLinea']);
 
-        $values=array($idContrato,date('Y-m-d '),"MODIFICACIÓN DEL SERVICIO:".$idServicio." PARA EL CLIENTE","");
+        $values=array($idContrato,date('Y-m-d h:i:s '),"MODIFICACIÓN DEL SERVICIO:".$idServicio." PARA EL CLIENTE","");
         $resAnexo= $util->insertInto('contratos_anexos', $t_contratos_anexos, $values);
     }
     else
@@ -242,11 +256,12 @@ if(
             $campos=array("precio_proveedor","beneficio","impuesto","pvp");
             $values=array($precioProv,$beneficio,$impuesto,$pvp);
             $ls= buscarContratosConServicio($idServicio);
+            echo "<br>El numero es de ".count($ls);
             for($i=0;$i<count($ls);$i++)
             {
                 $result = $util->update('contratos_lineas', $campos, $values, "contratos_lineas.id=".$ls[$i]['id']);
 
-            $values=array($idContrato,date('Y-m-d '),"MODIFICACIÓN DEL SERVICIO:".$idServicio." PARA EL CLIENTE","");
+            $values=array($ls[$i]['id_contrato'],date('Y-m-d h:i:s '),"MODIFICACIÓN DEL SERVICIO DE LA LINEA:".$ls[$i]['id']." PARA EL CLIENTE","");
             $resAnexo= $util->insertInto('contratos_anexos', $t_contratos_anexos, $values);
             }
 
@@ -273,8 +288,8 @@ function buscarContratosConServicio($idServicio)
      */
     $util = new util();
     return $util->selectWhere3('contratos,contratos_lineas',
-        array("contratos_lineas.id"),
-        "contratos.id=contratos_lineas.id_contrato AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND contratos_lineas.id_tipo=2 AND contratos_lineas.id_asociado=".$idServicio);
+        array("contratos_lineas.id,contratos_lineas.id_contrato"),
+        "contratos_lineas.estado=1 AND contratos.id=contratos_lineas.id_contrato AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND contratos_lineas.id_tipo=2 AND contratos_lineas.id_asociado=".$idServicio);
 }
 function _redirect($hash) {
 

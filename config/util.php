@@ -306,7 +306,7 @@ class util {
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
 
-            //echo $query;
+           // echo "<br>".$query."<br>";
 
             if (!($result = $link->query($query)))
                 throw new Exception();
@@ -406,7 +406,8 @@ class util {
     }
 
 
-    public function insertInto($tabla, $campos, $valor, $log=true){
+    public function insertInto($tabla, $campos, $valor, $log=true)
+    {
 
         try {
 
@@ -472,7 +473,7 @@ class util {
         }catch (Exception $e){
             $this->log('eror update: ' . $e->getFile());
         }
-        echo $query."<br/>";
+        //echo $query."<br/>";
 //        if (!($result = $link->query($query))) {
 //
 //            throw new Exception('Error en selectWhere.');

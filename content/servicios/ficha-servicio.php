@@ -21,7 +21,7 @@ $listado= $util->selectWhere3('servicios,servicios_tipos',
 else
 {
     $listado= $util->selectWhere3('servicios,servicios_tipos,contratos,contratos_lineas',
-        array("servicios.id","servicios.nombre","contratos_lineas.pvp","contratos_lineas.precio_proveedor","contratos_lineas.impuesto","contratos_lineas.beneficio","servicios.id_servicio_tipo"),
+        array("servicios.id","servicios.nombre","contratos_lineas.pvp","contratos_lineas.precio_proveedor","contratos_lineas.impuesto","contratos_lineas.beneficio","servicios.id_servicio_tipo","contratos_lineas.permanencia"),
         "servicios.id_empresa=".$_SESSION['REVENDEDOR']."
                                                      AND servicios.id_servicio_tipo=servicios_tipos.id AND contratos.id=".$_GET['idContrato']."
                                                       AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." 
@@ -35,6 +35,12 @@ $coste=$listado[0][3];
 $impuesto=$listado[0][4];
 $beneficio=$listado[0][5];
 $idTipoServicio=$listado[0][6];
+$permanencia=$listado[0][7];
+$readonly="";
+
+$actual = date ("Y-m-d");
+
+
 
 
 ?>
@@ -102,7 +108,7 @@ $idTipoServicio=$listado[0][6];
             <h1>Usted esta en</h1>
             <ol class="breadcrumb">
                 <li><a href="#"><?php echo DEF_SERVICIOS; ?></a></li>
-                <li class="active">Ficha de Servicios</li>
+                <li class="active">Ficha de Servicios de cliente</li>
             </ol>
         </header>
         <!-- /page title -->
@@ -136,6 +142,7 @@ $idTipoServicio=$listado[0][6];
 
                                                 <label>ID</label>
                                                 <?php
+
                                                 if(isset($_GET['idContrato']))
                                                 {
                                                     echo '<input type="hidden" name="idContrato" value='.$_GET['idContrato'].' id="id" class="form-control">';
@@ -143,22 +150,31 @@ $idTipoServicio=$listado[0][6];
                                                 }
 
                                                 ?>
-                                                <input type="text"  value="<?php echo $id;?>"  class="form-control disabled" disabled>
-                                                <input type="hidden" name="id" value="<?php echo $id;?>" id="id" class="form-control">
+                                                <input type="text" name="id" value="<?php echo $id;?>"  class="form-control disabled" readonly>
+
                                             </div>
-                                            <div class="col-md-6 col-sm-5">
-                                                <label>Nombre:</label>
-                                                <input type="text" name="nombre" id="nombre"
-                                                       class="form-control " value="<?php echo $nombre; ?>">
-                                            </div>
-                                            <div class="col-md-4 col-sm-4">
+                                            <div class="col-md-3 col-sm-4">
                                                 <label>Tipo de Servicio:</label>
-                                                <select name="tipo" id="tipo"
+                                                <select name="tipo" id="tipo" readonly
                                                         class="form-control pointer "  onchange="carga_tipos(this.value)">
                                                     <option value="<?php echo $idTipoServicio;?>">--- Seleccionar una ---</option>
                                                     <?php $util->carga_select('servicios_tipos', 'id', 'nombre', 'nombre','','','',$idTipoServicio); ?>
                                                 </select>
                                             </div>
+                                            <div class="col-md-4 col-sm-5">
+                                                <label>Nombre:</label>
+                                                <select name="servicio" id="servicio" <?php echo $readonly; ?>
+                                                        class="form-control pointer " name="nombre"  onchange="carga_tipos(this.value)">
+                                                    <option>--- Seleccionar una ---</option>
+                                                    <?php $util->carga_select('servicios', 'id', 'nombre', 'nombre','servicios.id_servicio_tipo='.$idTipoServicio,'','',$id); ?>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 col-sm-5">
+                                                <label>Permanencia:</label>
+                                                <input type="date" name="permanencia" value="<?php echo $permanencia;?>"  class="form-control disabled" readonly>
+
+                                            </div>
+
 
                                         </div>
                                     </div>
@@ -254,9 +270,11 @@ $idTipoServicio=$listado[0][6];
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12 col-sm-4">
+                                        <?php
+                                        if(!isset($_GET['idContrato']))
+                                          echo '<input type="checkbox" name="cascada"  placeholder="0" > ¿Realizar una actualización de precios a todos los clientes con dicho servicio contratado?   El precio no incluye cambios en los precios de los paquetes.';
+                                          ?>
 
-                                        <input type="checkbox" name="cascada"  placeholder="0" > ¿Realizar una actualización de precios a todos los clientes con dicho servicio contratado?
-                                        El precio no incluye cambios en los precios de los paquetes.
                                     </div>
                                 </div>
                                     <div class="row">

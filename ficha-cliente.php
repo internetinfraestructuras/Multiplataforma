@@ -380,6 +380,11 @@ $fechaNac=$producto[0][21];
                                                         <i class="fa fa-pencil"></i>
                                                     </button>
                                                 </a>
+                                                <a href="content/ventas/anexos.php?idContrato=<?php echo $id;?>">
+                                                    <button type="button" rel="tooltip" >
+                                                        <i class="fa fa-tasks"></i>
+                                                    </button>
+                                                </a>
                                                 <button type="button" rel="tooltip" class="">
                                                     <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>');"></i>
                                                 </button>
