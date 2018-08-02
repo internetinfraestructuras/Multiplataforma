@@ -601,7 +601,7 @@ check_session(2);
 
                     <input type="button" name="previous" class="previous action-button-previous"
                            value="Paso Anterior"/>
-                    <input type="button" name="next" class="next action-button" value="Continuar"/>
+                    <input type="button" name="next" id="next3" class="next action-button" value="Continuar"/>
                 </fieldset>
 
                 <fieldset class="caja">
@@ -614,17 +614,14 @@ check_session(2);
 
                     <input type="button" name="previous" class="previous action-button-previous"
                            value="Paso Anterior"/>
-                    <input type="button" name="next" class="next action-button" value="Continuar"/>
+                    <input type="button" name="next" id="next4" class="next action-button" value="Continuar"/>
                 </fieldset>
 
                 <fieldset class="caja">
 
-
-
-
                     <input type="button" name="previous" class="previous action-button-previous"
                            value="Paso Anterior"/>
-                    <input type="button" name="next" class="next action-button" value="Finalizar y Contratar"/>
+                    <input type="button" name="next" id="next5" class="next action-button" value="Finalizar y Contratar"/>
                 </fieldset>
 
             </form>
@@ -1171,6 +1168,41 @@ check_session(2);
             } else{
                 guardar_borrador(2);
             }
+        }
+
+
+        if (this.id == 'next3'){
+            if($("#campanas").val()==-1){
+                if(!confirm("No ha seleccionado ninguna campaña, ¿estás seguro/a?"))
+                    return;
+            } else{
+                guardar_borrador(3);
+                asignar_productos();
+            }
+        }
+
+
+        function asignar_productos(){
+            $.ajax({
+                url: 'content/servicios/lista_servicios_productos.php',
+                type: 'POST',
+                cache: false,
+                async: true,
+                data: {
+                    cabecera: id
+                },
+                success: function (data) {
+                    $('#velocidades').empty();
+                    for (var x = 0; x < data.length; x++) {
+                        $('#velocidades')
+                            .append($("<option></option>")
+                                .attr("value",data[x].perfil_olt)
+                                .text('OLT: ' + data[x].perfil_olt + ' / Descripción: ' +data[x].nombre_perfil));
+
+                    }
+                }
+            });
+
         }
 
         if (avanzar) {
