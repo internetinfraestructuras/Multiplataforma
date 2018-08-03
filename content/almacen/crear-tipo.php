@@ -59,11 +59,14 @@ if(isset($_POST['action']) && $_POST['action'] == 'tipos_productos')
 
         $nombre = $util->cleanstring($post_data['nombre']);
         $proveedor = $util->cleanstring($post_data['proveedor']);
+        $servicio = $util->cleanstring($post_data['servicio']);
+
+        var_dump($post_data);
 
 
     }
 
-    $values = array( $nombre,$proveedor,$_SESSION['REVENDEDOR']);
+    $values = array( $nombre,$proveedor,$_SESSION['REVENDEDOR'],$servicio);
 
     // llama a la funcion insertInto de la clase util que recibe la tabla (string) y dos arrays (campos y valores)
 
@@ -86,7 +89,6 @@ if(isset($_POST['action']) && $_POST['action'] == 'tipos_productos')
             die('_failed_');
         }
     }
-
 }
 
 // todo: --------------------------------------------

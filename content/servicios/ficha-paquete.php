@@ -109,7 +109,7 @@ $pvp=$listado[0][5];
 
                         <div class="panel-body">
 
-                            <form class="validate" action="php/guardar-cli.php" method="post"
+                            <form class="validate" action="guardar-paquete.php" method="post"
                                   enctype="multipart/form-data">
                                 <fieldset>
                                     <!-- required [php action request] -->
@@ -121,8 +121,7 @@ $pvp=$listado[0][5];
                                         <div class="form-group">
                                             <div class="col-md-2 col-sm-2">
                                                 <label>ID</label>
-                                                <input type="text"  value="<?php echo $id;?>" id="nombre" class="form-control disabled" disabled>
-                                                <input type="hidden" name="id" value="<?php echo $id;?>" id="nombre" class="form-control disabled">
+                                                <input type="text" name="id" value="<?php echo $id;?>" id="nombre" class="form-control disabled" readonly>
                                             </div>
                                             <div class="col-md-10 col-sm-5">
                                                 <label>Nombre:</label>
@@ -163,7 +162,7 @@ $pvp=$listado[0][5];
 
                                 <hr/>
                                 <div class="panel-body">
-
+<p>Descripción de los servicios incluidos en el paquete:</p>
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                         <tr>

@@ -203,9 +203,9 @@ check_session(3);
                                 <tbody>
                                 <?php
                                 $listado= $util->selectWhere3
-                                ('PRODUCTOS_MODELOS,PRODUCTOS_TIPOS',
-                                    array("PRODUCTOS_MODELOS.ID","PRODUCTOS_MODELOS.NOMBRE","PRODUCTOS_TIPOS.NOMBRE AS NS"),
-                                    "PRODUCTOS_MODELOS.id_tipo=productos_tipos.id","PRODUCTOS_MODELOS.ID_TIPO,PRODUCTOS_MODELOS.NOMBRE");
+                                ('productos_modelos,productos_tipos',
+                                    array("productos_modelos.ID","productos_modelos.NOMBRE","productos_tipos.NOMBRE AS NS"),
+                                    "productos_modelos.id_tipo=productos_tipos.id","productos_modelos.ID_TIPO,productos_modelos.NOMBRE");
 
                                 for($i=0;$i<count($listado);$i++)
                                 {

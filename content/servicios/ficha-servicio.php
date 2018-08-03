@@ -161,22 +161,42 @@ $actual = date ("Y-m-d");
                                                     <?php $util->carga_select('servicios_tipos', 'id', 'nombre', 'nombre','','','',$idTipoServicio); ?>
                                                 </select>
                                             </div>
-                                            <div class="col-md-4 col-sm-5">
-                                                <label>Nombre:</label>
-                                                <select name="servicio" id="servicio" <?php echo $readonly; ?>
-                                                        class="form-control pointer " name="nombre"  onchange="carga_tipos(this.value)">
-                                                    <option>--- Seleccionar una ---</option>
-                                                    <?php $util->carga_select('servicios', 'id', 'nombre', 'nombre','servicios.id_servicio_tipo='.$idTipoServicio,'','',$id); ?>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3 col-sm-5">
-                                                <label>Permanencia:</label>
-                                                <input type="date" name="permanencia" value="<?php echo $permanencia;?>"  class="form-control disabled" readonly>
 
-                                            </div>
+                                                <?php
+                                                if(isset($_GET['idContrato']))
+                                                {?>
+
+                                                <div class="col-md-4 col-sm-5">
+                                                    <label>Nombre:</label>
+                                                    <select name="servicio" id="servicio"
+                                                            class="form-control pointer " name="nombre"  onchange="carga_tipos(this.value)">
+                                                        <option>--- Seleccionar una ---</option>
+                                                        <?php $util->carga_select('servicios', 'id', 'nombre', 'nombre','servicios.id_servicio_tipo='.$idTipoServicio,'','',$id); ?>
+                                                    </select>
+                                                 </div>
+                                                    <div class="col-md-3 col-sm-5">
+                                                        <label>Permanencia:</label>
+                                                        <input type="date" name="permanencia" value="<?php echo $permanencia;?>"  class="form-control disabled" readonly>
+
+                                                    </div>
+                                                </div>
+                                                <?php
+                                                }
+                                                else
+                                                {?>
+                                                    <div class="col-md-7 col-sm-5">
+                                                        <label>Nombre:</label>
+                                                        <input type="text" name="nombre" id="servicio" value="<?php echo $nombre; ?>"   class="form-control" >
+                                                    </div>
 
 
-                                        </div>
+                                                <?php }
+                                                ?>
+</div>
+
+
+
+
                                     </div>
 
 
@@ -190,7 +210,7 @@ $actual = date ("Y-m-d");
                                             <div class="col-md-3 col-sm-4">
                                                 <label>Margen</label>
                                                 <input type="text" name="beneficio" id="dni"
-                                                       class="form-control " placeholder="0" value=<?php echo $beneficio; ?>>
+                                                     "  class="form-control  placeholder="0" value=<?php echo $beneficio; ?>>
                                             </div>
                                             <div class="col-md-3 col-sm-4">
                                                 <label>IMPUESTOS</label>
@@ -229,7 +249,7 @@ $actual = date ("Y-m-d");
                                         else
                                         {
                                             $atributos= $util->selectWhere3('contratos_lineas,contratos_lineas_detalles,servicios_tipos_atributos',
-                                                array("contratos_lineas_detalles.id,servicios_tipos_atributos.nombre,contratos_lineas_detalles.valor"),
+                                                array("servicios_tipos_atributos.id,servicios_tipos_atributos.nombre,contratos_lineas_detalles.valor"),
                                                 "servicios_tipos_atributos.id=contratos_lineas_detalles.id_atributo_servicio AND contratos_lineas_detalles.id_linea=".$_GET['idLineaContrato']
                                             ." AND contratos_lineas.id=contratos_lineas_detalles.id_linea");
                                         }
@@ -240,7 +260,12 @@ $actual = date ("Y-m-d");
 
                                             $id=$atributos[$i][0];
                                             $attr=$atributos[$i][1];
-                                            $valor=$atributos[$i][2];
+
+                                            if(isset($_GET['idContrato']))
+                                                $valor=$atributos[$i][2];
+                                            else
+                                                $valor=$atributos[$i][3];
+
 
 
 
@@ -271,8 +296,10 @@ $actual = date ("Y-m-d");
                                 <div class="row">
                                     <div class="col-md-12 col-sm-4">
                                         <?php
-                                        if(!isset($_GET['idContrato']))
-                                          echo '<input type="checkbox" name="cascada"  placeholder="0" > ¿Realizar una actualización de precios a todos los clientes con dicho servicio contratado?   El precio no incluye cambios en los precios de los paquetes.';
+                                        if(!isset($_GET['idContrato'])) {
+                                            echo '<input type="checkbox" name="cascada-precio"  placeholder="0" > ¿Realizar una actualización de precios a todos los clientes con dicho servicio contratado?   El precio no incluye cambios en los precios de los paquetes.';
+                                         //   echo '<input type="checkbox" name="cascada-tecnico"  placeholder="0" > ¿Realizar una actualización de la velocidad para todos los clientes?Si no se selecciona se respetará la velocidad a todos los clientes con este servicio contratado.';
+                                        }
                                           ?>
 
                                     </div>

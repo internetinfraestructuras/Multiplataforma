@@ -83,7 +83,7 @@ class util {
     }
     public function selectSome($tabla, $campos, $order){
         $link = $this->conectar();
-        
+
         $columnas = limpiar(implode($campos, ", "));
 
         $query = 'SELECT '.$columnas.' FROM ' . $tabla ;
@@ -306,7 +306,7 @@ class util {
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
 
-           // echo "<br>".$query."<br>";
+           //echo "<br>".$query."<br>";
 
             if (!($result = $link->query($query)))
                 throw new Exception();
@@ -473,7 +473,7 @@ class util {
         }catch (Exception $e){
             $this->log('eror update: ' . $e->getFile());
         }
-        //echo $query."<br/>";
+        echo $query."<br/>";
 //        if (!($result = $link->query($query))) {
 //
 //            throw new Exception('Error en selectWhere.');
@@ -742,6 +742,8 @@ class util {
 
 
 }
+
+
 function limpiar($c){
     $c= str_replace("\"","",$c);
     $c= str_replace("'","",$c);
