@@ -13,6 +13,14 @@ class Contrato
         return $util->selectWhere3("contratos_lineas", array("ID_TIPO","ID_ASOCIADO","ID_CONTRATO","PRECIO_PROVEEDOR", "BENEFICIO","IMPUESTO","PVP","PERMANENCIA"),
             "contratos_lineas.id_asociado=".$idServicio." AND contratos_lineas.id_contrato=".$idContrato." AND id=".$idLinea);
     }
+    public static function getLineaContrato($idContrato,$idLinea)
+    {
+
+        $util=new util();
+
+        return $util->selectWhere3("contratos_lineas", array("ID_TIPO","ID_ASOCIADO","ID_CONTRATO","PRECIO_PROVEEDOR", "BENEFICIO","IMPUESTO","PVP","PERMANENCIA"),
+            "contratos_lineas.id_contrato=".$idContrato." AND id=".$idLinea);
+    }
 
     //obtiene las linea de detalle de un contrato
     public static function getLineaDetalles($idLinea)
