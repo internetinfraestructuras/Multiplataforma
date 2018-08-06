@@ -100,36 +100,19 @@ if(
     (isset($_POST['oper']) && $_POST['oper'] == 'edit')
     &&
     (isset($_POST['id']) && $_POST['id'] != '')
-    &&
-    md5($_POST['id']) ==  $_POST['hash']
 )
 {
-
-
-    $id = $_POST['id'];
-    $dni = $util->cleanstring($_POST['dni']);
+    $id=$util->cleanstring($_POST['id']);
     $nombre = $util->cleanstring($_POST['nombre']);
-    $apellidos = $util->cleanstring($_POST['apellidos']);
-    $dir = $util->cleanstring($_POST['direccion']);
-    $cp = $util->cleanstring($_POST['cp']);
-    $email = $util->cleanstring($_POST['email']);
-    $tel1 = $util->cleanstring($_POST['tel1']);
-    $tel2 = $util->cleanstring($_POST['tel2']);
-    $email = $util->cleanstring($_POST['email']);
-    $notas = $util->cleanstring($_POST['notas']);
-    $region = $util->cleanstring($_POST['region']);
-    $provincia = $util->cleanstring($_POST['provincia']);
-    $localidad = $util->cleanstring($_POST['localidad']);
-    $alta = $util->cleanstring($_POST['alta']);
+    $inicio = $util->cleanstring($_POST['inicio']);
+    $fin = $util->cleanstring($_POST['fin']);
+    $duracion = $util->cleanstring($_POST['duracion']);
+    $descuento = $util->cleanstring($_POST['descuento']);
 
-    if(isset($_POST['region'])){
-        $values = array($dni, $nombre, $apellidos, $dir, $cp, $tel1, $tel2, $email, $notas, $region, $provincia, $localidad,$alta);
-        $campos = array('dni', 'nombre', 'apellidos', 'direccion', 'cp', 'tel1', 'tel2', 'email', 'notas', 'region', 'provincia', 'localidad','fecha_alta');
-    } else {
-        $values = array($dni, $nombre, $apellidos, $dir, $cp, $tel1, $tel2, $email, $notas);
-        $campos = array('dni', 'nombre', 'apellidos', 'direccion', 'cp', 'tel1', 'tel2', 'email', 'notas');
-    }
-    $result = $util->update('clientes', $campos, $values, "id=".$id);
+        $values = array($nombre,$inicio,$fin,$duracion,$descuento);
+        $campos = array('NOMBRE','FECHA_INICIO','FECHA_FIN','DURACION','DESCUENTO');
+
+    $result = $util->update('campanas', $campos, $values, "id=".$id." AND ID_EMPRESA=".$_SESSION['REVENDEDOR']);
     $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el cliente: '.$dni.' con el resultado:'.$result);
 } else{
     echo "nose";
