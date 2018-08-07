@@ -88,8 +88,6 @@ check_session(4);
 
 		</div>
 
-
-	
 		<!-- JAVASCRIPT FILES -->
 		<script type="text/javascript">var plugin_path = 'assets/plugins/';</script>
         <!-- jQuery library -->
@@ -105,10 +103,6 @@ check_session(4);
 
 		<!-- PAGE LEVEL SCRIPT -->
 		<script type="text/javascript">
-
-
-
-
 
             // todo: -------------------------------------------------------------------------------------------
             // cuando se selecciona una cabecera en el combo, cargo los datos que pertenecen a ella

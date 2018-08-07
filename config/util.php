@@ -61,6 +61,18 @@ class util {
 
     return $string;
 }
+
+    public function hoy($tipo){
+        if($tipo=='fecha')
+            return date("Y-m-d");
+
+        if($tipo=='hora')
+            return date("H:i:s");
+
+        if($tipo=='fechahora')
+            return date("Y-m-d H:i:s");
+
+    }
     public function conectar(){
         $link = new mysqli(DB_SERVER, DB_USER, DB_PASSWORD,DB_DATABASENAME);
 
@@ -419,22 +431,20 @@ class util {
 
             $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
 
-            //echo $query;
+//            echo $query;
             $query = str_replace("º","",$query);
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
 
             $lastid = mysqli_insert_id($link);
 
-           $link->close();
+            $link->close();
             if($log){
                 $consulta= str_replace("'"," ",$query);
                 $consulta.= str_replace(","," ",$query);
                 $consulta.= "','".$lastid . "')";
                 $this->loginsert($this->cleanstring($consulta),$lastid);
             }
-
-
 
             return $lastid;
 
@@ -655,7 +665,6 @@ class util {
             }
 
            $link->close();
-
         } catch (Exception $e) {
             $this->log('Excepción capturada: ' . $e->getMessage());
         }
@@ -808,7 +817,7 @@ function check_session($nivel=0){
     }
 
     if(!isset($_SESSION['USER_ID']) || !intval($_SESSION['USER_ID'])>0)
-        header("Location:login.php");
+        header("Location:/login.php");
 
     $_SESSION['start'] = time();
     $_SESSION['expire'] = $_SESSION['start'] + (30 * 60);

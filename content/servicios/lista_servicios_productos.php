@@ -19,7 +19,19 @@ require_once('../../config/util.php');
 $util = new util();
 check_session(3);
 
-$id=$_POST['id'];
+// recorro el array de servicios contratados, obtengo los id de los servicios,
+// construyo la cadena para pasar como parte de la consulta select IN
+
+$servicios=$_POST['servicios'];
+$in='';
+foreach ($servicios as $servicio){
+    $in = $in  . $servicio[0]. ",";
+}
+
+// borro la ultima coma
+$in = substr($in,0,-1);
+
+
 $campos=array('ID','NOMBRE');
 $provincias = $util->selectWhere('servicios_tipos_atributos', $campos,'servicios_tipos_atributos.ID_SERVICIO='.$id." AND servicios_tipos_atributos.id_tipo=1",'NOMBRE');
 

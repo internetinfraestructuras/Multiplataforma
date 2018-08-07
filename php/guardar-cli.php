@@ -60,35 +60,38 @@ date_default_timezone_set('Etc/UTC');
             $nombre = $util->cleanstring($post_data['nombre']);
             $apellidos = $util->cleanstring($post_data['apellidos']);
             $dni = $util->cleanstring($post_data['dni']);
+            $tdoc = $util->cleanstring($post_data['tipodoc']);
             $dir = $util->cleanstring($post_data['dir']);
-            $cp = $util->cleanstring($post_data['cp']);
-            $region = $util->cleanstring($post_data['region']);
-            $provincia = $util->cleanstring($post_data['provincia']);
             $localidad = $util->cleanstring($post_data['localidad']);
-            $email = $util->cleanstring($post_data['email']);
-            $tel1 = $util->cleanstring($post_data['tel1']);
-            $tel2 = $util->cleanstring($post_data['tel2']);
-            $notas = $util->cleanstring($post_data['notas']);
-            $banco = $util->cleanstring($post_data['banco']);
+            $provincia = $util->cleanstring($post_data['provincia']);
+            $region = $util->cleanstring($post_data['region']);
             $iban = $util->cleanstring($post_data['iban']);
             $swift = $util->cleanstring($post_data['swift']);
-            $tdoc = $util->cleanstring($post_data['tipodoc']);
+            $cp = $util->cleanstring($post_data['cp']);
+            $tel1 = $util->cleanstring($post_data['tel1']);
+            $tel2 = $util->cleanstring($post_data['tel2']);
+            $email = $util->cleanstring($post_data['email']);
+            $notas = $util->cleanstring($post_data['notas']);
+            $banco = $util->cleanstring($post_data['banco']);
+            $lopd = $util->cleanstring($post_data['lopd']);
             $tcli = $util->cleanstring($post_data['tipocli']);
             $fnac = $util->cleanstring($post_data['nacimiento']);
-            $lopd = $util->cleanstring($post_data['lopd']);
-
-
-            $alta = $post_data['alta'];
+            $dirbanco = $util->cleanstring($post_data['dirbanco']);
+            $nacion = $util->cleanstring($post_data['nacion']);
 
         }
+/*
+ * 
 
-        $campos=array('NOMBRE','APELLIDOS','DNI','DIRECCION','LOCALIDAD','PROVINCIA','COMUNIDAD','CP','FIJO','MOVIL',
-            'EMAIL','FECHA_ALTA','NOTAS','BAJA','ID_EMPRESA','BANCO','IBAN','SWIFT',
-            'DOCUMENTO_URL','DOCUMENTO','TIPO_DOCUMENTO','ID_CONSENTIMIENTO','ID_TIPO_CLIENTE','FECHA_NACIMIENTO');
+ */
+        $campos=array('NOMBRE','APELLIDOS','DNI','TIPO_DOCUMENTO','DIRECCION','LOCALIDAD','PROVINCIA',
+            'COMUNIDAD','IBAN','SWIFT','ID_EMPRESA','CP','FIJO','MOVIL','EMAIL','FECHA_ALTA','NOTAS','BAJA',
+            'BANCO','ID_CONSENTIMIENTO','ID_TIPO_CLIENTE','FECHA_NACIMIENTO','DIRECCION_BANCO','NACIONALIDAD');
 
+        $alta=date("Y-m-d");
 
-        $values = array( $nombre, $apellidos, $dni, $dir, $localidad, $provincia, $region, $cp, $tel1, $tel2,
-            $email, $alta, $notas,0, $_SESSION['REVENDEDOR'], $banco, $iban, $swift, '','',$tdoc,$lopd,$tcli,$fnac);
+        $values = array( $nombre, $apellidos, $dni, $tdoc, $dir, $localidad, $provincia, $region, $iban, $swift,
+            $_SESSION['REVENDEDOR'], $cp, $tel1, $tel2, $email, $alta, $notas,0,  $banco,  $lopd,$tcli,$fnac,$dirbanco, $nacion);
 
         // llama a la funcion insertInto de la clase util que recibe la tabla (string) y dos arrays (campos y valores)
 

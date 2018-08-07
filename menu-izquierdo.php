@@ -72,8 +72,13 @@ require_once('config/define.php');
             <li><a href="<?php echo $root;?>contratar.php">Alta contrato</a></li>
             <li><a href="<?php echo $root;?>edit-contrato.php">Modificar contrato</a></li>
             <li><a href="<?php echo $root;?>/content/ventas/campanas.php">Promociones</a></li>
-            <li><a href="<?php echo $root;?>.php">Solicitar Portabilidad</a></li>
-            <li><a href="<?php echo $root;?>edit-clie.php">Ver Estado Portabilidad</a></li>
+            <li><a href="#">Portabilidad</a>
+            <ul>
+                <li><a href="<?php echo $root;?>/content/ventas/porta_movil.php">Solicitud Móvil</a></li>
+                <li><a href="<?php echo $root;?>/content/ventas/porta_fijo.php">Solicitud Fijo</a></li>
+                <li><a href="<?php echo $root;?>edit-clie.php">Ver Estado Portabilidad</a></li>
+            </ul>
+            </li>
             <li><a href="<?php echo $root;?>del-clie.php">Borrar</a></li>
             <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->
         </ul>

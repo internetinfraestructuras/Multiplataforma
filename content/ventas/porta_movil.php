@@ -79,8 +79,8 @@ check_session(3);
         <header id="page-header">
             <h1>Usted esta en</h1>
             <ol class="breadcrumb">
-                <li><a href="#"><?php echo DEF_T_FIJO; ?></a></li>
-                <li class="active">Solicitar Porta</li>
+                <li><a href="#"><?php echo DEF_T_MOVIL; ?></a></li>
+                <li class="active">Solicitar Portabilidad</li>
             </ol>
         </header>
         <!-- /page title -->

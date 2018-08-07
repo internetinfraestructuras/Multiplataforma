@@ -18,25 +18,25 @@ date_default_timezone_set('Etc/UTC');
 
 if (isset($_POST['action']) && $_POST['action'] == 'borrador') {
 
-    $campos = array('ID_CONTRATO','ID_PQUETE');
-    $values = array($_POST['id_borrador'], $_POST['id_paquete']);
-    $id = $util->insertInto('contratos_paquete_borrador', $campos, $values);
 
     $util->delete('contratos_lineas_borrador','ID_CONTRATO',$_POST['id_borrador']);
 
+    //ID ID_PAQUETE	ID_TIPO	ID_ASOCIADO	ID_CONTRATO	PRECIO_PROVEEDOR	BENEFICIO	IMPUESTO	PVP
+    //[id_servicio, id_familia, pvp_extra, cantidad, nom_servicio, 'e'];
+
+    $campos = array('ID_PAQUETE','ID_CONTRATO','ID_TIPO','ID_ASOCIADO','PVP','PAQUETEOSERVICIO','NOMBRE');
+//    var_dump($_POST['lineas']);
 
     foreach ($_POST['lineas'] as $lineas){
-        $campos = array('ID_CONTRATO','ID_TIPO','ID_ASOCIADO','PVP');
-        $values = array($_POST['id_borrador'], $_POST['id_paquete']);
-        $id = $util->insertInto('contratos_lineas_borrador', $campos, $values);
 
+        for ($n=0;$n<intval($lineas[3]);$n++) {
+            $values = array($_POST['id_paquete'], $_POST['id_borrador'], $lineas[1], $lineas[0], $lineas[2], $lineas[5], $lineas[4]);
+            $util->insertInto('contratos_lineas_borrador', $campos, $values);
+        }
     }
-
 
 } else {
     echo "nose";
     die();
 }
-
-
 ?>

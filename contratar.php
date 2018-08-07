@@ -299,12 +299,12 @@ check_session(2);
                 <li><a href="#">Ventas</a></li>
                 <li class="active">Alta contrato</li>
             </ol>
+
         </header>
         <!-- /page title -->
 
 
         <div id="content" class="">
-
             <form id="msform" class="validate">
                 <!-- progressbar -->
                 <ul id="progressbar">
@@ -314,7 +314,12 @@ check_session(2);
                     <li>Asignación</li>
                     <li>Activar</li>
                 </ul>
-
+<!--                <div class="spinner" id="animacion1">-->
+<!--                    <div></div>-->
+<!--                    <div></div>-->
+<!--                    <div></div>-->
+<!--                    <div></div>-->
+<!--                </div>-->
                 <!-- fieldsets -->
                 <fieldset class="caja">
 
@@ -326,10 +331,9 @@ check_session(2);
                             </select>
                         </div>
                         <div class="col-md-4 col-sm-3 text-right">
-
-                            <span class="btn btn-primary" style="margin-top:25px;padding-top:9px;"
-                                  onclick="nuevo_cliente();">Crear uno nuevo</span>
-
+                            <a href="/add-clie.php">
+                                <span class="btn btn-primary" style="margin-top:25px;padding-top:9px;" >Crear uno nuevo</span>
+                            </a>
                             <br><br>
                         </div>
                     </div>
@@ -338,24 +342,24 @@ check_session(2);
                         <div class="form-group">
                             <div class="col-md-2 col-sm-3">
                                 <label>Nombre</label>
-                                <input type="text" name="nombre" value="" id="nombre"
+                                <input disabled type="text" name="nombre" value="" id="nombre"
                                        class="form-control required datoscli">
                             </div>
                             <div class="col-md-4 col-sm-4">
                                 <label>Apellidos</label>
-                                <input type="text" name="apellidos" id="apellidos"
+                                <input disabled type="text" name="apellidos" id="apellidos"
                                        class="form-control datoscli">
                             </div>
                             <div class="col-md-2 col-sm-4">
                                 <label>Tipo de Cliente</label>
-                                <select name="tipocli" id="tipocli"  class="form-control pointer">
+                                <select disabled name="tipocli" id="tipocli"  class="form-control pointer">
                                     <option value="-1">--- Seleccionar uno ---</option>
                                     <?php $util->carga_select('clientes_tipos', 'ID', 'NOMBRE', 'ID'); ?>
                                 </select>
                             </div>
                             <div class="col-md-2 col-sm-4">
                                 <label>Tipo de Documento</label>
-                                <select name="tipodoc" id="tipodoc" onchange="cambia_tipo_cliente(this.value)" class="form-control pointer">
+                                <select disabled name="tipodoc" id="tipodoc" onchange="cambia_tipo_cliente(this.value)" class="form-control pointer">
                                     <option value="-1">--- Seleccionar uno ---</option>
                                     <?php $util->carga_select('tipos_documentos', 'ID', 'NOMBRE', 'ID'); ?>
                                 </select>
@@ -364,7 +368,7 @@ check_session(2);
 
                             <div class="col-md-2 col-sm-3">
                                 <label id="tipodocumento">Dni</label>
-                                <input type="text" name="dni" id="dni"
+                                <input disabled type="text" name="dni" id="dni"
                                        class="form-control datoscli " placeholder="99999999A">
                             </div>
 
@@ -375,7 +379,7 @@ check_session(2);
                         <div class="form-group">
                             <div class="col-md-2 col-sm-3">
                                 <label>Nacionalidad </label>
-                                <select name="nacion" id="nacion"
+                                <select disabled name="nacion" id="nacion"
                                         class="form-control pointer"  onchange="carga_comunidades(this.value)">
                                     <option value="-1">--- Seleccionar una ---</option>
                                     <?php $util->carga_select('pais', 'id', 'paisnombre', 'paisnombre','','','',28); ?>
@@ -384,7 +388,7 @@ check_session(2);
                             </div>
                             <div class="col-md-2 col-sm-4">
                                 <label>Región</label>
-                                <select name="region" id="regiones"
+                                <select disabled name="region" id="regiones"
                                         class="form-control pointer " onchange="carga_provincias(this.value)">
                                     <option value="-1">--- Seleccionar una ---</option>
                                     <?php $util->carga_select('comunidades', 'id', 'comunidad', 'comunidad'); ?>
@@ -392,21 +396,21 @@ check_session(2);
                             </div>
                             <div class="col-md-2 col-sm-4">
                                 <label>Provincia </label>
-                                <select name="provincia" id="provincias"
+                                <select disabled name="provincia" id="provincias"
                                         class="form-control pointer " onchange="carga_poblaciones(this.value)">
                                     <option value="-1">--- Seleccionar una ---</option>
                                 </select>
                             </div>
                             <div class="col-md-3 col-sm-4">
                                 <label>Localidad </label>
-                                <select name="localidad" id="localidades"
+                                <select disabled name="localidad" id="localidades"
                                         class="form-control pointer ">
                                     <option value="-1">--- Seleccionar una ---</option>
                                 </select>
                             </div>
                             <div class="col-md-3 col-sm-6">
                                 <label>Dirección</label>
-                                <input type="text" name="direccion" id="direccion"
+                                <input disabled type="text" name="direccion" id="direccion"
                                        class="form-control datoscli ">
                             </div>
                         </div>
@@ -416,26 +420,26 @@ check_session(2);
                         <div class="form-group">
                             <div class="col-md-2 col-sm-2">
                                 <label>CP </label>
-                                <input type="number" min="0" max="99999" name="cp" id="cp"
+                                <input disabled type="number" min="0" max="99999" name="cp" id="cp"
                                        class="form-control datoscli required">
                             </div>
                             <div class="col-md-4 col-sm-6">
                                 <label>Email </label>
-                                <input type="email" name="email" id="email"
+                                <input disabled type="email" name="email" id="email"
                                        class="form-control datoscli required">
                             </div>
                             <div class="col-md-2 col-sm-3">
                                 <label>Tel Fijo</label>
-                                <input type="tel" name="tel1" id="tel1"
+                                <input disabled type="tel" name="tel1" id="tel1"
                                        class="form-control datoscli required">
                             </div>
                             <div class="col-md-2 col-sm-3">
                                 <label>Tel Móvil</label>
-                                <input type="tel" name="tel2" id="tel2" class="form-control datoscli">
+                                <input disabled type="tel" name="tel2" id="tel2" class="form-control datoscli">
                             </div>
                             <div class="col-md-2 col-sm-3">
                                 <label>Fecha Nacimiento</label>
-                                <input type="date" name="nacim" id="nacim" class="form-control datoscli">
+                                <input disabled type="date" name="nacim" id="nacim" class="form-control datoscli">
                             </div>
 
                         </div>
@@ -444,21 +448,21 @@ check_session(2);
                         <div class="form-group">
                             <div class="col-md-3 col-sm-3">
                                 <label>Entidad </label>
-                                <input type="text" name="banco" id="banco" class="form-control datoscli required" placeholder="Nombre del banco o caja">
+                                <input disabled type="text" name="banco" id="banco" class="form-control datoscli required" placeholder="Nombre del banco o caja">
                             </div>
                             <div class="col-md-4 col-sm-6">
                                 <label>IBAN</label>
-                                <input type="text" name="iban" id="iban" class="form-control datoscli required">
+                                <input disabled type="text" name="iban" id="iban" class="form-control datoscli required">
                             </div>
                             <div class="col-md-2 col-sm-3">
                                 <label>Swift</label>
-                                <input type="text" name="swift" id="swift" class="form-control datoscli">
+                                <input disabled type="text" name="swift" id="swift" class="form-control datoscli">
                             </div>
 
                             <div class="col-md-3">
                                 <label>Consentimientos LOPD <a href="lopd.html" target="_blank"><i class="fa fa-question-circle"></i></a> </label>
                                 <br>
-                                <select name="consentimiento" id="consentimiento"
+                                <select disabled name="consentimiento" id="consentimiento"
                                         class="form-control pointer">
                                     <option value="-1">--- Seleccionar una ---</option>
                                     <?php $util->carga_select('clientes_consentimientos', 'ID', 'NOMBRE', 'NOMBRE'); ?>
@@ -474,7 +478,7 @@ check_session(2);
 
                             <div class="col-xs-12">
                                 <label>Notas </label>
-                                <input type="text" name="notas" id="notas"
+                                <input disabled type="text" name="notas" id="notas"
                                        class="form-control datoscli required">
                             </div>
                         </div>
@@ -486,9 +490,8 @@ check_session(2);
 
                     ?>
 
-
                     <div id="error"></div>
-                    <input type="button" name="" id="atras1" onclick="cancelar();"
+                    <input  type="button" name="" id="atras1" onclick="cancelar();"
                            class="ocultar action-button-previous"
                            value="Paso Anterior"/>
                     <input type="button" name="next" id="next1" class="next action-button" value="Continuar"/>
@@ -499,7 +502,7 @@ check_session(2);
                     <div class="row">
                         <div class="col-lg-5 col-xs-12">
                             <label><b>Paquete que desea contratar</b></label><br><br>
-                            <select name="paquete" id="paquete"
+                            <select  name="paquete" id="paquete"
                                     class="form-control pointer " onchange="paquete_seleccionado(this)">
                                 <option value="">Sin paquete</option>
                                 <?php $util->carga_select('paquetes', 'id', 'NOMBRE, PVP', 'NOMBRE', '', 2, array('', ' €')); ?>
@@ -531,15 +534,15 @@ check_session(2);
 
                     </div>
 
-                    <input type="button" name="previous" class="previous action-button-previous"  value="Paso Anterior"/>
-                    <input type="button" name="next" id="next2" class="next action-button" value="Continuar"/>
+                    <input  type="button" name="previous" class="previous action-button-previous"  value="Paso Anterior"/>
+                    <input  type="button" name="next" id="next2" class="next action-button" value="Continuar"/>
                 </fieldset>
 
                 <fieldset class="caja">
                     <div class="row">
                         <div class="col-lg-4 col-xs-12">
                             <label><b>Aplicar una campaña</b></label><br><br>
-                            <select name="campanas" id="campanas" class="form-control pointer " onchange="campana_seleccionada(this)">
+                            <select  name="campanas" id="campanas" class="form-control pointer " onchange="campana_seleccionada(this)">
                                 <option value="-1" data-dto="0" data-dias="0">Sin campaña</option>
                             </select>
                         </div>
@@ -574,7 +577,7 @@ check_session(2);
 
                     <div class="col-lg-3 col-xs-12 ">
                         <label><b>Descuento %</b></label>
-                        <select name="dto" id="dto" class="form-control" style="width:80px" onchange="calcular_final(this.value)">
+                        <select  name="dto" id="dto" class="form-control" style="width:80px" onchange="calcular_final(this.value)">
                             <?php
                                 for($n=0;$n<=100;$n++){
                                     echo '<option value="'.$n.'">'.$n.'</option>';
@@ -585,12 +588,12 @@ check_session(2);
 
                     <div class="col-lg-3 col-xs-12 ">
                         <label><b>Días Promoción</b></label>
-                        <input type="number" name="dto_meses" id="dto_meses" class="form-control" style="max-width: 80px" onblur="calcular_fin_promo(this.value)" ></input>
+                        <input disabled type="number" name="dto_meses" id="dto_meses" class="form-control" style="max-width: 80px" onblur="calcular_fin_promo(this.value)" ></input>
                     </div>
 
                     <div class="col-lg-3 col-xs-12 ">
                         <label><b>Descuento Hasta</b></label>
-                        <input type="date" min="" name="dto_hasta" id="dto_hasta" style="max-width: 150px"  class="form-control">
+                        <input disabled type="date" min="" name="dto_hasta" id="dto_hasta" style="max-width: 150px"  class="form-control">
                     </div>
 
                     <div class="row">
@@ -599,29 +602,23 @@ check_session(2);
                         </div>
                     </div>
 
-                    <input type="button" name="previous" class="previous action-button-previous"
+                    <input  type="button" name="previous" class="previous action-button-previous"
                            value="Paso Anterior"/>
-                    <input type="button" name="next" id="next3" class="next action-button" value="Continuar"/>
+                    <input  type="button" name="next" id="next3" class="next action-button" value="Continuar"/>
                 </fieldset>
 
-                <fieldset class="caja">
-                    <div class="row ">
-                        <div class="form-group" id="aqui_los_servicios_y_productos">
+                <fieldset class="caja" id="aqui_los_servicios_y_productos">
 
-
-                        </div>
-                    </div>
-
-                    <input type="button" name="previous" class="previous action-button-previous"
+                    <input  type="button" name="previous" class="previous action-button-previous"
                            value="Paso Anterior"/>
-                    <input type="button" name="next" id="next4" class="next action-button" value="Continuar"/>
+                    <input  type="button" name="next" id="next4" class="next action-button" value="Continuar"/>
                 </fieldset>
 
                 <fieldset class="caja">
 
-                    <input type="button" name="previous" class="previous action-button-previous"
+                    <input  type="button" name="previous" class="previous action-button-previous"
                            value="Paso Anterior"/>
-                    <input type="button" name="next" id="next5" class="next action-button" value="Finalizar y Contratar"/>
+                    <input  type="button" name="next" id="next5" class="next action-button" value="Finalizar y Contratar"/>
                 </fieldset>
 
             </form>
@@ -645,6 +642,10 @@ check_session(2);
     var servicios_contratados=[];
     var id_contrato_borrador=0;
 
+
+
+    // carga las provincias en el combo correspondiente
+    // se llama cada vez que selecciona una comunidad autonoma
 
     // cargo las regiones por Ajax, cada vez que se cambia el pais
     function carga_comunidades(id, sel = 0) {
@@ -759,27 +760,6 @@ check_session(2);
         });
     }
 
-
-    // cuando se pulsa el boton de cliente nuevo, muestro los campos, pongo nuevo a 1
-    function nuevo_cliente() {
-        nuevo = 1;
-
-        $(".ocultar").css('display', 'block');
-        $("#atras1").css('display', 'block');
-        $("#next1").css('display', 'block');
-        $("#atras1").css('position', 'absolute');
-        $("#atras1").val('Cancelar');
-        $("#next1").val('Guardar Cliente');
-        $("#id").val(0);
-        $(".select2").css('display', 'none');
-        $(".datoscli").val('');
-        $('[name=id]').val('');
-        $('[name=region]').val('');
-        $('[name=provincia]').val('');
-        $('[name=localidad]').val('');
-        $("#nombre").focus();
-    }
-
     // cuando se pulsa el boton cancelar despues de haber pulsado el de nuevo, oculto los campos y pongo nuevo a 0
     function cancelar() {
         nuevo = 0;
@@ -850,6 +830,9 @@ check_session(2);
                 $("#email").val(data[0].email);
                 $("#notas").val(data[0].notas);
                 $("#nacim").val(data[0].fnacimiento);
+                $("#banco").val(data[0].banco);
+                $("#iban").val(data[0].iban);
+                $("#swift").val(data[0].swift);
 
                 $("#tipocli").val(data[0].tipocli).change();
                 $("#tipodoc").val(data[0].tipodoc).change();
@@ -1034,124 +1017,16 @@ check_session(2);
         var avanzar = true;
 
         if (this.id == 'next1') {
-            // alert(this.id +" " + nuevo + " " + parseInt($("#id")[0].selectedIndex));
 
-            if (parseInt($("#id")[0].selectedIndex) == -1 && nuevo==0) {
+            if (parseInt($("#id")[0].selectedIndex) == -1) {
                 alert("Debe seleccionar un cliente o crear uno nuevo");
                 avanzar = false;
                 return;
-            } else if (nuevo == 1) {
-
-                var nom = $("#nombre").val();
-                var ape = $("#apellidos").val();
-                var dni = $("#dni").val();
-                var dir = $("#direccion").val();
-                var reg = $("#regiones").val();
-                var pro = $("#provincias").val();
-                var loc = $("#localidades").val();
-                var cp = $("#cp").val();
-                var mail = $("#email").val();
-                var tl1 = $("#tel1").val();
-                var tl2 = $("#tel2").val();
-                var tdoc = $("#tipodoc").val();
-                var tcli = $("#tipocli").val();
-                var fnac = $("#nacim").val();
-                var lopd = $("#consentimiento").val();
-
-
-
-                if (nom == '') {
-                    alert('Debe teclear el nombre del cliente');
-                    $("#nombre").focus();
-                    return;
-                }
-                if (ape == '') {
-                    alert('Debe teclear los apellidos del cliente');
-                    $("#apellidos").focus();
-                    return;
-                }
-                if (dni == '') {
-                    alert('Debe teclear el DNI del cliente');
-                    $("#dni").focus();
-                    return;
-                }
-                if (dir == '') {
-                    alert('Debe teclear la dirección del cliente');
-                    $("#direccion").focus();
-                    return;
-                }
-                if (reg == -1) {
-                    alert('Debe seleccionar la región del cliente');
-                    $("#regiones").focus();
-                    return;
-                }
-                if (pro == -1) {
-                    alert('Debe seleccionar la provincia del cliente');
-                    $("#provincias").focus();
-                    return;
-                }
-                if (loc == -1) {
-                    alert('Debe seleccionar la localidad del cliente');
-                    $("#localidades").focus();
-                    return;
-                }
-                if (cp == '') {
-                    alert('Debe teclear el código postal del cliente');
-                    $("#cp").focus();
-                    return;
-                }
-                if (tcli == -1) {
-                    alert('Debe seleccionar el tipo de cliente');
-                    $("#tipocli").focus();
-                    return;
-                }
-
-                if (tdoc == -1) {
-                    alert('Debe seleccionar el tipo de documento que aporta el cliente');
-                    $("#tipodoc").focus();
-                    return;
-                }
-
-                if (fnac == '') {
-                    alert('Debe seleccionar la fecha de nacimiento del cliente');
-                    $("#nacim").focus();
-                    return;
-                }
-
-                // si la diferencia entre la fecha de hoy y la de nacimiento no es superior a dias es que es menor de edad
-
-                if (difference = dateDiffInDays(new Date(fnac), new Date(hoy()))<6570) {
-                    alert('El Cliente no parece ser mayor de edad');
-                    $("#nacim").focus();
-                    // return;
-                }
-
-                if (mail == '' || !validateEmail(mail)) {
-                    alert('Debe teclear el email válido');
-                    $("#email").focus();
-                    return;
-                }
-
-                if (tl1 == '' && tl2 == '') {
-                    alert('Debe teclear al menos un número de teléfono');
-                    $("#tel1").focus();
-                    return;
-                }
-
-                if (lopd == -1) {
-                    alert('Debe seleccionar un tipo de consentimiento para la LOPD');
-                    $("#consentimiento").focus();
-                    return;
-                }
+            } else {
 
 
                 $("#next1").css('display', 'none');
                 animating = true;
-
-                if (guardar_cliente()) {
-                    avanzar = true;
-                } else
-                    return;
 
 
                 $("#next1").css('display', 'block');
@@ -1183,27 +1058,39 @@ check_session(2);
 
 
         function asignar_productos(){
+
             $.ajax({
                 url: 'content/servicios/lista_servicios_productos.php',
                 type: 'POST',
                 cache: false,
                 async: true,
                 data: {
-                    cabecera: id
+                    servicios: servicios_contratados
                 },
                 success: function (data) {
-                    $('#velocidades').empty();
-                    for (var x = 0; x < data.length; x++) {
-                        $('#velocidades')
-                            .append($("<option></option>")
-                                .attr("value",data[x].perfil_olt)
-                                .text('OLT: ' + data[x].perfil_olt + ' / Descripción: ' +data[x].nombre_perfil));
 
-                    }
+                    // for (var x = 0; x < data.length; x++) {
+                    //     $('#velocidades')
+                    //         .append($("<option></option>")
+                    //             .attr("value",data[x].perfil_olt)
+                    //             .text('OLT: ' + data[x].perfil_olt + ' / Descripción: ' +data[x].nombre_perfil));
+                    //
+                    // }
                 }
             });
 
         }
+
+        // pedir:
+        /*
+        Movil : (porta / nuevo), Porta proceso aparte
+            nuevo: listado de numeros libres: airenetwork: pool y numero de reserva para 10 minutos
+            icc del almacen
+            digito control esta impreso en la tarjeta y la api
+            producto asociado
+
+            Fibra:  Pon
+         */
 
         if (avanzar) {
             //activate next step on progressbar using the index of next_fs
@@ -1257,7 +1144,9 @@ check_session(2);
                     id_cliente: id_cliente_seleccionado
                 },
                 success: function (data) {
-                    id_contrato_borrador = data;
+
+                    if(parseInt(data)>0)
+                        id_contrato_borrador = data;
                 }
             });
         }
@@ -1275,12 +1164,50 @@ check_session(2);
                     id_paquete: id_paquete_seleccionado,
                     id_borrador: id_contrato_borrador,
                     lineas: servicios_contratados
-                },
-                success: function (data) {
-                    id_contrato_borrador = data;
                 }
             });
 
+        }
+        if(paso==3) {
+            // guardo la campaña del contrato en borrador
+            $.ajax({
+                url: 'content/servicios/guardar-borrador-campana.php',
+                type: 'POST',
+                cache: false,
+                async: false,
+                data: {
+                    action: 'borrador',
+                    id_borrador: id_contrato_borrador,
+                    id_campana: $("#campanas").val(),
+                    dto:$("#dto").val(),
+                    dias:$("#dto_meses").val(),
+                    hasta:$("#dto_hasta").val()
+                }
+            });
+
+
+            // listo los servicios y productos para ir asociando datos a cada linea del contrato
+            // como los numeros de tarjetas, numeros de telefonos, imeis, pons, etc.
+
+            var lineas_detalles_contrato =
+                "<div class='row'>"+
+                "<div class='col-lg-1 col-xs-2'>En Pack</div>" +
+                "<div class='col-lg-4 col-xs-10'>Servicio</div>" +
+                "<div class='col-lg-7 col-xs-12'>Asociar Producto</div>"+
+                "</div>";
+
+            for (c=0; c<servicios_contratados.length; c++){
+                var enpackono='Fuera';
+                if(servicios_contratados[c][5]) enpackono = 'Dentro';
+
+                lineas_detalles_contrato = lineas_detalles_contrato +
+                    "<div class='row'>" +
+                    "<div class='col-xs-1 col-lg-2'>"+ enpackono + "</div>" +
+                    "<div class='col-xs-4 col-lg-2'>"+servicios_contratados[c][4] + "</div>" +
+                    "<div class='col-xs-7 col-lg-2'><input type='text' class='form-control'></div>" +
+                    "</div>" ;
+            }
+            $("#aqui_los_servicios_y_productos").append(lineas_detalles_contrato);
         }
 
     }
@@ -1290,8 +1217,8 @@ check_session(2);
         var id_servicio = jQuery(objeto).data("id_servicio");
         var nom_servicio = jQuery(objeto).data("servicio");
         var id_familia = jQuery(objeto).data("id_familia");
-        var pvp_extra = jQuery(objeto).data("pvp");
-        var cantidad = objeto.value || 0;
+        var pvp_extra = parseFloat(jQuery(objeto).data("pvp"));
+        var cantidad = parseFloat(objeto.value) || 0;
 
 
         for (c=0; c<servicios_contratados.length; c++){
@@ -1306,7 +1233,8 @@ check_session(2);
         console.log(servicios_contratados);
 
         for (c=0; c<servicios_contratados.length; c++){
-            tot_extras=tot_extras+(parseFloat(servicios_contratados[c][2])*parseFloat(servicios_contratados[c][3]));
+            if(servicios_contratados[c][5]=='e')
+                tot_extras=tot_extras+(parseFloat(servicios_contratados[c][2])*parseFloat(servicios_contratados[c][3]));
         }
 
         $("#pvp_extras").html('<p style="font-size:2.5em; font-weight:600; margin-top:-1px">' + round(tot_extras, 2) + ' &euro;</p>');
@@ -1340,12 +1268,15 @@ check_session(2);
         var tcli = $("#tipocli").val();
         var fnac = $("#nacim").val();
         var lopd = $("#consentimiento").val();
+        var banco = $("#banco").val();
+        var iban = $("#iban").val();
+        var swift = $("#swift").val();
 
 
         var clientes = {
             nombre: nom, apellidos: ape, dni: dni, dir: dir, cp: cp, region: reg, provincia: pro,
             localidad: loc, email: mail, tel1: tl1, tel2: tl2, notas: notas, alta: hoy(), tipodoc:tdoc,
-            tipocli:tcli, nacimiento: fnac, lopd:lopd
+            tipocli:tcli, nacimiento: fnac, lopd:lopd, banco:banco, iban:iban, swift:swift
         };
 
         var ok = false;

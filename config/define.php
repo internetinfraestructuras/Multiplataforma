@@ -28,6 +28,8 @@ define('DEF_ATRIBUTOS','Atributos de productos');
 define('DEF_PROVEEDORES','Proveedores');
 define('DEF_OLT','Cabeceras');
 define('DEF_PROVISIONES','Provisiones');
+define('DEF_T_FIJO','Telefonía Fija');
+define('DEF_T_MOVIL','Telefonía Móvil');
 
 //Elementos principales del menu lateral izquierdo
 define('MNU_ITEM_1','Usuarios');

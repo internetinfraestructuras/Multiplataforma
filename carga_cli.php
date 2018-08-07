@@ -38,7 +38,7 @@ if(isset($_POST['filtro'])) {
 //   19                    20                   21              22
 $campos=array('clientes.ID','DNI','NOMBRE','APELLIDOS','DIRECCION','LOCALIDAD','PROVINCIA','COMUNIDAD','IBAN',
     'SWIFT','ID_EMPRESA','CP','FIJO','MOVIL','EMAIL','FECHA_ALTA','BANCO', 'DOCUMENTO_URL','DOCUMENTO',
-    'TIPO_DOCUMENTO','ID_CONSENTIMIENTO','ID_TIPO_CLIENTE','FECHA_NACIMIENTO');
+    'TIPO_DOCUMENTO','ID_CONSENTIMIENTO','ID_TIPO_CLIENTE','FECHA_NACIMIENTO','NOTAS');
 
 
 /*
@@ -52,8 +52,8 @@ if($_SESSION['USER_LEVEL']==0) {
     // si se indica el id del cliente, solo cargo ese cliente
     if (isset($_POST['idcliente']) && $_POST['idcliente'] != '') {
         $result = $util->selectWhere("clientes", $campos, 'clientes.id = ' . $_POST['idcliente'],'apellidos, nombre');
-        $provision = $util->selectWhere("aprovisionados",array('id_en_olt','c','t','p','serial','num_pon','caja','puerto'),"id_cliente=".$_POST['idcliente']);
-        $rowprovision = mysqli_fetch_array($provision);
+//        $provision = $util->selectWhere("aprovisionados",array('id_en_olt','c','t','p','serial','num_pon','caja','puerto'),"id_cliente=".$_POST['idcliente']);
+//        $rowprovision = mysqli_fetch_array($provision);
     } else { // si no se cargan todos
 //        $result = $util->selectJoin("clientes", $campos, "LEFT JOIN municipios ON municipios.id = clientes.localidad LEFT JOIN provincias ON provincias.id=clientes.provincia", "nombre",$where);
         $result = $util->selectWhere("clientes", $campos, $where,'apellidos, nombre');
@@ -63,8 +63,8 @@ if($_SESSION['USER_LEVEL']==0) {
 
     if (isset($_POST['idcliente']) && $_POST['idcliente'] != '') {
         $result = $util->selectJoin("clientes", $campos, "LEFT JOIN municipios ON municipios.id = clientes.localidad LEFT JOIN provincias ON provincias.id=clientes.provincia", "nombre", 'clientes.id = ' . $_POST['idcliente']);
-        $provision = $util->selectWhere("aprovisionados",array('id_en_olt','c','t','p','serial','num_pon','caja','puerto'),"id_cliente=".$_POST['idcliente']);
-        $rowprovision = mysqli_fetch_array($provision);
+//        $provision = $util->selectWhere("aprovisionados",array('id_en_olt','c','t','p','serial','num_pon','caja','puerto'),"id_cliente=".$_POST['idcliente']);
+//        $rowprovision = mysqli_fetch_array($provision);
 
     } else {
         $result = $util->selectJoin("clientes", $campos, "LEFT JOIN municipios ON municipios.id = clientes.localidad LEFT JOIN provincias ON provincias.id=clientes.provincia", "nombre", $where . ' and user_create in (select id from usuarios where revendedor = '.$_SESSION['REVENDEDOR'].')');
@@ -87,7 +87,7 @@ if($_SESSION['USER_LEVEL']==0) {
                 'tel1' => $row[12],
                 'tel2' => $row[13],
                 'email' => $row[14],
-                'notas' => $row[11],
+                'notas' => $row[23],
                 'alta' => $row[15],
                 'region' => $row[7],
                 'iban' => $row[8],
