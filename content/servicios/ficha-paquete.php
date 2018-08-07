@@ -11,21 +11,30 @@ require_once('../../config/util.php');
 $util = new util();
 check_session(2);
 
-$producto= $util->selectWhere3('paquetes',
-    array("paquetes.id",
-        "paquetes.nombre",
-        "paquetes.precio_coste,
-        paquetes.margen,
-        paquetes.pvp,
-        paquetes.impuesto"),
-    "paquetes.id_empresa=".$_SESSION['REVENDEDOR']." AND paquetes.id=".$_GET['idPaquete']."");
+$producto= $util->selectWhere3('productos,productos_tipos,productos_modelos,almacenes,proveedores',
+    array("productos.id",
+        "productos.numero_serie",
+        "productos_tipos.nombre as Tipo",
+        "productos_modelos.nombre as Modelo,proveedores.nombre as proveedor,
+        productos.precio_prov,
+        productos.margen,
+        productos.pvp,
+        productos.impuestos"),
+    "productos.id_tipo_producto=productos_tipos.id
+                                                    AND productos.id_modelo_producto=productos_modelos.id 
+                                                    AND almacenes.id=productos.id_almacen 
+                                                    AND productos.id_proveedor=proveedores.id
+                                                    AND almacenes.id_empresa=".$_SESSION['REVENDEDOR']." AND productos.id=".$_GET['idProducto']."");
 
 $id=$producto[0][0];
-$nombre=$producto[0][1];
-$coste=$producto[0][2];
-$margen=$producto[0][3];
-$pvp=$producto[0][4];
-$impuestos=$producto[0][5];
+$numeroSerie=$producto[0][1];
+$tipo=$producto[0][2];
+$modelo=$producto[0][3];
+$proveedor=$producto[0][4];
+$precioProv=$producto[0][5];
+$margen=$producto[0][6];
+$pvp=$producto[0][7];
+$impuestos=$producto[0][8];
 
 
 
@@ -126,41 +135,62 @@ $impuestos=$producto[0][5];
                                         <div class="form-group">
                                             <div class="col-md-2 col-sm-2">
                                                 <label>ID</label>
-                                                <input type="text" name="id" value="<?php echo $id;?>" id="nombre" class="form-control disabled">
+                                                <input type="text" name="nombre" value="<?php echo $id;?>" id="nombre" class="form-control disabled">
                                             </div>
                                             <div class="col-md-10 col-sm-5">
-                                                <label>Nombre Paquete:</label>
-                                                <input type="text" name="nombre" id="nombre"
-                                                       class="form-control " value="<?php echo $nombre; ?>">
+                                                <label>Número de Serie:</label>
+                                                <input type="text" name="apellidos" id="apellidos"
+                                                       class="form-control " value="<?php echo $numeroSerie; ?>">
                                             </div>
 
                                         </div>
                                     </div>
 
+                                    <div class="row">
+                                        <div class="form-group">
+
+                                            <div class="col-md-4 col-sm-3">
+                                                <label>Proveedor </label>
+                                                <input type="text" name="dni" id="dni"
+                                                       class="form-control "  value=<?php echo $proveedor; ?> >
+                                            </div>
+
+                                            <div class="col-md-4 col-sm-6">
+                                                <label>Tipo </label>
+                                                <input type="text" name="direccion" id="direccion" value=<?php echo $tipo; ?>
+                                                class="form-control ">
+                                            </div>
+                                            <div class="col-md-4 col-sm-6">
+                                                <label>Modelo</label>
+                                                <input type="text" name="cp" id="cp" value=<?php echo $modelo; ?>
+                                                       class="form-control ">
+                                            </div>
+
+                                        </div>
+                                    </div>
 
                                     <div class="row">
                                         <div class="form-group">
                                             <div class="col-md-3 col-sm-4">
                                                 <label>Precio Proveedor</label>
                                                 <input type="text" name="dni" id="dni"
-                                                       class="form-control " placeholder=""  value=<?php echo $coste; ?>>
+                                                       class="form-control " placeholder="99999999A"  value=<?php echo $precioProv; ?>>
                                             </div>
                                             <div class="col-md-3 col-sm-4">
                                                 <label>Margen</label>
                                                 <input type="text" name="dni" id="dni"
-                                                       class="form-control " placeholder="" value=<?php echo $margen; ?>>
-                                            </div>
-                                            <div class="col-md-3 col-sm-4">
-                                                <label>IMPUESTOS</label>
-                                                <input type="text" name="dni" id="dni"
-                                                       class="form-control " placeholder="" value=<?php echo $impuestos; ?>>
+                                                       class="form-control " placeholder="99999999A" value=<?php echo $margen; ?>>
                                             </div>
                                             <div class="col-md-3 col-sm-4">
                                                 <label>PVP</label>
                                                 <input type="text" name="dni" id="dni"
-                                                       class="form-control " placeholder="" value=<?php echo $pvp; ?>>
+                                                       class="form-control " placeholder="99999999A" value=<?php echo $pvp; ?>>
                                             </div>
-
+                                            <div class="col-md-3 col-sm-4">
+                                                <label>IMPUESTOS</label>
+                                                <input type="text" name="dni" id="dni"
+                                                       class="form-control " placeholder="99999999A" value=<?php echo $impuestos; ?>>
+                                            </div>
                                         </div>
                                     </div>
                                 </fieldset>

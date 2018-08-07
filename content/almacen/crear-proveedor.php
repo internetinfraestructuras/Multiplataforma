@@ -63,7 +63,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'proveedores')
 
     }
 
-    $values = array( $nombre,$_SESSION['REVENDEDOR']);
+    $values = array( $nombre,$_SESSION['REVENDEDOR'],1);
 
     // llama a la funcion insertInto de la clase util que recibe la tabla (string) y dos arrays (campos y valores)
 
@@ -97,38 +97,21 @@ if(
     (isset($_POST['oper']) && $_POST['oper'] == 'edit')
     &&
     (isset($_POST['id']) && $_POST['id'] != '')
-    &&
-    md5($_POST['id']) ==  $_POST['hash']
 )
 {
 
 
     $id = $_POST['id'];
-    $dni = $util->cleanstring($_POST['dni']);
     $nombre = $util->cleanstring($_POST['nombre']);
-    $apellidos = $util->cleanstring($_POST['apellidos']);
-    $dir = $util->cleanstring($_POST['direccion']);
-    $cp = $util->cleanstring($_POST['cp']);
-    $email = $util->cleanstring($_POST['email']);
-    $tel1 = $util->cleanstring($_POST['tel1']);
-    $tel2 = $util->cleanstring($_POST['tel2']);
-    $email = $util->cleanstring($_POST['email']);
-    $notas = $util->cleanstring($_POST['notas']);
-    $region = $util->cleanstring($_POST['region']);
-    $provincia = $util->cleanstring($_POST['provincia']);
-    $localidad = $util->cleanstring($_POST['localidad']);
-    $alta = $util->cleanstring($_POST['alta']);
 
-    if(isset($_POST['region'])){
-        $values = array($dni, $nombre, $apellidos, $dir, $cp, $tel1, $tel2, $email, $notas, $region, $provincia, $localidad,$alta);
-        $campos = array('dni', 'nombre', 'apellidos', 'direccion', 'cp', 'tel1', 'tel2', 'email', 'notas', 'region', 'provincia', 'localidad','fecha_alta');
-    } else {
-        $values = array($dni, $nombre, $apellidos, $dir, $cp, $tel1, $tel2, $email, $notas);
-        $campos = array('dni', 'nombre', 'apellidos', 'direccion', 'cp', 'tel1', 'tel2', 'email', 'notas');
-    }
-    $result = $util->update('clientes', $campos, $values, "id=".$id);
-    $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el cliente: '.$dni.' con el resultado:'.$result);
-} else{
+
+
+        $campos=array('nombre');
+        $values = array($nombre);
+        $result = $util->update('proveedores', $campos, $values, "id=".$id);
+            $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el proveedor: '.$dni.' con el resultado:'.$result);
+} else
+    {
     echo "nose";
     die();
 }

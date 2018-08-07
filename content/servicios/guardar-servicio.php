@@ -26,8 +26,6 @@ date_default_timezone_set('Etc/UTC');
 if(isset($_POST['action']) && $_POST['action'] == 'servicios')
 {
 
-
-
     $array = $required = array();
 
     // catch post data
@@ -66,24 +64,25 @@ if(isset($_POST['action']) && $_POST['action'] == 'servicios')
         $pvp=$util->cleanstring($post_data['precio-pvp']);
         $impuesto=$util->cleanstring($post_data['impuesto']);
         $atributos=$post_data['atributo'];
+        $proveedor=$post_data['proveedor'];
 
     }
 
-    $values = array( $tipo,$_SESSION['REVENDEDOR'],$nombre,$precioProv,$impuesto,$beneficio,$pvp);
+    $values = array( $tipo,$_SESSION['REVENDEDOR'],$nombre,$precioProv,$impuesto,$beneficio,$pvp,$proveedor);
 
     // llama a la funcion insertInto de la clase util que recibe la tabla (string) y dos arrays (campos y valores)
 
-    $resultServicio = $util->insertInto('SERVICIOS', $t_servicios, $values);
+    $resultServicio = $util->insertInto('servicios', $t_servicios, $values);
 
 
-    $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado el cliente:'.$dni.' con el resultado:'.$result);
+    $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado el servicio:'.$resultServicio.' con el resultado:'.$result);
 
     /*
      * UNA VEZ CREADO EL PRODUCTO ASOCIAMOS LOS ATRIBUTOS A DICHO PRODUCTO $RESULT TIENE EL ID DEL PRODUCTO
      */
 
     // EXTRACT DATA FROM POST
-    var_dump($atributos);
+
     $j=0;
     for($i=0;$i<count($atributos)/2;$i++)
     {
@@ -95,7 +94,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'servicios')
         $values=array($id,$resultServicio,$valor);
         echo $valor."<br/>";
 
-        $result = $util->insertInto('SERVICIOS_ATRIBUTOS', $t_servicios_atributos, $values);
+        $result = $util->insertInto('servicios_atributos', $t_servicios_atributos, $values);
 
     }
 
@@ -126,44 +125,172 @@ if(
     (isset($_POST['oper']) && $_POST['oper'] == 'edit')
     &&
     (isset($_POST['id']) && $_POST['id'] != '')
-    &&
-    md5($_POST['id']) ==  $_POST['hash']
 )
 {
-
-
-    $id = $_POST['id'];
-    $dni = $util->cleanstring($_POST['dni']);
+    $idServicio=$util->cleanstring($_POST['id']);
     $nombre = $util->cleanstring($_POST['nombre']);
-    $apellidos = $util->cleanstring($_POST['apellidos']);
-    $dir = $util->cleanstring($_POST['direccion']);
-    $cp = $util->cleanstring($_POST['cp']);
-    $email = $util->cleanstring($_POST['email']);
-    $tel1 = $util->cleanstring($_POST['tel1']);
-    $tel2 = $util->cleanstring($_POST['tel2']);
-    $email = $util->cleanstring($_POST['email']);
-    $notas = $util->cleanstring($_POST['notas']);
-    $region = $util->cleanstring($_POST['region']);
-    $provincia = $util->cleanstring($_POST['provincia']);
-    $localidad = $util->cleanstring($_POST['localidad']);
-    $alta = $util->cleanstring($_POST['alta']);
+    $tipo = $util->cleanstring($_POST['tipo']);
 
-    if(isset($_POST['region'])){
-        $values = array($dni, $nombre, $apellidos, $dir, $cp, $tel1, $tel2, $email, $notas, $region, $provincia, $localidad,$alta);
-        $campos = array('dni', 'nombre', 'apellidos', 'direccion', 'cp', 'tel1', 'tel2', 'email', 'notas', 'region', 'provincia', 'localidad','fecha_alta');
-    } else {
-        $values = array($dni, $nombre, $apellidos, $dir, $cp, $tel1, $tel2, $email, $notas);
-        $campos = array('dni', 'nombre', 'apellidos', 'direccion', 'cp', 'tel1', 'tel2', 'email', 'notas');
+    $servicio = $util->cleanstring($_POST['servicio']);
+
+    $precioProv=$util->cleanstring($_POST['coste']);
+    $beneficio=$util->cleanstring($_POST['beneficio']);
+    $pvp=$util->cleanstring($_POST['pvp']);
+    $impuesto=$util->cleanstring($_POST['impuesto']);
+    $atributos=$_POST['atributo'];
+    $cascada=$_POST['cascada'];
+
+
+    //Si el servicio proviende de un contrato
+    if(isset($_POST['idContrato']))
+    {
+
+
+
+        $tupla= $util->selectWhere3("contratos_lineas", array("ID_TIPO","ID_ASOCIADO","ID_CONTRATO","PRECIO_PROVEEDOR", "BENEFICIO","IMPUESTO","PVP","PERMANENCIA"),
+            "contratos_lineas.id_asociado=".$idServicio." AND contratos_lineas.id_contrato=".$_POST['idContrato']." AND id=".$_POST['idLinea']);
+
+
+
+        //Obtenemos los datos necesarios para volcarlos en la nueva tupla
+        $tipo=$tupla[0][0];
+        $idAsoc=$tupla[0][1];
+        $idContrato=$tupla[0][2];
+        $permanencia=$tupla[0][7];
+
+
+        //obtenemos los detalles del servicio para hacer que apunten a otra línea y actualizamos la actual a baja y fecha de baja a dia de hoy.
+        $listDetallesLinea=$util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO","ID_ATRIBUTO_SERVICIO","VALOR"),
+            "contratos_lineas_detalles.id_linea=".$_POST['idLinea']);
+        //SE SETEA ESTA LÍNEA DE CONTRATO A BAJA
+        $campos=array('ESTADO','FECHA_BAJA');
+        $values=array("2",date('Y-m-d '));
+        $result = $util->update('contratos_lineas_detalles', $campos, $values, "id_linea=".$_POST['idLinea']);
+
+
+
+        //SE SETEA ESTA LÍNEA DE CONTRATO A BAJA
+        $campos=array('ESTADO','FECHA_BAJA');
+        $values=array("2",date('Y-m-d'));
+        $result = $util->update('contratos_lineas', $campos, $values, "id_asociado=".$idServicio. " AND id_contrato=".$_POST['idContrato']." AND id=".$_POST['idLinea']);
+
+
+
+        //SE SETEA LA NUEVA LÍNEA DE CONTRATO EN ALTA
+        $values=array($tipo,$servicio,$idContrato,$precioProv,$beneficio,$impuesto,$pvp,$permanencia,1,date('Y-m-d '),"");
+        $idLineaNueva= $util->insertInto('contratos_lineas', $t_contratos_lineas, $values);
+
+        //Recogemos los valores de los detalles;
+        $valor="";
+       $valores=array();
+
+
+        for($i=0;$i<count($atributos);$i++)
+        {
+            echo "<br>";
+            $idAtrib=$atributos['id'][$i];
+            $valor=$atributos['valor'][$i];
+            echo "Insertamos".$idAtrib." con el valor".$valor."<br>";
+            $tipo=$listDetallesLinea[$i][0];
+            $atributo=$listDetallesLinea[$i][1];
+
+            $values=array($idLineaNueva,$tipo,$atributo,$valor,date('Y-m-d '),'',1);
+            $util->insertInto('contratos_lineas_detalles', $t_contratos_lineas_detalles, $values);
+
+        }
+
+        //SE ACTUALIZAN LAS LINEAS DE PRODUCTOS ASOCIADOS A ESA LÍNEA
+
+        $listProductosLineas=$util->selectWhere3("contratos_lineas_productos", array("ID_PRODUCTO","ESTADO"),
+            "contratos_lineas_productos.id_linea=".$_POST['idLinea']);
+
+        for($i=0;$i<count($listProductosLineas);$i++)
+        {
+            $campos=array("ID_LINEA");
+            $values=array($idLineaNueva);
+            $result = $util->update('contratos_lineas_productos', $campos, $values, "id_linea=".$_POST['idLinea']);
+        }
+
+        echo "<hr>DETALLESS<br>";
+
+
+        echo "<hr>";
+
+        echo "<hr>";
+        $values=array($precioProv,$impuesto,$beneficio,$pvp,$permanencia,1,);
+        $campos=array("precio_proveedor","impuesto","beneficio","pvp");
+        $result = $util->update('contratos_lineas', $campos, $values, "id_asociado=".$idServicio. " AND id_contrato=".$_POST['idContrato']." AND id=".$_POST['idLinea']);
+
+        $values=array($idContrato,date('Y-m-d h:i:s '),"MODIFICACIÓN DEL SERVICIO:".$idServicio." PARA EL CLIENTE","");
+        $resAnexo= $util->insertInto('contratos_anexos', $t_contratos_anexos, $values);
     }
-    $result = $util->update('clientes', $campos, $values, "id=".$id);
-    $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el cliente: '.$dni.' con el resultado:'.$result);
+    else
+    {
+        for($i=0;$i<count($atributos);$i++)
+        {
+
+            $valor= $util->cleanstring($atributos["valor"][$i]);
+
+            $id= $util->cleanstring($atributos["id"][$i]);
+
+            $values=array($valor,$idProducto);
+            // echo "Se modifica".$id." con el valor".$valor;
+            $campos=array("valor");
+
+            if(!isset($atributosNuevos))
+                $result = $util->update('servicios_atributos', $campos, $values, "servicios_atributos.id_servicio=".$idServicio." AND servicios_atributos.id=".$id);
+            else
+
+                $result=$util->delete('servicios_atributos','id',$id);
+
+        }
+
+        $values=array($nombre,$tipo,$precioProv,$impuesto,$beneficio,$pvp);
+        $campos=array("nombre","id_servicio_tipo","precio_proveedor","impuesto","beneficio","pvp");
+        $result = $util->update('servicios', $campos, $values, "id=".$idServicio);
+        $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el servicio: '.$idServicio.' con el resultado:'.$result);
+
+
+        if($cascada=="on")
+        {
+            $campos=array("precio_proveedor","beneficio","impuesto","pvp");
+            $values=array($precioProv,$beneficio,$impuesto,$pvp);
+            $ls= buscarContratosConServicio($idServicio);
+            echo "<br>El numero es de ".count($ls);
+            for($i=0;$i<count($ls);$i++)
+            {
+                $result = $util->update('contratos_lineas', $campos, $values, "contratos_lineas.id=".$ls[$i]['id']);
+
+            $values=array($ls[$i]['id_contrato'],date('Y-m-d h:i:s '),"MODIFICACIÓN DEL SERVICIO DE LA LINEA:".$ls[$i]['id']." PARA EL CLIENTE","");
+            $resAnexo= $util->insertInto('contratos_anexos', $t_contratos_anexos, $values);
+            }
+
+        }
+    }
+
+
+
+
+
 } else{
     echo "nose";
     die();
 }
 
 
-
+function buscarContratosConServicio($idServicio)
+{
+            /*
+             * SELECT *
+        FROM contratos,contratos_lineas
+        WHERE contratos.id=contratos_lineas.ID_CONTRATO
+        AND contratos.ID_EMPRESA=1 AND contratos_lineas.ID_TIPO=2 AND contratos_lineas.ID_ASOCIADO=24;
+     */
+    $util = new util();
+    return $util->selectWhere3('contratos,contratos_lineas',
+        array("contratos_lineas.id,contratos_lineas.id_contrato"),
+        "contratos_lineas.estado=1 AND contratos.id=contratos_lineas.id_contrato AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND contratos_lineas.id_tipo=2 AND contratos_lineas.id_asociado=".$idServicio);
+}
 function _redirect($hash) {
 
     $HTTP_REFERER = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;

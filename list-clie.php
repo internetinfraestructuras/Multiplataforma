@@ -123,7 +123,7 @@ check_session(2);
                                     <br />
 
                                     <a href="javascript:;" class="btn btn-default select_unselect_row">Seleccionar/Deseleccionar por ID</a>
-                                    <a href="javascript:;" class="btn btn-default get_selected_ids">Mostrar datos completos</a>
+                                    <a href="ficha-cliente.php?idCliente=26";" class="btn btn-default get_selected_ids">Ver contratos cliente</a>
                                     <a href="javascript:;" class="btn btn-default delete_row">Gestionar equipos</a>
 
                                 </div>

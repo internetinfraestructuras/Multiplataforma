@@ -1,7 +1,7 @@
 <?php
 /*
     ╔════════════════════════════════════════════════════════════╗
-    ║ Interfaz que permite editar los datos de clientes ║
+    ║ Interfaz que permite editar la ficha de servicios ║
     ╚════════════════════════════════════════════════════════════╝
 */
 if (!isset($_SESSION)) {
@@ -11,30 +11,35 @@ require_once('../../config/util.php');
 $util = new util();
 check_session(2);
 
-$producto= $util->selectWhere3('productos,productos_tipos,productos_modelos,almacenes,proveedores',
-    array("productos.id",
-        "productos.numero_serie",
-        "productos_tipos.nombre as Tipo",
-        "productos_modelos.nombre as Modelo,proveedores.nombre as proveedor,
-        productos.precio_prov,
-        productos.margen,
-        productos.pvp,
-        productos.impuestos"),
-    "productos.id_tipo_producto=productos_tipos.id
-                                                    AND productos.id_modelo_producto=productos_modelos.id 
-                                                    AND almacenes.id=productos.id_almacen 
-                                                    AND productos.id_proveedor=proveedores.id
-                                                    AND almacenes.id_empresa=".$_SESSION['REVENDEDOR']." AND productos.id=".$_GET['idProducto']."");
+if(!isset($_GET['idContrato']))
+{
+$listado= $util->selectWhere3('servicios,servicios_tipos',
+    array("servicios.id","servicios.nombre","servicios.pvp","servicios.precio_proveedor","servicios.impuesto","servicios.beneficio","servicios.id_servicio_tipo"),
+    "servicios.id_empresa=".$_SESSION['REVENDEDOR']."
+                                                     AND servicios.id_servicio_tipo=servicios_tipos.id AND servicios.id=".$_GET['idServicio']);
+}
+else
+{
+    $listado= $util->selectWhere3('servicios,servicios_tipos,contratos,contratos_lineas',
+        array("servicios.id","servicios.nombre","contratos_lineas.pvp","contratos_lineas.precio_proveedor","contratos_lineas.impuesto","contratos_lineas.beneficio","servicios.id_servicio_tipo","contratos_lineas.permanencia"),
+        "servicios.id_empresa=".$_SESSION['REVENDEDOR']."
+                                                     AND servicios.id_servicio_tipo=servicios_tipos.id AND contratos.id=".$_GET['idContrato']."
+                                                      AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." 
+                                                      AND contratos.id=contratos_lineas.id_contrato AND servicios.id=".$_GET['idServicio']." AND contratos_lineas.id=".$_GET['idLineaContrato']);
+}
 
-$id=$producto[0][0];
-$numeroSerie=$producto[0][1];
-$tipo=$producto[0][2];
-$modelo=$producto[0][3];
-$proveedor=$producto[0][4];
-$precioProv=$producto[0][5];
-$margen=$producto[0][6];
-$pvp=$producto[0][7];
-$impuestos=$producto[0][8];
+$id=$listado[0][0];
+$nombre=$listado[0][1];
+$pvp=$listado[0][2];
+$coste=$listado[0][3];
+$impuesto=$listado[0][4];
+$beneficio=$listado[0][5];
+$idTipoServicio=$listado[0][6];
+$permanencia=$listado[0][7];
+$readonly="";
+
+$actual = date ("Y-m-d");
+
 
 
 
@@ -102,8 +107,8 @@ $impuestos=$producto[0][8];
         <header id="page-header">
             <h1>Usted esta en</h1>
             <ol class="breadcrumb">
-                <li><a href="#"><?php echo DEF_ALMACEN; ?></a></li>
-                <li class="active">Fiche de Producto</li>
+                <li><a href="#"><?php echo DEF_SERVICIOS; ?></a></li>
+                <li class="active">Ficha de Servicios de cliente</li>
             </ol>
         </header>
         <!-- /page title -->
@@ -118,12 +123,12 @@ $impuestos=$producto[0][8];
                     <!-- ------ -->
                     <div class="panel panel-default">
                         <div class="panel-heading panel-heading-transparent">
-                            <strong>EDITAR <?php echo strtoupper(DEF_ALMACEN); ?></strong>
+                            <strong>EDITAR <?php echo strtoupper(DEF_SERVICIOS); ?></strong>
                         </div>
 
                         <div class="panel-body">
 
-                            <form class="validate" action="php/guardar-cli.php" method="post"
+                            <form class="validate" action="guardar-servicio.php" method="post"
                                   enctype="multipart/form-data">
                                 <fieldset>
                                     <!-- required [php action request] -->
@@ -134,62 +139,68 @@ $impuestos=$producto[0][8];
                                     <div class="row">
                                         <div class="form-group">
                                             <div class="col-md-2 col-sm-2">
+
                                                 <label>ID</label>
-                                                <input type="text" name="nombre" value="<?php echo $id;?>" id="nombre" class="form-control disabled">
+                                                <?php
+
+                                                if(isset($_GET['idContrato']))
+                                                {
+                                                    echo '<input type="hidden" name="idContrato" value='.$_GET['idContrato'].' id="id" class="form-control">';
+                                                    echo '<input type="hidden" name="idLinea" value='.$_GET['idLineaContrato'].' id="id" class="form-control">';
+                                                }
+
+                                                ?>
+                                                <input type="text" name="id" value="<?php echo $id;?>"  class="form-control disabled" readonly>
+
                                             </div>
-                                            <div class="col-md-10 col-sm-5">
-                                                <label>Número de Serie:</label>
-                                                <input type="text" name="apellidos" id="apellidos"
-                                                       class="form-control " value="<?php echo $numeroSerie; ?>">
+                                            <div class="col-md-3 col-sm-4">
+                                                <label>Tipo de Servicio:</label>
+                                                <select name="tipo" id="tipo" readonly
+                                                        class="form-control pointer "  onchange="carga_tipos(this.value)">
+                                                    <option value="<?php echo $idTipoServicio;?>">--- Seleccionar una ---</option>
+                                                    <?php $util->carga_select('servicios_tipos', 'id', 'nombre', 'nombre','','','',$idTipoServicio); ?>
+                                                </select>
                                             </div>
+                                            <div class="col-md-4 col-sm-5">
+                                                <label>Nombre:</label>
+                                                <select name="servicio" id="servicio" <?php echo $readonly; ?>
+                                                        class="form-control pointer " name="nombre"  onchange="carga_tipos(this.value)">
+                                                    <option>--- Seleccionar una ---</option>
+                                                    <?php $util->carga_select('servicios', 'id', 'nombre', 'nombre','servicios.id_servicio_tipo='.$idTipoServicio,'','',$id); ?>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 col-sm-5">
+                                                <label>Permanencia:</label>
+                                                <input type="date" name="permanencia" value="<?php echo $permanencia;?>"  class="form-control disabled" readonly>
+
+                                            </div>
+
 
                                         </div>
                                     </div>
 
-                                    <div class="row">
-                                        <div class="form-group">
-
-                                            <div class="col-md-4 col-sm-3">
-                                                <label>Proveedor </label>
-                                                <input type="text" name="dni" id="dni"
-                                                       class="form-control "  value=<?php echo $proveedor; ?> >
-                                            </div>
-
-                                            <div class="col-md-4 col-sm-6">
-                                                <label>Tipo </label>
-                                                <input type="text" name="direccion" id="direccion" value=<?php echo $tipo; ?>
-                                                class="form-control ">
-                                            </div>
-                                            <div class="col-md-4 col-sm-6">
-                                                <label>Modelo</label>
-                                                <input type="text" name="cp" id="cp" value=<?php echo $modelo; ?>
-                                                       class="form-control ">
-                                            </div>
-
-                                        </div>
-                                    </div>
 
                                     <div class="row">
                                         <div class="form-group">
                                             <div class="col-md-3 col-sm-4">
                                                 <label>Precio Proveedor</label>
-                                                <input type="text" name="dni" id="dni"
-                                                       class="form-control " placeholder="99999999A"  value=<?php echo $precioProv; ?>>
+                                                <input type="text" name="coste" id="dni"
+                                                       class="form-control " placeholder="0.00"  value=<?php echo $coste; ?>>
                                             </div>
                                             <div class="col-md-3 col-sm-4">
                                                 <label>Margen</label>
-                                                <input type="text" name="dni" id="dni"
-                                                       class="form-control " placeholder="99999999A" value=<?php echo $margen; ?>>
-                                            </div>
-                                            <div class="col-md-3 col-sm-4">
-                                                <label>PVP</label>
-                                                <input type="text" name="dni" id="dni"
-                                                       class="form-control " placeholder="99999999A" value=<?php echo $pvp; ?>>
+                                                <input type="text" name="beneficio" id="dni"
+                                                       class="form-control " placeholder="0" value=<?php echo $beneficio; ?>>
                                             </div>
                                             <div class="col-md-3 col-sm-4">
                                                 <label>IMPUESTOS</label>
-                                                <input type="text" name="dni" id="dni"
-                                                       class="form-control " placeholder="99999999A" value=<?php echo $impuestos; ?>>
+                                                <input type="text" name="impuesto" id="dni"
+                                                       class="form-control " placeholder="0" value=<?php echo $impuesto; ?>>
+                                            </div>
+                                            <div class="col-md-3 col-sm-4">
+                                                <label>PVP</label>
+                                                <input type="text" name="pvp" id="dni"
+                                                       class="form-control " placeholder="0" value=<?php echo $pvp; ?>>
                                             </div>
                                         </div>
                                     </div>
@@ -201,44 +212,52 @@ $impuestos=$producto[0][8];
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                         <tr>
+                                            <th>ID</th>
                                             <th>ATRIBUTO</th>
                                             <th>VALOR</th>
-                                            <th>OPCIONES</th>
+
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <?php
+                                        if(!isset($_GET['idContrato']))
+                                        {
+                                            $atributos= $util->selectWhere3('servicios_atributos,servicios_tipos_atributos',
+                                                array("servicios_atributos.id,servicios_tipos_atributos.nombre,servicios_tipos_atributos.id,servicios_atributos.valor"),
+                                                "servicios_atributos.id_servicio=".$_GET['idServicio']." and servicios_atributos.id_tipo_atributo=servicios_tipos_atributos.id");
+                                        }
+                                        else
+                                        {
+                                            $atributos= $util->selectWhere3('contratos_lineas,contratos_lineas_detalles,servicios_tipos_atributos',
+                                                array("contratos_lineas_detalles.id,servicios_tipos_atributos.nombre,contratos_lineas_detalles.valor"),
+                                                "servicios_tipos_atributos.id=contratos_lineas_detalles.id_atributo_servicio AND contratos_lineas_detalles.id_linea=".$_GET['idLineaContrato']
+                                            ." AND contratos_lineas.id=contratos_lineas_detalles.id_linea");
+                                        }
 
-                                            $atributos= $util->selectWhere3('productos_atributos,productos_modelos_atributos',
-                                            array("productos_modelos_atributos.NOMBRE,productos_atributos.VALOR"),
-                                            " productos_atributos.ID_PRODUCTO=".$_GET['idProducto']."
-                                            AND productos_atributos.ID_ATRIBUTO=productos_modelos_atributos.ID");
 
                                         for($i=0;$i<count($atributos);$i++)
                                         {
 
-                                            $attr=$atributos[$i][0];
-                                            $valor=$atributos[$i][1];
+                                            $id=$atributos[$i][0];
+                                            $attr=$atributos[$i][1];
+                                            $valor=$atributos[$i][2];
 
 
 
                                             echo "<tr>";
-                                            echo "<td>$attr</td><td>$valor</td>";
+
+                                            echo "<tr>";
+                                            echo "<td><input name='atributo[id][]' value='$id' class='form-control' type='hidden' />
+                                            <input name='atributo[id][]' value='$id' class='form-control'  disabled/></td>
+                                            <td><input  value='$attr' class='form-control' disabled />
+                                            </td><td><input name='atributo[valor][]' value='$valor' class='form-control' /></td>";
 
                                             ?>
-                                            <td class="td-actions text-right">
-                                                <a href="ficha-producto.php">
-                                                    <button type="button" rel="tooltip" class="btn btn-info btn-simple btn-icon btn-sm">
-                                                        <i class="now-ui-icons users_single-02"></i>
-                                                    </button>
-                                                </a>
-                                                <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
-                                                    <i class="now-ui-icons ui-2_settings-90"></i>
-                                                </button>
-                                                <button type="button" rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
-                                                    <i class="now-ui-icons ui-1_simple-remove"></i>
-                                                </button>
-                                            </td>
+
+                                            </tr>
+
+
+
                                             </tr>
 
                                             <?php
@@ -250,14 +269,23 @@ $impuestos=$producto[0][8];
 
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-12 col-sm-4">
+                                        <?php
+                                        if(!isset($_GET['idContrato']))
+                                          echo '<input type="checkbox" name="cascada"  placeholder="0" > ¿Realizar una actualización de precios a todos los clientes con dicho servicio contratado?   El precio no incluye cambios en los precios de los paquetes.';
+                                          ?>
+
+                                    </div>
+                                </div>
+                                    <div class="row">
+                                     <div class="col-md-12">
                                         <button type="submit"
                                                 class="btn btn-3d btn-teal btn-xlg btn-block margin-top-30">
                                             VALIDAR Y GUARDAR
                                             <span class="block font-lato">verifique que toda la información es correcta</span>
                                         </button>
                                     </div>
-                                </div>
+                                    </div>
 
                             </form>
 
@@ -303,9 +331,10 @@ $impuestos=$producto[0][8];
 </div>
 
 <!-- JAVASCRIPT FILES -->
-<script type="text/javascript">var plugin_path = 'assets/plugins/';</script>
-<script type="text/javascript" src="assets/plugins/jquery/jquery-2.2.3.min.js"></script>
-<script type="text/javascript" src="assets/js/app.js"></script>
+<script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
+<script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
+
+<!--<script type="text/javascript" src="../../assets/js/app.js"></script>-->
 
 
 <script>

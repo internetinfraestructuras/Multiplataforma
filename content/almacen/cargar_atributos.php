@@ -21,7 +21,7 @@ check_session(3);
 
 $id=$_POST['id'];
 $campos=array('ID','NOMBRE');
-$provincias = $util->selectWhere('PRODUCTOS_MODELOS_ATRIBUTOS', $campos,'PRODUCTOS_MODELOS_ATRIBUTOS.ID_MODELO='.$id,'NOMBRE');
+$provincias = $util->selectWhere('productos_modelos_atributos', $campos,'productos_modelos_atributos.ID_MODELO='.$id,'NOMBRE');
 
 $aItems = array();
 

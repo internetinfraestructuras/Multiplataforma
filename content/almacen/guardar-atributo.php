@@ -63,12 +63,12 @@ if(isset($_POST['action']) && $_POST['action'] == 'atributos')
 
     }
 
-    $values = array( $modelo,$nombre);
+    $values = array( $modelo,$nombre,$_SESSION['REVENDEDOR']);
 
     // llama a la funcion insertInto de la clase util que recibe la tabla (string) y dos arrays (campos y valores)
 
     $result = $util->insertInto('productos_modelos_atributos', $t_productos_modelos_atributos, $values);
-    $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado el cliente:'.$dni.' con el resultado:'.$result);
+    $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado el atributo:'.$id.' con el resultado:'.$result);
 
 
     if(intval($result)>0){

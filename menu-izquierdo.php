@@ -38,7 +38,7 @@ require_once('config/define.php');
             <i class="main-icon fa fa-shopping-cart"></i><span><?php echo MNU_ITEM_8; ?> </span>
         </a>
         <ul><!-- submenus -->
-            <li><a href="<?php echo $root;?>content/almacen/agregar.php">Alta Productos</a></li>
+            <li><a href="<?php echo $root;?>content/almacen/productos.php">Productos</a></li>
             <li><a href="<?php echo $root;?>content/almacen/proveedores.php">Proveedores</a></li>
             <li><a href="<?php echo $root;?>content/almacen/tipos.php">Tipos</a></li>
             <li><a href="<?php echo $root;?>content/almacen/modelos.php">Modelos</a></li>
@@ -55,6 +55,7 @@ require_once('config/define.php');
         </a>
         <ul><!-- submenus -->
             <li><a href="<?php echo $root;?>content/servicios/servicios.php">Servicios</a></li>
+            <li><a href="<?php echo $root;?>content/servicios/proveedores.php">Proveedores</a></li>
             <li><a href="<?php echo $root;?>content/servicios/paquetes.php">Paquetes</a></li>
 
 
@@ -70,7 +71,7 @@ require_once('config/define.php');
         <ul><!-- submenus -->
             <li><a href="<?php echo $root;?>contratar.php">Alta contrato</a></li>
             <li><a href="<?php echo $root;?>edit-contrato.php">Modificar contrato</a></li>
-            <li><a href="<?php echo $root;?>promos.php">Promociones</a></li>
+            <li><a href="<?php echo $root;?>/content/ventas/campanas.php">Promociones</a></li>
             <li><a href="<?php echo $root;?>.php">Solicitar Portabilidad</a></li>
             <li><a href="<?php echo $root;?>edit-clie.php">Ver Estado Portabilidad</a></li>
             <li><a href="<?php echo $root;?>del-clie.php">Borrar</a></li>

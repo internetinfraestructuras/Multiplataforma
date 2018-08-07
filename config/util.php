@@ -229,7 +229,7 @@ class util {
 
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
-//echo $query;
+////echo $query;
             if (!($result = $link->query($query)))
                 throw new Exception();
 //            $this->log($query);
@@ -419,7 +419,7 @@ class util {
 
             $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
 
-//            echo $query;
+            //echo $query;
             $query = str_replace("º","",$query);
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
@@ -433,6 +433,8 @@ class util {
                 $consulta.= "','".$lastid . "')";
                 $this->loginsert($this->cleanstring($consulta),$lastid);
             }
+
+
 
             return $lastid;
 
@@ -627,7 +629,7 @@ class util {
     }
 
 
-    function carga_select($tabla='', $value='', $campos='', $orden='', $where='', $cuantos=1,$title='', $selected=0){
+    function carga_select($tabla='', $value='', $campos='', $orden='', $where='', $cuantos=1,$title=''){
 
         try {
             $link = $this->conectar();
@@ -640,10 +642,7 @@ class util {
 
             $valores='';
 
-            $n=0;
-
             while ($row = mysqli_fetch_array($result)){
-                $n++;
                 if($cuantos == 1 || $cuantos=='')
                     $valores= $row[1];
                 else if($cuantos == 2)
@@ -651,10 +650,7 @@ class util {
                 else if($cuantos == 3)
                     $valores= $row[1] . " / " .$row[2]. " / " .$row[3];
 
-                if($selected!=0 && intval($row[0])==$selected)
-                    echo "<option selected data-extra= '".$row[2]."' value='".$row[0]."'>".$valores."</option>";
-                else
-                    echo "<option data-extra= '".$row[2]."' value='".$row[0]."'>".$valores."</option>";
+                echo "<option data-extra= '".$row[2]."' value='".$row[0]."'>".$valores."</option>";
                 $valores='';
             }
 

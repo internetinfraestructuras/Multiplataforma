@@ -19,7 +19,8 @@ $producto= $util->selectWhere3('productos,productos_tipos,productos_modelos,alma
         productos.precio_prov,
         productos.margen,
         productos.pvp,
-        productos.impuestos"),
+        productos.impuestos,proveedores.id
+       ,productos.id_tipo_producto as idTipo, productos.id_modelo_producto as idModelo"),
     "productos.id_tipo_producto=productos_tipos.id
                                                     AND productos.id_modelo_producto=productos_modelos.id 
                                                     AND almacenes.id=productos.id_almacen 
@@ -35,6 +36,9 @@ $precioProv=$producto[0][5];
 $margen=$producto[0][6];
 $pvp=$producto[0][7];
 $impuestos=$producto[0][8];
+$idProveedor=$producto[0][9];
+$idTipo=$producto[0][10];
+$idModelo=$producto[0][11];
 
 
 
@@ -123,23 +127,24 @@ $impuestos=$producto[0][8];
 
                         <div class="panel-body">
 
-                            <form class="validate" action="php/guardar-cli.php" method="post"
+                            <form class="validate" action="guardar-producto.php" method="post"
                                   enctype="multipart/form-data">
                                 <fieldset>
                                     <!-- required [php action request] -->
                                     <input type="hidden" name="oper" value="edit"/>
-                                    <input type="hidden" name="hash" id="hash" value=""/>
+
 
 
                                     <div class="row">
                                         <div class="form-group">
                                             <div class="col-md-2 col-sm-2">
                                                 <label>ID</label>
-                                                <input type="text" name="nombre" value="<?php echo $id;?>" id="nombre" class="form-control disabled">
+                                                <input type="hidden" name="id" value="<?php echo $id;?>" id="id" class="form-control disabled" hidden>
+                                                <input type="text" name="id" value="<?php echo $id;?>" id="id" class="form-control disabled" disabled>
                                             </div>
                                             <div class="col-md-10 col-sm-5">
                                                 <label>Número de Serie:</label>
-                                                <input type="text" name="apellidos" id="apellidos"
+                                                <input type="text" name="numeroSerie" id="apellidos"
                                                        class="form-control " value="<?php echo $numeroSerie; ?>">
                                             </div>
 
@@ -150,20 +155,29 @@ $impuestos=$producto[0][8];
                                         <div class="form-group">
 
                                             <div class="col-md-4 col-sm-3">
-                                                <label>Proveedor </label>
-                                                <input type="text" name="dni" id="dni"
-                                                       class="form-control "  value=<?php echo $proveedor; ?> >
+                                                <label>Proveedor </label><br>
+                                                <select name="proveedor" id="proveedores"
+                                                        class="form-control pointer "  onchange="carga_tipos(this.value)">
+                                                <option value="<?php echo $idProveedor;?>">--- Seleccionar una ---</option>
+                                                <?php $util->carga_select('proveedores', 'id', 'nombre', 'nombre','id_tipo_proveedor=1','','',$idProveedor); ?>
+                                                </select>
                                             </div>
 
                                             <div class="col-md-4 col-sm-6">
-                                                <label>Tipo </label>
-                                                <input type="text" name="direccion" id="direccion" value=<?php echo $tipo; ?>
-                                                class="form-control ">
+                                                <label>Tipo </label><br>
+                                                <select name="tipo" id="tipos"
+                                                        class="form-control pointer " onchange="carga_modelos(this.value)">
+                                                    <option value="<?php echo $idTipo; ?>">--- Seleccionar una ---</option>
+                                                    <?php $util->carga_select('productos_tipos', 'id', 'nombre', 'nombre','','','',$idTipo); ?>
+                                                </select>
                                             </div>
                                             <div class="col-md-4 col-sm-6">
                                                 <label>Modelo</label>
-                                                <input type="text" name="cp" id="cp" value=<?php echo $modelo; ?>
-                                                       class="form-control ">
+                                                <select name="modelo" id="modelos"
+                                                        class="form-control pointer " onchange="carga_atributos(this.value)">
+                                                    <option value="<?php echo $idModelo;?>">--- Seleccionar una ---</option>
+                                                    <?php $util->carga_select('productos_modelos', 'id', 'nombre', 'nombre','id_tipo='.$idTipo,'','',$idModelo); ?>
+                                                </select>
                                             </div>
 
                                         </div>
@@ -173,22 +187,22 @@ $impuestos=$producto[0][8];
                                         <div class="form-group">
                                             <div class="col-md-3 col-sm-4">
                                                 <label>Precio Proveedor</label>
-                                                <input type="text" name="dni" id="dni"
+                                                <input type="text" name="coste" id="dni"
                                                        class="form-control " placeholder="99999999A"  value=<?php echo $precioProv; ?>>
                                             </div>
                                             <div class="col-md-3 col-sm-4">
                                                 <label>Margen</label>
-                                                <input type="text" name="dni" id="dni"
+                                                <input type="text" name="margen" id="dni"
                                                        class="form-control " placeholder="99999999A" value=<?php echo $margen; ?>>
                                             </div>
                                             <div class="col-md-3 col-sm-4">
                                                 <label>PVP</label>
-                                                <input type="text" name="dni" id="dni"
+                                                <input type="text" name="pvp" id="dni"
                                                        class="form-control " placeholder="99999999A" value=<?php echo $pvp; ?>>
                                             </div>
                                             <div class="col-md-3 col-sm-4">
                                                 <label>IMPUESTOS</label>
-                                                <input type="text" name="dni" id="dni"
+                                                <input type="text" name="impuesto" id="dni"
                                                        class="form-control " placeholder="99999999A" value=<?php echo $impuestos; ?>>
                                             </div>
                                         </div>
@@ -196,49 +210,43 @@ $impuestos=$producto[0][8];
                                 </fieldset>
 
                                 <hr/>
-                                <div class="panel-body">
+                                <div class="panel-body datos-atributos">
 
-                                    <table id="example2" class="table table-bordered table-hover">
+                                    <table id="example2 tabla-atributos" class="table table-bordered table-hover">
                                         <thead>
                                         <tr>
+                                            <th>ID</th>
                                             <th>ATRIBUTO</th>
                                             <th>VALOR</th>
-                                            <th>OPCIONES</th>
+
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <?php
 
                                             $atributos= $util->selectWhere3('productos_atributos,productos_modelos_atributos',
-                                            array("productos_modelos_atributos.NOMBRE,productos_atributos.VALOR"),
+                                            array("productos_modelos_atributos.NOMBRE,productos_atributos.VALOR,productos_atributos.id"),
                                             " productos_atributos.ID_PRODUCTO=".$_GET['idProducto']."
                                             AND productos_atributos.ID_ATRIBUTO=productos_modelos_atributos.ID");
+
 
                                         for($i=0;$i<count($atributos);$i++)
                                         {
 
                                             $attr=$atributos[$i][0];
                                             $valor=$atributos[$i][1];
+                                            $id=$atributos[$i][2];
 
 
 
                                             echo "<tr>";
-                                            echo "<td>$attr</td><td>$valor</td>";
+                                            echo "<td><input name='atributo[id][]' value='$id' class='form-control' type='hidden' />
+                                            <input name='atributo[id][]' value='$id' class='form-control'  disabled/></td>
+                                            <td><input  value='$attr' class='form-control' disabled />
+                                            </td><td><input name='atributo[valor][]' value='$valor' class='form-control' /></td>";
 
                                             ?>
-                                            <td class="td-actions text-right">
-                                                <a href="ficha-producto.php">
-                                                    <button type="button" rel="tooltip" class="btn btn-info btn-simple btn-icon btn-sm">
-                                                        <i class="now-ui-icons users_single-02"></i>
-                                                    </button>
-                                                </a>
-                                                <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
-                                                    <i class="now-ui-icons ui-2_settings-90"></i>
-                                                </button>
-                                                <button type="button" rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
-                                                    <i class="now-ui-icons ui-1_simple-remove"></i>
-                                                </button>
-                                            </td>
+
                                             </tr>
 
                                             <?php
@@ -248,7 +256,9 @@ $impuestos=$producto[0][8];
 
                                     </table>
 
+
                                 </div>
+                                <div id="atributos-nuevos"></div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <button type="submit"
@@ -303,9 +313,9 @@ $impuestos=$producto[0][8];
 </div>
 
 <!-- JAVASCRIPT FILES -->
-<script type="text/javascript">var plugin_path = 'assets/plugins/';</script>
-<script type="text/javascript" src="assets/plugins/jquery/jquery-2.2.3.min.js"></script>
-<script type="text/javascript" src="assets/js/app.js"></script>
+<script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
+<script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="../../assets/js/app.js"></script>
 
 
 <script>
@@ -378,45 +388,71 @@ $impuestos=$producto[0][8];
     });
 
 
-    // cuando se selecciona un cliente, recibo el id y lo cargo por ajax desde carga_cli que al pasarle una id
-    // solo devuelve ese registro
-
-    function seleccionado(id){
-        $.ajax({
-            url: 'carga_cli.php',
+    function carga_modelos(id)
+    {
+        var select = jQuery("#modelos");
+        select.empty();
+        select.append('<option value="">--- Seleccionar una ---</option>');
+        jQuery.ajax({
+            url: 'carga_modelos.php',
             type: 'POST',
             cache: false,
-            cache: false,
-            async: true,
-            data: {
-                idcliente: id
-            },
-            success: function (data) {
-                $("#regiones").val(parseInt(data[0].region)).change();
-                $("#provincias").empty();
-
-                carga_provincias(parseInt(data[0].region),parseInt(data[0].provincia0));
-                $("#dni").val(data[0].dni);
-                $("#nombre").val(data[0].nombre);
-                $("#apellidos").val(data[0].apellidos);
-                $("#direccion").val(data[0].direccion);
-                $("#cp").val(data[0].cp);
-
-                //$("#provincias").val(parseInt(data[0].provincia0)).change();
-                carga_poblaciones(parseInt(data[0].provincia0),parseInt(data[0].localidad));
-
-
-                $("#tel1").val(data[0].tel1);
-                $("#tel2").val(data[0].tel2);
-                $("#email").val(data[0].email);
-                $("#notas").val(data[0].notas);
-                $("#fechalta").val(data[0].alta);
-                // $("#fechalta").attr('disabled','disabled');
-
-                $("#hash").val(md5(id));
+            async:true,
+            data:{id:id},
+            success: function(data)
+            {
+                $.each(data, function(i){
+                    select.append('<option value="'+data[i].id+'">'+data[i].nombre+'</option>');
+                });
             }
         });
     }
+    function carga_tipos(id)
+    {
+        var select = jQuery("#tipos");
+        select.empty();
+        select.append('<option value="">--- Seleccionar una ---</option>');
+        jQuery.ajax({
+            url: 'cargar_tipos.php',
+            type: 'POST',
+            cache: false,
+            async:true,
+            data:{id:id},
+            success: function(data)
+            {
+                $.each(data, function(i){
+                    select.append('<option value="'+data[i].id+'">'+data[i].nombre+'</option>');
+                });
+            }
+        });
+    }
+
+    function carga_atributos(id)
+    {
+        console.log("ATRUIBUTS");
+        var div = jQuery("#atributos-nuevos");
+        div.empty();
+        jQuery.ajax({
+            url: 'cargar_atributos.php',
+            type: 'POST',
+            cache: false,
+            async:true,
+            data:{id:id},
+            success: function(data)
+            {
+                $(".datos-atributos").css("display","none");
+                $.each(data, function(i)
+                {
+                    div.append('<div class="col-md-1 col-sm-1"><label>'+data[i].NOMBRE+'</label>' +
+                        '<input type="text" name="atributo-nuevo[id][]"  class="form-control " /><input type="text" value="'+data[i].ID+'" hidden name="atributo-nuevo[valor][]"/></div>');
+                });
+            }
+        });
+
+
+    }
+
+
 
 </script>
 
