@@ -5,11 +5,15 @@
  * Date: 17/07/2018
  * Time: 11:50
  */
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 if (!isset($_SESSION)) {
     @session_start();
 }
 require_once('../../config/util.php');
 require_once('../../config/def_tablas.php');
+require_once ('../../clases/Paquete.php');
 $util = new util();
 
 check_session(3);
@@ -148,13 +152,23 @@ if(
     $impuesto = $util->cleanstring($_POST['impuesto']);
     $pvp = $util->cleanstring($_POST['pvp']);
 
+    if(isset($_POST['idContrato']))
+    {
+
+        Paquete::modificarPaqueteContrato($_POST['idContrato'],$_POST['idLinea'],$id,$coste,$margen,$impuesto,$pvp);
+    }
+    else
+    {
 
 
         $values = array($nombre,$coste,$margen,$impuesto,$pvp);
         $campos = array('NOMBRE','PRECIO_COSTE','MARGEN','IMPUESTO','PVP');
 
-    $result = $util->update('paquetes', $campos, $values, "id=".$id. " AND id_empresa=".$_SESSION['REVENDEDOR']);
-    $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el paquete: '.$id.' con el resultado:'.$result);
+        $result = $util->update('paquetes', $campos, $values, "id=".$id. " AND id_empresa=".$_SESSION['REVENDEDOR']);
+        $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el paquete: '.$id.' con el resultado:'.$result);
+    }
+
+
 } else{
     echo "nose";
     die();

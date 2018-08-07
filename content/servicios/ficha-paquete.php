@@ -115,7 +115,14 @@ $pvp=$listado[0][5];
                                     <!-- required [php action request] -->
                                     <input type="hidden" name="oper" value="edit"/>
                                     <input type="hidden" name="hash" id="hash" value=""/>
-
+                                    <?php
+                                    $readonly="";
+                                    if(isset($_GET['idContrato']))
+                                    {
+                                    echo '<input type="hidden" name="idContrato" value='.$_GET['idContrato'].' id="id" class="form-control">';
+                                    echo '<input type="hidden" name="idLinea" value='.$_GET['idLineaContrato'].' id="id" class="form-control">';
+                                    $readonly="readonly";
+                                    } ?>
 
                                     <div class="row">
                                         <div class="form-group">
@@ -126,7 +133,7 @@ $pvp=$listado[0][5];
                                             <div class="col-md-10 col-sm-5">
                                                 <label>Nombre:</label>
                                                 <input type="text" name="nombre" id="apellidos"
-                                                       class="form-control " value="<?php echo $nombre; ?>">
+                                                       class="form-control " value="<?php echo $nombre; ?>" <?php echo $readonly; ?>>
                                             </div>
 
                                         </div>
@@ -162,7 +169,99 @@ $pvp=$listado[0][5];
 
                                 <hr/>
                                 <div class="panel-body">
-<p>Descripción de los servicios incluidos en el paquete:</p>
+                                    <?php
+                                    //Si no tenemos el idContrato quiere decir que debemos de mostrar LA FICHA DEL PAQUETE GENERAL NO INSTANCIADO PARA UN CLIENTE
+                                    if(isset($_GET['idContrato']))
+                                    {?>
+                                    <table id="example2" class="table table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>SERVICIO</th>
+                                            <th>TIPO SERVICIO</th>
+                                            <th>OPCIONES</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+
+                                        if(!isset($_GET['idContrato']))
+                                        {
+                                            /*
+                                             * SELECT servicios.NOMBRE,servicios_tipos.NOMBRE
+FROM contratos_lineas,contratos_lineas_detalles,servicios,servicios_tipos
+WHERE contratos_lineas.ID=contratos_lineas_detalles.ID_LINEA
+AND contratos_lineas_detalles.ID_SERVICIO=servicios.id
+AND servicios.ID_SERVICIO_TIPO=servicios_tipos.ID
+AND contratos_lineas_detalles.ID_LINEA=250
+                                             */
+                                            $atributos= $util->selectWhere3('servicios,paquetes_servicios,paquetes,servicios_tipos',
+                                                array("paquetes_servicios.id,servicios.nombre,servicios.precio_proveedor,servicios.beneficio,servicios.impuesto,servicios.pvp,servicios.id,servicios_tipos.nombre,servicios.id"),
+                                                "paquetes.id=paquetes_servicios.id_paquete 
+                                                AND servicios.id=paquetes_servicios.id_servicio 
+                                                AND servicios.id_servicio_tipo=servicios_tipos.id 
+                                                AND paquetes_servicios.id_paquete=".$_GET['idPaquete']);
+                                        }
+                                        else
+                                        {
+                                            $atributos= $util->selectWhere3('contratos_lineas,contratos_lineas_detalles,servicios,servicios_tipos',
+                                                array('servicios.id,servicios.nombre,servicios_tipos.nombre,servicios.id_servicio_tipo'),
+                                                'contratos_lineas.id=contratos_lineas_detalles.id_linea
+                                                AND contratos_lineas_detalles.id_servicio=servicios.id
+                                                AND servicios.id_servicio_tipo=servicios_tipos.id
+                                                AND contratos_lineas_detalles.estado=1 
+                                                AND contratos_lineas_detalles.id_linea='.$_GET['idLineaContrato']." GROUP BY contratos_lineas_detalles.ID_TIPO_SERVICIO");
+                                        }
+
+
+                                        for($i=0;$i<count($atributos);$i++)
+                                        {
+                                            $id=$atributos[$i][0];
+                                            $nombre=$atributos[$i][1];
+                                            $tipo=$atributos[$i][2];
+                                            $servicioId=$atributos[$i][3];
+
+
+
+
+
+                                            echo "<tr>";
+                                            echo "<td>$id</td>
+                                                  <td>$nombre</td>
+                                                  <td>$tipo</td>";
+
+                                            ?>
+                                            <td class="td-actions text-right">
+                                                <a href="ficha-servicio.php?idServicio=<?php echo $idServicio;?>">
+                                                    <button type="button" rel="tooltip" >
+                                                        <?php
+                                                        echo "<a href='/mul/content/servicios/ficha-servicio-paquete.php?idServicio=".$id."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$_GET['idLineaContrato']."&tipo=$servicioId''>";
+                                                        echo ' <i class="fa fa-pencil"></i>';
+                                                        echo "</a>";
+                                                        ?>
+
+                                                    </button>
+                                                </a>
+                                                <button type="button" rel="tooltip" class="">
+                                                    <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>');"></i>
+                                                </button>
+
+                                            </td>
+
+                                            </tr>
+
+                                            <?php
+                                        }
+                                        ?>
+                                        </tbody>
+
+                                    </table>
+                                    <?php
+                                    }
+                                    else
+                                    {
+                                    ?>
+                                    <p>Descripción de los servicios incluidos en el paquete:</p>
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                         <tr>
@@ -179,9 +278,10 @@ $pvp=$listado[0][5];
                                         <tbody>
                                         <?php
 
-                                            $atributos= $util->selectWhere3('servicios,paquetes_servicios,paquetes',
-                                            array("paquetes_servicios.id,servicios.nombre,servicios.precio_proveedor,servicios.beneficio,servicios.impuesto,servicios.pvp,servicios.id"),
-                                            "paquetes.id=paquetes_servicios.id_paquete AND servicios.id=paquetes_servicios.id_servicio
+
+                                            $atributos= $util->selectWhere3('servicios,paquetes_servicios,paquetes,servicios_tipos',
+                                            array("paquetes_servicios.id,servicios.nombre,servicios.precio_proveedor,servicios.beneficio,servicios.impuesto,servicios.pvp,servicios.id,servicios_tipos.nombre"),
+                                            "paquetes.id=paquetes_servicios.id_paquete AND servicios.id=paquetes_servicios.id_servicio AND servicios.id_servicio_tipo=servicios_tipos.id 
                                                     AND paquetes_servicios.id_paquete=".$_GET['idPaquete']);
 
                                         for($i=0;$i<count($atributos);$i++)
@@ -194,11 +294,12 @@ $pvp=$listado[0][5];
                                             $impuesto=$atributos[$i][4];
                                             $pvp=$atributos[$i][5];
                                             $idServicio=$atributos[$i][6];
+                                            $servicio=$atributos[$i][7];
 
 
 
                                             echo "<tr>";
-                                            echo "<td>$attr</td><td>$valor</td><td>$valor</td><td>$coste</td><td>$beneficio</td><td>$impuesto</td><td>$pvp</td>";
+                                            echo "<td>$attr</td><td>$valor</td><td>$servicio</td><td>$coste</td><td>$beneficio</td><td>$impuesto</td><td>$pvp</td>";
 
                                             ?>
                                             <td class="td-actions text-right">
@@ -221,7 +322,9 @@ $pvp=$listado[0][5];
                                         </tbody>
 
                                     </table>
-
+                                    <?php
+                                    }
+                                    ?>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
@@ -279,7 +382,7 @@ $pvp=$listado[0][5];
 <!-- JAVASCRIPT FILES -->
 <script type="text/javascript">var plugin_path = 'assets/plugins/';</script>
 <script type="text/javascript" src="assets/plugins/jquery/jquery-2.2.3.min.js"></script>
-<script type="text/javascript" src="assets/js/app.js"></script>
+<!--<script type="text/javascript" src="assets/js/app.js"></script>-->
 
 
 <script>

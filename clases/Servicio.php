@@ -66,13 +66,21 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
 
         echo "El nuevo atributo es".$atributo." con un valor de".$valor." y con el ID".$idAtrib."<br>";
 
-        Contrato::setNuevaLineaDetalles($idLineaNueva,$tipo,$idAtrib,$valor,1);
+        $idLineaDetalle=Contrato::getLineaDetalles($idLinea);
 
-        $productosLinea=Contrato::getProductosLinea($idLinea);
+        $idLineaDetalle=$idLineaDetalle[0]['ID'];
+        echo "<br>";
+        echo "La linea a buscar es".$idLineaDetalle;
+        echo "<br>";
+        $idLineaDetalleNueva=Contrato::setNuevaLineaDetalles($idLineaNueva,$tipo,$idAtrib,$valor,1);
+
+
+        $productosLinea=Contrato::getProductosLinea($idLineaDetalle);
+
 
         for($j=0;$j<count($productosLinea);$j++)
         {
-            Contrato::cambiarLineaProducto($idLinea,$idLineaNueva);
+            Contrato::cambiarLineaProducto($idLineaDetalle,$idLineaDetalleNueva);
         }
 
     }
@@ -90,6 +98,92 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
 
 
 
+
+}
+public static function actualizarServicioPaqueteContrato($idContrato,$idLinea,$id,$tipo,$idServicio,$atributos)
+    {
+
+        //$lineaContrato=Contrato::getLineaContratoServicio($idContrato,$idLinea,$idServicio);
+
+        echo "<br>";
+        echo "<br>";
+        echo "<br>";
+
+       // $lineaContrato=Contrato::getLineaContratoPaquete($idContrato,$idLinea,$id);
+
+        $lineaDetalles=Contrato::getLineaDetallesServicio($idLinea,$id);
+
+        echo "<br>";
+        echo "<br>";
+        echo "<hr>";
+        Contrato::setLineaDetallesBajaServicio($idLinea,$id);//Seteamos la linea actual a baja
+        echo "<br>";
+        echo "<br>";
+        echo "<hr>";
+        Contrato::setLineaContratoBaja($idContrato,$idLinea,$id);
+
+
+        //Seteamos los detalles de una línea de contrato
+
+        if($atributos==null)
+        {
+            echo "ES NULO";
+            Contrato::setNuevaLineaDetallesPaquete($idLinea,$tipo,'null','null',1,$idServicio);
+            Contrato::setLineaDetallesBajaServicio($idLinea,$idServicio);
+        }
+        else
+        {
+            echo "<br>";
+            echo "<br>".count($atributos);
+            echo "<hr>";
+            for($i=0;$i<count($atributos);$i++)
+            {
+
+                $idAtrib=$atributos['id'][$i];
+                $valor=$atributos['valor'][$i];
+
+                $tipo=$lineaDetalles[$i][0];
+                $atributo=$lineaDetalles[$i][1];
+
+
+                Contrato::setNuevaLineaDetallesPaquete($idLinea,$tipo,$idAtrib,$valor,1,$idServicio);
+
+
+
+            }
+        }
+
+        $productosLinea=Contrato::getProductosLinea($idLinea);
+
+        for($j=0;$j<count($productosLinea);$j++)
+        {
+            Contrato::cambiarLineaProducto($idLinea,$idLinea);
+        }
+
+
+        /*
+            $values=array($precioProveedor,$impuesto,$beneficio,$pvp,$permanencia,1,);
+            $campos=array("precio_proveedor","impuesto","beneficio","pvp");
+            $result = $util->update('contratos_lineas', $campos, $values, "id_asociado=".$idServicio. " AND id_contrato=".$_POST['idContrato']." AND id=".$_POST['idLinea']);
+        */
+        Contrato::generarAnexo($idContrato,$idServicio,"Se ha cambiado el servicio");
+
+
+
+
+
+
+
+
+    }
+public static function darBajaServicio($idContrato,$idLineaContrato,$idServicio,$fechaBaja,$productos)
+{
+
+    Contrato::setLineaContratoBaja($idContrato,$idLineaContrato,$idServicio,$fechaBaja);
+    Contrato::setLineaDetallesBaja($idContrato,$fechaBaja);
+
+    if($productos!='[]' || $productos!=null)
+        Contrato::setProductoRMA($productos,$fechaBaja);
 
 }
 
