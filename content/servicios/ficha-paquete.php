@@ -386,114 +386,45 @@ AND contratos_lineas_detalles.ID_LINEA=250
 
 
 <script>
-    // cargo las provincias por Ajax, cada vez que se cambia la comunidad
-    function carga_provincias(id,sel=0){
-        var select = $("#provincias");
-        select.empty();
-        select.empty();
-        select.append('<option value="">--- Seleccionar una ---</option>');
-        $.ajax({
-            url: 'carga_prov.php',
-            type: 'POST',
-            cache: false,
-            async:true,
-            data:{id:id},
-            success: function(data) {
-                $.each(data, function(i){
-                    if(sel>0 && sel==data[i].id)
-                        select.append('<option value="'+data[i].id+'" selected>'+data[i].provincia+'</option>');
-                    else
-                        select.append('<option value="'+data[i].id+'">'+data[i].provincia+'</option>');
 
-                });
-            }
-        });
+
+    function borrar(id)
+    {
+        // var hash = md5(id);
+        var respuesta = confirmar("¿Estas seguro de eliminar el servicio del paquete? Si elimina el servicio del paquete se cobrarán como servicios independientes los demás servicios");
+
+
+        if(respuesta)
+        {
+
+            jQuery.ajax({
+                url: 'cancelar-baja.php',
+                type: 'POST',
+                cache: false,
+                async: true,
+                data: {
+                    a: 'cancelar-baja',
+                    id:id,
+                    idPaquete:<?php echo $_GET['idPaquete']; ?>,
+                    idContrato:<?php echo $_GET['idContrato']; ?>,
+                    idLineaContrato:<?php echo $_GET['idLineaContrato']; ?>,
+                    productos:productos
+                },
+                success: function (data) {
+
+                    console.log(data);
+                    //  location.reload();
+                }
+            });
+
+        }
     }
-    // cargo las localidades por Ajax cada vez que se cambia de provincia
-    function carga_poblaciones(id,sel=0){
-        var select = $("#localidades");
-        select.empty();
-        select.append('<option value="">--- Seleccionar una ---</option>');
-        $.ajax({
-            url: 'carga_pobla.php',
-            type: 'POST',
-            cache: false,
-            async:true,
-            data:{id:id},
-            success: function(data) {
-                $.each(data, function(i){
-                    if(sel>0 && sel==data[i].id)
-                        select.append('<option value="'+data[i].id+'" selected>'+data[i].municipio+'</option>');
-                    else
-                        select.append('<option value="'+data[i].id+'">'+data[i].municipio+'</option>');
-                });
-            }
-        });
+    function confirmar(text){
+
+        return confirm(text);
+
     }
 
-    // cargo los clientes para que pueda seleccionarse y editarlo
-    function carga_clientes(){
-        var select = $("#id");
-        select.empty();
-        select.append('<option value="">--- Seleccionar una ---</option>');
-        $.ajax({
-            url: 'carga_cli.php',
-            type: 'POST',
-            cache: false,
-            async:true,
-            success: function(data) {
-                $.each(data, function(i){
-
-                    select.append('<option value="'+data[i].id+'">'+data[i].apellidos+" "+data[i].nombre+'</option>');
-                });
-            }
-        });
-    }
-
-    $(document).ready(function () {
-        carga_clientes(false);
-    });
-
-
-    // cuando se selecciona un cliente, recibo el id y lo cargo por ajax desde carga_cli que al pasarle una id
-    // solo devuelve ese registro
-
-    function seleccionado(id){
-        $.ajax({
-            url: 'carga_cli.php',
-            type: 'POST',
-            cache: false,
-            cache: false,
-            async: true,
-            data: {
-                idcliente: id
-            },
-            success: function (data) {
-                $("#regiones").val(parseInt(data[0].region)).change();
-                $("#provincias").empty();
-
-                carga_provincias(parseInt(data[0].region),parseInt(data[0].provincia0));
-                $("#dni").val(data[0].dni);
-                $("#nombre").val(data[0].nombre);
-                $("#apellidos").val(data[0].apellidos);
-                $("#direccion").val(data[0].direccion);
-                $("#cp").val(data[0].cp);
-
-                //$("#provincias").val(parseInt(data[0].provincia0)).change();
-                carga_poblaciones(parseInt(data[0].provincia0),parseInt(data[0].localidad));
-
-
-                $("#tel1").val(data[0].tel1);
-                $("#tel2").val(data[0].tel2);
-                $("#email").val(data[0].email);
-                $("#notas").val(data[0].notas);
-                $("#fechalta").val(data[0].alta);
-                // $("#fechalta").attr('disabled','disabled');
-
-                $("#hash").val(md5(id));
-            }
-        });
-    }
 
 </script>
 

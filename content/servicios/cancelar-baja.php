@@ -1,9 +1,9 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Ruben
- * Date: 15/02/2018
- * Time: 9:38
+ * User: diego
+ * Date: 07/08/2018
+ * Time: 13:10
  */
 
 
@@ -26,19 +26,14 @@ $util = new util();
 check_session(1);
 
 
-    if(isset($_POST['id']) && $_POST['id']!='')
-    {
-        $id=$_POST['id'];
-        $idContrato=$_POST['idContrato'];
-        $idLinea=$_POST['idLinea'];
-        $idServicio=$_POST['idServicio'];
-        $productos=$_POST['productos'];
-        $fecha=$_POST['fecha'];
-
-        Servicio::darBajaServicio($idContrato,$idLinea,$idServicio,$fecha,$productos);
-    }
+if(isset($_POST['id']) && $_POST['id']!='')
+{
+    $id=$_POST['id'];
+    $idContrato=$_POST['idContrato'];
+    $idLinea=$_POST['idLinea'];
+    $idServicio=$_POST['idServicio'];
+    $productos=$_POST['productos'];
 
 
-
-
-
+    Servicio::cancelarBajaServicio($idContrato,$idLinea,$idServicio,$productos);
+}
