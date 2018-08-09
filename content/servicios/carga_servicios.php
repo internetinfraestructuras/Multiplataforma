@@ -28,7 +28,7 @@ if(isset($_POST['id']))
 }
 else
 {
-    $servicios = $util->selectJoin('servicios', $campos, ' JOIN paquetes_servicios ON paquetes_servicios.ID_SERVICIO = servicios.ID '.
+    $servicios = $util->selectJoin('servicios', $campos,
         ' JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO ',
         'ID_SERVICIO_TIPO',' ID_EMPRESA='.$_SESSION['REVENDEDOR']);
 }

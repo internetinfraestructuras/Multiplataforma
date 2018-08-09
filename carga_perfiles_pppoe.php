@@ -36,20 +36,31 @@ if(isset($_POST['cabecera']) && $_POST['cabecera']!='') {
         require('clases/routeros_api.class.php');
         $API = new RouterosAPI();
 
+//        echo $routerIP, $routerUsuario, $routerPassword;
+
         if ($API->connect($routerIP, $routerUsuario, $routerPassword)) {
 
             $ARRAY = $API->comm('/ppp/profile/getall');
-
+            $c=0;
             foreach ($ARRAY as $clave) {
-                $aItem = array(
-                    'perfil' => $clave['name'],
-                    'descripcion' => $clave['name']
-                );
-                array_push($aItems, $aItem);
+                if($clave['name']!='default') {
+                    $aItem = array(
+                        'perfil' => $clave['name'],
+                        'descripcion' => $clave['name']
+                    );
+                    array_push($aItems, $aItem);
+                    $c++;
+                }
             }
 
             $API->disconnect();
-
+            if($c==0){
+                $aItem = array(
+                    'perfil' => 'default',
+                    'descripcion' => 'Perfiles no encontrado'
+                );
+                array_push($aItems, $aItem);
+            }
         }
     } else {
         $aItem = array(
@@ -59,7 +70,6 @@ if(isset($_POST['cabecera']) && $_POST['cabecera']!='') {
         array_push($aItems, $aItem);
     }
 //
-
     header('Content-type: application/json; charset=utf-8');
     echo json_encode($aItems);
 }

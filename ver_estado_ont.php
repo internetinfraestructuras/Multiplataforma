@@ -57,7 +57,7 @@ check_session(1);
 			<!-- HEADER -->
                 <?php require_once ('menu-superior.php'); ?>
 
-
+            <br><br><br>
 			<section id="middle">
 				<div id="content" class="dashboard padding-20">
                     <div class="row">

@@ -21,7 +21,7 @@ header('Content-Type: text/html; charset=utf-8');
 $dt = new DateTime();
 $fecha = $dt->format('Y-m-d H:i:s');
 
-$util->consulta('truncate table estado_olts');
+//$util->consulta('truncate table estado_olts');
 
 $campos = array(
     'aprovisionados.id_en_olt as idolt, aprovisionados.c as c ,aprovisionados.t as t,aprovisionados.num_pon as numpon,
@@ -111,9 +111,10 @@ while ($rows = mysqli_fetch_array($resultsql)) {
 
                 $campos = array('id_olt', 'pon', 'c', 't', 'p', 'description', 'id_ont', 'run_state','lastcause','datecause');
                 $valores = array($num_cabecera, $pon, $chas, $tarjetas, $pons, $de, $idenolt, $estado,$causa,$fechacausa);
-                $util->consulta("DELETE FROM estado_olts WHERE pon ='".$pon."'");
-                $util->insertInto('estado_olts', $campos, $valores, false);
-                $util->update('estados_olt',$campos,$valores,"pon='".$pon."'");
+//                $util->consulta("DELETE FROM estado_olts WHERE pon LIKE'%".$pon."%'");
+                $lastid=intval($util->insertInto('estado_olts', $campos, $valores, false));
+                if(!$lastid>0)
+                    $util->update('estados_olt',$campos,$valores,"pon='".$pon."'",false);
             }
 
         }

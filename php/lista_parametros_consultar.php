@@ -6,6 +6,14 @@
  * Time: 10:38
  */
 //InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.AssociatedDevice.3.X_HW_AssociatedDevicedescriptions
+/*
+ *
+    1_TR069_VOIP_R_VID_100	Connected	10.201.175.244	100/5	AlwaysOn
+    2_INTERNET_R_VID_100	Connected	10.201.175.243	100/0	AlwaysOn
+    3_INTERNET_R_VID_100	Connected	10.201.175.242	100/0	AlwaysOn
+    4_INTERNET_R_VID_300	Connecting	--	300/0	AlwaysOn
+    5_INTERNET_R_VID_400	Connecting	--	400/0	AlwaysOn
+ */
 
 $n=0;
 /*0*/$a[$n]=$json[0]['InternetGatewayDevice']['WANDevice'][1]['WANConnectionDevice'][1]['WANPPPConnection'][1]['Enable']['_value'];$n++;

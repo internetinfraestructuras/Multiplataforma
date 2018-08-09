@@ -75,6 +75,7 @@ check_session(3);
     -->
     <section id="middle">
 
+
         <!-- page title -->
         <header id="page-header">
             <h1>Usted esta en</h1>
@@ -91,7 +92,6 @@ check_session(3);
                 <!-- progressbar -->
                 <ul id="progressbar">
                     <li class="active">Cliente</li>
-                    <li>Titular</li>
                     <li>Donante</li>
                     <li>Líneas</li>
                     <li>Activar</li>
@@ -103,6 +103,8 @@ check_session(3);
 <!--                    <div></div>-->
 <!--                </div>-->
                 <!-- fieldsets -->
+
+
                 <fieldset class="caja">
 
                     <div class="row">
@@ -226,6 +228,7 @@ check_session(3);
 
                         </div>
                     </div>
+
                     <div class="row ocultar">
                         <div class="form-group">
                             <div class="col-md-3 col-sm-3">
@@ -280,97 +283,7 @@ check_session(3);
 
                 </fieldset>
 
-                <fieldset class="caja">
-                    <label><b>Datos del titular (Sólo si es diferente al cliente)</b></label><br><br>
 
-                    <div class="row ocultar">
-                        <div class="form-group">
-                            <div class="col-md-4 col-xs-12">
-                                <label>Nombre</label>
-                                <input  type="text" name="nombre" value="" id="tit-nombre"
-                                       class="form-control required datoscli">
-                            </div>
-                            <div class="col-md-5 col-xs-12">
-                                <label>Apellidos</label>
-                                <input  type="text" name="apellidos" id="tit-apellidos"
-                                       class="form-control datoscli">
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row ocultar">
-                        <div class="form-group">
-                            <div class="col-md-4 col-xs-12">
-                                <label>Tipo de Cliente</label>
-                                <select  name="tipocli" id="tit-tipocli"  class="form-control pointer">
-                                    <option value="-1">--- Seleccionar uno ---</option>
-                                    <?php $util->carga_select('clientes_tipos', 'ID', 'NOMBRE', 'ID'); ?>
-                                </select>
-                            </div>
-                            <div class="col-md-4 col-xs-12">
-                                <label>Tipo de Documento</label>
-                                <select  name="tipodoc" id="tit-tipodoc" onchange="cambia_tipo_cliente(this.value)" class="form-control pointer">
-                                    <option value="-1">--- Seleccionar uno ---</option>
-                                    <?php $util->carga_select('tipos_documentos', 'ID', 'NOMBRE', 'ID'); ?>
-                                </select>
-                            </div>
-                            <div class="col-md-4 col-xs-12">
-                                <label id="tipodocumento">Dni</label>
-                                <input  type="text" name="dni" id="tit-dni"
-                                        class="form-control datoscli " placeholder="99999999A">
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row ocultar">
-                        <div class="form-group">
-                            <div class="col-md-4 col-xs-12">
-                                <label>Región</label>
-                                <select  name="region" id="tit-regiones"
-                                        class="form-control pointer " onchange="carga_provincias(this.value)">
-                                    <option value="-1">--- Seleccionar una ---</option>
-                                    <?php $util->carga_select('comunidades', 'id', 'comunidad', 'comunidad'); ?>
-                                </select>
-                            </div>
-                            <div class="col-md-4 col-xs-12">
-                                <label>Provincia </label>
-                                <select  name="provincia" id="tit-provincias"
-                                        class="form-control pointer " onchange="carga_poblaciones(this.value)">
-                                    <option value="-1">--- Seleccionar una ---</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4 col-xs-12">
-                                <label>Localidad </label>
-                                <select  name="localidad" id="tit-localidades"
-                                        class="form-control pointer ">
-                                    <option value="-1">--- Seleccionar una ---</option>
-                                </select>
-                            </div>
-
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row ocultar">
-                        <div class="form-group">
-                            <div class="col-md-10 col-xs-10">
-                                <label>Dirección</label>
-                                <input  type="text" name="direccion" id="tit-direccion"
-                                        class="form-control datoscli ">
-                            </div>
-                            <div class="col-md-2 col-xs-2">
-                                <label>CP </label>
-                                <input type="number" min="0" max="99999" name="cp" id="tit-cp"
-                                       class="form-control datoscli required">
-                            </div>
-
-                        </div>
-                    </div>
-
-
-                    
-                    <input  type="button" name="previous" class="previous action-button-previous"  value="Paso Anterior"/>
-                    <input  type="button" name="next" id="next2" class="next action-button" value="Continuar"/>
-                </fieldset>
 
                 <fieldset class="caja">
                     <div class="row text-center">
@@ -405,40 +318,50 @@ check_session(3);
 
                 <fieldset class="caja">
                     <div class="row text-center">
-                        <label><b>Seleccione el tipo de acceso actual</b></label><br><br>
+                        <label><b>Datos de las linea a portar</b></label><br><br><br>
                     </div>
                     <div class="row">
-                        <?php
-                        $util = new util();
-                        $donantes = $util->selectWhere('porta_tipos_acceso_donante', array('ID', 'NOMBRE','LOGO'), '', 'ID');
-                        while ($row = mysqli_fetch_array($donantes)) {
-                            echo '
-                                <div class="col-xs-4 col-sm-2 text-center">
-                                    <label class="image-radio">
-                                        <img class="img-responsive" src="../../'.$row[2].'" style="border-radius:5px; width:auto; height:auto"/>
-                                        <input type="radio" id="tipo_acceso" name="tipo_acceso" value="'.$row[0].'" />
-                                        <i class="glyphicon glyphicon-ok hidden"></i>
-                                    </label>
-                                    <br>
-                                    '.$row[1].'
-                                </div>
-                                ';
-                        }
-                        ?>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-xs-12">
+                        <div class="col-md-4 col-xs-12">
+                            <label>Tarifa que desea contratar</label>
+                            <select name="tarifa" id="tarifa"  class="form-control pointer">
+                                <option value="-1">--- Seleccionar uno ---</option>
+                                <?php $util->carga_select('servicios', 'ID', 'NOMBRE,PVP', 'ID', 'ID_SERVICIO_TIPO=3',2); ?>
+                            </select>
                             <br><br><br><br>
-                            <label>Indique las numeraciones a portar separadas por coma</label>
-                            <input  type="text" name="num_porta" id="num_porta"
-                                    class="form-control datoscli">
                         </div>
-                        <div class="col-md-6 col-xs-12">
+                        <div class="col-md-3 col-xs-6">
+                            <br>
+                            <button type="button" class="btn btn-default">Ver tarifas</button>
                             <br><br><br>
-                            <label>Indique horario preferido para el cambio <br>(bajo disponibilidad del operador donante)</label>
-                            <input  type="text" name="hora_porta" id="hora_porta"
-                                    class="form-control datoscli">
                         </div>
+                        <div class="col-md-3 col-xs-6">
+                            <br>
+                            <button type="button" class="btn btn-primary">Gestionar tarifas</button>
+                            <br><br><br>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 col-xs-12">
+                            <label>Número de tarjeta SIM (ICC)</label>
+                            <input  type="number" name="icc" id="icc" class="form-control datoscli">
+                        </div>
+                        <div class="col-md-3 col-xs-12">
+                            <label>Digito de control de la SIM</label>
+                            <input  type="number" name="dc" id="dc"   class="form-control datoscli" style="width:60px">
+                        </div>
+                        <div class="col-md-3 col-xs-12">
+                            <label>Número Teléfono</label>
+                            <input  type="number" name="telportar" id="telportar"  class="form-control datoscli">
+                        </div>
+                        <div class="col-md-2 col-xs-12">
+                            <label>Modalidad actual</label>
+                            <select id="modalidad" class="form-control datoscli">
+                                <option value="prepago">Prepago</option>
+                                <option value="postpago">Contrato</option>
+                            </select>
+                        </div>
+
                     </div>
                     <input  type="button" name="previous" class="previous action-button-previous"
                            value="Paso Anterior"/>
@@ -470,32 +393,12 @@ check_session(3);
 
                         </div>
                     </div>
-
+                    <input  type="button" name="previous" class="previous action-button-previous" value="Paso Anterior"/>
                 </fieldset>
             </form>
         </div>
-        <br><br><br><br><br><br>
-        <div id="signature-pad" class="signature-pad" >
-            <div class="signature-pad--body">
-                <canvas></canvas>
-            </div>
-            <div class="signature-pad--footer">
-                <div class="description">Firme y finalice</div>
 
-                <div class="signature-pad--actions">
-                    <div>
-                        <br><br><br><br>
-                        <button type="button" class="btn btn-default button clear" data-action="clear">Borrar</button>
-                        <br><br><br><br>
-                    </div>
-                    <div>
-                        <br><br><br><br>
-                        <button type="button" class="btn btn-success button save" data-action="save-svg">Finalizar</button>
-                        <br><br><br><br>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         <div class="container">
             <!-- Modal -->
             <div class="modal fade" id="imprimir" role="dialog">
@@ -518,8 +421,31 @@ check_session(3);
                 </div>
 
             </div>
+            </div>
         </div>
+
+        <div id="signature-pad" class="signature-pad" style="position: relative; margin-top:900px;">
+            <div class="signature-pad--body">
+                <canvas></canvas>
+            </div>
+            <div class="signature-pad--footer">
+                <div class="description">Firme y finalice</div>
+
+                <div class="signature-pad--actions">
+                    <div>
+                        <br><br><br><br>
+                        <button type="button" class="btn btn-default button clear" data-action="clear">Borrar</button>
+                        <br><br><br><br>
+                    </div>
+                    <div>
+                        <br><br><br><br>
+                        <button type="button" class="btn btn-success button save" data-action="save-svg">Finalizar</button>
+                        <br><br><br><br>
+                    </div>
+                </div>
+            </div>
         </div>
+
 </div>
 
 <!-- JAVASCRIPT FILES -->
@@ -818,17 +744,17 @@ check_session(3);
             }
         }
         if (this.id == 'next4') {
-            var tipo_acceso = $("input[name=tipo_acceso]:checked").val();
-            if (tipo_acceso == undefined){
-                alert("Debe seleccionar el tipo de linea a portar");
-                return;
-            }
-
-            var num_porta = $("#num_porta").val();
-            if (num_porta == ""){
-                alert("Debe especificar el / los numero/s a portar");
-                return;
-            }
+            // var tipo_acceso = $("input[name=tipo_acceso]:checked").val();
+            // if (tipo_acceso == undefined){
+            //     alert("Debe seleccionar el tipo de linea a portar");
+            //     return;
+            // }
+            //
+            // var num_porta = $("#num_porta").val();
+            // if (num_porta == ""){
+            //     alert("Debe especificar el / los numero/s a portar");
+            //     return;
+            // }
         }
 
 
@@ -872,48 +798,30 @@ check_session(3);
         // paso 1 quiere decir que se ha seleccionado o creado el cliente,
         // entonces creamos el contrato en borrador y guardamos el id del borrador
 
-            
-        var tit_n = $("#tit-nombre").val();
-        var tit_a = $("#tit-apellidos").val();
-        var tit_tcli = $("#tit-tipocli").val();
-        var tit_tdoc = $("#tit-tipodoc").val();
-        var tit_dni = $("#tit-dni").val();
-        var tit_region = $("#tit-regiones").val();
-        var tit_prov = $("#tit-provincias").val();
-        var tit_loc = $("#tit-localidades").val();
-        var tit_dir = $("#tit-direccion").val();
-        var tit_cp = $("#tit-cp").val();
         
         var donante = $("#donante").val();
-        var tipo_acceso = $("#tipo_acceso").val();
-        
-        var num_porta = $("#num_porta").val();
-        var hora_porta = $("#hora_porta").val();
+        var tarifa = $("#tarifa").val();
+        var icc = $("#icc").val();
+        var dc = $("#dc").val();
+        var telportar = $("#telportar").val();
+        var modalidad = $("#modalidad").val();
 
         $.ajax({
-            url: '../servicios/guardar-porta-fijo.php',
+            url: 'guardar-porta.php',
             type: 'POST',
             cache: false,
             async: false,
             data: {
                 action: 'porta',
                 id_cliente: id_cliente_seleccionado,
-                tit_n :tit_n ,
-                tit_a :tit_a ,
-                tit_tcli :tit_tcli ,
-                tit_tdoc :tit_tdoc ,
-                tit_dni :tit_dni ,
-                tit_region :tit_region ,
-                tit_prov :tit_prov ,
-                tit_loc :tit_loc ,
-                tit_dir :tit_dir ,
-                tit_cp :tit_cp ,
-                donante :donante ,
-                tipo_acceso :tipo_acceso ,
-                num_porta  :num_porta  ,
-                hora_porta :hora_porta,
+                donante :donante,
+                tarifa  :tarifa,
+                icc :icc,
+                dc :dc,
+                num_porta :telportar,
+                modalidad :modalidad,
                 firma : firma,
-                tipo:1
+                tipo:3
             },
             success: function (data) {
 

@@ -38,7 +38,9 @@ check_session(2);
     <link href="assets/css/layout.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/color_scheme/green.css" rel="stylesheet" type="text/css" id="color_scheme"/>
     <script type="text/javascript" src="js/utiles.js"></script>
-
+    <link rel="stylesheet" href="content/firma/css/signature-pad.css">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <style>
 
 
@@ -171,7 +173,7 @@ check_session(2);
             color: #0F0F5E;
             text-transform: uppercase;
             font-size: 9px;
-            width: 20%;
+            width: 16%;
             float: left;
             position: relative;
             letter-spacing: 1px;
@@ -309,6 +311,7 @@ check_session(2);
                 <!-- progressbar -->
                 <ul id="progressbar">
                     <li class="active">Cliente</li>
+                    <li>Packs</li>
                     <li>Servicios</li>
                     <li>Campañas</li>
                     <li>Asignación</li>
@@ -508,16 +511,17 @@ check_session(2);
                                 <?php $util->carga_select('paquetes', 'id', 'NOMBRE, PVP', 'NOMBRE', '', 2, array('', ' €')); ?>
                             </select>
                         </div>
-                        <div class="col-lg-2 col-xs-12">
+
+
+                        <div class="col-lg-1 col-xs-12">
+<!--                            <label><b>Adicionales</b></label><br><br>-->
+<!--                            <span id="pvp_extras"></span>-->
+                        </div>
+
+                        <div class="col-lg-3 col-xs-12">
                             <label><b>PVP</b></label><br><br>
                             <span id="pvp"></span>
                         </div>
-
-                        <div class="col-lg-2 col-xs-12">
-                            <label><b>Adicionales</b></label><br><br>
-                            <span id="pvp_extras"></span>
-                        </div>
-
 
                         <div class="col-lg-3 col-xs-12 text-right">
                             <label><b>PVP Final</b></label><br><br>
@@ -527,11 +531,48 @@ check_session(2);
                     </div>
                     <!-- aqui se cargarán los servicios que contiene el paquete seleccionado-->
                     <div id="aqui_los_servicios"></div>
-                    <br><br>
-                    <b>Agregar servicios extras al paquete (solo para este contrato)</b><br>
-                    <br>
-                    <div id="agregar_servicios" style="display:none">
 
+
+                    <input  type="button" name="previous" class="previous action-button-previous"  value="Paso Anterior"/>
+                    <input  type="button" name="next" id="next2" class="next action-button" value="Continuar"/>
+                </fieldset>
+
+                <fieldset class="caja">
+                    <div class="row">
+                        <div class="col-lg-5 col-xs-12">
+
+                        </div>
+                        <div class="col-lg-1 col-xs-12">
+
+                        </div>
+
+                        <div class="col-lg-3 col-xs-12">
+                            <label><b>Servicios Adicionales</b></label><br><br>
+                            <span id="pvp_extras"></span>
+                        </div>
+
+
+                        <div class="col-lg-3 col-xs-12 text-right">
+                            <label><b>PVP Final</b></label><br><br>
+                            <span name="pvp_final" id="pvp_final3">
+                        </div>
+
+                    </div>
+                    <!-- aqui se cargarán los servicios que contiene el paquete seleccionado-->
+                    <div class="table-responsive" style="height: 345px;overflow:hidden;">
+                        <table class="table table-condensed nomargin">
+                            <thead class="text-center">
+                            <tr>
+                                <th>ID</td>
+                                <th>Familia</th>
+                                <th>Nombre Paquete</th>
+                                <th>Coste <span class="fa fa-eye" style="font-size:1em; cursor: pointer;margin-left:.5em" onclick="ver_coste();"></span></th>
+                                <th>IVA</th>
+                                <th>PVP</th>
+                            </tr>
+                            </thead>
+                            <tbody id="aqui_la_tabla2"></tbody>
+                        </table>
                     </div>
 
                     <input  type="button" name="previous" class="previous action-button-previous"  value="Paso Anterior"/>
@@ -547,7 +588,7 @@ check_session(2);
                             </select>
                         </div>
                         <div class="col-lg-2 col-xs-12">
-                            <label><b>PVP</b></label><br><br>
+                            <label><b>PVP Pack</b></label><br><br>
                             <span id="pvp2"></span>
                         </div>
 
@@ -588,26 +629,30 @@ check_session(2);
 
                     <div class="col-lg-3 col-xs-12 ">
                         <label><b>Días Promoción</b></label>
-                        <input disabled type="number" name="dto_meses" id="dto_meses" class="form-control" style="max-width: 80px" onblur="calcular_fin_promo(this.value)" ></input>
+                        <input  type="number" name="dto_meses" id="dto_meses" min="0" class="form-control" style="max-width: 80px" onblur="calcular_fin_promo(this.value)" ></input>
                     </div>
 
                     <div class="col-lg-3 col-xs-12 ">
                         <label><b>Descuento Hasta</b></label>
-                        <input disabled type="date" min="" name="dto_hasta" id="dto_hasta" style="max-width: 150px"  class="form-control">
+                        <input  type="date" min="" name="dto_hasta" id="dto_hasta" style="max-width: 150px"  class="form-control">
                     </div>
 
                     <div class="row">
-                        <div class="col-xs-12 ">
-                            <b>Facturas afectadaas:</b><br><br>
+                        <div class="col-xs-12">
+                            <br>
+                            <b>Próximas facturas:</b>
+                            <br>
                         </div>
                     </div>
+                    <div class="row" id="aqui_las_facturas"></div>
 
                     <input  type="button" name="previous" class="previous action-button-previous"
                            value="Paso Anterior"/>
                     <input  type="button" name="next" id="next3" class="next action-button" value="Continuar"/>
                 </fieldset>
 
-                <fieldset class="caja" id="aqui_los_servicios_y_productos">
+                <fieldset class="caja">
+                    <div id="aqui_los_servicios_y_productos" style="max-height:300px; margin-bottom:8px;"></div>
 
                     <input  type="button" name="previous" class="previous action-button-previous"
                            value="Paso Anterior"/>
@@ -616,13 +661,58 @@ check_session(2);
 
                 <fieldset class="caja">
 
-                    <input  type="button" name="previous" class="previous action-button-previous"
-                           value="Paso Anterior"/>
-                    <input  type="button" name="next" id="next5" class="next action-button" value="Finalizar y Contratar"/>
+                    <label><b>Por favor lea y acepte las condiciones</b></label><br><br>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <?php
+                            $util = new util();
+                            $texto = $util->selectWhere('textos_legales', array('ID', 'TEXTO','TEXTO_ACEPTACION'), ' UBICACION="porta1" ', 'ID');
+                            $row = mysqli_fetch_array($texto);
+                            echo $row[1];
+                            echo "<br><br>";
+                            $texto = $util->selectWhere('textos_legales', array('ID', 'TEXTO','TEXTO_ACEPTACION'), ' UBICACION="porta2" ', 'ID');
+                            $row = mysqli_fetch_array($texto);
+                            echo $row[1];
+
+                            ?>
+
+                            <label class="checkbox">
+                                <input type="checkbox" value="1" onclick="goToAnchor('signature-pad')">
+                                <i></i> Aceptar y firmar el contrato
+                            </label>
+
+                        </div>
+                    </div>
+                    <input  type="button" name="previous" class="previous action-button-previous" value="Paso Anterior"/>
                 </fieldset>
 
             </form>
         </div>
+
+
+        <div id="signature-pad" class="signature-pad" style="position: relative; margin-top:900px; visibility: hidden  ">
+            <div class="signature-pad--body">
+                <canvas></canvas>
+            </div>
+            <div class="signature-pad--footer">
+                <div class="description">Firme y finalice</div>
+
+                <div class="signature-pad--actions">
+                    <div>
+                        <br><br><br><br>
+                        <button type="button" class="btn btn-default button clear" data-action="clear">Borrar</button>
+                        <br><br><br><br>
+                    </div>
+                    <div>
+                        <br><br><br><br>
+                        <button type="button" class="btn btn-success button save" data-action="save-svg">Finalizar</button>
+                        <br><br><br><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 </div>
 
 <!-- JAVASCRIPT FILES -->
@@ -630,7 +720,8 @@ check_session(2);
 <script type="text/javascript" src="assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 <script type="text/javascript" src="assets/js/app.js"></script>
 <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-
+<script src="content/firma/js/signature_pad.umd.js"></script>
+<script src="content/firma/js/app.js"></script>
 
 <script>
     var nuevo = 0;
@@ -641,8 +732,12 @@ check_session(2);
     var mostrandocoste=false;
     var servicios_contratados=[];
     var id_contrato_borrador=0;
+    var diaspromo = 0;
+    var totalMes=0;
 
-
+    function mostrarmodal(){
+           $("#masservicios").modal();
+    }
 
     // carga las provincias en el combo correspondiente
     // se llama cada vez que selecciona una comunidad autonoma
@@ -783,16 +878,45 @@ check_session(2);
 
     function calcular_final(dtos) {
         // $("#pvp_final").val(round(parseFloat(precio+tot_extras) - ((dto / 100) * parseFloat(precio+tot_extras)), 2));
+        $("#descuentos").html('<p style="font-size:2.5em; font-weight:600; color: #10c139; margin-top:-1px">' +  round(parseFloat((dtos / 100) * (precio + tot_extras)), 2) + ' &euro;</p>');
         $("#pvp_final").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
         $("#pvp_final2").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
+        $("#pvp_final3").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
+        totalMes = round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2);
 
+        calcular_facturas();
     }
 
     function calcular_fin_promo(dias) {
-
+        diaspromo=dias;
         $( "#dto_hasta" ).val(sumarDias(dias));
+        calcular_facturas();
+    }
+
+
+    function calcular_facturas() {
+
+        $("#aqui_las_facturas").empty();
+        $("#aqui_las_facturas").append('<div class="row" style="overflow:auto">');
+        $("#aqui_las_facturas").append('<div class="table-responsive" style="max-height: 160px;">' +
+            '<table class="table table-condensed nomargin">' +
+            '<thead class=""><tr><th>Nº</th><th>Fecha</th><th>Importe</th></thead><tbody id="aqui_las_lineas"></tbody></table>');
+
+        var diaFacturacion = 5;
+        var meses = diaspromo / 30;
+
+        var f = new Date();
+         // + "/" + (f.getMonth() +1) + "/" + f.getFullYear());
+
+        var hoy = f.getDate();
+
+        for(nm=1; nm<=meses; nm++){
+            f.setMonth(f.getMonth() + 1);
+            $("#aqui_las_lineas").append('<tr><td>'+nm+'</td><td>'+f.getDate() + "/" + (f.getMonth()) + "/" + f.getFullYear()+'</td><td>'+totalMes+'</td></tr>');
+        }
 
     }
+
 
 
     // cuando se selecciona un cliente, recibo el id y lo cargo por ajax desde carga_cli que al pasarle una id
@@ -853,7 +977,7 @@ check_session(2);
 
         $("#aqui_los_servicios").empty();
         $("#aqui_los_servicios").append('<div class="row">');
-        $("#aqui_los_servicios").append('<div class="table-responsive">' +
+        $("#aqui_los_servicios").append('<div class="table-responsive" >' +
             '<table class="table table-condensed nomargin">' +
             '<thead class="text-center"><tr><th>ID</td><th>Familia</th><th>Nombre Paquete</th><th>Coste <span class="fa fa-eye" style="font-size:1em; cursor: pointer;margin-left:.5em" onclick="ver_coste();"></span>' +
             '</th><th>IVA</th><th>PVP</th><th></th></thead><tbody id="aqui_la_tabla"></tbody>');
@@ -869,6 +993,7 @@ check_session(2);
         var dtos = parseFloat($("#dto").val()) || 0;
 
         $("#pvp_final2").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
+        $("#pvp_final3").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
 
         servicios_contratados=[];
 
@@ -881,6 +1006,7 @@ check_session(2);
 
         $("#pvp2").html('<p style="font-size:2.5em; font-weight:600; margin-top:-1px">' + precio + ' &euro;</p>');
         $("#pvp_final2").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
+        $("#pvp_final3").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
 
         id_paquete_seleccionado=item.value;
 
@@ -925,6 +1051,7 @@ check_session(2);
         $("#dto").val(parseInt(dtos)).change();
         // var total2 = total * (dto/100);
         $("#pvp_final2").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
+        $("#pvp_final3").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
         $("#descuentos").html('<p style="font-size:2.5em; font-weight:600; color: #10c139; margin-top:-1px">' +  round(parseFloat((dtos / 100) * (precio + tot_extras)), 2) + ' &euro;</p>');
 
         // var date2 = $('#dto_hasta').datepicker('getDate');
@@ -932,17 +1059,18 @@ check_session(2);
         // var date2 = hoy(dias);
         $( "#dto_hasta" ).val(sumarDias(dias));
 
-
-
+        diaspromo=dias;
+        totalMes = precio + tot_extras;
+        calcular_facturas();
         $("#next3").css('display', 'block');
 
     }
 
     function cargar_servicios(){
-        $("#agregar_servicios").empty();
-        $("#agregar_servicios").append('<div class="row">');
-        $("#agregar_servicios").append('<div class="table-responsive" style="height:150px; overflow-y: scroll; ">' +
-            '<table class="table table-condensed nomargin"><tbody id="aqui_la_tabla2"></tbody>');
+        // $("#agregar_servicios").empty();
+        // $("#agregar_servicios").append('<div class="row">');
+        // $("#agregar_servicios").append('<div class="table-responsive" style="height:160px; overflow-y: scroll; ">' +
+        //     '<table class="table table-condensed nomargin"><tbody id="aqui_la_tabla2"></tbody>');
 
 
         $.ajax({
@@ -954,7 +1082,7 @@ check_session(2);
 
                 $.each(datos, function (i) {
                     $("#aqui_la_tabla2").append('<tr><td>' + datos[i].idservicio + '</td><td>' + datos[i].tipo + '</td><td>' +
-                        datos[i].comercial + '</td><td><span class="oculta_coste" style="display:none">' + datos[i].coste + ' &euro;</span></td><td>' + datos[i].impuesto + '%</td><td>' +
+                        datos[i].comercial + '</td><td><span class="oculta_coste" style="display:none">' + datos[i].coste + ' &euro;</span></td><td>' + datos[i].impuesto + '%</td><td class="text-right">' +
                         datos[i].pvp + ' &euro;</td>' +
                         '<td>' +
                         '<select style="width:40px; height:28px;font-size:1em; padding:0px" data-pvp="' + datos[i].pvp + '" id="' + datos[i].idservicio +'" ' +
@@ -1185,27 +1313,110 @@ check_session(2);
                 }
             });
 
+            // cargo los numeros de telefonos moviles y fijos que hay en la tabla portabilidades
+            // cuyo estado este pendiente y los guardo en array para poder llenar los selects
+
+            var aMoviles=[];
+            var aFijos=[];
+            var aNuevos=[];
+
+            $.ajax({
+                url: 'content/ventas/cargar-portas.php',
+                type: 'POST',
+                cache: false,
+                async: false,
+                data: {
+                    id: id_cliente_seleccionado
+
+                },
+                success: function (data) {
+                    $.each(data, function (i) {
+                        if(data[i].tipo==2){
+                            aFijos.push(data[i]);
+                        } else {
+                            aMoviles.push(data[i]);
+                        }
+                    });
+
+                }
+            });
+
 
             // listo los servicios y productos para ir asociando datos a cada linea del contrato
             // como los numeros de tarjetas, numeros de telefonos, imeis, pons, etc.
 
+            $("#aqui_los_servicios_y_productos").empty();
+
             var lineas_detalles_contrato =
                 "<div class='row'>"+
-                "<div class='col-lg-1 col-xs-2'>En Pack</div>" +
-                "<div class='col-lg-4 col-xs-10'>Servicio</div>" +
-                "<div class='col-lg-7 col-xs-12'>Asociar Producto</div>"+
+                "<div class='col-lg-1 col-xs-2'><br><b>En Pack</b><br><br></div>" +
+                "<div class='col-lg-3 col-xs-10'><br><b>Servicio</b><br><br></div>" +
+                "<div class='col-lg-2 col-xs-10'><br><b>Alta / Porta</b><br><br></div>" +
+                "<div class='col-lg-2 col-xs-10'><br><b>Portabilidades</b><br><br></div>" +
+                "<div class='col-lg-4 col-xs-12'><br><b>Producto Asociado</b><br><br></div>"+
                 "</div>";
 
             for (c=0; c<servicios_contratados.length; c++){
-                var enpackono='Fuera';
-                if(servicios_contratados[c][5]) enpackono = 'Dentro';
+                var enpackono='outpack.png';
+
+                if(servicios_contratados[c][5]=='p') enpackono = 'inpack.png';
 
                 lineas_detalles_contrato = lineas_detalles_contrato +
                     "<div class='row'>" +
-                    "<div class='col-xs-1 col-lg-2'>"+ enpackono + "</div>" +
-                    "<div class='col-xs-4 col-lg-2'>"+servicios_contratados[c][4] + "</div>" +
-                    "<div class='col-xs-7 col-lg-2'><input type='text' class='form-control'></div>" +
-                    "</div>" ;
+                    "<div class='col-xs-2 col-lg-1'><img src='img/"+ enpackono + "'></div>" +
+                    "<div class='col-xs-10 col-lg-3'>"+servicios_contratados[c][4] + "</div>";
+                if(servicios_contratados[c][1]==2) {
+                    lineas_detalles_contrato = lineas_detalles_contrato +
+                        "<div class='col-xs-10 col-lg-2'><select onchange='muestra_oculta_porta(this.value,"+c+")'><option value=0>Portabilidad</option><option value=1>Alta Nueva</option></select></div>" +
+                        "<div class='col-xs-10 col-lg-2'>" +
+                        "<select id='porta-"+c+"'>";
+                            $.each(aFijos, function (i) {
+                                lineas_detalles_contrato = lineas_detalles_contrato +
+                                    "<option value='" + aFijos[i].id + "'>" + aFijos[i].num + "</option>";
+                            });
+                    lineas_detalles_contrato = lineas_detalles_contrato + "</select>" +
+                        "<select style='display:none' id='nuevo-"+c+"'>";
+                            $.each(aNuevos, function (i) {
+                                lineas_detalles_contrato = lineas_detalles_contrato +
+                                    "<option value='" + aNuevos[i].id + "'>" + aNuevos[i].num + "</option>";
+                            });
+                    lineas_detalles_contrato = lineas_detalles_contrato + "</select>" +
+                        "</div>";
+
+                } else if(servicios_contratados[c][1]==3) {
+                    lineas_detalles_contrato = lineas_detalles_contrato +
+                        "<div class='col-xs-10 col-lg-2'><select onchange='muestra_oculta_porta(this.value,"+c+")'><option value=0>Portabilidad</option><option value=1>Alta Nueva</option></select></div>" +
+                        "<div class='col-xs-10 col-lg-2'><select id='porta-"+c+"'>";
+                    $.each(aMoviles, function (i) {
+                        lineas_detalles_contrato = lineas_detalles_contrato +
+                            "<option value='" + aMoviles[i].id + "'>" + aMoviles[i].num + "</option>";
+                    });
+
+                    lineas_detalles_contrato = lineas_detalles_contrato + "</select>" +
+                        "<select style='display:none' id='nuevo-"+c+"'>";
+                    $.each(aNuevos, function (i) {
+                        lineas_detalles_contrato = lineas_detalles_contrato +
+                            "<option value='" + aNuevos[i].id + "'>" + aNuevos[i].num + "</option>";
+                    });
+                    lineas_detalles_contrato = lineas_detalles_contrato + "</select>" +
+                        "</div>";
+
+                } else {
+                    lineas_detalles_contrato = lineas_detalles_contrato + "<div class='col-xs-10 col-lg-2'></div>"+
+                        "<div class='col-xs-10 col-lg-2'></div>";
+                }
+
+                lineas_detalles_contrato = lineas_detalles_contrato +
+                    "<div class='col-xs-12 col-lg-4'>";
+
+                lineas_detalles_contrato = lineas_detalles_contrato + "</select>" +
+                    "<select style='display:none' id='nuevo-"+c+"'>";
+                $.each(aProductos, function (i) {
+                    if (aProductos[i].tipo == )
+                    lineas_detalles_contrato = lineas_detalles_contrato +
+                        "<option value='" + aProductos[i].id + "'>" + aProductos[i].serial + "</option>";
+                });
+                lineas_detalles_contrato = lineas_detalles_contrato + "</div>" ;
             }
             $("#aqui_los_servicios_y_productos").append(lineas_detalles_contrato);
         }
@@ -1246,6 +1457,7 @@ check_session(2);
         var dtos = parseFloat($("#dto").val()) || 0;
 
         $("#pvp_final2").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
+        $("#pvp_final3").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
 
 
     }
@@ -1420,6 +1632,28 @@ check_session(2);
             mostrandocoste=!mostrandocoste;
         }
     }
+
+
+    function goToAnchor(anchor) {
+        $("#signature-pad").css("visibility","visible");
+        var loc = document.location.toString().split('#')[0];
+        document.location = loc + '#' + anchor;
+        return false;
+    }
+
+    function muestra_oculta_porta(a,b) {
+alert(a);
+alert(b);
+        if(a==0) {
+            $("#porta-" + b).css('display', 'block');
+            $("#nuevo-" + b).css('display', 'none');
+        }
+        else {
+            $("#porta-" + b).css('display', 'none');
+            $("#nuevo-" + b).css('display', 'block');
+        }
+    }
+
 </script>
 
 

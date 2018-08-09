@@ -12,9 +12,6 @@
     ╚════════════════════════════════════════════════════════════╝
 */
 
-//error_reporting(E_ALL);
-//ini_set("display_errors", 1);
-
 if (!isset($_SESSION)) {
     @session_start();
 }
@@ -156,11 +153,12 @@ if(
 
         if (isset($_POST['filtro']) && $_POST['filtro']!=''){
             $filtro=$_POST['filtro'];
-            $where = $where . " AND clientes.dni LIKE '%".$filtro."%' OR clientes.nombre LIKE '%".$filtro.
-                "%' OR clientes.apellidos LIKE '%".$filtro."%' OR  aprovisionados.num_pon LIKE '%".$filtro."%' ";
+            $where = $where . " AND (clientes.dni LIKE '%".$filtro."%' OR clientes.nombre LIKE '%".$filtro.
+                "%' OR clientes.apellidos LIKE '%".$filtro."%' OR  aprovisionados.num_pon LIKE '%".$filtro."%') ";
+//                ") AND clientes.user_create in (SELECT id FROM usuarios WHERE revendedor = (select revendedor from usuarios where id = " . $_SESSION['USER_ID'] . ")) ";
         }
 
-        if (isset($_POST['cabecera']) && $_POST['cabecera']!=''){
+        if (isset($_POST['cabecera']) && intval($_POST['cabecera'])>0){
             $where = $where . " and aprovisionados.cabecera=".$_POST['cabecera'];
         }
 

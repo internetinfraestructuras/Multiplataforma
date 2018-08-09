@@ -19,22 +19,28 @@ require_once('../../config/util.php');
 $util = new util();
 check_session(3);
 
-$id=$_POST['id'];
 $reseller = $_SESSION['REVENDEDOR'];
 
 
-$campos=array('ID','TIPO','NUMERO_PORTAR');
-$modelos = $util->selectWhere('portabilidades', $campos,'ID_CLIENTE = '.$id.' AND ID_EMPRESA = ' .$reseller .
-    ' AND ESTADO NOT IN (4,6) ','FECHA_SOLICITUD');
+$listado= $util->selectWhere3('productos,productos_tipos,productos_modelos,almacenes',
+    array("productos.id",
+        "productos.numero_serie",
+        "productos_tipos.nombre as Tipo",
+        "productos_modelos.nombre as Modelo"),
+    "productos.id_tipo_producto=productos_tipos.id
+            AND productos.id_modelo_producto=productos_modelos.id 
+            AND almacenes.id=productos.id_almacen 
+            AND almacenes.id_empresa=".$_SESSION['REVENDEDOR']." AND productos.estado=1");
+
 
 $aItems = array();
-
 
 while ($row = mysqli_fetch_array($modelos)) {
     $aItem = array(
         'id' => $row[0],
-        'tipo' => $row[1],
-        'num' => $row[2]
+        'serial' => $row[1],
+        'tipo' => $row[2],
+        'modelo' => $row[3]
     );
     array_push($aItems, $aItem);
 

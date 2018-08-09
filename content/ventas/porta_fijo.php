@@ -429,9 +429,9 @@ check_session(3);
                     <div class="row">
                         <div class="col-md-6 col-xs-12">
                             <br><br><br><br>
-                            <label>Indique las numeraciones a portar separadas por coma</label>
+                            <label>Indique el número a portar</label>
                             <input  type="text" name="num_porta" id="num_porta"
-                                    class="form-control datoscli">
+                                    class="form-control datoscli" style="width:150px">
                         </div>
                         <div class="col-md-6 col-xs-12">
                             <br><br><br>
@@ -474,8 +474,8 @@ check_session(3);
                 </fieldset>
             </form>
         </div>
-        <br><br><br><br><br><br>
-        <div id="signature-pad" class="signature-pad" >
+
+        <div id="signature-pad" class="signature-pad" style="position: relative; margin-top:900px;">
             <div class="signature-pad--body">
                 <canvas></canvas>
             </div>
@@ -891,7 +891,7 @@ check_session(3);
         var hora_porta = $("#hora_porta").val();
 
         $.ajax({
-            url: '../servicios/guardar-porta-fijo.php',
+            url: 'guardar-porta.php',
             type: 'POST',
             cache: false,
             async: false,
@@ -913,7 +913,7 @@ check_session(3);
                 num_porta  :num_porta  ,
                 hora_porta :hora_porta,
                 firma : firma,
-                tipo:1
+                tipo:2
             },
             success: function (data) {
 

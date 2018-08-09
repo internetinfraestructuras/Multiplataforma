@@ -47,6 +47,12 @@ define('MNU_ITEM_10','Servicios');
 
 date_default_timezone_set('Europe/Madrid');
 
+/** acceso servidor telefonia */
+define ('DB_TELEFONIA_SERVER' , '89.140.16.198');
+define ('DB_TELEFONIA_DATABASENAME', 'gestioncdr');
+define ('DB_TELEFONIA_USER', 'testerp');
+define ('DB_TELEFONIA_PASSWORD', 'erpDirect18');
+
 
 // comandos SNMP
 

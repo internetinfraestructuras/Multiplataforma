@@ -192,8 +192,7 @@
                 foreach ($aItems as $clave) {
                     $payload = json_encode(array('name' => 'setParameterValues', 'parameterValues' => [[$clave['p'], $clave['v'], $clave['t']]]));
                     curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-                    echo curl_exec($ch);
-
+                    curl_exec($ch);
                 }
                 curl_close($ch);
 
@@ -203,26 +202,26 @@
 
                 $pon = $_REQUEST['p'];
 
-                //$result = $util->selectWhere('acs_ids', array('id_acs'), " pon='" . $pon."'");
+                $result = $util->selectWhere('acs_ids', array('id_acs'), " pon='" . $pon."'");
 
-//                while ($row = mysqli_fetch_array($result)) {
-//                    $id_device = $row[0];
-//                }
-
-                $ch = curl_init('http://10.211.2.2:7557/devices/');
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                $result = curl_exec($ch);
-                $json = json_decode($result, true);
-                curl_close($ch);
-
-                for ($c = 0; $c < count($json); $c++) {
-                    if ($json[$c]['_deviceId']['_SerialNumber'] == $pon) {
-                        $id_device = $json[$c]['_id'];
-                        break;
-                        break;
-                    }
+                while ($row = mysqli_fetch_array($result)) {
+                    $id_device = $row[0];
                 }
+
+//                $ch = curl_init('http://10.211.2.2:7557/devices/');
+//                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+//                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//                $result = curl_exec($ch);
+//                $json = json_decode($result, true);
+//                curl_close($ch);
+//
+//                for ($c = 0; $c < count($json); $c++) {
+//                    if ($json[$c]['_deviceId']['_SerialNumber'] == $pon) {
+//                        $id_device = $json[$c]['_id'];
+//                        break;
+//                        break;
+//                    }
+//                }
 
 
                 $a = array();
@@ -250,12 +249,15 @@
 
                 // leemos los parametros desde el dispositivo
                 $url = "http://10.211.2.2:7557/devices/?query=%7B%22_id%22%3A%22" . $id_device . "%22%7D";
+//                echo $url;
                 $ch = curl_init($url);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 $result = curl_exec($ch);
                 $json = json_decode($result, true);
+//                print_r($json);
                 include("php/lista_parametros_consultar.php");
+//                print_r($a);
                 curl_close($ch);
 
                 echo "<input type='hidden' name='device' value='$id_device'";
@@ -533,7 +535,7 @@
                         <br><br>
                         
                         
-                        <label>Interfaz VLAN 2 (DHCP)</label><br>
+                        <label>Interfaz VLAN 2 (DHCP)</label><br><br>
                         <br>
                         <div class="row">
                             <div class="col-lg-3 col-xs-12">
@@ -619,7 +621,7 @@
                             </div>
                         </div>
 
-                        <label>Interfaz Telefonía</label><br><br>
+                        <label>Interfaz VOZ IP</label><br><br>
 
                         <div class="row">
                             <div class="col-lg-3 col-xs-12">
@@ -706,90 +708,92 @@
                             </div>
                         </div>
 
-<!--                        <label>Interfaz Televisión</label><br>-->
-<!---->
-<!--                        <div class="row">-->
-<!--                            <div class="col-lg-3 col-xs-12">-->
-<!--                                <label>Puertos Activos</label><br>-->
-<!--                                <label class="checkbox">-->
-<!--                                    <input type="checkbox" name="InternetGatewayDevice-WANDevice-1-WANConnectionDevice-4-WANIPConnection-1-X_HW_LANBIND-Lan1Enable"-->
-<!--                                           value="1" --><?php //echo intval($a[33]) == 1 ? "checked" : ""; ?>
-<!--                                           id="w2-lan1">-->
-<!--                                    <i></i> Lan 1-->
-<!--                                </label>-->
-<!--                                <label class="checkbox">-->
-<!--                                    <input type="checkbox" name="InternetGatewayDevice-WANDevice-1-WANConnectionDevice-4-WANIPConnection-1-X_HW_LANBIND-Lan2Enable"-->
-<!--                                           value="1" --><?php //echo intval($a[34]) == 1 ? "checked" : ""; ?>
-<!--                                           id="w2-lan2">-->
-<!--                                    <i></i> Lan 2-->
-<!--                                </label>-->
-<!--                                <label class="checkbox">-->
-<!--                                    <input type="checkbox" name="InternetGatewayDevice-WANDevice-1-WANConnectionDevice-4-WANIPConnection-1-X_HW_LANBIND-Lan3Enable"-->
-<!--                                           value="1" --><?php //echo intval($a[35]) == 1 ? "checked" : ""; ?>
-<!--                                           id="w2-lan3">-->
-<!--                                    <i></i> Lan 3-->
-<!--                                </label>-->
-<!--                                <label class="checkbox">-->
-<!--                                    <input type="checkbox" name="InternetGatewayDevice-WANDevice-1-WANConnectionDevice-4-WANIPConnection-1-X_HW_LANBIND-Lan4Enable"-->
-<!--                                           value="1" --><?php //echo intval($a[36]) == 1 ? "checked" : ""; ?>
-<!--                                           id="w2-lan4">-->
-<!--                                    <i></i> Lan 4-->
-<!--                                </label>-->
-<!--                                <br>-->
-<!--                                <label class="checkbox">-->
-<!--                                    <input type="checkbox" name="InternetGatewayDevice-WANDevice-1-WANConnectionDevice-4-WANIPConnection-1-X_HW_LANBIND-SSID1Enable"-->
-<!--                                           value="1" --><?php //echo intval($a[37]) == 1 ? "checked" : ""; ?>
-<!--                                           id="w2-ssid1">-->
-<!--                                    <i></i> Wifi-->
-<!--                                </label>-->
-<!---->
-<!--                            </div>-->
-<!--                            <div class="col-lg-3">-->
-<!--                                <center>-->
-<!--                                    <label>Enrutado</label><br>-->
-<!--                                </center>-->
-<!--                                <label class="checkbox">-->
-<!--                                    <input type="checkbox" name="InternetGatewayDevice.WANDevice.1.WANConnectionDevice.4.WANIPConnection.1.Enable"-->
-<!--                                           value="1" --><?php //echo intval($a[29]) == 1 ? "checked" : ""; ?><!-- id="w2-wan">-->
-<!--                                    <i></i> Enable WAN-->
-<!--                                </label>-->
-<!--                                <br>-->
-<!--                                <label class="checkbox">-->
-<!--                                    <input type="checkbox"-->
-<!--                                           value="1" --><?php //echo intval($a[2]) == 1 ? "checked" : ""; ?>
-<!--                                           id="w2-vlan">-->
-<!--                                    <i></i> Enable VLAN-->
-<!--                                </label>-->
-<!--                                <br>-->
-<!--                                <label class="checkbox">-->
-<!--                                    <input type="checkbox" name="InternetGatewayDevice.WANDevice.1.WANConnectionDevice.4.WANIPConnection.1.NATEnabled"-->
-<!--                                           value="1" --><?php //echo intval($a[39]) == 1 ? "checked" : ""; ?>
-<!--                                           id="w2-nat">-->
-<!--                                    <i></i> Enable NAT-->
-<!--                                </label>-->
-<!--                            </div>-->
-<!--                            <div class="col-lg-2">-->
-<!--                                <label>Modo Operación</label><br>-->
-<!--                                <select id="WanMode" name="InternetGatewayDevice.WANDevice.1.WANConnectionDevice.4.WANIPConnection.1.ConnectionType" style="height:46px;width:140px">-->
-<!--                                    --><?php //if ($a[38] == 'IP_Routed')
-//                                        echo '<option selected value="IP_Routed" >Router</option><option value="IP_Bridged" >Bridge</option>';
-//                                    else
-//                                        echo '<option value="IP_Routed" >Router</option><option selected value="IP_Bridged">Bridge</option>';
-//                                    ?>
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                            <div class="col-lg-4">-->
-<!--                                <label>Wlan ID </label><br>-->
-<!--                                <input type="text"  name="InternetGatewayDevice-WANDevice-1-WANConnectionDevice-4-WANIPConnection-1-X_HW_VLAN"-->
-<!--                                       id="w1_lanid" value="--><?php //echo $a[31]; ?><!--"-->
-<!--                                       class="form-control " placeholder="100" style="height:34px;width:70px"><br>-->
-<!--                                <label>Descripción VLAN</label><br>-->
-<!--                                <input type="text"  name="InternetGatewayDevice.WANDevice.1.WANConnectionDevice.4.WANIPConnection.1.Name"-->
-<!--                                       id="w1_vlname" value="--><?php //echo $a[45]; ?><!--"-->
-<!--                                       class="form-control " placeholder="Internet_100_Dhcp" style="height:34px;width:90%"><br>-->
-<!---->
-<!--                            </div>-->
-<!--                        </div>-->
+                        <label>Interfaz IPTV</label><br><br>
+
+                        <div class="row">
+                            <div class="col-lg-3 col-xs-12">
+                                <label>Puertos Activos</label><br>
+                                <label class="checkbox">
+                                    <input type="checkbox" value="1" name="InternetGatewayDevice-WANDevice-1-WANConnectionDevice-4-WANIPConnection-1-X_HW_LANBIND-Lan1Enable"
+                                        <?php echo intval($a[48]) == 1 ? "checked" : ""; ?>
+                                           id="w3-lan1">
+                                    <i></i> Lan 1
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" value="1" name="InternetGatewayDevice-WANDevice-1-WANConnectionDevice-4-WANIPConnection-1-X_HW_LANBIND-Lan2Enable"
+                                        <?php echo intval($a[49]) == 1 ? "checked" : ""; ?>
+                                           id="w3-lan2">
+                                    <i></i> Lan 2
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" value="1" name="InternetGatewayDevice-WANDevice-1-WANConnectionDevice-4-WANIPConnection-1-X_HW_LANBIND-Lan3Enable"
+                                        <?php echo intval($a[50]) == 1 ? "checked" : ""; ?>
+                                           id="w3-lan3">
+                                    <i></i> Lan 3
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" value="1" name="InternetGatewayDevice-WANDevice-1-WANConnectionDevice-4-WANIPConnection-1-X_HW_LANBIND-Lan4Enable"
+                                        <?php echo intval($a[51]) == 1 ? "checked" : ""; ?>
+                                           id="w3-lan4">
+                                    <i></i> Lan 4
+                                </label>
+                                <br>
+                                <label class="checkbox">
+                                    <input type="checkbox" value="1" name="InternetGatewayDevice-WANDevice-1-WANConnectionDevice-4-WANIPConnection-1-X_HW_LANBIND-SSID1Enable"
+                                        <?php echo intval($a[52]) == 1 ? "checked" : ""; ?>
+                                           id="w3-ssid1">
+                                    <i></i> Wifi
+                                </label>
+
+                            </div>
+                            <div class="col-lg-3">
+                                <center>
+                                    <label>Enrutado</label><br>
+                                </center>
+                                <label class="checkbox">
+                                    <input type="checkbox" value="1" name="InternetGatewayDevice.WANDevice.1.WANConnectionDevice.4.WANIPConnection.1.Enable"
+                                        <?php echo intval($a[44]) == 1 ? "checked" : ""; ?> id="w2-wan">
+                                    <i></i> Enable WAN
+                                </label>
+                                <br>
+                                <label class="checkbox">
+                                    <input type="checkbox" value="1"
+                                        <?php echo intval($a[2]) == 1 ? "checked" : ""; ?>
+                                           id="w2-vlan">
+                                    <i></i> Enable VLAN
+                                </label>
+                                <br>
+                                <!--                                </div>-->
+                                <!--                                <div class="col-lg-4 col-xs-12">-->
+                                <label class="checkbox">
+                                    <input type="checkbox" value="1" name="InternetGatewayDevice.WANDevice.1.WANConnectionDevice.4.WANIPConnection.1.NATEnabled"
+                                        <?php echo intval($a[54]) == 1 ? "checked" : ""; ?>
+                                           id="w3-nat">
+                                    <i></i> Enable NAT
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                <label>Modo Operación</label><br>
+                                <select id="WanMode" name="InternetGatewayDevice.WANDevice.1.WANConnectionDevice.4.WANIPConnection.1.ConnectionType" style="height:46px;width:140px">
+                                    <?php if ($a[53] == 'IP_Routed')
+                                        echo '<option selected value="IP_Routed" >Router</option><option value="IP_Bridged" >Bridge</option>';
+                                    else
+                                        echo '<option value="IP_Routed" >Router</option><option selected value="IP_Bridged">Bridge</option>';
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-lg-4">
+                                <label>Wlan ID </label><br>
+                                <input type="text"  name="InternetGatewayDevice-WANDevice-1-WANConnectionDevice-4-WANIPConnection-1-X_HW_VLAN"
+                                       id="w1_lanid" value="<?php echo $a[46]; ?>"
+                                       class="form-control " placeholder="100" style="height:34px;width:70px"><br>
+                                <label>Descripción VLAN</label><br>
+                                <input type="text"  name="InternetGatewayDevice.WANDevice.1.WANConnectionDevice.4.WANIPConnection.1.Name"
+                                       id="w1_vlname" value="<?php echo $a[45]; ?>"
+                                       class="form-control " placeholder="Internet_100_Dhcp" style="height:34px;width:90%"><br>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
 

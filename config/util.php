@@ -61,6 +61,11 @@ class util {
 
     return $string;
 }
+
+    public function verErrores($estado){
+        ini_set('display_errors',$estado);
+        error_reporting('E_ALL');
+    }
     public function conectar(){
         $link = new mysqli(DB_SERVER, DB_USER, DB_PASSWORD,DB_DATABASENAME);
 
@@ -422,14 +427,14 @@ class util {
 
             $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
 
-            echo $query;
+//            echo $query;
             $query = str_replace("º","",$query);
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
 
             $lastid = mysqli_insert_id($link);
 
-           $link->close();
+            $link->close();
             if($log){
                 $consulta= str_replace("'"," ",$query);
                 $consulta.= str_replace(","," ",$query);
@@ -565,6 +570,28 @@ class util {
 
     }
 
+    public function comparaFecha($f1,$f2){
+
+        $f1 = DateTime($f1);
+//        $f1= date_format($f1, 'm-d-Y');
+
+        $f2 = DateTime($f2);
+//        $f2= date_format($f2, 'm-d-Y');
+
+        $diff = $f1->diff($f2);
+
+        echo $diff->days . ' days ';
+
+        if($f1 > $f2)
+        {
+            return 1;
+        }else
+        {
+            return 2;
+        }
+    }
+
+
     function cleanstring($string) {
 
         $string= str_replace("\""," ",$string);
@@ -674,6 +701,20 @@ class util {
 
 
     }
+
+
+    public function hoy($tipo){
+        if($tipo=='fecha')
+            return date("Y-m-d");
+
+        if($tipo=='hora')
+            return date("H:i:s");
+
+        if($tipo=='fechahora')
+            return date("Y-m-d H:i:s");
+
+    }
+
 
 
     function aleatorios($length=10,$uc=TRUE,$n=TRUE,$sc=FALSE)
