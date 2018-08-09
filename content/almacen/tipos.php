@@ -115,13 +115,7 @@ check_session(3);
 
                                     <div class="row">
                                         <div class="form-group">
-
-                                            <div class="col-md-6 col-sm-6">
-                                                <label>Nombre tipo: </label>
-                                                <input type="text" name="tipo[nombre]" value=""
-                                                       class="form-control ">
-                                            </div>
-                                            <div class="col-md-6 col-sm-6">
+                                            <div class="col-md-4 col-sm-6">
                                                 <label>Proveedor:</label>
                                                 <select name="tipo[proveedor]" id="tipos"
                                                         class="form-control pointer ">
@@ -130,6 +124,22 @@ check_session(3);
                                                     $util->carga_select('proveedores', 'id', 'nombre', 'nombre',"id_empresa=".(int)$_SESSION['REVENDEDOR']." AND ID_TIPO_PROVEEDOR=1"); ?>
                                                 </select>
                                             </div>
+                                            <div class="col-md-4 col-sm-6">
+                                                <label>Tipo de Servicio:</label>
+                                                <select name="tipo[servicio]" id="tipos"
+                                                        class="form-control pointer ">
+                                                    <option value="">--- Seleccionar una ---</option>
+                                                    <?php
+                                                    $util->carga_select('servicios_tipos', 'id', 'nombre', 'nombre',""); ?>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-4 col-sm-6">
+                                                <label>Nombre tipo: </label>
+                                                <input type="text" name="tipo[nombre]" value=""
+                                                       class="form-control ">
+                                            </div>
+
                                         </div>
                                     </div>
 
@@ -199,8 +209,8 @@ check_session(3);
                                         <tbody>
                                         <?php
                                        $listado= $util->selectWhere3
-                                       ('PRODUCTOS_TIPOS,PROVEEDORES',
-                                           array("PRODUCTOS_TIPOS.id","PRODUCTOS_TIPOS.nombre","proveedores.nombre as n"),"proveedores.id=productos_tipos.id_proveedor","PRODUCTOS_TIPOS.nombre");
+                                       ('productos_tipos,proveedores',
+                                           array("productos_tipos.id","productos_tipos.nombre","proveedores.nombre as n"),"proveedores.id=productos_tipos.id_proveedor","productos_tipos.nombre");
 
                                         for($i=0;$i<count($listado);$i++)
                                         {
@@ -263,10 +273,10 @@ check_session(3);
 
 </div>
 
-<!-- JAVASCRIPT FILES -->
+<!-- JAVASCRIPT FILES-->
 <script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
-<!--<script type="text/javascript" src="../../assets/js/app.js"></script>-->
+<script type="text/javascript" src="../../assets/js/app.js"></script>
 
 
 <script>

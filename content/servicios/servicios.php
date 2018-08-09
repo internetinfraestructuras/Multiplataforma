@@ -355,7 +355,7 @@ check_session(3);
             {
 
                 $.each(data, function(i){
-                    div.append('<div class="col-md-1 col-sm-1"> <label>'+data[i].NOMBRE+'</label><input type="text" name="servicio[atributo][]"  class="form-control " /><input type="text" value="'+data[i].ID+'" hidden name="servicio[atributo][]"/></div>');
+                    div.append('<div class="col-md-2 col-sm-2"> <label>'+data[i].NOMBRE+'</label><input type="text" name="servicio[atributo][]"  class="form-control " /><input type="text" value="'+data[i].ID+'" hidden name="servicio[atributo][]"/></div>');
                 });
             },
             error:function(data)

@@ -68,7 +68,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'modelos')
 
     // llama a la funcion insertInto de la clase util que recibe la tabla (string) y dos arrays (campos y valores)
 
-    $result = $util->insertInto('PRODUCTOS_MODELOS', $t_productos_modelos, $values);
+    $result = $util->insertInto('productos_modelos', $t_productos_modelos, $values);
     $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado el modelo:'.$dni.' con el resultado:'.$result);
 
     if(intval($result)>0){

@@ -19,14 +19,26 @@ require_once('../../config/util.php');
 $util = new util();
 check_session(3);
 
-$campos=array('servicios.ID','ID_SERVICIO_TIPO','servicios.NOMBRE','PRECIO_PROVEEDOR','IMPUESTO','BENEFICIO','PVP','servicios_tipos.NOMBRE');
+$campos=array('servicios.ID','ID_SERVICIO_TIPO','servicios.NOMBRE','PRECIO_PROVEEDOR','IMPUESTO','BENEFICIO','PVP','servicios_tipos.NOMBRE as nombreTipo');
+if(isset($_POST['id']))
+{
+    $servicios = $util->selectJoin('servicios', $campos, ' LEFT JOIN paquetes_servicios ON paquetes_servicios.ID_SERVICIO = servicios.ID '.
+        ' JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO ',
+        'ID_SERVICIO_TIPO',' ID_EMPRESA='.$_SESSION['REVENDEDOR'].' AND servicios.id='.$_POST['id']);
+}
+else
+{
+    $servicios = $util->selectJoin('servicios', $campos, ' JOIN paquetes_servicios ON paquetes_servicios.ID_SERVICIO = servicios.ID '.
+        ' JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO ',
+        'ID_SERVICIO_TIPO',' ID_EMPRESA='.$_SESSION['REVENDEDOR']);
+}
 
-$provincias = $util->selectJoin('servicios', $campos,' JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO ',
-    'servicios.NOMBRE',' ID_EMPRESA='.$_SESSION['REVENDEDOR']);
+
 
 $aItems = array();
 
-while ($row = mysqli_fetch_array($provincias)) {
+while ($row = mysqli_fetch_array($servicios))
+{
     $aItem = array(
         'idservicio' => $row[0],
         'id_tipo' => $row[1],

@@ -5,11 +5,15 @@
  * Date: 17/07/2018
  * Time: 11:50
  */
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 if (!isset($_SESSION)) {
     @session_start();
 }
 require_once('../../config/util.php');
 require_once('../../config/def_tablas.php');
+require_once ('../../clases/Paquete.php');
 $util = new util();
 
 check_session(3);
@@ -130,42 +134,41 @@ if(isset($_POST['action']) && $_POST['action'] == 'paquetes')
 // todo: --------------------------------------------
 // cuando el cliente es editado
 // todo: --------------------------------------------
-/*
+
 if(
     (isset($_POST['oper']) && $_POST['oper'] == 'edit')
     &&
     (isset($_POST['id']) && $_POST['id'] != '')
-    &&
-    md5($_POST['id']) ==  $_POST['hash']
+
 )
 {
 
 
     $id = $_POST['id'];
-    $dni = $util->cleanstring($_POST['dni']);
-    $nombre = $util->cleanstring($_POST['nombre']);
-    $apellidos = $util->cleanstring($_POST['apellidos']);
-    $dir = $util->cleanstring($_POST['direccion']);
-    $cp = $util->cleanstring($_POST['cp']);
-    $email = $util->cleanstring($_POST['email']);
-    $tel1 = $util->cleanstring($_POST['tel1']);
-    $tel2 = $util->cleanstring($_POST['tel2']);
-    $email = $util->cleanstring($_POST['email']);
-    $notas = $util->cleanstring($_POST['notas']);
-    $region = $util->cleanstring($_POST['region']);
-    $provincia = $util->cleanstring($_POST['provincia']);
-    $localidad = $util->cleanstring($_POST['localidad']);
-    $alta = $util->cleanstring($_POST['alta']);
 
-    if(isset($_POST['region'])){
-        $values = array($dni, $nombre, $apellidos, $dir, $cp, $tel1, $tel2, $email, $notas, $region, $provincia, $localidad,$alta);
-        $campos = array('dni', 'nombre', 'apellidos', 'direccion', 'cp', 'tel1', 'tel2', 'email', 'notas', 'region', 'provincia', 'localidad','fecha_alta');
-    } else {
-        $values = array($dni, $nombre, $apellidos, $dir, $cp, $tel1, $tel2, $email, $notas);
-        $campos = array('dni', 'nombre', 'apellidos', 'direccion', 'cp', 'tel1', 'tel2', 'email', 'notas');
+    $nombre = $util->cleanstring($_POST['nombre']);
+    $coste = $util->cleanstring($_POST['coste']);
+    $margen = $util->cleanstring($_POST['margen']);
+    $impuesto = $util->cleanstring($_POST['impuesto']);
+    $pvp = $util->cleanstring($_POST['pvp']);
+
+    if(isset($_POST['idContrato']))
+    {
+
+        Paquete::modificarPaqueteContrato($_POST['idContrato'],$_POST['idLinea'],$id,$coste,$margen,$impuesto,$pvp);
     }
-    $result = $util->update('clientes', $campos, $values, "id=".$id);
-    $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el cliente: '.$dni.' con el resultado:'.$result);
+    else
+    {
+
+
+        $values = array($nombre,$coste,$margen,$impuesto,$pvp);
+        $campos = array('NOMBRE','PRECIO_COSTE','MARGEN','IMPUESTO','PVP');
+
+        $result = $util->update('paquetes', $campos, $values, "id=".$id. " AND id_empresa=".$_SESSION['REVENDEDOR']);
+        $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el paquete: '.$id.' con el resultado:'.$result);
+    }
+
+
 } else{
     echo "nose";
     die();
@@ -184,6 +187,5 @@ function _redirect($hash) {
     exit;
 }
 
-*/
 
 ?>
