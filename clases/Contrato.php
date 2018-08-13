@@ -1,7 +1,7 @@
 <?php
 //require_once('../config/util.php');
 require_once('../../config/def_tablas.php');
-
+require_once ('Orden.php');
 class Contrato
 {
     //Devuelve la linea contratos_lineas de un contrato de una dicha linea con un idServicio especifico.
@@ -61,7 +61,9 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         $util=new util();
 
         $campos=array('ESTADO','FECHA_BAJA');
+
         $tipo=Contrato::comprobarFechas($fecha);
+
         if($fecha==null)
             $values=array($tipo,date('Y-m-d'));
         else
@@ -70,16 +72,31 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         $result = $util->update('contratos_lineas', $campos, $values, "id_asociado=".$idServicio." AND id_contrato=".$idContrato." AND id=".$idLinea);
     }
 
+    //Establece una línea de un contrato de baja
+
+    public static function setLineaContratoAlta($idContrato,$idLinea,$idServicio)
+    {
+        $util=new util();
+
+        $campos=array('ESTADO','FECHA_BAJA');
+            $values=array(1,null);
+
+
+        $result = $util->update('contratos_lineas', $campos, $values, "id_asociado=".$idServicio." AND id_contrato=".$idContrato." AND id=".$idLinea);
+    }
+
 
 
     public static function comprobarFechas($fecha)
     {
-        $fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
+        $fecha_actual = strtotime(date("y-m-d",time()));
+        $fechaBaja= strtotime(date("y-m-d",strtotime($fecha)));
 
-        if($fecha_actual >= $fecha)
+        if($fecha_actual < $fechaBaja)
             $tipoEstado=4;
         else
             $tipoEstado=2;
+
 
         return $tipoEstado;
     }
@@ -96,7 +113,19 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         else
             $values=array($tipo,$fechaBaja);
 
-        $result = $util->update('contratos_lineas_detalles', $campos, $values, "id_linea=".$_POST['idLinea']);
+        return $util->update('contratos_lineas_detalles', $campos, $values, "id_linea=".$_POST['idLinea']);
+    }
+
+    //Establece una línea detalle a baja
+    public static function setLineaDetallesAlta($idLineaContrato)
+    {
+        $util=new util();
+        $campos=array('ESTADO','FECHA_BAJA');
+
+            $values=array(1,null);
+
+
+        $result = $util->update('contratos_lineas_detalles', $campos, $values, "id_linea=".$idLineaContrato);
     }
 
 
@@ -168,20 +197,16 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     }
 
     //Generar un anexo de contrato
-    public static function generarAnexo($idContrato,$idServicio,$stringAnexo)
+    public static function generarAnexo($idContrato,$idServicio,$tipoAnexo)
     {
         $util=new util();
-        $t_contratos_anexos=array("ID_CONTRATO","FECHA","DESCRIPCION","FICHERO");
-        $values=array($idContrato,date('Y-m-d h:i:s '),$stringAnexo."->".$idServicio." PARA EL CLIENTE","");
+        $t_contratos_anexos=array("ID_CONTRATO","ID_SERVICIO","ID_TIPO_TRAMITE");
+        $values=array($idContrato,$idServicio,$tipoAnexo);
         $resAnexo= $util->insertInto('contratos_anexos', $t_contratos_anexos, $values);
     }
 
-    public static function setProductoRMA($productos,$fechaBaja=null)
+    public static function setProductoRMA($idContrato,$productos,$idLineaContrato,$fechaBaja=null)
     {
-
-
-
-
         for($i=0;$i<count($productos);$i++)
         {
 
@@ -195,11 +220,55 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
             else
             {
                 self::setProductoBaja($idProducto,5,$fechaBaja);
+                Orden::crearOrdenTrabajo($idContrato,$idLineaContrato,$fechaBaja,1,$idProducto);
+                //Orden::cancelarOrdenTrabajo($idProducto,$idLineaContrato,4);
             }
 
         }
 
 
+    }
+
+    public static function setProductoInstalado($idContrato,$productos,$idLineaContrato)
+    {
+        for($i=0;$i<count($productos);$i++)
+        {
+
+            $idProducto=$productos[$i][0];
+            $estado=$productos[$i][1];
+
+            if($estado=='off')//Si el estado del producto se sigue solicitando la recogida no se elimina la orden de trabajo
+            {
+                self::setProductoAlta($idProducto,4);
+            }
+            else
+            {
+                self::setProductoAlta($idProducto,3);
+
+                $lineaDetalle=self::getLineaDetalles($idLineaContrato);
+
+
+               Orden::cancelarOrdenTrabajo($idProducto,$lineaDetalle,6);
+        }
+
+        }
+
+
+    }
+    public static function setProductoAlta($idProducto,$estado)
+    {
+        $util=new util();
+
+            $values=array($estado,null);
+
+        $campos=array("ESTADO","FECHA_BAJA");
+
+        $result = $util->update('contratos_lineas_productos', $campos, $values, "id_producto=".$idProducto);
+        //ACTUALIZAMOS LA TABLA DE PRODUCTOS
+        $campos=array("ESTADO");
+        $values=array($estado);
+
+        $result = $util->update('productos,almacenes', $campos, $values, "productos.id_almacen=almacenes.id AND productos.id=".$idProducto." AND almacenes.id_empresa=".$_SESSION['REVENDEDOR']);
     }
     public static function setProductoBaja($idProducto,$estado,$fechaBaja=null)
     {

@@ -19,7 +19,7 @@ check_session(2);
     AND CONTRATOS.ID_EMPRESA=1 and CONTRATOS.ID_CLIENTE=26
  */
 $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,estados_contratos',
-    array("contratos_lineas.id","contratos_lineas_tipo.nombre as Tipo","contratos_lineas_tipo.id","contratos_lineas.id_asociado","contratos_lineas.pvp","estados_contratos.nombre as nombrecontrato","estados_contratos.id as idestado"),
+    array("contratos_lineas.id","contratos_lineas_tipo.nombre as Tipo","contratos_lineas_tipo.id","contratos_lineas.id_asociado","contratos_lineas.pvp","estados_contratos.nombre as nombrecontrato","estados_contratos.id as idestado","contratos_lineas.fecha_alta","contratos_lineas.fecha_baja"),
     "contratos.id=contratos_lineas.id_contrato 
             and contratos_lineas_tipo.id=contratos_lineas.id_tipo
             AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND contratos.id=".$_GET['idContrato']." AND contratos_lineas.estado!=2 AND estados_contratos.id=contratos_lineas.estado");
@@ -117,6 +117,8 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
                         <th>TIPO</th>
                         <th>PVP</th>
                         <th>ESTADO</th>
+                        <th>ALTA</th>
+                        <th>BAJA</th>
                         <th>OPCIONES</th>
                     </tr>
                     </thead>
@@ -136,7 +138,11 @@ $totalContrato=0;
                         $pvp=$lineas[$i][4];
                         $estado=$lineas[$i][5];
                         $idEstado=$lineas[$i][6];
+                        $alta=$lineas[$i][7];
+                        $baja=$lineas[$i][8];
+
                         $totalContrato+=$pvp;
+
 
 
                         if($idEstado==1)
@@ -173,7 +179,7 @@ $totalContrato=0;
 
 
                         echo "<tr>";
-                        echo "<td>$id</td><td>$nombre</td><td>$tipo</td><td>$pvp</td><td style='color:$color;background-color:$bColor;'>$estado</td>";
+                        echo "<td>$id</td><td>$nombre</td><td>$tipo</td><td>$pvp</td><td style='color:$color;background-color:$bColor;'>$estado</td><td>$alta</td><td>$baja</td>";
 
                         ?>
                         <td class="td-actions text-right">
@@ -181,7 +187,7 @@ $totalContrato=0;
                             if($idTipo==1)
                                 echo "<a href='/mul/content/servicios/ficha-paquete.php?idPaquete=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."''>";
                             else if($idTipo==2)
-                                echo "<a href='/mul/content/servicios/ficha-servicio.php?idServicio=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."&tipo=$idServicioTipo''>";
+                                echo "<a href='/mul/content/servicios/ficha-servicio-contrato.php?idServicio=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."&tipo=$idServicioTipo''>";
                             if($idTipo==3)
                                 echo '<a href="/mul/content/almacen/ficha-producto.php?idProducto='.$idAsociado.'">';
                             ?>
@@ -202,9 +208,9 @@ $totalContrato=0;
 
                     ?>
                     <tr>
-                        <td colspan="4"></td>
+                        <td colspan="3"></td>
                         <td><strong>Total: </strong><?php echo $totalContrato; ?>€</td>
-                        <td>
+                        <td colspan="4">
                             <a href="facturar.php?idContrato="<?php echo $id;?>>
                             <button type="button" rel="tooltip" class="">
                                 <i class="fa  fa-file-archive-o" style="font-size:1em; color:green; cursor: pointer" onclick="facturar(<?php echo $id;?>)"></i>

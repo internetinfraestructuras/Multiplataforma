@@ -21,6 +21,7 @@ define('DEF_CLIENTES','Clientes');
 define('DEF_CAMPANAS','Campañas');
 define('DEF_ANEXOS','Anexos');
 define('DEF_ALMACEN','Almacén');
+define('DEF_CONTRATOS','Contratos');
 define('DEF_SERVICIOS','Servicios');
 define('DEF_PAQUETES','Paquete');
 define('DEF_PRODUCTO','Producto');

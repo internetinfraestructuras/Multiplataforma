@@ -90,7 +90,7 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
     $campos=array("precio_proveedor","impuesto","beneficio","pvp");
     $result = $util->update('contratos_lineas', $campos, $values, "id_asociado=".$idServicio. " AND id_contrato=".$_POST['idContrato']." AND id=".$_POST['idLinea']);
 */
-    Contrato::generarAnexo($idContrato,$idServicio,"Se ha cambiado el servicio");
+    Contrato::generarAnexo($idContrato,$idServicio,3);
 
 
 
@@ -166,14 +166,7 @@ public static function actualizarServicioPaqueteContrato($idContrato,$idLinea,$i
             $campos=array("precio_proveedor","impuesto","beneficio","pvp");
             $result = $util->update('contratos_lineas', $campos, $values, "id_asociado=".$idServicio. " AND id_contrato=".$_POST['idContrato']." AND id=".$_POST['idLinea']);
         */
-        Contrato::generarAnexo($idContrato,$idServicio,"Se ha cambiado el servicio");
-
-
-
-
-
-
-
+        Contrato::generarAnexo($idContrato,$idServicio,3);
 
     }
 public static function darBajaServicio($idContrato,$idLineaContrato,$idServicio,$fechaBaja,$productos)
@@ -181,11 +174,40 @@ public static function darBajaServicio($idContrato,$idLineaContrato,$idServicio,
 
     Contrato::setLineaContratoBaja($idContrato,$idLineaContrato,$idServicio,$fechaBaja);
     Contrato::setLineaDetallesBaja($idContrato,$fechaBaja);
+    $ld=Contrato::getLineaDetalles($idLineaContrato);
+    $lineaDetalle=$ld[0]['ID'];
+
 
     if($productos!='[]' || $productos!=null)
-        Contrato::setProductoRMA($productos,$fechaBaja);
+        Contrato::setProductoRMA($idContrato,$productos,$lineaDetalle,$fechaBaja);
+
+    Contrato::generarAnexo($idContrato,$idServicio,5);
+
+
 
 }
+
+public static function cancelarBajaServicio($idContrato,$idLineaContrato,$idServicio,$productos)
+    {
+
+        Contrato::setLineaContratoAlta($idContrato,$idLineaContrato,$idServicio);
+        Contrato::setLineaDetallesAlta($idLineaContrato);
+
+        $ld=Contrato::getLineaDetalles($idLineaContrato);
+        $lineaDetalle=$ld[0]['ID'];
+
+        if($productos!='[]' || $productos!=null)
+            Contrato::setProductoInstalado($idContrato,$productos,$idLineaContrato);
+
+
+
+
+
+        Contrato::generarAnexo($idContrato,$idServicio,6);
+
+
+
+    }
 
 
 }
