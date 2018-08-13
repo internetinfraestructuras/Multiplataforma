@@ -21,7 +21,7 @@ if(!isset($_GET['idContrato']))
 else
 {
     $listado= $util->selectWhere3('servicios,servicios_tipos,contratos,contratos_lineas',
-        array("servicios.id","servicios.nombre","contratos_lineas.pvp","contratos_lineas.precio_proveedor","contratos_lineas.impuesto","contratos_lineas.beneficio","servicios.id_servicio_tipo","contratos_lineas.permanencia"),
+        array("servicios.id","servicios.nombre","contratos_lineas.pvp","contratos_lineas.precio_proveedor","contratos_lineas.impuesto","contratos_lineas.beneficio","servicios.id_servicio_tipo","contratos_lineas.permanencia","contratos_lineas.estado"),
         "servicios.id_empresa=".$_SESSION['REVENDEDOR']."
                                                      AND servicios.id_servicio_tipo=servicios_tipos.id AND contratos.id=".$_GET['idContrato']."
                                                       AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." 
@@ -36,6 +36,7 @@ $impuesto=$listado[0][4];
 $beneficio=$listado[0][5];
 $idTipoServicio=$listado[0][6];
 $permanencia=$listado[0][7];
+$estado=$listado[0][8];
 $readonly="";
 
 $actual = date ("Y-m-d");
@@ -49,7 +50,7 @@ $actual = date ("Y-m-d");
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
-    <title><?php echo OWNER; ?> <?php echo DEF_CLIENTES; ?> / Altas</title>
+    <title><?php echo OWNER; ?> <?php echo DEF_PAQUETES; ?> /Servicios Clientes</title>
     <meta name="description" content=""/>
     <meta name="Author" content="<?php echo AUTOR; ?>" />
 
@@ -107,8 +108,8 @@ $actual = date ("Y-m-d");
         <header id="page-header">
             <h1>Usted esta en</h1>
             <ol class="breadcrumb">
-                <li><a href="#"><?php echo DEF_SERVICIOS; ?></a></li>
-                <li class="active">Ficha de Servicios de cliente</li>
+                <li><a href="#"><?php echo DEF_PAQUETES; ?>   /   <?php echo DEF_SERVICIOS; ?></a></li>
+                <li class="active"> Cliente</li>
             </ol>
         </header>
         <!-- /page title -->
@@ -156,7 +157,7 @@ $actual = date ("Y-m-d");
                                             <div class="col-md-3 col-sm-4">
                                                 <label>Tipo de Servicio:</label>
                                                 <select name="tipo" id="tipo" readonly
-                                                        class="form-control pointer "  onchange="carga_tipos(this.value)">
+                                                        class="form-control pointer "  >
                                                     <option value="<?php echo $idTipoServicio;?>">--- Seleccionar una ---</option>
                                                     <?php $util->carga_select('servicios_tipos', 'id', 'nombre', 'nombre','','','',$idTipoServicio); ?>
                                                 </select>
@@ -166,23 +167,15 @@ $actual = date ("Y-m-d");
                                             <div class="col-md-4 col-sm-5">
                                                 <label>Nombre:</label>
                                                 <select name="servicio" id="servicio"
-                                                        class="form-control pointer " name="nombre"  onchange="carga_tipos(this.value)">
+                                                        class="form-control pointer " name="nombre"  onchange="carga_detalles_servicio(this.value)">
                                                     <option>--- Seleccionar una ---</option>
                                                     <?php $util->carga_select('servicios', 'id', 'nombre', 'nombre','servicios.id_servicio_tipo='.$idTipoServicio,'','',$id); ?>
                                                 </select>
                                             </div>
 
                                         </div>
-
                                     </div>
-
-
-
-
                         </div>
-
-
-
                         </fieldset>
 
                         <hr/>
@@ -205,7 +198,7 @@ $actual = date ("Y-m-d");
                                         array("servicios_tipos_atributos.id,servicios_tipos_atributos.nombre,contratos_lineas_detalles.valor"),
                                         "servicios_tipos_atributos.id=contratos_lineas_detalles.id_atributo_servicio AND contratos_lineas_detalles.id_linea=".$_GET['idLineaContrato']
                                         ." AND contratos_lineas.id=contratos_lineas_detalles.id_linea AND contratos_lineas_detalles.id_servicio=".$_GET['idServicio']."
-                                        AND contratos_lineas_detalles.estado=1");
+                                        AND contratos_lineas_detalles.estado!=5");
 
 
 
@@ -229,7 +222,7 @@ $actual = date ("Y-m-d");
                                     echo "<td><input name='atributo[id][]' value='$id' class='form-control' type='hidden' />
                                             <input name='atributo[id][]' value='$id' class='form-control'  disabled/></td>
                                             <td><input  value='$attr' class='form-control' disabled />
-                                            </td><td><input name='atributo[valor][]' value='$valor' class='form-control' /></td>";
+                                            </td><td><input name='atributo[valor][]' value='$valor' class='form-control' id='atributo-$id'/></td>";
 
                                     ?>
 
@@ -245,7 +238,9 @@ $actual = date ("Y-m-d");
                                 </tbody>
 
                             </table>
-
+                            <label>¿Qué día será efectivo el cambio?: </label>
+                            <input type="date" name="fecha-baja" id="fecha-cambio" value="<?php echo date('Y-m-d'); ?>"><br>
+                            <input type="checkbox" name="romper-paquete"  placeholder="0" > Deseo romper el paquete y cobrar al cliente por los servicios independientes.
                         </div>
                         <div class="row">
                             <div class="col-md-12 col-sm-4">
@@ -257,7 +252,11 @@ $actual = date ("Y-m-d");
                                 ?>
 
                             </div>
+
                         </div>
+                        <?php
+                        if($estado==1)
+                        {?>
                         <div class="row">
                             <div class="col-md-12">
                                 <button type="submit"
@@ -267,6 +266,21 @@ $actual = date ("Y-m-d");
                                 </button>
                             </div>
                         </div>
+                        <?php
+                        }
+                        if($estado==4 || $estado==6 || $estado==7 || $estado==8)
+                        {?>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit"
+                                        class="btn btn-3d btn-teal btn-yellow btn-xlg btn-block margin-top-30">
+                                    CANCELAR
+                                    <span class="block font-lato">verifique que toda la información es correcta</span>
+                                </button>
+                            </div>
+                        </div>
+                        <?php
+                        }?>
 
                         </form>
 
@@ -340,7 +354,7 @@ and contratos_lineas_detalles.ID_LINEA=277 AND contratos_lineas_detalles.ID_TIPO
                                     echo "<tr>";
 
                                     echo "<tr>";
-                                    echo "<td><input name='atributo[id][]' value='$id' class='form-control' type='hidden' />
+                                    echo "<td><input name='atributo[id][]' value='$id' class='form-control'  type='hidden' />
                                             <input name='atributo[id][]' value='$id' class='form-control'  disabled/></td>
                                             <td><input  value='$ssid' class='form-control' disabled />
                                             <td><input  value='$estado' class='form-control' disabled />
@@ -411,6 +425,30 @@ and contratos_lineas_detalles.ID_LINEA=277 AND contratos_lineas_detalles.ID_TIPO
 
 <script>
 
+    function carga_detalles_servicio(id)
+    {
+
+
+        jQuery.ajax({
+            url: 'cargar_atributos_servicios.php',
+            type: 'POST',
+            cache: false,
+            async:true,
+            data:{id:id},
+            success: function(data)
+            {
+
+                $.each(data, function(i)
+                {
+                    var id=data[i].id_tipo_atributo;
+
+                    $('#atributo-'+id).val(data[i].valor);
+
+
+                });
+            }
+        });
+    }
 
 
 </script>

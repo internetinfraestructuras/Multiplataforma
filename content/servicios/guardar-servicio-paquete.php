@@ -32,22 +32,25 @@ if(
 )
 {
 
+    $romperPaquete=($_POST['romper-paquete']);
 
     $idContrato=$util->cleanstring($_POST['idContrato']);
     $idLinea=$util->cleanstring($_POST['idLinea']);
     $id=$util->cleanstring($_POST['id']);
     $tipo = $util->cleanstring($_POST['tipo']);
     $servicio = $util->cleanstring($_POST['servicio']);
-
+    $fechaCambio=$util->cleanstring($_POST['fecha-baja']);
     @$atributos=$_POST['atributo'];
 
 
     //Si el servicio proviende de un contrato
     if(isset($_POST['idContrato']))
     {
-        //Llamada a la rutina compleja actualizar servicio de un contrato
-
-        Servicio::actualizarServicioPaqueteContrato($idContrato,$idLinea,$id,$tipo,$servicio,$atributos);
+       // Llamada a la rutina compleja actualizar servicio de un contrato
+        if($romperPaquete!='on')
+         Servicio::actualizarServicioPaqueteContrato($idContrato,$idLinea,$id,$tipo,$servicio,$atributos,$fechaCambio);
+        else
+            Servicio::romperPaquete($idContrato,$idLinea,$servicio,$fechaCambio);
 
     }
 

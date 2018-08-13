@@ -14,7 +14,7 @@ $util = new util();
 
 // solo los usuarios de nivel 3 a 0 pueden agregar clientes
 check_session(3);
-
+$root="../../";
 ?>
 <!doctype html>
 <html lang="en-US">
@@ -62,7 +62,7 @@ check_session(3);
     <!-- HEADER -->
     <header id="header">
 
-        <?php require_once ('../../menu-superior.php');
+        <?php require_once('../../menu-superior.php');
 
 
         ?>
@@ -81,8 +81,8 @@ check_session(3);
         <header id="page-header">
             <h1>Usted esta en</h1>
             <ol class="breadcrumb">
-                <li><a href="#"><?php echo DEF_ALMACEN; ?></a></li>
-                <li class="active">Nuevo proveedor</li>
+                <li><a href="#"><?php echo DEF_ORDENES; ?></a></li>
+                <li class="active">Listado de ordenes no tramitadas</li>
             </ol>
         </header>
         <!-- /page title -->
@@ -90,80 +90,18 @@ check_session(3);
 
         <div id="content" class="padding-20">
 
-            <div class="row">
 
-                <div class="col-md-12">
-
-                    <!-- ------ -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading panel-heading-transparent">
-                            <strong>Nuevo proveedor</strong>
-                        </div>
-
-                        <div class="panel-body">
-
-                            <!-- todo: ******************************************************************************* -->
-                            <!-- los campos del formulario se pasan por POST a php/guardar-cli.php-->
-                            <!-- todo: ******************************************************************************* -->
-
-
-                            <form class="validate" action="crear-proveedor.php" method="post"
-                                  enctype="multipart/form-data">
-                                <fieldset>
-                                    <!-- required [php action request] -->
-                                    <input type="hidden" name="action" value="proveedores"/>
-
-                                    <div class="row">
-                                        <div class="form-group">
-
-                                            <div class="col-md-12 col-sm-6">
-                                                <label>Nombre Proveedor: </label>
-                                                <input type="text" name="proveedor[nombre]" value=""
-                                                       class="form-control ">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <button type="submit"
-                                                    class="btn btn-3d btn-teal btn-xlg btn-block margin-top-30">
-                                                CREAR NUEVO PROVEEDOR
-                                            </button>
-                                        </div>
-                                    </div>
-
-
-                                </fieldset>
-
-
-
-                            </form>
-
-                        </div>
-
-                    </div>
-                    <!-- /----- -->
-
-                </div>
-
-
-
-            </div>
 
             <div class="row">
 
                 <div class="col-md-12">
-
-                    <!-- ------ -->
                     <div class="panel panel-default">
-
                         <div class="panel-body" id="listado">
                             <div id="panel-1" class="panel panel-default">
                                 <div class="panel-heading">
-							<span class="title elipsis">
-								<strong>LISTADO DE <?php echo DEF_PROVEEDORES; ?></strong> <!-- panel title -->
-							</span>
+							    <span class="title elipsis">
+								    <strong>LISTADO DE <?php echo DEF_ORDENES; ?></strong>
+							    </span>
 
                                     <!-- right options -->
                                     <ul class="options pull-right list-inline">
@@ -182,27 +120,45 @@ check_session(3);
                                         <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>NOMBRE PROVEEDOR</th>
+                                            <th>FECHA APERTURA</th>
+                                            <th>ESTADO</th>
+                                            <th>CLIENTE</th>
                                             <th>OPCIONES</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <?php
-                                        $listado= $util->selectWhere3('proveedores', array("id","nombre"),"id_empresa=".(int)$_SESSION['REVENDEDOR']." AND ID_TIPO_PROVEEDOR=1","nombre");
+
+                                            $listado= $util->selectWhere3('ordenes,ordenes_estados,contratos,clientes',
+                                                array("ordenes.id,ordenes.fecha_alta,ordenes_estados.nombre,ordenes_estados.id,clientes.nombre,clientes.id"),
+                                                "ordenes.id_contrato=contratos.id 
+                                            AND ordenes_estados.id=ordenes.id_tipo_estado 
+                                            AND contratos.id_cliente=clientes.id
+                                            AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes.fecha_alta<=DATE(now()) AND ordenes.id_tipo_estado=1");
+
+
+
+
 
                                         for($i=0;$i<count($listado);$i++)
                                         {
 
                                             $id=$listado[$i][0];
-                                            $nombre=$listado[$i][1];
+                                            $fechaAlta=$listado[$i][1];
+                                            $estado=$listado[$i][2];
+                                            $idEstado=$listado[$i][3];
+                                            $cliente=$listado[$i][4];
+                                            $idCliente=$listado[$i][5];
+
+
 
 
                                             echo "<tr>";
-                                            echo "<td>$id</td><td>$nombre</td>";
+                                            echo "<td>$id</td><td>$fechaAlta</td><td>$estado</td><td>$cliente<a href='/mul/ficha-cliente.php?idCliente=$idCliente' ><button type=\"button\" rel=\"tooltip\" ><i class=\"fa fa-eye\"></i></button></a></td>";
 
                                             ?>
                                             <td class="td-actions text-right">
-                                                <a href="ficha-proveedor.php?idProveedor=<?php echo $id; ?>">
+                                                <a href="ficha-orden.php?idOrden=<?php echo $id; ?>">
                                                     <button type="button" rel="tooltip" >
                                                         <i class="fa fa-pencil"></i>
                                                     </button>
@@ -232,13 +188,9 @@ check_session(3);
                                 <!-- /panel footer -->
 
                             </div>
-
-
                         </div>
 
                     </div>
-                    <!-- /----- -->
-
                 </div>
 
 
@@ -246,87 +198,21 @@ check_session(3);
             </div>
 
         </div>
+
     </section>
     <!-- /MIDDLE -->
 
 </div>
 
-<!-- JAVASCRIPT FILES -->
+<!-- JAVASCRIPT FILES-->
+
+
 <script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
+
+
+
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 <script type="text/javascript" src="../../assets/js/app.js"></script>
-
-
-<script>
-
-
-    function borrar(id)
-    {
-        // var hash = md5(id);
-        var respuesta = confirmar("¿Seguro/a de querer borrar este producto?");
-
-        if(respuesta)
-        {
-
-            jQuery.ajax({
-                url: 'borrar_provedor.php',
-                type: 'POST',
-                cache: false,
-                async: true,
-                data: {
-                    a: 'borrar_proveedor',
-                    p:id
-                },
-                success: function (data)
-                {
-                    if(data!="")
-                        alert(data);
-                    else
-                        location.reload();
-                }
-            });
-        }
-    }
-    function confirmar(text){
-
-        return confirm(text);
-
-    }
-</script>
-
-<script>
-    $(function () {
-        $('#example1').DataTable()
-        $('#example2').DataTable({
-            'paging'      : true,
-            'lengthChange': false,
-            'searching'   : true,
-            'ordering'    : true,
-            'info'        : true,
-            'autoWidth'   : true,
-            language: {
-                "decimal": "",
-                "emptyTable": "No hay información",
-                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-                "infoPostFix": "",
-                "thousands": ",",
-                "lengthMenu": "Mostrar _MENU_ Entradas",
-                "loadingRecords": "Cargando...",
-                "processing": "Procesando...",
-                "search": "Buscar : ",
-                "zeroRecords": "Sin resultados encontrados",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Ultimo",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
-                }
-            },
-        })
-    });
-</script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.css">
 
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.js"></script>
@@ -363,6 +249,12 @@ check_session(3);
             },
         })
     });
+function filtrar(id)
+{
+
+}
+
+
 </script>
 
 

@@ -354,9 +354,21 @@ check_session(3);
             success: function(data)
             {
 
-                $.each(data, function(i){
-                    div.append('<div class="col-md-2 col-sm-2"> <label>'+data[i].NOMBRE+'</label><input type="text" name="servicio[atributo][]"  class="form-control " /><input type="text" value="'+data[i].ID+'" hidden name="servicio[atributo][]"/></div>');
+
+                $.each(data, function(i)
+                {
+                    if(id==2)
+                    {
+                        div.append('<div class="col-md-2 col-sm-2"> <label>'+data[i].NOMBRE+'</label><select type="text" name="servicio[atributo][]"  id="select-'+i+'" /><input type="text" value="'+data[i].ID+'" hidden name="servicio[atributo][]"/></div>');
+                    }
+                    else
+                    {
+                        div.append('<div class="col-md-2 col-sm-2"> <label>'+data[i].NOMBRE+'</label><input type="text" name="servicio[atributo][]"  class="form-control " /><input type="text" value="'+data[i].ID+'" hidden name="servicio[atributo][]"/></div>');
+                    }
+
                 });
+                if(id==2)
+                    cargarTelefoniafija();
             },
             error:function(data)
             {
@@ -366,6 +378,60 @@ check_session(3);
 
 
     }
+
+    function cargarTelefoniafija()
+    {
+
+        jQuery.ajax({
+            url: 'cargar_telefonia_grupo_recarga.php',
+            type: 'POST',
+            cache: false,
+            async:true,
+            success: function(data)
+            {
+                var div = jQuery("#select-1");
+                $.each(data, function(i)
+                {
+                    var nombre=data[i].nombregrupo;
+
+                        div.append('<option>'+nombre+'</option>');
+
+
+                });
+            },
+            error:function(data)
+            {
+                alert("ERROR"+data.responseText);
+            }
+        });
+
+        jQuery.ajax({
+            url: 'cargar_telefonia_grupo_destino.php',
+            type: 'POST',
+            cache: false,
+            async:true,
+            success: function(data)
+            {
+                var div = jQuery("#select-0");
+                $.each(data, function(i)
+                {
+                    var nombre=data[i].nombrepaquete;
+
+                    div.append('<option>'+nombre+'</option>');
+
+
+                });
+            },
+            error:function(data)
+            {
+                alert("ERROR"+data.responseText);
+            }
+        });
+    }
+
+
+
+
     function calcularPVP(val)
     {
         var precioProv=jQuery("#precio-prov").val();

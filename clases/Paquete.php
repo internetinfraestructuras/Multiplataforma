@@ -30,6 +30,7 @@ public static function modificarPaqueteContrato($idContrato,$idLinea,$id,$precio
     Contrato::setLineaContratoBaja($idContrato,$idLinea,$idAsociado);
 
 
+
     //ACTUALIZAR LINEA DETALLES A BAJA
 
 
