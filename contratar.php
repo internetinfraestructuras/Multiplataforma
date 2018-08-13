@@ -11,8 +11,11 @@ if (!isset($_SESSION)) {
     @session_start();
 }
 require_once('config/util.php');
+
 $util = new util();
 check_session(2);
+
+
 ?>
 <!doctype html>
 <html lang="en-US">
@@ -258,6 +261,15 @@ check_session(2);
             margin-bottom: 5px;
         }
 
+        .x100{
+            width:100%;
+            background: #fff;
+            background-color: #fff;
+            max-height: 35px;
+
+            padding: 0px;
+            margin-bottom: 5px;
+        }
 
     </style>
 </head>
@@ -519,18 +531,18 @@ check_session(2);
                         </div>
 
                         <div class="col-lg-3 col-xs-12">
-                            <label><b>PVP</b></label><br><br>
+                            <label><b>PVP Pack</b></label><br><br>
                             <span id="pvp"></span>
                         </div>
 
                         <div class="col-lg-3 col-xs-12 text-right">
-                            <label><b>PVP Final</b></label><br><br>
+                            <label><b>PVP Total</b></label><br><br>
                             <span name="pvp_final" id="pvp_final">
                         </div>
 
                     </div>
                     <!-- aqui se cargarán los servicios que contiene el paquete seleccionado-->
-                    <div id="aqui_los_servicios"></div>
+                    <div id="aqui_los_servicios" style="height: 330px;overflow:scroll; overflow-x: hidden"></div>
 
 
                     <input  type="button" name="previous" class="previous action-button-previous"  value="Paso Anterior"/>
@@ -545,21 +557,25 @@ check_session(2);
                         <div class="col-lg-1 col-xs-12">
 
                         </div>
+                        <div class="col-lg-2 col-xs-12">
+                            <label><b>PVP Pack</b></label><br><br>
+                            <span id="pvp3"></span>
+                        </div>
 
-                        <div class="col-lg-3 col-xs-12">
-                            <label><b>Servicios Adicionales</b></label><br><br>
+                        <div class="col-lg-2 col-xs-12">
+                            <label><b>Pvp Extras</b></label><br><br>
                             <span id="pvp_extras"></span>
                         </div>
 
 
-                        <div class="col-lg-3 col-xs-12 text-right">
-                            <label><b>PVP Final</b></label><br><br>
+                        <div class="col-lg-2 col-xs-12 text-right">
+                            <label><b>PVP Total</b></label><br><br>
                             <span name="pvp_final" id="pvp_final3">
                         </div>
 
                     </div>
                     <!-- aqui se cargarán los servicios que contiene el paquete seleccionado-->
-                    <div class="table-responsive" style="height: 345px;overflow:hidden;">
+                    <div class="table-responsive" style="height: 330px;overflow:scroll;overflow-x: hidden">
                         <table class="table table-condensed nomargin">
                             <thead class="text-center">
                             <tr>
@@ -576,7 +592,7 @@ check_session(2);
                     </div>
 
                     <input  type="button" name="previous" class="previous action-button-previous"  value="Paso Anterior"/>
-                    <input  type="button" name="next" id="next2" class="next action-button" value="Continuar"/>
+                    <input  type="button" name="next" id="next3" class="next action-button" value="Continuar"/>
                 </fieldset>
 
                 <fieldset class="caja">
@@ -634,7 +650,7 @@ check_session(2);
 
                     <div class="col-lg-3 col-xs-12 ">
                         <label><b>Descuento Hasta</b></label>
-                        <input  type="date" min="" name="dto_hasta" id="dto_hasta" style="max-width: 150px"  class="form-control">
+                        <input  type="date" min="" name="dto_hasta" id="dto_hasta" style="max-width: 200px"  class="form-control">
                     </div>
 
                     <div class="row">
@@ -648,15 +664,16 @@ check_session(2);
 
                     <input  type="button" name="previous" class="previous action-button-previous"
                            value="Paso Anterior"/>
-                    <input  type="button" name="next" id="next3" class="next action-button" value="Continuar"/>
+                    <input  type="button" name="next" id="next4" class="next action-button" value="Continuar"/>
                 </fieldset>
 
                 <fieldset class="caja">
-                    <div id="aqui_los_servicios_y_productos" style="max-height:300px; margin-bottom:8px;"></div>
+                    <div id="aqui_los_servicios_y_productos" style="max-height:460px;overflow-x: hidden; overflow-y: scroll;margin-bottom:8px;"></div>
 
                     <input  type="button" name="previous" class="previous action-button-previous"
                            value="Paso Anterior"/>
-                    <input  type="button" name="next" id="next4" class="next action-button" value="Continuar"/>
+
+                    <input  type="button" name="next" id="next5" class="next action-button" value="Continuar"/>
                 </fieldset>
 
                 <fieldset class="caja">
@@ -691,7 +708,7 @@ check_session(2);
         </div>
 
 
-        <div id="signature-pad" class="signature-pad" style="position: relative; margin-top:900px; visibility: hidden  ">
+        <div id="signature-pad" class="signature-pad" style="position: relative; margin-top:900px; visibility: visible  ">
             <div class="signature-pad--body">
                 <canvas></canvas>
             </div>
@@ -734,6 +751,7 @@ check_session(2);
     var id_contrato_borrador=0;
     var diaspromo = 0;
     var totalMes=0;
+    var codigo_reserva=0;
 
     function mostrarmodal(){
            $("#masservicios").modal();
@@ -897,7 +915,7 @@ check_session(2);
     function calcular_facturas() {
 
         $("#aqui_las_facturas").empty();
-        $("#aqui_las_facturas").append('<div class="row" style="overflow:auto">');
+        $("#aqui_las_facturas").append('<div class="row" style="overflow:auto;overflow-x: hidden">');
         $("#aqui_las_facturas").append('<div class="table-responsive" style="max-height: 160px;">' +
             '<table class="table table-condensed nomargin">' +
             '<thead class=""><tr><th>Nº</th><th>Fecha</th><th>Importe</th></thead><tbody id="aqui_las_lineas"></tbody></table>');
@@ -1005,6 +1023,7 @@ check_session(2);
         $("#pvp_final").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
 
         $("#pvp2").html('<p style="font-size:2.5em; font-weight:600; margin-top:-1px">' + precio + ' &euro;</p>');
+        $("#pvp3").html('<p style="font-size:2.5em; font-weight:600; margin-top:-1px">' + precio + ' &euro;</p>');
         $("#pvp_final2").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
         $("#pvp_final3").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
 
@@ -1026,8 +1045,11 @@ check_session(2);
                         datos[i].pvp + ' &euro;</td>' +
                         '<td><span class="fa fa-eye" style="font-size:1em; cursor: pointer;margin-left:.5em" onclick="ver(\'' + datos[i].idservicio + '\');"></span></td></tr>');
 
-                    // con la p controlo que es del paquete
-                    var servicio=[datos[i].idservicio, datos[i].id_tipo, datos[i].pvp, 1, datos[i].comercial, 'p'];
+                    /** con la p controlo que es del paquete
+                        el siguiente elemento es 0 para portas 1 para numeros nuevos,
+                        se actualiza al cambiar el valor del select */
+
+                    var servicio=[datos[i].idservicio, datos[i].id_tipo, datos[i].pvp, 1, datos[i].comercial, 'p', '0','',''];
                     servicios_contratados.push(servicio);
 
                 });
@@ -1060,7 +1082,7 @@ check_session(2);
         $( "#dto_hasta" ).val(sumarDias(dias));
 
         diaspromo=dias;
-        totalMes = precio + tot_extras;
+        totalMes = round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2);
         calcular_facturas();
         $("#next3").css('display', 'block');
 
@@ -1069,7 +1091,7 @@ check_session(2);
     function cargar_servicios(){
         // $("#agregar_servicios").empty();
         // $("#agregar_servicios").append('<div class="row">');
-        // $("#agregar_servicios").append('<div class="table-responsive" style="height:160px; overflow-y: scroll; ">' +
+        // $("#agregar_servicios").append('<div class="table-responsive" style="height:160px; overflow-x: scroll; ">' +
         //     '<table class="table table-condensed nomargin"><tbody id="aqui_la_tabla2"></tbody>');
 
 
@@ -1163,18 +1185,19 @@ check_session(2);
             guardar_borrador(1);
         }
 
-        if (this.id == 'next2'){
+
+        if (this.id == 'next3'){
             if(id_paquete_seleccionado==0 && servicios_contratados.length==0){
                 alert("Debe seleccionar un paquete o servicio");
                 avanzar = false;
                 return;
-            } else{
-                guardar_borrador(2);
             }
+            guardar_borrador(2);
         }
 
 
-        if (this.id == 'next3'){
+
+        if (this.id == 'next4'){
             if($("#campanas").val()==-1){
                 if(!confirm("No ha seleccionado ninguna campaña, ¿estás seguro/a?"))
                     return;
@@ -1183,6 +1206,17 @@ check_session(2);
                 asignar_productos();
             }
         }
+
+        if (this.id == 'next5'){
+            if($("#campanas").val()==-1){
+                if(!confirm("No ha seleccionado ninguna campaña, ¿estás seguro/a?"))
+                    return;
+            } else{
+                if(!guardar_borrador(4))
+                    return;
+            }
+        }
+
 
 
         function asignar_productos(){
@@ -1266,7 +1300,7 @@ check_session(2);
                 url: 'content/servicios/guardar-borrador.php',
                 type: 'POST',
                 cache: false,
-                async: false,
+                async: true,
                 data: {
                     action: 'borrador',
                     id_cliente: id_cliente_seleccionado
@@ -1286,7 +1320,7 @@ check_session(2);
                 url: 'content/servicios/guardar-borrador-lineas.php',
                 type: 'POST',
                 cache: false,
-                async: false,
+                async: true,
                 data: {
                     action: 'borrador',
                     id_paquete: id_paquete_seleccionado,
@@ -1296,13 +1330,15 @@ check_session(2);
             });
 
         }
+
+        //paso tres cuando se seleccionan los servicios adicionales al paquete
         if(paso==3) {
             // guardo la campaña del contrato en borrador
             $.ajax({
                 url: 'content/servicios/guardar-borrador-campana.php',
                 type: 'POST',
                 cache: false,
-                async: false,
+                async: true,
                 data: {
                     action: 'borrador',
                     id_borrador: id_contrato_borrador,
@@ -1319,6 +1355,7 @@ check_session(2);
             var aMoviles=[];
             var aFijos=[];
             var aNuevos=[];
+            var aProductos=[];
 
             $.ajax({
                 url: 'content/ventas/cargar-portas.php',
@@ -1341,6 +1378,22 @@ check_session(2);
                 }
             });
 
+            // cargo los productos en stock del revendodor
+
+            $.ajax({
+                url: 'content/ventas/cargar-productos.php',
+                type: 'POST',
+                cache: false,
+                async: false,
+                success: function (data) {
+                    $.each(data, function (i) {
+                        aProductos.push(data[i]);
+                    });
+                }
+            });
+            console.log(aFijos);
+            console.log(aMoviles);
+            console.log(aProductos);
 
             // listo los servicios y productos para ir asociando datos a cada linea del contrato
             // como los numeros de tarjetas, numeros de telefonos, imeis, pons, etc.
@@ -1352,7 +1405,7 @@ check_session(2);
                 "<div class='col-lg-1 col-xs-2'><br><b>En Pack</b><br><br></div>" +
                 "<div class='col-lg-3 col-xs-10'><br><b>Servicio</b><br><br></div>" +
                 "<div class='col-lg-2 col-xs-10'><br><b>Alta / Porta</b><br><br></div>" +
-                "<div class='col-lg-2 col-xs-10'><br><b>Portabilidades</b><br><br></div>" +
+                "<div class='col-lg-2 col-xs-10'><br><b>Numeraciones</b><br><br></div>" +
                 "<div class='col-lg-4 col-xs-12'><br><b>Producto Asociado</b><br><br></div>"+
                 "</div>";
 
@@ -1362,63 +1415,145 @@ check_session(2);
                 if(servicios_contratados[c][5]=='p') enpackono = 'inpack.png';
 
                 lineas_detalles_contrato = lineas_detalles_contrato +
-                    "<div class='row'>" +
+                    "<div class='row' style='border-bottom: 1px solid #c9c9c9'>" +
                     "<div class='col-xs-2 col-lg-1'><img src='img/"+ enpackono + "'></div>" +
                     "<div class='col-xs-10 col-lg-3'>"+servicios_contratados[c][4] + "</div>";
+
                 if(servicios_contratados[c][1]==2) {
                     lineas_detalles_contrato = lineas_detalles_contrato +
-                        "<div class='col-xs-10 col-lg-2'><select onchange='muestra_oculta_porta(this.value,"+c+")'><option value=0>Portabilidad</option><option value=1>Alta Nueva</option></select></div>" +
                         "<div class='col-xs-10 col-lg-2'>" +
-                        "<select id='porta-"+c+"'>";
-                            $.each(aFijos, function (i) {
-                                lineas_detalles_contrato = lineas_detalles_contrato +
-                                    "<option value='" + aFijos[i].id + "'>" + aFijos[i].num + "</option>";
-                            });
-                    lineas_detalles_contrato = lineas_detalles_contrato + "</select>" +
-                        "<select style='display:none' id='nuevo-"+c+"'>";
-                            $.each(aNuevos, function (i) {
-                                lineas_detalles_contrato = lineas_detalles_contrato +
-                                    "<option value='" + aNuevos[i].id + "'>" + aNuevos[i].num + "</option>";
-                            });
-                    lineas_detalles_contrato = lineas_detalles_contrato + "</select>" +
+                        "<select class='x100 portaonuevo' id='portaonuevo-"+c+"' onchange='muestra_oculta_porta(this.value,"+c+",2)'>" +
+                        "<option value=0>Portabilidad</option>" +
+                        "<option value=1>Alta Nueva</option>" +
+                        "</select>" +
+                        "</div>" +
+                        "<div class='col-xs-10 col-lg-2'>" +
+                        "<select class='x100 selporta' id='porta-"+c+"' onchange='verifPorta(this,"+c+")'>";
+                    lineas_detalles_contrato = lineas_detalles_contrato +
+                        "<option value='0'></option>";
+                    $.each(aFijos, function (i) {
+                        lineas_detalles_contrato = lineas_detalles_contrato +
+                            "<option value='" + aFijos[i].num + "'>" + aFijos[i].num + "</option>";
+                    });
+                    lineas_detalles_contrato = lineas_detalles_contrato +
+                        "</select>" +
+                        "<select class='x100 selnuevo' style='display:none;width:100%' onchange='verifPorta(this,"+c+")' id='nuevo-"+c+"'>";
+                    lineas_detalles_contrato = lineas_detalles_contrato +
+                        "<option value='0'></option>";
+                    $.each(aNuevos, function (i) {
+                        lineas_detalles_contrato = lineas_detalles_contrato +
+                            "<option value='" + aNuevos[i].num + "'>" + aNuevos[i].num + "</option>";
+                    });
+                    lineas_detalles_contrato = lineas_detalles_contrato +
+                        "</select><span id='cuentaatras"+c+"'  style='display:inline'></span>" +
+                        "<img src='img/refresh.png'  id='refresh"+c+"' style='height:25px; display: none'>" +
                         "</div>";
 
                 } else if(servicios_contratados[c][1]==3) {
                     lineas_detalles_contrato = lineas_detalles_contrato +
-                        "<div class='col-xs-10 col-lg-2'><select onchange='muestra_oculta_porta(this.value,"+c+")'><option value=0>Portabilidad</option><option value=1>Alta Nueva</option></select></div>" +
-                        "<div class='col-xs-10 col-lg-2'><select id='porta-"+c+"'>";
+                        "<div class='col-xs-10 col-lg-2'>" +
+                        "<select class='x100 portaonuevo' id='portaonuevo-"+c+"' onchange='muestra_oculta_porta(this.value,"+c+",3)'>" +
+                        "<option value=0>Portabilidad</option>" +
+                        "<option value=1>Alta Nueva</option>" +
+                        "</select>" +
+                        "</div>" +
+                        "<div class='col-xs-10 col-lg-2'>" +
+                        "<select class='x100 selporta' id='porta-"+c+"' onchange='verifPorta(this,"+c+")'>";
+                    lineas_detalles_contrato = lineas_detalles_contrato +
+                        "<option value='0'></option>";
                     $.each(aMoviles, function (i) {
                         lineas_detalles_contrato = lineas_detalles_contrato +
-                            "<option value='" + aMoviles[i].id + "'>" + aMoviles[i].num + "</option>";
+                            "<option value='" + aMoviles[i].num + "'>" + aMoviles[i].num + "</option>";
                     });
-
-                    lineas_detalles_contrato = lineas_detalles_contrato + "</select>" +
-                        "<select style='display:none' id='nuevo-"+c+"'>";
+                    lineas_detalles_contrato = lineas_detalles_contrato +
+                        "</select>" +
+                        "<select class='x100 selnuevo' style='display:none; width:100%' id='nuevo-"+c+"' onchange='verifPorta(this,"+c+")'>";
+                    lineas_detalles_contrato = lineas_detalles_contrato +
+                        "<option value='0'></option>";
                     $.each(aNuevos, function (i) {
                         lineas_detalles_contrato = lineas_detalles_contrato +
-                            "<option value='" + aNuevos[i].id + "'>" + aNuevos[i].num + "</option>";
+                            "<option value='" + aNuevos[i].num + "'>" + aNuevos[i].num + "</option>";
                     });
-                    lineas_detalles_contrato = lineas_detalles_contrato + "</select>" +
+                    lineas_detalles_contrato = lineas_detalles_contrato +
+                        "</select><span id='cuentaatras"+c+"' style='display:inline'></span>" +
+                        "<img src='img/refresh.png'  id='refresh"+c+"' style='height:25px; display: none'>" +
                         "</div>";
-
-                } else {
-                    lineas_detalles_contrato = lineas_detalles_contrato + "<div class='col-xs-10 col-lg-2'></div>"+
-                        "<div class='col-xs-10 col-lg-2'></div>";
-                }
+                } else
+                    lineas_detalles_contrato = lineas_detalles_contrato +
+                        "<div class='col-xs-10 col-lg-2'></div><div class='col-xs-10 col-lg-2'></div>";
 
                 lineas_detalles_contrato = lineas_detalles_contrato +
                     "<div class='col-xs-12 col-lg-4'>";
 
-                lineas_detalles_contrato = lineas_detalles_contrato + "</select>" +
-                    "<select style='display:none' id='nuevo-"+c+"'>";
+                lineas_detalles_contrato = lineas_detalles_contrato +
+                    "<select class='x100 producto' id='prod-"+c+"' onchange='verifProds(this,"+c+")'>";
+                lineas_detalles_contrato = lineas_detalles_contrato +
+                    "<option data-id_servicio='"+c+"' value='0'></option>";
                 $.each(aProductos, function (i) {
-                    if (aProductos[i].tipo == )
-                    lineas_detalles_contrato = lineas_detalles_contrato +
-                        "<option value='" + aProductos[i].id + "'>" + aProductos[i].serial + "</option>";
+                    if (aProductos[i].tipo == servicios_contratados[c][1])
+                        lineas_detalles_contrato = lineas_detalles_contrato +
+                            "<option value='" + aProductos[i].id + "'>" + aProductos[i].serial + "</option>";
                 });
-                lineas_detalles_contrato = lineas_detalles_contrato + "</div>" ;
+
+                lineas_detalles_contrato = lineas_detalles_contrato + "</select></div></div>" ;
             }
             $("#aqui_los_servicios_y_productos").append(lineas_detalles_contrato);
+        }
+
+
+        if(paso==4) {
+
+            var todos_ok=0;
+            var portaonuevo=[];
+            var portas=[];
+            var nuevos=[];
+
+            $('.producto').each(function (){
+
+                if(this.value == null || this.value == '' || this.value == 0) {
+                    $(this).css('border', 'solid 2px orange');
+                    todos_ok++;
+                } else {
+                    $(this).css('border', 'solid 2px #1D9FC1');
+                }
+            });
+
+            $('.portaonuevo').each(function (){
+                var port = [this.value, this.id];
+                portaonuevo.push(port);
+            });
+
+            $('.selporta').each(function (){
+                var port = [this.value, this.id];
+                portas.push(port);
+            });
+
+            $('.selnuevo').each(function (){
+                var port = [this.value, this.id];
+                nuevos.push(port);
+            });
+
+            for (n=0; n<portaonuevo.length; n++){
+                if(portaonuevo[n][0]==0 && portas[n][0]==0){
+                    $('#'+portas[n][1]).css('border', 'solid 2px orange');
+                } else {
+                    $('#'+portas[n][1]).css('border', 'solid 2px #1D9FC1');
+                }
+
+                if(portaonuevo[n][0]==1 && nuevos[n][0]==0){
+                    $('#'+nuevos[n][1]).css('border', 'solid 2px orange');
+                } else {
+                    $('#'+nuevos[n][1]).css('border', 'solid 2px #1D9FC1');
+                }
+
+
+            }
+
+            if (todos_ok>0)
+                return false;
+            else
+                return true;
+
         }
 
     }
@@ -1437,8 +1572,8 @@ check_session(2);
                 servicios_contratados.splice(c,1);
         }
         // con la e controlo que es un extra
-        if(parseInt(cantidad)>0) {
-            var servicio = [id_servicio, id_familia, pvp_extra, cantidad, nom_servicio, 'e'];
+        for (d=1; d<=cantidad; d++){
+            var servicio = [id_servicio, id_familia, pvp_extra, 1, nom_servicio, 'e'];
             servicios_contratados.push(servicio);
         }
         console.log(servicios_contratados);
@@ -1641,9 +1776,8 @@ check_session(2);
         return false;
     }
 
-    function muestra_oculta_porta(a,b) {
-alert(a);
-alert(b);
+    function muestra_oculta_porta(a,b, c) {
+
         if(a==0) {
             $("#porta-" + b).css('display', 'block');
             $("#nuevo-" + b).css('display', 'none');
@@ -1652,6 +1786,129 @@ alert(b);
             $("#porta-" + b).css('display', 'none');
             $("#nuevo-" + b).css('display', 'block');
         }
+        servicios_contratados[b][6]=a;
+
+        $("#nuevo-"+b).empty();
+
+        var url='content/ventas/cargar-fijos-libres.php';
+
+        if(c==3)
+            url='content/ventas/cargar-moviles-libres.php';
+
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            cache: false,
+            async: false,
+            data: {
+                proveedor: id_cliente_seleccionado
+            },
+            success: function (data) {
+                $.each(data, function (i) {
+                    if(i!='codigo_reserva')
+                        if(c==3)
+                            $("#nuevo-"+b).append("<option value='"+data[i]+"'>"+data[i]+"</option>");
+                        else
+                            if(data[i].selectable==true)
+                                $("#nuevo-"+b).append("<option value='"+data[i].num+"'>"+data[i].num+"</option>");
+                            else
+                                $("#nuevo-"+b).append("<option disabled value='"+data[i].num+"'>---- "+data[i].num+" ----</option>");
+                    else
+                        codigo_reserva = data[i];
+                });
+            }
+        });
+        if(c==3) {
+            var seconds = 560;
+
+            // Calcula la fecha de finalización del contador sumando
+            // el número de segundos a la fecha actual
+            var end = (new Date()).getTime() + seconds * 1000;
+            displayCounter();
+            var timeout = setInterval(displayCounter, 300);
+
+            function displayCounter() {
+                // Calcula el número de segundos que faltan para llegar a la fecha de finalización
+                var counter = Math.floor((end - (new Date()).getTime()) / 1000);
+                if (counter < 0) counter = 0;
+
+                document.getElementById('cuentaatras' + b).innerHTML = 'Tiempo de reserva: ' +
+                    Math.floor(counter / 60) + ':' +
+                    ('00' + Math.floor(counter % 60)).slice(-2);
+                if (counter === 0) {
+                    clearTimeout(timeout);
+                    document.getElementById('cuentaatras' + b).innerHTML = "<span onclick='refrescar(" + b + ")' style='cursor:pointer; color:red; font-weight: 600'>Haga clic para recargar numeros</span>";
+                }
+            }
+        }
+
+    }
+
+    function refrescar(id){
+        muestra_oculta_porta(1,id);
+    }
+
+
+    function verifPorta(s,b){
+        var texto = $(s).find('option:selected').text();
+
+        $('.selporta').each(function (){
+            $(this).css('border', 'solid 2px #E5E7E9');
+            if(this.value == s.value && this.id!=s.id && s.value!=0) {
+                alert("El valor " + texto + " ya ha sido seleccionado.");
+                $(this).css('border', 'solid 2px #1D9FC1');
+                $(s).css('border', 'solid 2px orange');
+                s.selectedIndex = 0;
+                s.focus();
+                return false;
+            }
+        });
+
+        servicios_contratados[b][7]=s.value;
+        console.log(servicios_contratados);
+
+    }
+
+
+    function verifProds(s,b){
+        var texto = $(s).find('option:selected').text();
+
+        $('.producto').each(function (){
+            $(this).css('border', 'solid 2px #E5E7E9');
+            if(this.value == s.value && this.id!=s.id && s.value!=0) {
+                alert("El valor " + texto + " ya ha sido seleccionado.");
+                $(this).css('border', 'solid 2px #1D9FC1');
+                $(s).css('border', 'solid 2px orange');
+                s.selectedIndex = 0;
+                s.focus();
+                return false;
+            }
+        });
+        servicios_contratados[b][8]=s.value;
+        console.log(servicios_contratados);
+    }
+
+    function guardar_contrato(firma){
+        $.ajax({
+            url: 'content/servicios/guardar-contrato.php',
+            type: 'POST',
+            cache: false,
+            async: true,
+            data: {
+                action: 'contrato',
+                id_borrador: id_contrato_borrador,
+                id_campana: $("#campanas").val(),
+                dto:$("#dto").val(),
+                dias:$("#dto_meses").val(),
+                hasta:$("#dto_hasta").val(),
+                pack: precio,
+                extras: tot_extras,
+                firma: firma,
+                lineas: servicios_contratados,
+                cliente: id_cliente_seleccionado
+            }
+        });
     }
 
 </script>

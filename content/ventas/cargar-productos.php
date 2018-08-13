@@ -25,26 +25,28 @@ $reseller = $_SESSION['REVENDEDOR'];
 $listado= $util->selectWhere3('productos,productos_tipos,productos_modelos,almacenes',
     array("productos.id",
         "productos.numero_serie",
-        "productos_tipos.nombre as Tipo",
+        "productos_tipos.id_tipo_servicio as Tipo",
         "productos_modelos.nombre as Modelo"),
     "productos.id_tipo_producto=productos_tipos.id
             AND productos.id_modelo_producto=productos_modelos.id 
             AND almacenes.id=productos.id_almacen 
-            AND almacenes.id_empresa=".$_SESSION['REVENDEDOR']." AND productos.estado=1");
+            AND almacenes.id_empresa=".$reseller." AND productos.estado=1");
 
 
 $aItems = array();
 
-while ($row = mysqli_fetch_array($modelos)) {
+for($i=0;$i<count($listado);$i++) {
+
     $aItem = array(
-        'id' => $row[0],
-        'serial' => $row[1],
-        'tipo' => $row[2],
-        'modelo' => $row[3]
+        'id' => $listado[$i][0],
+        'serial' => $listado[$i][1],
+        'tipo' => $listado[$i][2],
+        'modelo' => $listado[$i][3]
     );
     array_push($aItems, $aItem);
 
 }
+
 
 header('Content-type: application/json; charset=utf-8');
 echo json_encode($aItems);

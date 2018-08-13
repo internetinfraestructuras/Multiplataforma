@@ -18,6 +18,7 @@ date_default_timezone_set('Etc/UTC');
 
 if (isset($_POST['action']) && $_POST['action'] == 'borrador') {
 
+
     $util->delete('contratos_borrador','ID_CLIENTE',$_POST['id_cliente']);
     $campos = array('ID_CLIENTE','ID_EMPRESA');
     $values = array($_POST['id_cliente'], $_SESSION['REVENDEDOR']);

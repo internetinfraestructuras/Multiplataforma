@@ -7,24 +7,61 @@
  */
 /*
      ╔═══════════════════════════════════════════════════════════════════════╗
-     ║ Devuelve un listado de numeros libres en la api             ║
+     ║ Devuelve un listado de numeros fijo libres en la api        ║
      ║ correspondiente dependiendo del parametro pasado            ║
-     ║ como nombre del proveedor, segun la tarifa de movil         ║
-     ║ tenemos que cargar los numeros desde un proveedor u otro    ║
+     ║ como nombre del proveedor,
      ╚═══════════════════════════════════════════════════════════════════════╝
 */
 
 if (!isset($_SESSION)) {
     @session_start();
 }
-require_once('../../config/util.php');
-$util = new util();
-check_session(3);
 
-require_once('../../clases/airenetwork/config.php');
-require_once('../../clases/airenetwork/clases/Linea.php');
-$linea=new Linea($url,$user,$pass);
-$aItems = $linea->getNumerosLibres();
+
+require_once('../../clases/fijos/classTelefonia.php');
+//echo "test\n";
+$tel = new Telefonia();
+$aItems = array();
+
+
+try {
+
+    $res = $tel->getProvinciasNumericosDisponibles();
+
+    while ($row = mysqli_fetch_array($res)) {
+        $aItem = array(
+            'provincia' => $row[0],
+            'num' => $row[1],
+            'selectable'=>false
+        );
+        $prov=$row[0];
+        array_push($aItems, $aItem);
+
+        try {
+
+            $res1 = $tel->getNumericosDisponiblesFromProvincia(1);
+
+            while ($row1 = mysqli_fetch_array($res1)) {
+
+                $aItem = array(
+                    'provincia' => $prov,
+                    'num' => $row1[0],
+                    'selectable'=>true
+                );
+                array_push($aItems, $aItem);
+
+            }
+        }
+        catch (Exception $e) {
+            echo 'Excepción capturada: ',  $e->getMessage(), "<br>";
+        }
+
+    }
+}
+catch (Exception $e) {
+    echo 'Excepción capturada: ',  $e->getMessage(), "<br>";
+}
+
 
 header('Content-type: application/json; charset=utf-8');
-echo $aItems;
+echo json_encode($aItems);
