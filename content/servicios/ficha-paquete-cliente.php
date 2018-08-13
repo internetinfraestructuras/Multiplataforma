@@ -11,9 +11,9 @@ require_once('../../config/util.php');
 $util = new util();
 check_session(2);
 
-$listado= $util->selectWhere3('paquetes',
-    array("ID","NOMBRE","PRECIO_COSTE","MARGEN","IMPUESTO","PVP"),
-    "paquetes.id_empresa=".$_SESSION['REVENDEDOR']);
+$listado= $util->selectWhere3('contratos,contratos_lineas,paquetes',
+    array("paquetes.id","paquetes.nombre","contratos_lineas.precio_proveedor","contratos_lineas.beneficio","contratos_lineas.impuesto","contratos_lineas.pvp"),
+    "contratos.id=contratos_lineas.id_contrato AND paquetes.id=contratos_lineas.id_asociado AND contratos_lineas.id_asociado=".$_GET['idPaquete']." AND contratos_lineas.estado!=2");
 
 $id=$listado[0][0];
 $nombre=$listado[0][1];
@@ -179,6 +179,7 @@ $pvp=$listado[0][5];
                                             <th>ID</th>
                                             <th>SERVICIO</th>
                                             <th>TIPO SERVICIO</th>
+                                            <th>ESTADO SERVICIO</th>
                                             <th>OPCIONES</th>
                                         </tr>
                                         </thead>
@@ -204,12 +205,15 @@ AND contratos_lineas_detalles.ID_LINEA=250
                                         }
                                         else
                                         {
-                                            $atributos= $util->selectWhere3('contratos_lineas,contratos_lineas_detalles,servicios,servicios_tipos',
-                                                array('servicios.id,servicios.nombre,servicios_tipos.nombre,servicios.id_servicio_tipo'),
+                                            //AND contratos_lineas_detalles.id=(SELECT max(contratos_lineas_detalles.id) FROM contratos_lineas_detalles)
+                                            $atributos= $util->selectWhere3('contratos_lineas,contratos_lineas_detalles,servicios,servicios_tipos,estados_contratos',
+                                                array('servicios.id,servicios.nombre,servicios_tipos.nombre,servicios.id_servicio_tipo,estados_contratos.nombre,estados_contratos.id'),
                                                 'contratos_lineas.id=contratos_lineas_detalles.id_linea
                                                 AND contratos_lineas_detalles.id_servicio=servicios.id
                                                 AND servicios.id_servicio_tipo=servicios_tipos.id
-                                                AND contratos_lineas_detalles.estado=1 
+                                                AND estados_contratos.id=contratos_lineas_detalles.estado
+                                                AND contratos_lineas_detalles.estado!=2 
+                                                
                                                 AND contratos_lineas_detalles.id_linea='.$_GET['idLineaContrato']." GROUP BY contratos_lineas_detalles.ID_TIPO_SERVICIO");
                                         }
 
@@ -220,7 +224,31 @@ AND contratos_lineas_detalles.ID_LINEA=250
                                             $nombre=$atributos[$i][1];
                                             $tipo=$atributos[$i][2];
                                             $servicioId=$atributos[$i][3];
+                                            $estado=$atributos[$i][4];
+                                            $idEstadoId=$atributos[$i][5];
 
+                                            if($idEstadoId==1)
+                                            {
+                                                $bColor="green";
+                                                $color="white";
+                                            }
+                                            if($idEstadoId==3)
+                                            {
+                                                $bColor="blue";
+                                                $color="white";
+                                            }
+                                            if($idEstadoId==4)
+                                            {
+                                                $bColor="red";
+                                                $color="white";
+                                            }
+                                            if($idEstadoId==6 || $idEstadoId==7 || $idEstadoId==8)
+                                            {
+                                                $bColor="orange";
+                                                $color="white";
+                                            }
+
+                                            echo "El estado es".$estadoId;
 
 
 
@@ -228,7 +256,8 @@ AND contratos_lineas_detalles.ID_LINEA=250
                                             echo "<tr>";
                                             echo "<td>$id</td>
                                                   <td>$nombre</td>
-                                                  <td>$tipo</td>";
+                                                  <td>$tipo</td>
+                                                  <td style='color:$color;background-color:$bColor;'>$estado</td>";
 
                                             ?>
                                             <td class="td-actions text-right">
@@ -384,8 +413,8 @@ AND contratos_lineas_detalles.ID_LINEA=250
 </div>
 
 <!-- JAVASCRIPT FILES -->
-<script type="text/javascript">var plugin_path = 'assets/plugins/';</script>
-<script type="text/javascript" src="assets/plugins/jquery/jquery-2.2.3.min.js"></script>
+<script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
+<script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 <!--<script type="text/javascript" src="assets/js/app.js"></script>-->
 
 
@@ -394,15 +423,15 @@ AND contratos_lineas_detalles.ID_LINEA=250
 
     function borrar(id)
     {
+
         // var hash = md5(id);
-        var respuesta = confirmar("¿Estas seguro de eliminar el servicio del paquete? Si elimina el servicio del paquete se cobrarán como servicios independientes los demás servicios");
-
-
+        var respuesta = confirmar("¿Estas seguro de eliminar el servicio del paquete? ");
         if(respuesta)
         {
 
+
             jQuery.ajax({
-                url: 'cancelar-baja.php',
+                url: 'baja-servicio-paquete.php',
                 type: 'POST',
                 cache: false,
                 async: true,
@@ -411,10 +440,10 @@ AND contratos_lineas_detalles.ID_LINEA=250
                     id:id,
                     idPaquete:<?php echo $_GET['idPaquete']; ?>,
                     idContrato:<?php echo $_GET['idContrato']; ?>,
-                    idLineaContrato:<?php echo $_GET['idLineaContrato']; ?>,
-                    productos:productos
+                    idLineaContrato:<?php echo $_GET['idLineaContrato']; ?>
                 },
-                success: function (data) {
+                success: function (data)
+                {
 
                     console.log(data);
                     //  location.reload();

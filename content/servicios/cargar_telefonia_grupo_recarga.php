@@ -15,25 +15,22 @@ if (!isset($_SESSION))
 {
     @session_start();
 }
-require_once('../../config/util.php');
+require_once ('../../clases/telefonia/classTelefonia.php');
+
+
 $util = new util();
 check_session(3);
 
-$id=$_POST['id'];
-$campos=array('ID','NOMBRE');
-$provincias = $util->selectWhere('servicios_tipos_atributos', $campos,'servicios_tipos_atributos.ID_SERVICIO='.$id." AND servicios_tipos_atributos.id_tipo=1",'NOMBRE');
+$cifSuperUsuario='B45782687';
 
-$aItems = array();
-
-
-while ($row = mysqli_fetch_array($provincias)) {
-    $aItem = array(
-        'ID' => $row[0],
-        'NOMBRE' => $row[1]
-    );
-    array_push($aItems, $aItem);
-
+$telefonia=new Telefonia();
+$gruposRecargas=$telefonia->getGruposRecarga($cifSuperUsuario);
+$grupos=array();
+while ($row = mysqli_fetch_array($gruposRecargas))
+{
+    array_push($grupos, $row);
 }
-
 header('Content-type: application/json; charset=utf-8');
-echo json_encode($aItems);
+echo json_encode($grupos);
+
+

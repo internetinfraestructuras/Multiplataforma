@@ -1,109 +1,59 @@
 <?php
-require_once ('../../pdf/fpdf.php');
+require_once ('../../config/util.php');
 
-if (!isset($_SESSION)) {
-    @session_start();
+require_once('../../tcpdf/tcpdf.php');
+
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, false, 'ISO-8859-1', false);
+
+$util=new util();
+
+
+$lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,estados_contratos',
+    array("contratos_lineas.id","contratos_lineas_tipo.nombre as Tipo","contratos_lineas_tipo.id","contratos_lineas.id_asociado","contratos_lineas.pvp","estados_contratos.nombre as nombrecontrato","estados_contratos.id as idestado","contratos_lineas.fecha_alta","contratos_lineas.fecha_baja"),
+    "contratos.id=contratos_lineas.id_contrato 
+            and contratos_lineas_tipo.id=contratos_lineas.id_tipo
+            AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND contratos.id=".$_GET['idContrato']." AND contratos_lineas.estado!=2 AND estados_contratos.id=contratos_lineas.estado");
+
+
+
+$totalContrato=0;
+
+for($i=0;$i<count($lineas);$i++)
+{
+    $id=$lineas[$i][0];
+    $tipo=$lineas[$i][1];
+    $idTipo=$lineas[$i][2];
+    $idAsociado=$lineas[$i][3];
+    $pvp=$lineas[$i][4];
+    $estado=$lineas[$i][5];
+    $idEstado=$lineas[$i][6];
+    $alta=$lineas[$i][7];
+    $baja=$lineas[$i][8];
+
+    if($idEstado!=3)
+        $totalContrato+=$pvp;
+
+
+
+
+    $tipo=strtolower($tipo);
+
+    if($idTipo!=3)
+        $listado= $util->selectWhere3($tipo, array("ID","nombre","id_servicio_tipo"),  $tipo.".id_empresa=".$_SESSION['REVENDEDOR']." AND ".$tipo.".id=".$idAsociado);
+    else
+        $listado= $util->selectWhere3($tipo.",almacenes", array("productos.ID","numero_serie"),  "almacenes.id=productos.id_almacen AND almacenes.id_empresa=".$_SESSION['REVENDEDOR']." AND ".$tipo.".id=".$idAsociado);
+
+    $idServicioTipo=$listado[0][2];
+
+    $nombre=$listado[0][1];
+
+
+
 }
 
 
 
-$logo=$_SESSION['LOGO'];
 
-$pdf = new FPDF('P','mm','A4');
-//add new page
-$pdf->AddPage();
-//output the result
-$pdf->SetFont('Arial','B',14);
-
-//Cell(width , height , text , border , end line , [align] )
-$pdf->Image($logo,0,0,40);
-$pdf->Cell(130 ,40,'EMPRESA NOMBRE',0,0);
-$pdf->Cell(59 ,24,'FACTURA #00001',0,1);//end of line
-
-//set font to arial, regular, 12pt
-$pdf->SetFont('Arial','',12);
-
-$pdf->Cell(130 ,5,'C/PRUEBAS',0,0);
-$pdf->Cell(59 ,5,'',0,1);//end of line
-
-$pdf->Cell(130 ,5,'JEREZ,11408',0,0);
-$pdf->Cell(25 ,5,'FECHA',0,0);
-$pdf->Cell(34 ,5,'[dd/mm/yyyy]',0,1);//end of line
-
-$pdf->Cell(130 ,5,'TELEFONO',0,0);
-$pdf->Cell(25 ,5,'Factura#',0,0);
-$pdf->Cell(34 ,5,'[1234567]',0,1);//end of line
-
-$pdf->Cell(130 ,5,'Fax [+12345678]',0,0);
-$pdf->Cell(25 ,5,'CLIENTE.ID',0,0);
-$pdf->Cell(34 ,5,'[1234567]',0,1);//end of line
-
-//make a dummy empty cell as a vertical spacer
-$pdf->Cell(189 ,10,'',0,1);//end of line
-
-//billing address
-$pdf->Cell(100 ,5,'PARA',0,1);//end of line
-
-//add dummy cell at beginning of each line for indentation
-$pdf->Cell(10 ,5,'',0,0);
-$pdf->Cell(90 ,5,'CLIENTE DEMO',0,1);
-
-$pdf->Cell(10 ,5,'',0,0);
-$pdf->Cell(90 ,5,'PRADONET',0,1);
-
-$pdf->Cell(10 ,5,'',0,0);
-$pdf->Cell(90 ,5,'C/FALSA',0,1);
-
-$pdf->Cell(10 ,5,'',0,0);
-$pdf->Cell(90 ,5,'950000001',0,1);
-
-//make a dummy empty cell as a vertical spacer
-$pdf->Cell(189 ,10,'',0,1);//end of line
-
-//invoice contents
-$pdf->SetFont('Arial','B',12);
-
-$pdf->Cell(130 ,5,'DESCRIPCIÓN',1,0);
-$pdf->Cell(25 ,5,'IMPUESTOS',1,0);
-$pdf->Cell(34 ,5,'TOTAL',1,1);//end of line
-
-$pdf->SetFont('Arial','',12);
-
-//Numbers are right-aligned so we give 'R' after new line parameter
-
-$pdf->Cell(130 ,5,'PAQUETE 1',1,0);
-$pdf->Cell(25 ,5,'-',1,0);
-$pdf->Cell(34 ,5,'3,250',1,1,'R');//end of line
-
-$pdf->Cell(130 ,5,'SERVICIO',1,0);
-$pdf->Cell(25 ,5,'-',1,0);
-$pdf->Cell(34 ,5,'1,200',1,1,'R');//end of line
-
-$pdf->Cell(130 ,5,'PRODUCTO',1,0);
-$pdf->Cell(25 ,5,'-',1,0);
-$pdf->Cell(34 ,5,'1,000',1,1,'R');//end of line
-
-//summary
-$pdf->Cell(130 ,5,'',0,0);
-$pdf->Cell(25 ,5,'Subtotal',0,0);
-$pdf->Cell(4 ,5,'€',1,0);
-$pdf->Cell(30 ,5,'4,450',1,1,'R');//end of line
-
-$pdf->Cell(130 ,5,'',0,0);
-$pdf->Cell(25 ,5,'Impuestos',0,0);
-$pdf->Cell(4 ,5,'€',1,0);
-$pdf->Cell(30 ,5,'0',1,1,'R');//end of line
-
-$pdf->Cell(130 ,5,'',0,0);
-$pdf->Cell(25 ,5,'Impuestos',0,0);
-$pdf->Cell(4 ,5,'€',1,0);
-$pdf->Cell(30 ,5,'21%',1,1,'R');//end of line
-
-$pdf->Cell(130 ,5,'',0,0);
-$pdf->Cell(25 ,5,'Total',0,0);
-$pdf->Cell(4 ,5,'€',1,0);
-$pdf->Cell(30 ,5,'4,450',1,1,'R');//end of line
-$pdf->Output();
-
-
+echo "WOK";
+$pdf->Output('exss.pdf', 'D');
 ?>

@@ -4,6 +4,18 @@ require_once('../../config/def_tablas.php');
 require_once ('Orden.php');
 class Contrato
 {
+
+
+    //Crea la cabecera de un nuevo contrato
+    public static function setNuevoContrato($cliente,$fechaFin,$estado)
+    {
+        $util=new util();
+        $t_contratos=array("ID_EMPRESA","ID_CLIENTE","FECHA_INICIO","FECHA_FIN","ESTADO");
+        $values=array($_SESSION['REVENDEDOR'],$cliente,date("y-m-d",time()),$fechaFin,$estado);
+
+        return $util->insertInto('contratos_lineas', $t_contratos, $values);
+    }
+
     //Devuelve la linea contratos_lineas de un contrato de una dicha linea con un idServicio especifico.
     public static function getLineaContratoServicio($idContrato,$idLinea,$idServicio)
     {
@@ -47,6 +59,22 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
             "contratos_lineas_detalles.id_linea=".$_POST['idLinea']);
     }
     //obtiene las linea de detalle de un contrato
+    public static function getLineaDetallesActivas($idLinea)
+    {
+        $util=new util();
+        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO","ID_ATRIBUTO_SERVICIO","VALOR","ID"),
+            "contratos_lineas_detalles.id_linea=".$idLinea." AND contratos_lineas_detalles.estado=1");
+    }
+
+    //obtiene las linea de detalle de un contrato agrupadas por un servicio, no sirve para dar de alta al romper el paquete
+    public static function getLineaDetallesActivasAgrupadasServicio($idLinea)
+    {
+        $util=new util();
+        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO","ID_ATRIBUTO_SERVICIO","VALOR","ID","ID_SERVICIO"),
+            "contratos_lineas_detalles.id_linea=".$idLinea." AND contratos_lineas_detalles.estado=1 GROUP BY contratos_lineas_detalles.id_servicio");
+    }
+
+    //obtiene las linea de detalle de un contrato
     public static function getLineaDetallesServicio($idLinea,$idServicio)
     {
         $util=new util();
@@ -55,6 +83,24 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     }
 
 
+
+    //obtiene las linea de detalle de un contrato
+    public static function getLineaDetallesServicioActivas($idLinea,$idServicio)
+    {
+        $util=new util();
+        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO","ID_ATRIBUTO_SERVICIO","VALOR"),
+            "contratos_lineas_detalles.id_linea=".$idLinea." AND contratos_lineas_detalles.id_servicio=".$idServicio." AND contratos_lineas_detalles.estado=1");
+    }
+
+
+    //Nos devuelve el id del paquete al que apunta una línea de contrato
+    public static function getIdPaqueteLinea($idContrato,$idLinea)
+    {
+        $util=new util();
+        return $util->selectWhere3("contratos_lineas,contratos", array("ID_ASOCIADO"),
+            "contratos_lineas.id=".$idLinea." AND contratos_lineas.id_contrato=contratos.id AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND contratos_lineas.id_contrato=".$idContrato);
+    }
+
     //Establece una línea de un contrato de baja
     public static function setLineaContratoBaja($idContrato,$idLinea,$idServicio,$fecha=null)
     {
@@ -62,7 +108,32 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
         $campos=array('ESTADO','FECHA_BAJA');
 
-        $tipo=Contrato::comprobarFechas($fecha);
+        $fecha_actual = strtotime(date("y-m-d",time()));
+        $fechaBaja= strtotime(date("y-m-d",strtotime($fecha)));
+
+        if($fecha_actual < $fechaBaja)
+            $estado=7;
+        else
+            $estado=2;
+
+
+
+        if($fecha==null)
+            $values=array($estado,date('Y-m-d'));
+        else
+            $values=array($estado,$fecha);
+
+        $result = $util->update('contratos_lineas', $campos, $values, "id_asociado=".$idServicio." AND id_contrato=".$idContrato." AND id=".$idLinea);
+    }
+
+    //Establece una línea de un contrato de baja
+    public static function setLineaContratoBajaCambio($idContrato,$idLinea,$idServicio,$fecha=null)
+    {
+        $util=new util();
+
+        $campos=array('ESTADO','FECHA_BAJA');
+
+        $tipo=7;
 
         if($fecha==null)
             $values=array($tipo,date('Y-m-d'));
@@ -93,7 +164,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         $fechaBaja= strtotime(date("y-m-d",strtotime($fecha)));
 
         if($fecha_actual < $fechaBaja)
-            $tipoEstado=4;
+            $tipoEstado=8;
         else
             $tipoEstado=2;
 
@@ -135,45 +206,96 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         $util=new util();
 
         $campos=array('ESTADO','FECHA_BAJA');
-        if($fechaBaja==null)
-            $values=array("2",date('Y-m-d'));
-        else
-            $values=array("2",$fechaBaja);
 
-        $values=array(2,date('Y-m-d '));
+        $fecha_actual = strtotime(date("y-m-d",time()));
+        $fechaBaja= strtotime(date("y-m-d",strtotime($fechaBaja)));
+
+        if($fecha_actual < $fechaBaja)
+            $estado=7;
+        else
+            $estado=2;
+
+
+
+        if($fechaBaja==null)
+            $values=array($estado,date('Y-m-d'));
+        else
+            $values=array($estado,$fechaBaja);
+
+
+
 
         $result = $util->update('contratos_lineas_detalles', $campos, $values, "id_linea=".$idLineaContrato." AND id_servicio=".$idServicio);
     }
+
+
+
+
+
     //Genera una nueva línea en un contrato
-    public static function setNuevaLineaContrato($tipo,$servicio,$idContrato,$precioProveedor,$beneficio,$impuesto,$pvp,$permanencia,$estado)
+    public static function setNuevaLineaContrato($tipo,$servicio,$idContrato,$precioProveedor,$beneficio,$impuesto,$pvp,$permanencia,$estado,$fechaAlta=null)
     {
         $util=new util();
         $t_contratos_lineas=array("ID_TIPO","ID_ASOCIADO","ID_CONTRATO","PRECIO_PROVEEDOR","BENEFICIO","IMPUESTO","PVP","PERMANENCIA","ESTADO","FECHA_ALTA","FECHA_BAJA");
+
+        if($fechaAlta!=null)
+        {
+            $fecha_actual = strtotime(date("y-m-d",time()));
+            $fechaBaja= strtotime(date("y-m-d",strtotime($fechaAlta)));
+
+            if($fecha_actual < $fechaBaja)
+                $estado=8;
+            else
+                $estado=1;
+        }
+
         //SE SETEA LA NUEVA LÍNEA DE CONTRATO EN ALTA
-        $values=array($tipo,$servicio,$idContrato,$precioProveedor,$beneficio,$impuesto,$pvp,$permanencia,$estado,date('Y-m-d '),"");
+        if($fechaAlta==null)
+            $values=array($tipo,$servicio,$idContrato,$precioProveedor,$beneficio,$impuesto,$pvp,$permanencia,$estado,date('Y-m-d '),"");
+        else
+            $values=array($tipo,$servicio,$idContrato,$precioProveedor,$beneficio,$impuesto,$pvp,$permanencia,$estado,$fechaAlta,"");
         return $util->insertInto('contratos_lineas', $t_contratos_lineas, $values);
     }
 
     //Establece una nueva línea de detalle
-    public static function setNuevaLineaDetalles($idLinea,$tipo,$atributo,$valor,$estado)
+    public static function setNuevaLineaDetalles($idLinea,$tipo,$atributo,$valor,$estado,$fechaAlta=null)
     {
         $util=new util();
         $t_contratos_lineas_detalles=array("ID_LINEA","ID_TIPO_SERVICIO","ID_ATRIBUTO_SERVICIO","VALOR","FECHA_ALTA","FECHA_BAJA","ESTADO");
-        $values=array($idLinea,$tipo,$atributo,$valor,date('Y-m-d '),'',$estado);
+        if($fechaAlta==null)
+            $values=array($idLinea,$tipo,$atributo,$valor,date('Y-m-d '),'',$estado);
+        else
+            $values=array($idLinea,$tipo,$atributo,$valor,$fechaAlta,'',$estado);
         return $util->insertInto('contratos_lineas_detalles', $t_contratos_lineas_detalles, $values);
     }
-    public static function setNuevaLineaDetallesPaquete($idLinea,$tipo,$atributo,$valor,$estado,$idServicio)
+    public static function setNuevaLineaDetallesPaquete($idLinea,$tipo,$atributo,$valor,$estado,$idServicio,$fecha=null)
     {
         $util=new util();
+
+
+        if($fecha!=null)
+            $estado=self::comprobarFechas($fecha);
+
+        if($estado==2)
+            $estado=1;
+        if($estado==7)
+            $estado=8;
+
         if($atributo=='null'||$valor=='null')
         {
             $t_contratos_lineas_detalles=array("ID_LINEA","ID_TIPO_SERVICIO","FECHA_ALTA","FECHA_BAJA","ESTADO","ID_SERVICIO");
-            $values=array($idLinea,$tipo,date('Y-m-d '),'',$estado,$idServicio);
+            if(fecha==null)
+             $values=array($idLinea,$tipo,date('Y-m-d '),'',$estado,$idServicio);
+            else
+                $values=array($idLinea,$tipo,$fecha,'',$estado,$idServicio);
         }
         else
         {
             $t_contratos_lineas_detalles=array("ID_LINEA","ID_TIPO_SERVICIO","ID_ATRIBUTO_SERVICIO","VALOR","FECHA_ALTA","FECHA_BAJA","ESTADO","ID_SERVICIO");
-            $values=array($idLinea,$tipo,$atributo,$valor,date('Y-m-d '),'',$estado,$idServicio);
+            if($fecha==null)
+                $values=array($idLinea,$tipo,$atributo,$valor,date('Y-m-d '),'',$estado,$idServicio);
+            else
+                $values=array($idLinea,$tipo,$atributo,$valor,$fecha,'',$estado,$idServicio);
         }
 
         $util->insertInto('contratos_lineas_detalles', $t_contratos_lineas_detalles, $values);
@@ -229,6 +351,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
     }
 
+    //Establece un producto en instalado.
     public static function setProductoInstalado($idContrato,$productos,$idLineaContrato)
     {
         for($i=0;$i<count($productos);$i++)
@@ -253,6 +376,21 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
         }
 
+
+    }
+
+    //Obtiene los contratos que tienen líneas de contrato que entran de baja a día de hoy
+    /*
+     * SELECT *
+        FROM contratos,contratos_lineas
+        WHERE contratos.ID=contratos_lineas.ID_CONTRATO
+        AND contratos_lineas.FECHA_BAJA=DATE(now())
+     */
+    public static function getLineasContratoBajaHoy()
+    {
+        $util=new util();
+        return $util->selectWhere3("contratos,contratos_lineas", array("ID_TIPO_SERVICIO","ID_ATRIBUTO_SERVICIO","VALOR"),
+            "contratos.id=contratos_lineas.id_contrato AND contratos_lineas.fecha_baja=DATE(NOW())");
 
     }
     public static function setProductoAlta($idProducto,$estado)

@@ -21,6 +21,7 @@ define('DEF_CLIENTES','Clientes');
 define('DEF_CAMPANAS','Campañas');
 define('DEF_ANEXOS','Anexos');
 define('DEF_ALMACEN','Almacén');
+define('DEF_ORDENES','Ordenes de trabajo');
 define('DEF_CONTRATOS','Contratos');
 define('DEF_SERVICIOS','Servicios');
 define('DEF_PAQUETES','Paquete');
@@ -43,6 +44,7 @@ define('MNU_ITEM_7','Herramientas');
 define('MNU_ITEM_8','Almacén');
 define('MNU_ITEM_9','Ventas');
 define('MNU_ITEM_10','Servicios');
+define('MNU_ITEM_11','Trabajos');
 
 date_default_timezone_set('Europe/Madrid');
 

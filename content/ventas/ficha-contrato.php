@@ -9,15 +9,21 @@ if (!isset($_SESSION)) {
 }
 
 require_once('../../config/util.php');
+
 $util = new util();
 check_session(2);
+
+
+
 /*
-     * SELECT contratos_lineas.id,contratos_lineas_tipo.nombre as Nombre,contratos.
+    SELECT contratos_lineas.id,contratos_lineas_tipo.nombre as Nombre,contratos.
     FROM contratos_lineas,contratos,contratos_lineas_tipo
     WHERE contratos_lineas.ID_CONTRATO=CONTRATOS.ID
     AND contratos_lineas_tipo.ID=contratos_lineas.ID_TIPO
     AND CONTRATOS.ID_EMPRESA=1 and CONTRATOS.ID_CLIENTE=26
  */
+
+
 $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,estados_contratos',
     array("contratos_lineas.id","contratos_lineas_tipo.nombre as Tipo","contratos_lineas_tipo.id","contratos_lineas.id_asociado","contratos_lineas.pvp","estados_contratos.nombre as nombrecontrato","estados_contratos.id as idestado","contratos_lineas.fecha_alta","contratos_lineas.fecha_baja"),
     "contratos.id=contratos_lineas.id_contrato 
@@ -128,9 +134,10 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
                         array("ID","FECHA_INICIO","FECHA_FIN","ESTADO"),
                         "contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND contratos.id_cliente="-$_GET['idCliente']);*/
 
-$totalContrato=0;
+                    $totalContrato=0;
                     for($i=0;$i<count($lineas);$i++)
                     {
+
                         $id=$lineas[$i][0];
                         $tipo=$lineas[$i][1];
                         $idTipo=$lineas[$i][2];
@@ -141,26 +148,28 @@ $totalContrato=0;
                         $alta=$lineas[$i][7];
                         $baja=$lineas[$i][8];
 
-                        $totalContrato+=$pvp;
-
-
+                        if($idEstado!=3 || $idEstado!=8 || $idEstado!=7)
+                            $totalContrato+=$pvp;
 
                         if($idEstado==1)
                         {
                             $bColor="green";
                             $color="white";
                         }
+
                         if($idEstado==2)
                         {
                             $bColor="red";
                             $color="white";
                         }
+
                         if($idEstado==3)
                         {
-                            $bColor="green";
+                            $bColor="blue";
                             $color="white";
                         }
-                        if($idEstado==4)
+
+                        if($idEstado==4 || $idEstado==7 || $idEstado==8 )
                         {
                             $bColor="orange";
                             $color="white";
@@ -169,7 +178,7 @@ $totalContrato=0;
                         $tipo=strtolower($tipo);
 
                         if($idTipo!=3)
-                            $listado= $util->selectWhere3($tipo, array("ID","nombre","id_servicio_tipo"),  $tipo.".id_empresa=".$_SESSION['REVENDEDOR']." AND ".$tipo.".id=".$idAsociado);
+                            $listado= $util->selectWhere3($tipo, array("ID","nombre"),  $tipo.".id_empresa=".$_SESSION['REVENDEDOR']." AND ".$tipo.".id=".$idAsociado);
                         else
                             $listado= $util->selectWhere3($tipo.",almacenes", array("productos.ID","numero_serie"),  "almacenes.id=productos.id_almacen AND almacenes.id_empresa=".$_SESSION['REVENDEDOR']." AND ".$tipo.".id=".$idAsociado);
 
@@ -177,6 +186,9 @@ $totalContrato=0;
                         
                         $nombre=$listado[0][1];
 
+                        //Si la línea no está activa no se le cobra el importe del servicio
+                        if($idEstado==3 || $idEstado==8)
+                            $pvp=$pvp*-1;
 
                         echo "<tr>";
                         echo "<td>$id</td><td>$nombre</td><td>$tipo</td><td>$pvp</td><td style='color:$color;background-color:$bColor;'>$estado</td><td>$alta</td><td>$baja</td>";
@@ -185,7 +197,7 @@ $totalContrato=0;
                         <td class="td-actions text-right">
                             <?php
                             if($idTipo==1)
-                                echo "<a href='/mul/content/servicios/ficha-paquete.php?idPaquete=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."''>";
+                                echo "<a href='/mul/content/servicios/ficha-paquete-cliente.php?idPaquete=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."''>";
                             else if($idTipo==2)
                                 echo "<a href='/mul/content/servicios/ficha-servicio-contrato.php?idServicio=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."&tipo=$idServicioTipo''>";
                             if($idTipo==3)
@@ -211,7 +223,7 @@ $totalContrato=0;
                         <td colspan="3"></td>
                         <td><strong>Total: </strong><?php echo $totalContrato; ?>€</td>
                         <td colspan="4">
-                            <a href="facturar.php?idContrato="<?php echo $id;?>>
+                            <a target="_blank" href="facturar.php?idContrato=<?php echo $id;?>">
                             <button type="button" rel="tooltip" class="">
                                 <i class="fa  fa-file-archive-o" style="font-size:1em; color:green; cursor: pointer" onclick="facturar(<?php echo $id;?>)"></i>
                             </button></a>
@@ -236,7 +248,42 @@ $totalContrato=0;
 <script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 <script type="text/javascript" src="../../assets/js/app.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.js"></script>
+<script>
 
+    $(function () {
+        $('#example1').DataTable()
+        $('#example2').DataTable({
+            'paging'      : true,
+            'lengthChange': false,
+            'searching'   : true,
+            'ordering'    : true,
+            'info'        : true,
+            'autoWidth'   : true,
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar : ",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            },
+        })
+    });
+</script>
 
 <script>
 

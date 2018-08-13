@@ -8,28 +8,33 @@
 
 /*
     ╔════════════════════════════════════════════════════════════╗
-    ║      Devuelve los atributos de un servicio       ║
+    ║ Devuelve las provincias de la comunidad indicada  ║
     ╚════════════════════════════════════════════════════════════╝
 */
-if (!isset($_SESSION))
-{
+
+if (!isset($_SESSION)) {
     @session_start();
 }
 require_once('../../config/util.php');
 $util = new util();
 check_session(3);
 
+/*
+ * SELECT servicios_atributos.ID_TIPO_ATRIBUTO,servicios_atributos.VALOR
+ * from servicios,servicios_atributos
+ * where servicios.id=servicios_atributos.ID_SERVICIO AND servicios.id=29
+ */
 $id=$_POST['id'];
-$campos=array('ID','NOMBRE');
-$provincias = $util->selectWhere('servicios_tipos_atributos', $campos,'servicios_tipos_atributos.ID_SERVICIO='.$id." AND servicios_tipos_atributos.id_tipo=1",'NOMBRE');
+$campos=array('servicios_atributos.ID_TIPO_ATRIBUTO','valor');
+$atributos = $util->selectWhere('servicios,servicios_atributos', $campos,'servicios.id=servicios_atributos.id_servicio AND servicios.id='.$id,'servicios_atributos.ID_TIPO_ATRIBUTO');
 
 $aItems = array();
 
 
-while ($row = mysqli_fetch_array($provincias)) {
+while ($row = mysqli_fetch_array($atributos)) {
     $aItem = array(
-        'ID' => $row[0],
-        'NOMBRE' => $row[1]
+        'id_tipo_atributo' => $row[0],
+        'valor' => $row[1]
     );
     array_push($aItems, $aItem);
 

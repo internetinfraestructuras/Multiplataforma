@@ -230,7 +230,6 @@ $actual = date ("Y-m-d");
 
                                 <hr/>
                                 <div class="panel-body">
-
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                         <tr>
@@ -278,7 +277,7 @@ $actual = date ("Y-m-d");
                                             echo "<td><input name='atributo[id][]' value='$id' class='form-control' type='hidden' />
                                             <input name='atributo[id][]' value='$id' class='form-control'  disabled/></td>
                                             <td><input  value='$attr' class='form-control' disabled />
-                                            </td><td><input name='atributo[valor][]' value='$valor' class='form-control' /></td>";
+                                            </td><td><input name='atributo[valor][]' value='$valor' class='form-control' id='atributo-$id'/></td>";
 
                                             ?>
 
@@ -291,10 +290,10 @@ $actual = date ("Y-m-d");
                                             <?php
                                         }
                                         ?>
+
                                         </tbody>
 
                                     </table>
-
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12 col-sm-4">
@@ -382,7 +381,7 @@ $actual = date ("Y-m-d");
                                     echo "<tr>";
                                     echo "<td><input name='atributo[id][]' value='$id' class='form-control' type='hidden' />
                                             <input name='atributo[id][]' value='$id' class='form-control'  disabled/></td>
-                                            <td><input  value='$ssid' class='form-control' disabled />
+                                            <td><input  value='$ssid' class='form-control' disabled  />
                                             <td><input  value='$estado' class='form-control' disabled />
                                             </td>";
 
@@ -587,7 +586,43 @@ $actual = date ("Y-m-d");
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 
 <!--<script type="text/javascript" src="../../assets/js/app.js"></script>-->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.css">
 
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.js"></script>
+<script>
+
+    $(function () {
+        $('#example1').DataTable()
+        $('#example2').DataTable({
+            'paging'      : true,
+            'lengthChange': false,
+            'searching'   : true,
+            'ordering'    : true,
+            'info'        : true,
+            'autoWidth'   : true,
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar : ",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            },
+        })
+    });
+</script>
 
 <script>
     // cargo las provincias por Ajax, cada vez que se cambia la comunidad
@@ -623,6 +658,26 @@ $actual = date ("Y-m-d");
             error:function (xhr,error)
             {
             console.log(error);
+            }
+        });
+
+        jQuery.ajax({
+            url: 'cargar_atributos_servicios.php',
+            type: 'POST',
+            cache: false,
+            async:true,
+            data:{id:id},
+            success: function(data)
+            {
+
+                $.each(data, function(i)
+                {
+                    var id=data[i].id_tipo_atributo;
+
+                    $('#atributo-'+id).val(data[i].valor);
+
+
+                });
             }
         });
     }
