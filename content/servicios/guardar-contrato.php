@@ -9,7 +9,7 @@ if (!isset($_SESSION)) {
     @session_start();
 }
 require_once('../../config/util.php');
-require_once('../../config/def_tablas.php');
+//require_once('../../config/def_tablas.php');
 require_once('../../clases/Contrato.php');
 
 $util = new util();

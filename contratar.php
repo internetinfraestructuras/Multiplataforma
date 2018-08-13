@@ -660,7 +660,9 @@ check_session(2);
                             <br>
                         </div>
                     </div>
-                    <div class="row" id="aqui_las_facturas"></div>
+                    <div class="row">
+                        <div class="col-xs-12" id="aqui_las_facturas"></div>
+                    </div>
 
                     <input  type="button" name="previous" class="previous action-button-previous"
                            value="Paso Anterior"/>
@@ -928,9 +930,19 @@ check_session(2);
 
         var hoy = f.getDate();
 
-        for(nm=1; nm<=meses; nm++){
-            f.setMonth(f.getMonth() + 1);
-            $("#aqui_las_lineas").append('<tr><td>'+nm+'</td><td>'+f.getDate() + "/" + (f.getMonth()) + "/" + f.getFullYear()+'</td><td>'+totalMes+'</td></tr>');
+        for(nm=1; nm<=parseInt(meses); nm++){
+            if(nm==1){
+                var totalPrimerMes= totalMes - ((totalMes/30)* (hoy-diaFacturacion));
+            }
+            f.setSeconds(31*86400);
+            var options = {year: "numeric", month: "long", day: "numeric"};
+            f.setDate(diaFacturacion);
+            // var fecha_mes = (diaFacturacion + "/" + (f.getUTCMonth()+1) + "/" + f.getFullYear()).toLocaleString("es-ES", options);
+            var fecha_mes = f.toLocaleString("es-ES", options);
+            if(nm==1)
+                $("#aqui_las_lineas").append('<tr style="color:red; font-weight:600"><td >'+nm+'</td><td>'+fecha_mes+'</td><td>'+parseFloat(totalPrimerMes).toPrecision(4)+'</td></tr>');
+            else
+                $("#aqui_las_lineas").append('<tr><td>'+nm+'</td><td>'+fecha_mes+'</td><td>'+parseFloat(totalMes).toPrecision(4)+'</td></tr>');
         }
 
     }
@@ -1192,6 +1204,7 @@ check_session(2);
                 avanzar = false;
                 return;
             }
+            $("#campanas").val(0).change();
             guardar_borrador(2);
         }
 
