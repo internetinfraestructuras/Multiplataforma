@@ -426,8 +426,7 @@ class util {
             $valores = implode($valor, "', '");
 
             $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
-
-//            echo $query;
+            //echo $query;
             $query = str_replace("º","",$query);
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');

@@ -582,9 +582,10 @@ check_session(2);
                                 <th>ID</td>
                                 <th>Familia</th>
                                 <th>Nombre Paquete</th>
-                                <th>Coste <span class="fa fa-eye" style="font-size:1em; cursor: pointer;margin-left:.5em" onclick="ver_coste();"></span></th>
+                                <th  class="text-right">Coste <span class="fa fa-eye" style="font-size:1em; cursor: pointer;margin-left:.5em" onclick="ver_coste();"></span></th>
                                 <th>IVA</th>
-                                <th>PVP</th>
+                                <th class="text-right">PVP</th>
+                                <th class="text-right">Cantidad</th>
                             </tr>
                             </thead>
                             <tbody id="aqui_la_tabla2"></tbody>
@@ -653,6 +654,12 @@ check_session(2);
                         <input  type="date" min="" name="dto_hasta" id="dto_hasta" style="max-width: 200px"  class="form-control">
                     </div>
 
+                    <div class="col-lg-3 col-xs-12 ">
+                        <label><b>Permanencia Hasta</b></label>
+                        <input  type="date" min="" name="permanencia" id="permanencia" style="max-width: 200px"  class="form-control">
+                    </div>
+
+
                     <div class="row">
                         <div class="col-xs-12">
                             <br>
@@ -679,6 +686,9 @@ check_session(2);
                 </fieldset>
 
                 <fieldset class="caja">
+                    <div class="row">
+                        <div class="col-xs-12" id="aqui_el_resumen"></div>
+                    </div>
 
                     <label><b>Por favor lea y acepte las condiciones</b></label><br><br>
 
@@ -720,12 +730,17 @@ check_session(2);
                 <div class="signature-pad--actions">
                     <div>
                         <br><br><br><br>
-                        <button type="button" class="btn btn-default button clear" data-action="clear">Borrar</button>
+                        <button type="button" class="btn btn-default button clear" data-action="clear">Limpiar</button>
                         <br><br><br><br>
                     </div>
                     <div>
                         <br><br><br><br>
-                        <button type="button" class="btn btn-success button save" data-action="save-svg">Finalizar</button>
+                        <span id="avisofinreserva" style="font-size:1em; color: red; font-weight: 500"></span>
+                        <br><br><br><br>
+                    </div>
+                    <div>
+                        <br><br><br><br>
+                        <button type="button" class="btn btn-success button save" id="btn-finalizar" data-action="save-svg">Finalizar</button>
                         <br><br><br><br>
                     </div>
                 </div>
@@ -750,10 +765,12 @@ check_session(2);
     var tot_extras = 0;
     var mostrandocoste=false;
     var servicios_contratados=[];
+    var tipos_servicios=['Internet','Tel. Fija', 'Tel Móvil', 'Televisión'];
     var id_contrato_borrador=0;
     var diaspromo = 0;
     var totalMes=0;
     var codigo_reserva=0;
+    var meses_permencia=0;
 
     function mostrarmodal(){
            $("#masservicios").modal();
@@ -940,7 +957,7 @@ check_session(2);
             // var fecha_mes = (diaFacturacion + "/" + (f.getUTCMonth()+1) + "/" + f.getFullYear()).toLocaleString("es-ES", options);
             var fecha_mes = f.toLocaleString("es-ES", options);
             if(nm==1)
-                $("#aqui_las_lineas").append('<tr style="color:red; font-weight:600"><td >'+nm+'</td><td>'+fecha_mes+'</td><td>'+parseFloat(totalPrimerMes).toPrecision(4)+'</td></tr>');
+                $("#aqui_las_lineas").append('<tr style="color:#1D9FC1; font-weight:600"><td >'+nm+'</td><td>'+fecha_mes+'</td><td>'+parseFloat(totalPrimerMes).toPrecision(4)+'</td></tr>');
             else
                 $("#aqui_las_lineas").append('<tr><td>'+nm+'</td><td>'+fecha_mes+'</td><td>'+parseFloat(totalMes).toPrecision(4)+'</td></tr>');
         }
@@ -1009,8 +1026,8 @@ check_session(2);
         $("#aqui_los_servicios").append('<div class="row">');
         $("#aqui_los_servicios").append('<div class="table-responsive" >' +
             '<table class="table table-condensed nomargin">' +
-            '<thead class="text-center"><tr><th>ID</td><th>Familia</th><th>Nombre Paquete</th><th>Coste <span class="fa fa-eye" style="font-size:1em; cursor: pointer;margin-left:.5em" onclick="ver_coste();"></span>' +
-            '</th><th>IVA</th><th>PVP</th><th></th></thead><tbody id="aqui_la_tabla"></tbody>');
+            '<thead class="text-center"><tr><th>ID</td><th>Familia</th><th>Nombre Paquete</th><th class="text-right">Coste <span class="fa fa-eye" style="font-size:1em; cursor: pointer;margin-left:.5em" onclick="ver_coste();"></span>' +
+            '</th><th>IVA</th><th class="text-right">PVP</th><th class="text-right">Permanencia</th></thead><tbody id="aqui_la_tabla"></tbody>');
         precio = 0;
         tot_extras = 0;
 
@@ -1053,17 +1070,19 @@ check_session(2);
                 servicios_contratados=[];
                 $.each(datos, function (i) {
                     $("#aqui_la_tabla").append('<tr><td>' + datos[i].idservicio + '</td><td>' + datos[i].tipo + '</td><td>' +
-                        datos[i].comercial + '</td><td><span class="oculta_coste" style="display:none">' + datos[i].coste + ' &euro;</td><td>' + datos[i].impuesto + '%</td><td>' +
+                        datos[i].comercial + '</td><td class="text-right"><span class="oculta_coste" style="display:none">' + datos[i].coste + ' &euro;</td><td>' + datos[i].impuesto + '%</td><td class="text-right">' +
                         datos[i].pvp + ' &euro;</td>' +
-                        '<td><span class="fa fa-eye" style="font-size:1em; cursor: pointer;margin-left:.5em" onclick="ver(\'' + datos[i].idservicio + '\');"></span></td></tr>');
+                        '<td class="text-right"><input type="number" min="0" value="' + datos[i].permanencia + '" style="height:25px; font-size:1em;width:40px; padding:1px;"> Meses</td></tr>');
 
                     /** con la p controlo que es del paquete
                         el siguiente elemento es 0 para portas 1 para numeros nuevos,
                         se actualiza al cambiar el valor del select */
-
-                    var servicio=[datos[i].idservicio, datos[i].id_tipo, datos[i].pvp, 1, datos[i].comercial, 'p', '0','',''];
+                    //              0                   1                   2           3   4                  5    6   7  8    9
+                    var servicio=[datos[i].idservicio, datos[i].id_tipo, datos[i].pvp, 1, datos[i].comercial, 'p', '0','','', datos[i].permanencia ];
                     servicios_contratados.push(servicio);
 
+                    if(parseInt(datos[i].permanencia)>=parseInt(meses_permencia))
+                        meses_permencia=parseInt(datos[i].permanencia);
                 });
                 console.log(servicios_contratados);
                 $(".ocultar").css('display', 'block');
@@ -1116,9 +1135,9 @@ check_session(2);
 
                 $.each(datos, function (i) {
                     $("#aqui_la_tabla2").append('<tr><td>' + datos[i].idservicio + '</td><td>' + datos[i].tipo + '</td><td>' +
-                        datos[i].comercial + '</td><td><span class="oculta_coste" style="display:none">' + datos[i].coste + ' &euro;</span></td><td>' + datos[i].impuesto + '%</td><td class="text-right">' +
+                        datos[i].comercial + '</td><td class="text-right"><span class="oculta_coste" style="display:none">' + datos[i].coste + ' &euro;</span></td><td>' + datos[i].impuesto + '%</td><td class="text-right">' +
                         datos[i].pvp + ' &euro;</td>' +
-                        '<td>' +
+                        '<td class="text-right">' +
                         '<select style="width:40px; height:28px;font-size:1em; padding:0px" data-pvp="' + datos[i].pvp + '" id="' + datos[i].idservicio +'" ' +
                         'data-id_servicio="' + datos[i].idservicio + '" data-id_familia="' + datos[i].id_tipo +  '" data-servicio="' + datos[i].comercial + '" onchange="add_service(this);">'+
                         '<option value=0 selected>0</option>'+
@@ -1228,6 +1247,7 @@ check_session(2);
                 if(!guardar_borrador(4))
                     return;
             }
+            mostrar_resumen();
         }
 
 
@@ -1341,7 +1361,7 @@ check_session(2);
                     lineas: servicios_contratados
                 }
             });
-
+            $( "#permanencia" ).val(sumarDias(meses_permencia*31));
         }
 
         //paso tres cuando se seleccionan los servicios adicionales al paquete
@@ -1808,7 +1828,7 @@ check_session(2);
         if(c==3)
             url='content/ventas/cargar-moviles-libres.php';
 
-
+        $("#nuevo-"+b).append("<option value='-1' selected>Seleccione</option>");
         $.ajax({
             url: url,
             type: 'POST',
@@ -1822,6 +1842,7 @@ check_session(2);
                     if(i!='codigo_reserva')
                         if(c==3)
                             $("#nuevo-"+b).append("<option value='"+data[i]+"'>"+data[i]+"</option>");
+
                         else
                             if(data[i].selectable==true)
                                 $("#nuevo-"+b).append("<option value='"+data[i].num+"'>"+data[i].num+"</option>");
@@ -1832,8 +1853,9 @@ check_session(2);
                 });
             }
         });
+
         if(c==3) {
-            var seconds = 560;
+            var seconds = 55000;
 
             // Calcula la fecha de finalización del contador sumando
             // el número de segundos a la fecha actual
@@ -1846,11 +1868,14 @@ check_session(2);
                 var counter = Math.floor((end - (new Date()).getTime()) / 1000);
                 if (counter < 0) counter = 0;
 
-                document.getElementById('cuentaatras' + b).innerHTML = 'Tiempo de reserva: ' +
+                document.getElementById('cuentaatras' + b).innerHTML = 'Reserva Expira: ' +
                     Math.floor(counter / 60) + ':' +
                     ('00' + Math.floor(counter % 60)).slice(-2);
                 if (counter === 0) {
                     clearTimeout(timeout);
+                    $(".next").attr('disabled',true);
+                    $("#btn-finalizar").attr('disabled',true);
+                    $("#avisofinreserva").text("Tiempo de reserva para numeros moviles agotado, regrese y recargue");
                     document.getElementById('cuentaatras' + b).innerHTML = "<span onclick='refrescar(" + b + ")' style='cursor:pointer; color:red; font-weight: 600'>Haga clic para recargar numeros</span>";
                 }
             }
@@ -1859,7 +1884,12 @@ check_session(2);
     }
 
     function refrescar(id){
-        muestra_oculta_porta(1,id);
+
+        muestra_oculta_porta(1,id, 3);
+        $(".next").attr('disabled',false);
+        $("#btn-finalizar").attr('disabled',false);
+        $("#avisofinreserva").text("");
+
     }
 
 
@@ -1899,10 +1929,13 @@ check_session(2);
             }
         });
         servicios_contratados[b][8]=s.value;
+        servicios_contratados[b][10]=s.options[s.selectedIndex].text;
+
         console.log(servicios_contratados);
     }
 
     function guardar_contrato(firma){
+        var permanencia = $("#permanencia").val();
         $.ajax({
             url: 'content/servicios/guardar-contrato.php',
             type: 'POST',
@@ -1919,8 +1952,39 @@ check_session(2);
                 extras: tot_extras,
                 firma: firma,
                 lineas: servicios_contratados,
-                cliente: id_cliente_seleccionado
+                cliente: id_cliente_seleccionado,
+                permanencia: permanencia
             }
+        });
+    }
+
+
+    function mostrar_resumen() {
+
+        $("#aqui_el_resumen").empty();
+        $("#aqui_el_resumen").append('<div class="row" style="overflow:auto;overflow-x: hidden">');
+        $("#aqui_el_resumen").append('<div class="table-responsive" style="max-height: 160px;">' +
+            '<table class="table table-condensed nomargin">' +
+            '<thead class=""><tr><th>Tipo</th>' +
+                                '<th>Tarifa</th>' +
+                                '<th>En Pack</th>' +
+                                '<th class="text-right">Precio</th>' +
+                                '<th class="text-right">Número</th>' +
+                                '<th>Producto</th>' +
+            '</thead><tbody id="aqui_las_lineas_resumen"></tbody></table>');
+
+        $.each(servicios_contratados, function (i) {
+            var packsino='NO';
+            if(servicios_contratados[i][5]=='p') packsino ='SI';
+
+            $("#aqui_las_lineas_resumen").append('<tr>' +
+                '<td >'+tipos_servicios[parseInt(servicios_contratados[i][1])-1]+'</td>' +
+                '<td>'+servicios_contratados[i][4]+
+                '</td><td>'+packsino+ '</td>'+
+                '</td><td class="text-right">'+parseFloat(servicios_contratados[i][2]).toFixed(2)+' &euro;</td>'+
+                '</td><td class="text-right">'+servicios_contratados[i][7]+'</td>'+
+                '</td><td>'+servicios_contratados[i][9]+'</td></tr>'
+            );
         });
     }
 

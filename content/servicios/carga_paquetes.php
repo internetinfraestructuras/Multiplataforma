@@ -21,7 +21,7 @@ $util = new util();
 check_session(3);
 
 $id=$_POST['idpaquete'];
-$campos=array('servicios.ID','ID_SERVICIO_TIPO','servicios.NOMBRE','PRECIO_PROVEEDOR','IMPUESTO','BENEFICIO','PVP','servicios_tipos.NOMBRE');
+$campos=array('servicios.ID','ID_SERVICIO_TIPO','servicios.NOMBRE','PRECIO_PROVEEDOR','IMPUESTO','BENEFICIO','PVP','servicios_tipos.NOMBRE','PERMANENCIA_MINIMA');
 
 $paquetes = $util->selectJoin('servicios', $campos, ' JOIN paquetes_servicios ON paquetes_servicios.ID_SERVICIO = servicios.ID '.
     ' JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO ',
@@ -38,7 +38,8 @@ while ($row = mysqli_fetch_array($paquetes)) {
         'impuesto' => $row[4],
         'beneficio' => $row[5],
         'pvp' => $row[6],
-        'tipo' => $row[7]
+        'tipo' => $row[7],
+        'permanencia' => $row[8]
     );
     array_push($aItems, $aItem);
 }
