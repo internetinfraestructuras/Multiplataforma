@@ -1919,8 +1919,7 @@ check_session(2);
                 extras: tot_extras,
                 firma: firma,
                 lineas: servicios_contratados,
-                cliente: id_cliente_seleccionado,
-                idPaquete:id_paquete_seleccionado
+                cliente: id_cliente_seleccionado
             }
         });
     }
