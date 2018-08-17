@@ -13,7 +13,7 @@ check_session(2);
 
 $listado= $util->selectWhere3('paquetes',
     array("ID","NOMBRE","PRECIO_COSTE","MARGEN","IMPUESTO","PVP"),
-    "paquetes.id_empresa=".$_SESSION['REVENDEDOR']);
+    "paquetes.id_empresa=".$_SESSION['REVENDEDOR']." and paquetes.id=".$_GET['idPaquete']);
 
 $id=$listado[0][0];
 $nombre=$listado[0][1];
