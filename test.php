@@ -373,78 +373,63 @@ array(1) {
 //$ont_ids = explode(':', $rows[2]);
 //print_r($ont_ids);
 //$ont_id = intval(explode(':', $ont_ids[1]));
-include_once("config/util.php");
-
-//require('clases/routeros_api.class.php');
+//$mac='F898-EFEB-DC03';
+//$mac = str_replace("-",":",$mac);
 //
-//$API = new RouterosAPI();
+//$mac1 = substr($mac,0,2) . ":" .substr($mac,2,3) . substr($mac,5,2) . ":" .
+//    substr($mac,7,3).substr($mac,10,2). ":" .substr($mac,12,2);
+//$mac1='40:7D:0F:AD:F7:FD';
+//$url='http://10.211.2.2:7557/devices/?query=%7B %22 InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection.1.MACAddress %22 %3A %22aquilamac %22 %7D';
+//$url='http://10.211.2.2:7557/devices/?query=%7B"InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection.1.MACAddress%22%3A"'.$mac1.'"%7D';
+//$url=str_replace("aquilamac",$mac1,$url);
 //
-//if ($API->connect('62.175.252.1', 'NexwrfApiPppoe', '2018apinex*')) {
+//echo $url;
 //
-//    $ARRAY = $API->comm('/ppp/profile/getall');
-////    print_r($ARRAY);
-//    foreach ($ARRAY as $clave) {
-//        echo $clave['name'];
-//    }
-//
-//    $API->disconnect();
-//
-//}
-
-//$cmd = 'display ont wan-info ' . $c ."/" .$t ." ". $p . " " . $idenont;
-//$cmd = 'display ont wan-info 0/0 1 1 ' ;
-//
-//$c=0;
-//while ($ip!='' && $mac!='' || $c<4){
-//    $c++;
-//    $respuesta_olt="";
-//
-//    $telnet->DoCommand($cmd . PHP_EOL .ESPACIO ."q", $respuesta_olt);
-//
-//    //echo $respuesta_olt;
-//    $rows = explode("---------------------------------------------------------------------", $respuesta_olt);
-//    if(isset($rows[2])) {
-//        $rows2 = explode(PHP_EOL, $rows[2]);
-//        $i = explode(':', $rows2[7]);
-//        $ip = $i[1];
-//        $m = explode(':', $rows2[14]);
-//        $mac = $m[1];
-//    }
-//    if($ip!='' && $mac!='')
-//        break;
-//}
-//
-//$aItems=array();
-
-
-//$ch = curl_init('http://10.211.2.2:7557/devices/');
-$mac='F898-EFEB-DC03';
-$mac = str_replace("-",":",$mac);
-
-$mac1 = substr($mac,0,2) . ":" .substr($mac,2,3) . substr($mac,5,2) . ":" .
-    substr($mac,7,3).substr($mac,10,2). ":" .substr($mac,12,2);
-
-$url='http://10.211.2.2:7557/devices/?query=%7B%22InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection.1.MACAddress%22%3A%22'.$mac1.'%22%7D';
-
-$ch = curl_init($url);
-curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$result = curl_exec($ch);
-$json=json_decode($result,true);
-curl_close($ch);
-//echo count($json);
+//$ch = curl_init($url);
+//curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+//curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//$result = curl_exec($ch);
+//$json=json_decode($result,true);
+//curl_close($ch);
+////echo count($json);
 //print_r($json);
+//
+////for ($c=0; $c<count($json);$c++ ){
+////    echo $json[$c]['_deviceId']['_SerialNumber']." - ". $num_pon."<br>";
+//
+////    if($json[0]['_deviceId']['_SerialNumber'] == $num_pon){
+//$esta = true;
+//$id_device=$json[0]['_id'];
+//$pon=$json[0]['_deviceId']['_SerialNumber'];
+//echo $pon."<br>";
+//echo $id_device."<br>";
+////        break;
+////        break;
+////    }
+////}
+///
+///
+//$url = "http://10.211.2.2:7557/devices/?query=%7B%22_id%22%3A%2200259E-HG8546M-48575443CDE3319A%22%7D";
+//$url = "http://10.211.2.2:7557/devices/00259E-HG8546M-48575443CDE3319A?task= -X DELETE";
 
-//for ($c=0; $c<count($json);$c++ ){
-//    echo $json[$c]['_deviceId']['_SerialNumber']." - ". $num_pon."<br>";
+$url = "http://10.211.2.2:7557/devices/00259E-HG8546M-48575443CDE3319A/";
+//$ch = curl_init($url);
+//curl_setopt($ch, CURLOPT_HEADER, true);
+////curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+//curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//curl_setopt($ch, CURLOPT_POSTFIELDS, 'DELETE');
+//echo curl_exec($ch);
 
-//    if($json[0]['_deviceId']['_SerialNumber'] == $num_pon){
-        $esta = true;
-        $id_device=$json[0]['_id'];
-        $pon=$json[0]['_deviceId']['_SerialNumber'];
-        echo $pon."<br>";
-        echo $id_device."<br>";
-//        break;
-//        break;
-//    }
-//}
+$ch = curl_init();
+$default_curl_options = array(
+    CURLOPT_SSL_VERIFYPEER => false,
+    CURLOPT_HEADER => true,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_TIMEOUT => 10,
+);
+
+curl_setopt_array($ch, $default_curl_options);
+curl_setopt($ch, CURLOPT_HEADER, true);
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+echo curl_exec($ch);

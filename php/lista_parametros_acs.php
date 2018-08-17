@@ -45,7 +45,7 @@ $interfaz = 1;
 //---------------------------------------------------------------------------------------------------------------------------------------------------
 $aItem = array('p' => 'InternetGatewayDevice.WANDevice.1.WANConnectionDevice.2.WANIPConnection.1.X_HW_VLAN', 'v' => '100', 't' => "xsd:string");        array_push($aItems, $aItem);
 $aItem = array('p' => 'InternetGatewayDevice.WANDevice.1.WANConnectionDevice.2.WANIPConnection.1.X_HW_SERVICELIST', 'v' => 'INTERNET', 't' => "xsd:string");         array_push($aItems, $aItem);
-if(intval($gestionada)==0 || (intval($ConnectionType)==1 && intval($gestionada)==1)) {
+if(intval($asignada)==0) {
     $aItem = array('p' => 'InternetGatewayDevice.WANDevice.1.WANConnectionDevice.2.WANIPConnection.1.X_HW_LANBIND.Lan1Enable', 'v' => 1, 't' => "xsd:unsignedInt");            array_push($aItems, $aItem);
     $aItem = array('p' => 'InternetGatewayDevice.WANDevice.1.WANConnectionDevice.2.WANIPConnection.1.X_HW_LANBIND.Lan2Enable', 'v' => 1, 't' => "xsd:unsignedInt");            array_push($aItems, $aItem);
     $aItem = array('p' => 'InternetGatewayDevice.WANDevice.1.WANConnectionDevice.2.WANIPConnection.1.X_HW_LANBIND.Lan3Enable', 'v' => 1, 't' => "xsd:unsignedInt");            array_push($aItems, $aItem);
@@ -103,6 +103,9 @@ $aItem = array('p' => 'InternetGatewayDevice.X_HW_SlvUPnP.Enable', 'v' => true, 
 $aItem = array('p' => 'InternetGatewayDevice.ManagementServer.PeriodicInformEnable', 'v' => true, 't' => "xsd:boolean");        array_push($aItems, $aItem);
 $aItem = array('p' => 'InternetGatewayDevice.X_HW_Security.AclServices.HTTPWanEnable', 'v' => true, 't' => "xsd:boolean");        array_push($aItems, $aItem);
 $aItem = array('p' => 'InternetGatewayDevice.ManagementServer.PeriodicInformInterval', 'v' => '3600', 't' => "xsd:string");        array_push($aItems, $aItem);
+
+// desactivo el usuario de voz ip para que no este intentando loguearse en el servidor hasta que no se active la voz ip
+$aItem = array('p' => 'InternetGatewayDevice.Services.VoiceService.1.VoiceProfile.1.Line.1.Enable', 'v' => 'Disabled', 't' => "xsd:string");        array_push($aItems, $aItem);
 
 
 

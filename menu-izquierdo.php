@@ -71,18 +71,29 @@ require_once('config/define.php');
         <ul><!-- submenus -->
             <li><a href="<?php echo $root;?>contratar.php">Alta contrato</a></li>
             <li><a href="<?php echo $root;?>edit-contrato.php">Modificar contrato</a></li>
-            <li><a href="<?php echo $root;?>/content/ventas/campanas.php">Promociones</a></li>
-            <li><a href="#">Portabilidad</a>
-            <ul>
-                <li><a href="<?php echo $root;?>/content/ventas/porta_movil.php">Solicitud Móvil</a></li>
-                <li><a href="<?php echo $root;?>/content/ventas/porta_fijo.php">Solicitud Fijo</a></li>
-                <li><a href="<?php echo $root;?>edit-clie.php">Ver Estado Portabilidad</a></li>
-            </ul>
-            </li>
+            <li><a href="<?php echo $root;?>content/ventas/solicitudes-cambios.php">Solicitudes cambios</a></li>
+            <li><a href="<?php echo $root;?>content/ventas/contratos.php">Contratos</a></li>
+            <li><a href="<?php echo $root;?>content/ventas/campanas.php">Promociones</a></li>
+            <li><a href="<?php echo $root;?>.php">Solicitar Portabilidad</a></li>
+            <li><a href="<?php echo $root;?>edit-clie.php">Ver Estado Portabilidad</a></li>
             <li><a href="<?php echo $root;?>del-clie.php">Borrar</a></li>
             <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->
         </ul>
     </li>
+
+    <li>
+        <a href="#">
+            <i class="fa fa-menu-arrow pull-right"></i>
+            <i class="main-icon"><img src="/img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_11; ?> </span>
+        </a>
+        <ul><!-- submenus -->
+            <li><a href="/mul/content/trabajos/ordenes-hoy.php">Ordenes de hoy</a></li>
+            <li><a href="/mul/content/trabajos/ordenes.php">Ordenes de trabajo</a></li>
+
+
+        </ul>
+    </li>
+
 
 
 

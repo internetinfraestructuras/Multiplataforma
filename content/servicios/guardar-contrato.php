@@ -62,12 +62,15 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
         while($row2 = mysqli_fetch_array($r2)) {
 
             // agregamos la linea de detalle al contrato
-            $idLinea2 = $contrato->setNuevaLineaDetalles($idLinea, $linea[1], $linea[0], $row2[0], $row2[1], 3, null);
-
+            if($row2[0]!=38)
+                $idLinea2 = $contrato->setNuevaLineaDetalles($idLinea, $linea[1], $linea[0], 38, $linea[7], 3, null);
+            else
+                $idLinea2 = $contrato->setNuevaLineaDetalles($idLinea, $linea[1], $linea[0], $row2[0], $row2[1], 3, null);
 
         }
 
     }
+
 
     $util->insertInto('contratos_campanas', array('ID_CONTRATO','ID_CAMPANA','DTO','DTO_DIAS','DTO_HASTA'),
         array($idContrato,   $id_campana, $dto, $dias,     $hasta));

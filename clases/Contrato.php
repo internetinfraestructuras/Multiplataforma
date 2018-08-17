@@ -253,10 +253,10 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
 
     //Genera una nueva línea en un contrato
-    public static function setNuevaLineaContrato($tipo, $servicio, $idContrato, $precioProveedor, $beneficio, $impuesto, $pvp, $permanencia, $estado, $fechaAlta = null, $enpack=0, $esporta=0, $numeracion)
+    public static function setNuevaLineaContrato($tipo, $servicio, $idContrato, $precioProveedor, $beneficio, $impuesto, $pvp, $permanencia, $estado, $fechaAlta = null)
     {
         $util = new util();
-        $t_contratos_lineas = array("ID_TIPO", "ID_ASOCIADO", "ID_CONTRATO", "PRECIO_PROVEEDOR", "BENEFICIO", "IMPUESTO", "PVP", "PERMANENCIA", "ESTADO", "FECHA_ALTA", "FECHA_BAJA", "DENTRO_PACK", "PORTA_NUEVO","NUMERACION");
+        $t_contratos_lineas = array("ID_TIPO", "ID_ASOCIADO", "ID_CONTRATO", "PRECIO_PROVEEDOR", "BENEFICIO", "IMPUESTO", "PVP", "PERMANENCIA", "ESTADO", "FECHA_ALTA", "FECHA_BAJA");
 
         if ($fechaAlta != null) {
             $fecha_actual = strtotime(date("y-m-d", time()));
@@ -270,9 +270,9 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
         //SE SETEA LA NUEVA LÍNEA DE CONTRATO EN ALTA
         if ($fechaAlta == null)
-            $values = array($tipo, $servicio, $idContrato, $precioProveedor, $beneficio, $impuesto, $pvp, $permanencia, $estado, date('Y-m-d '), "", $enpack, $esporta, $numeracion);
+            $values = array($tipo, $servicio, $idContrato, $precioProveedor, $beneficio, $impuesto, $pvp, $permanencia, $estado, date('Y-m-d '), "");
         else
-            $values = array($tipo, $servicio, $idContrato, $precioProveedor, $beneficio, $impuesto, $pvp, $permanencia, $estado, $fechaAlta, "", $enpack, $esporta, $numeracion);
+            $values = array($tipo, $servicio, $idContrato, $precioProveedor, $beneficio, $impuesto, $pvp, $permanencia, $estado, $fechaAlta, "");
         return $util->insertInto('contratos_lineas', $t_contratos_lineas, $values);
     }
 
