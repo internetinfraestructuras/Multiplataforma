@@ -87,7 +87,7 @@ check_session(4);
                                             <a href="#ttab1_nobg" data-toggle="tab">En Curso</a>
                                         </li>
                                         <li class=""><!-- TAB 2 -->
-                                            <a href="#ttab2_nobg" data-toggle="tab">Finalizadas</a>
+                                            <a href="#ttab2_nobg" data-toggle="tab">Completadas</a>
                                         </li>
                                     </ul>
                                     <!-- /tabs nav -->
@@ -107,6 +107,37 @@ check_session(4);
                                                 <table class="table table-striped table-hover table-bordered">
                                                     <thead>
                                                     <tr>
+                                                        <th>Cliente</th>
+                                                        <th>Estado</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td><a href="#">Cliente</a></td>
+                                                        <td>Estado</td>
+                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">Ver</a></td>
+
+                                                    </tr>
+
+                                                    </tbody>
+                                                </table>
+
+                                                <a class="size-12" href="#">
+                                                    <i class="fa fa-arrow-right text-muted"></i>
+                                                    Ver todo
+                                                </a>
+
+                                            </div>
+
+                                        </div><!-- /TAB 1 CONTENT -->
+
+                                        <div id="ttab2_nobg" class="tab-pane"><!-- TAB 2 CONTENT -->
+
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-hover table-bordered">
+                                                    <thead>
+                                                    <tr>
                                                         <th>Product Name</th>
                                                         <th>Price</th>
                                                         <th>Sold</th>
@@ -115,21 +146,21 @@ check_session(4);
                                                     </thead>
                                                     <tbody>
                                                     <tr>
-                                                        <td><a href="#">Apple iPhone 5 - 32GB</a></td>
-                                                        <td>$612.50</td>
-                                                        <td>789</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a href="#">Allview Ax4 Nano - Cortex A7 Dual-Core 1.30GHz, 7"</a></td>
-                                                        <td>$215.50</td>
-                                                        <td>3411</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
-                                                    <tr>
                                                         <td><a href="#">Motorola Droid 4 XT894 - 16GB - Black </a></td>
                                                         <td>$878.50</td>
                                                         <td>784</td>
+                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Gigabyte NVIDIA GeForce GT 730</a></td>
+                                                        <td>$122.00</td>
+                                                        <td>3499</td>
+                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">HyperX FURY Blue 8GB, DDR3, 1600MHz</a></td>
+                                                        <td>$19.50</td>
+                                                        <td>2334</td>
                                                         <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
                                                     </tr>
                                                     <tr>
@@ -145,9 +176,114 @@ check_session(4);
                                                         <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td><a href="#">HyperX FURY Blue 8GB, DDR3, 1600MHz</a></td>
-                                                        <td>$19.50</td>
-                                                        <td>2334</td>
+                                                        <td><a href="#">Apple iPhone 5 - 32GB</a></td>
+                                                        <td>$612.50</td>
+                                                        <td>789</td>
+                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Allview Ax4 Nano - Cortex A7 Dual-Core 1.30GHz, 7"</a></td>
+                                                        <td>$215.50</td>
+                                                        <td>3411</td>
+                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+
+                                                <a class="size-12" href="#">
+                                                    <i class="fa fa-arrow-right text-muted"></i>
+                                                    More Most Visited
+                                                </a>
+
+                                            </div>
+
+                                        </div><!-- /TAB 1 CONTENT -->
+
+                                    </div>
+                                    <!-- /tabs content -->
+
+                                </div>
+                                <!-- /panel content -->
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+
+                            <div id="panel-2" class="panel panel-default">
+                                <div class="panel-heading">
+									<span class="title elipsis">
+										<strong>Contratos</strong> <!-- panel title -->
+									</span>
+
+                                    <!-- tabs nav -->
+                                    <ul class="nav nav-tabs pull-right">
+                                        <li class="active"><!-- TAB 1 -->
+                                            <a href="#ttab1_nobg" data-toggle="tab">En Curso</a>
+                                        </li>
+                                        <li class=""><!-- TAB 2 -->
+                                            <a href="#ttab2_nobg" data-toggle="tab">completados</a>
+                                        </li>
+                                    </ul>
+                                    <!-- /tabs nav -->
+
+
+                                </div>
+
+                                <!-- panel content -->
+                                <div class="panel-body">
+
+                                    <!-- tabs content -->
+                                    <div class="tab-content transparent">
+
+                                        <div id="ttab1_nobg" class="tab-pane active"><!-- TAB 1 CONTENT -->
+
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-hover table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Cliente</th>
+                                                        <th>Estado</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td><a href="#">Cliente</a></td>
+                                                        <td>Estado</td>
+                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">Ver</a></td>
+
+                                                    </tr>
+
+                                                    </tbody>
+                                                </table>
+
+                                                <a class="size-12" href="#">
+                                                    <i class="fa fa-arrow-right text-muted"></i>
+                                                    Ver todo
+                                                </a>
+
+                                            </div>
+
+                                        </div><!-- /TAB 1 CONTENT -->
+
+                                        <div id="ttab2_nobg" class="tab-pane"><!-- TAB 2 CONTENT -->
+
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-hover table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Product Name</th>
+                                                        <th>Price</th>
+                                                        <th>Sold</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td><a href="#">Motorola Droid 4 XT894 - 16GB - Black </a></td>
+                                                        <td>$878.50</td>
+                                                        <td>784</td>
                                                         <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
                                                     </tr>
                                                     <tr>
@@ -156,12 +292,112 @@ check_session(4);
                                                         <td>3499</td>
                                                         <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
                                                     </tr>
+                                                    <tr>
+                                                        <td><a href="#">HyperX FURY Blue 8GB, DDR3, 1600MHz</a></td>
+                                                        <td>$19.50</td>
+                                                        <td>2334</td>
+                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Intel Core i5-4460, 3.2GHz</a></td>
+                                                        <td>$42.33</td>
+                                                        <td>3556</td>
+                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Samsung Galaxy Note 3 </a></td>
+                                                        <td>$655.00</td>
+                                                        <td>3987</td>
+                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Apple iPhone 5 - 32GB</a></td>
+                                                        <td>$612.50</td>
+                                                        <td>789</td>
+                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Allview Ax4 Nano - Cortex A7 Dual-Core 1.30GHz, 7"</a></td>
+                                                        <td>$215.50</td>
+                                                        <td>3411</td>
+                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
+                                                    </tr>
                                                     </tbody>
                                                 </table>
 
                                                 <a class="size-12" href="#">
                                                     <i class="fa fa-arrow-right text-muted"></i>
-                                                    More Top Sales
+                                                    More Most Visited
+                                                </a>
+
+                                            </div>
+
+                                        </div><!-- /TAB 1 CONTENT -->
+
+                                    </div>
+                                    <!-- /tabs content -->
+
+                                </div>
+                                <!-- /panel content -->
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+
+                            <div id="panel-2" class="panel panel-default">
+                                <div class="panel-heading">
+									<span class="title elipsis">
+										<strong>Ordenes de Trabajo</strong> <!-- panel title -->
+									</span>
+
+                                    <!-- tabs nav -->
+                                    <ul class="nav nav-tabs pull-right">
+                                        <li class="active"><!-- TAB 1 -->
+                                            <a href="#ttab1_nobg" data-toggle="tab">En Curso</a>
+                                        </li>
+                                        <li class=""><!-- TAB 2 -->
+                                            <a href="#ttab2_nobg" data-toggle="tab">completadas</a>
+                                        </li>
+                                    </ul>
+                                    <!-- /tabs nav -->
+
+
+                                </div>
+
+                                <!-- panel content -->
+                                <div class="panel-body">
+
+                                    <!-- tabs content -->
+                                    <div class="tab-content transparent">
+
+                                        <div id="ttab1_nobg" class="tab-pane active"><!-- TAB 1 CONTENT -->
+
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-hover table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Cliente</th>
+                                                        <th>Estado</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td><a href="#">Cliente</a></td>
+                                                        <td>Estado</td>
+                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">Ver</a></td>
+
+                                                    </tr>
+
+                                                    </tbody>
+                                                </table>
+
+                                                <a class="size-12" href="#">
+                                                    <i class="fa fa-arrow-right text-muted"></i>
+                                                    Ver todo
                                                 </a>
 
                                             </div>
@@ -245,7 +481,7 @@ check_session(4);
 
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
 
                             <div id="panel-3" class="panel panel-default">
                                 <div class="panel-heading">

@@ -27,14 +27,14 @@ check_session(1);
 $telnet = new PHPTelnet();
 
 
-if(isset($_POST['a']) && $_POST['a']=='borrar_en_olt'){
+if (isset($_POST['a']) && $_POST['a'] == 'borrar_en_olt') {
 
-    if(isset($_POST['p']) && $_POST['p']!=''){
+    if (isset($_POST['p']) && $_POST['p'] != '') {
 
-        if(isset($_POST['hash']) && $_POST['hash'] == md5($_POST['p'])){
+        if (isset($_POST['hash']) && $_POST['hash'] == md5($_POST['p'])) {
 
-            $r= $util->selectJoin('aprovisionados', array('id_en_olt','c','t','p','id_internet','olts.ip','olts.usuario','olts.clave','aprovisionados.cabecera','id_voip','id_iptv','id_acs'),
-                ' JOIN olts ON olts.id = aprovisionados.cabecera ','', "aprovisionados.id='".$util->cleanstring($_POST['p'])."';");
+            $r = $util->selectJoin('aprovisionados', array('id_en_olt', 'c', 't', 'p', 'id_internet', 'olts.ip', 'olts.usuario', 'olts.clave', 'aprovisionados.cabecera', 'id_voip', 'id_iptv', 'id_acs', 'num_pon'),
+                ' JOIN olts ON olts.id = aprovisionados.cabecera ', '', "aprovisionados.id='" . $util->cleanstring($_POST['p']) . "';");
 
             $row = mysqli_fetch_array($r);
 
@@ -50,6 +50,7 @@ if(isset($_POST['a']) && $_POST['a']=='borrar_en_olt'){
             $server = $row['ip'];
             $user = $row['usuario'];
             $pass = $row['clave'];
+            $pon = $row['num_pon'];
             $id_olt = $row[8];
 
             $result = $telnet->Connect($server, $user, $pass);
@@ -62,51 +63,86 @@ if(isset($_POST['a']) && $_POST['a']=='borrar_en_olt'){
                 $telnet->DoCommand(PHP_EOL, $result);
 
                 /*
+              ╔═══════════════════════════════════════════╗
+              ║ Resetear la ont a fabrica para poder║
+                aprovisionarla de neuvo si es necesario
+              ╚═══════════════════════════════════════════╝
+              */
+
+                $telnet->DoCommand('interface gpon ' . $c . '/' . $t . PHP_EOL, $result);
+                $telnet->DoCommand(PHP_EOL, $result);
+                $util->log('interface gpon ' . $c . "/" . $t . " " . $result . $id_olt);
+                $telnet->DoCommand('clear' . PHP_EOL, $void);
+
+                $telnet->DoCommand('ont factory-setting-restore ' . $p . ' ' . $idont , $result);
+                $telnet->DoCommand("y" . PHP_EOL, $result);
+                $util->log("ont factory-setting-restore " . $p . " " . $idont . " " . $result . " " . $id_olt);
+
+                $telnet->DoCommand('quit' . PHP_EOL, $void);
+                $telnet->DoCommand('clear' . PHP_EOL, $void);
+
+                /*
               ╔═════════════════════════════════════╗
               ║ Borra el servicio de internet  ║
               ╚═════════════════════════════════════╝
               */
-                $telnet->DoCommand('undo service-port '.$idinternet, $result);
-                $telnet->DoCommand(PHP_EOL, $result);
-                $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( 'undo service-port ".$idinternet."','".$result."','". $id_olt."');");
+                if (intval($idinternet) > 0) {
+                    $telnet->DoCommand('undo service-port ' . $idinternet . PHP_EOL, $result);
+                    $util->log('undo service-port ' . $idinternet . " " . $result . " " . $id_olt);
+                    $telnet->DoCommand('clear' . PHP_EOL, $void);
+
+                }
 
                 /*
               ╔═════════════════════════════════════╗
               ║ Borra el servicio de tv        ║
               ╚═════════════════════════════════════╝
               */
-                $telnet->DoCommand('undo service-port '.$idtv, $result);
-                $telnet->DoCommand(PHP_EOL, $result);
-                $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( 'undo service-port ".$idtv."','".$result."','". $id_olt."');");
+                if (intval($idtv) > 0) {
+
+                    $telnet->DoCommand('undo service-port ' . $idtv . PHP_EOL, $result);
+                    $util->log('undo service-port ' . $idtv . " " . $result . " " . $id_olt);
+                    $telnet->DoCommand('clear' . PHP_EOL, $void);
+
+                }
 
                 /*
               ╔═════════════════════════════════════╗
               ║ Borra el servicio de Voz       ║
               ╚═════════════════════════════════════╝
               */
-                $telnet->DoCommand('undo service-port '.$idvoz, $result);
-                $telnet->DoCommand(PHP_EOL, $result);
-                $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( 'undo service-port ".$idvoz."','".$result."','". $id_olt."');");
+                if (intval($idvoz) > 0) {
+
+                    $telnet->DoCommand('undo service-port ' . $idvoz . PHP_EOL, $result);
+                    $util->log('undo service-port ' . $idvoz . " " . $result . " " . $id_olt);
+                    $telnet->DoCommand('clear' . PHP_EOL, $void);
+
+                }
                 /*
               ╔═════════════════════════════════════╗
               ║ Borra el servicio de VPn       ║
               ╚═════════════════════════════════════╝
               */
-                $telnet->DoCommand('undo service-port '.$idvpn, $result);
-                $telnet->DoCommand(PHP_EOL, $result);
-                $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( 'undo service-port ".$idvpn."','".$result."','". $id_olt."');");
+                if (intval($idvpn) > 0) {
 
+                    $telnet->DoCommand('undo service-port ' . $idvpn . PHP_EOL, $result);
+                    $util->log('undo service-port ' . $idvpn . " " . $result . " " . $id_olt);
+                    $telnet->DoCommand('clear' . PHP_EOL, $void);
+
+                }
 
                 /*
               ╔═════════════════════════════════════╗
               ║ Borra el servicio de ACS       ║
               ╚═════════════════════════════════════╝
               */
-                $telnet->DoCommand('undo service-port '.$idacs, $result);
-                $telnet->DoCommand(PHP_EOL, $result);
-                $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( 'undo service-port ".$idacs."','".$result."','". $id_olt."');");
+                if (intval($idacs) > 0) {
 
+                    $telnet->DoCommand('undo service-port ' . $idacs . PHP_EOL, $result);
+                    $util->log('undo service-port ' . $idacs . " " . $result . " " . $id_olt);
+                    $telnet->DoCommand('clear' . PHP_EOL, $void);
 
+                }
 
                 /*
               ╔═══════════════════════════════════════════╗
@@ -114,22 +150,55 @@ if(isset($_POST['a']) && $_POST['a']=='borrar_en_olt'){
               ╚═══════════════════════════════════════════╝
               */
 
-                $telnet->DoCommand('interface gpon '.$c. '/' . $t.PHP_EOL, $result);
-                $telnet->DoCommand(PHP_EOL, $result);
-                $util->log('interface gpon '.$c."/".$t." " .$result. $id_olt);
+                $telnet->DoCommand('interface gpon ' . $c . '/' . $t . PHP_EOL. PHP_EOL, $result);
+//                $telnet->DoCommand(PHP_EOL, $result);
+                $util->log('interface gpon ' . $c . "/" . $t . " " . $result . $id_olt);
+                $telnet->DoCommand('clear' . PHP_EOL, $void);
 
-                $telnet->DoCommand('ont delete '.$p. ' ' . $idont, $result);
-                $telnet->DoCommand(PHP_EOL, $result);
-                $util->log("ont delete ".$p. " " . $idont." ".$result." ". $id_olt);
+                $telnet->DoCommand('ont delete ' . $p . ' ' . $idont, $result);
+                $telnet->DoCommand("y" . PHP_EOL, $result);
+                $util->log("ont delete " . $p . " " . $idont . " " . $result . " " . $id_olt);
+
+                /*
+               ╔═══════════════════════════════════════════════════════════════════╗
+               ║ Borra la ont del servidor acs para poder reutilizarla.  ║
+               ╚═══════════════════════════════════════════════════════════════════╝
+               */
+
+                $result = $util->selectWhere('acs_ids', array('id_acs'), " pon='" . $pon . "'");
+
+                while ($row = mysqli_fetch_array($result)) {
+                    $id_device = $row[0];
+                }
+                if ($id_device == '')
+                    $id_device = '00259E-HG8546M-' . $pon;
+
+                $url = "http://10.211.2.2:7557/devices/" . $id_device . "/";
+
+                $ch = curl_init();
+                $default_curl_options = array(
+                    CURLOPT_SSL_VERIFYPEER => false,
+                    CURLOPT_HEADER => true,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_TIMEOUT => 10,
+                );
+
+                curl_setopt_array($ch, $default_curl_options);
+                curl_setopt($ch, CURLOPT_HEADER, true);
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+                $util->log(curl_exec($ch));
+
 
                 /*
                ╔═══════════════════════════════════════════════════════╗
                ║Borra el registro de la tabla aprovisionados   ║
                ╚═══════════════════════════════════════════════════════╝
                */
-                $q="DELETE FROM aprovisionados WHERE id='".$_POST['p']."';";
+                $q = "DELETE FROM aprovisionados WHERE id='" . $_POST['p'] . "';";
                 $util->consulta($q);
                 $telnet->Disconnect();
+                $util->log($q);
 
             }
 
@@ -138,13 +207,13 @@ if(isset($_POST['a']) && $_POST['a']=='borrar_en_olt'){
 
     } else echo "no pon";
 
-} else if(isset($_POST['a']) && $_POST['a']=='borrar_solo_alta'){
+} else if (isset($_POST['a']) && $_POST['a'] == 'borrar_solo_alta') {
 
-    if(isset($_POST['p']) && $_POST['p']!=''){
+    if (isset($_POST['p']) && $_POST['p'] != '') {
 
-        if(isset($_POST['hash']) && $_POST['hash']==md5($_POST['p'])){
+        if (isset($_POST['hash']) && $_POST['hash'] == md5($_POST['p'])) {
 
-            $q="DELETE FROM aprovisionados WHERE id='".$_POST['p']."';";
+            $q = "DELETE FROM aprovisionados WHERE id='" . $_POST['p'] . "';";
             $util->consulta($q);
             $telnet->Disconnect();
         } else echo "no serial";
@@ -152,5 +221,3 @@ if(isset($_POST['a']) && $_POST['a']=='borrar_en_olt'){
     } else echo "no pon";
 
 } else echo "no control";
-
-

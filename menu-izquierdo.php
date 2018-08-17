@@ -16,6 +16,7 @@ require_once('config/define.php');
         </li>
         <li class="active"><!-- dashboard -->
             <center><span style="color: #898989;">Menú de Gestión</span></center>
+
         </li>
 
         <li>
@@ -43,6 +44,87 @@ require_once('config/define.php');
                 <li><a href="<?php echo $root;?>content/almacen/tipos.php">Tipos</a></li>
                 <li><a href="<?php echo $root;?>content/almacen/modelos.php">Modelos</a></li>
                 <li><a href="<?php echo $root;?>content/almacen/atributos.php">Atributos</a></li>
+
+    </li>
+
+    <li>
+        <a href="#">
+            <i class="fa fa-menu-arrow pull-right"></i>
+            <i class="main-icon fa fa-users"></i><span><?php echo MNU_ITEM_3; ?> </span>
+        </a>
+        <ul><!-- submenus -->
+            <li><a href="<?php echo $root;?>add-clie.php">Agregar</a></li>
+            <li><a href="<?php echo $root;?>edit-clie.php">Modificar</a></li>
+            <li><a href="<?php echo $root;?>list-clie.php">Listar</a></li>
+            <li><a href="<?php echo $root;?>del-clie.php">Borrar</a></li>
+
+        </ul>
+    </li>
+
+    <li>
+        <a href="#">
+            <i class="fa fa-menu-arrow pull-right"></i>
+            <i class="main-icon fa fa-shopping-cart"></i><span><?php echo MNU_ITEM_8; ?> </span>
+        </a>
+        <ul><!-- submenus -->
+            <li><a href="<?php echo $root;?>content/almacen/productos.php">Productos</a></li>
+            <li><a href="<?php echo $root;?>content/almacen/proveedores.php">Proveedores</a></li>
+            <li><a href="<?php echo $root;?>content/almacen/tipos.php">Tipos</a></li>
+            <li><a href="<?php echo $root;?>content/almacen/modelos.php">Modelos</a></li>
+            <li><a href="<?php echo $root;?>content/almacen/atributos.php">Atributos</a></li>
+
+
+        </ul>
+    </li>
+
+    <li>
+        <a href="#">
+            <i class="fa fa-menu-arrow pull-right"></i>
+            <i class="main-icon"><img src="/img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_10; ?> </span>
+        </a>
+        <ul><!-- submenus -->
+            <li><a href="<?php echo $root;?>content/servicios/servicios.php">Servicios</a></li>
+            <li><a href="<?php echo $root;?>content/servicios/proveedores.php">Proveedores</a></li>
+            <li><a href="<?php echo $root;?>content/servicios/paquetes.php">Paquetes</a></li>
+
+
+            <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->
+        </ul>
+    </li>
+
+    <li>
+        <a href="#">
+            <i class="fa fa-menu-arrow pull-right"></i>
+            <i class="main-icon"><img src="/img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_9; ?> </span>
+        </a>
+        <ul><!-- submenus -->
+            <li><a href="<?php echo $root;?>contratar.php">Alta contrato</a></li>
+            <li><a href="<?php echo $root;?>edit-contrato.php">Modificar contrato</a></li>
+            <li><a href="<?php echo $root;?>content/ventas/solicitudes-cambios.php">Solicitudes cambios</a></li>
+            <li><a href="<?php echo $root;?>content/ventas/contratos.php">Contratos</a></li>
+            <li><a href="<?php echo $root;?>content/ventas/campanas.php">Promociones</a></li>
+            <li><a href="<?php echo $root;?>.php">Solicitar Portabilidad</a></li>
+            <li><a href="<?php echo $root;?>edit-clie.php">Ver Estado Portabilidad</a></li>
+            <li><a href="<?php echo $root;?>del-clie.php">Borrar</a></li>
+            <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->
+        </ul>
+    </li>
+
+    <li>
+        <a href="#">
+            <i class="fa fa-menu-arrow pull-right"></i>
+            <i class="main-icon"><img src="/img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_11; ?> </span>
+        </a>
+        <ul><!-- submenus -->
+            <li><a href="/mmm/content/trabajos/ordenes-hoy.php">Ordenes de hoy</a></li>
+            <li><a href="/mmm/content/trabajos/ordenes.php">Ordenes de trabajo</a></li>
+
+
+        </ul>
+    </li>
+
+
+>>>>>>> 111c2c8e58a05b525731fd3d4b8f983ce55773b4
 
                 <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->
             </ul>
@@ -87,8 +169,8 @@ require_once('config/define.php');
                 <i class="main-icon"><img src="/img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_11; ?> </span>
             </a>
             <ul><!-- submenus -->
-                <li><a href="/mul/content/trabajos/ordenes-hoy.php">Ordenes de hoy</a></li>
-                <li><a href="/mul/content/trabajos/ordenes.php">Ordenes de trabajo</a></li>
+                <li><a href="/mmm/content/trabajos/ordenes-hoy.php">Ordenes de hoy</a></li>
+                <li><a href="/mmm/content/trabajos/ordenes.php">Ordenes de trabajo</a></li>
 
 
             </ul>
@@ -131,78 +213,7 @@ require_once('config/define.php');
             </li>
         <?php } ?>
     </ul>
-    <ul class="nav nav-list">
-        <li class="active"><!-- dashboard -->
-            <center><span style="color: #898989;">Menú Técnico</span></center>
-        </li>
 
-        <?php if (intval($_SESSION['USER_LEVEL'])==0) { ?>
-            <li>
-                <a href="#">
-                    <i class="fa fa-menu-arrow pull-right"></i>
-                    <i class="main-icon fa fa-server"></i> <span><?php echo MNU_ITEM_6; ?></span>
-                </a>
-                <ul><!-- submenus -->
-                    <li><a href="<?php echo $root;?>add-olts.php">Agregar</a></li>
-                    <!--                <li><a href="<?php echo $root;?>list-olts.php">Listar</a></li>-->
-                    <li><a href="<?php echo $root;?>perfiles-olt.php">Gestionar</a></li>
-                    <!--                <li><a href="<?php echo $root;?>cons-olts.php">Consultar</a></li>-->
-                </ul>
-            </li>
-        <?php } ?>
-
-        <li>
-            <a href="#">
-                <i class="fa fa-menu-arrow pull-right"></i>
-                <i class="main-icon fa fa-hdd-o"></i> <span><?php echo MNU_ITEM_5; ?></span>
-            </a>
-            <ul><!-- submenus -->
-                <li><a href="<?php echo $root;?>asignacion.php?c=1">Órdenes de trabajo</a></li>
-                <li><a href="<?php echo $root;?>asignacion.php">Dar Altas</a></li>
-                <?php if (intval($_SESSION['USER_LEVEL'])<2) { ?>
-                    <li><a href="<?php echo $root;?>bajas.php">Dar Bajas</a></li>
-                    <li><a href="<?php echo $root;?>modificar.php">Modificar</a></li>
-                    <li><a href="<?php echo $root;?>listados_altas.php">Listados y consultas</a></li>
-                <?php } ?>
-
-
-            </ul>
-        </li>
-        <li>
-            <a href="#">
-                <i class="fa fa-menu-arrow pull-right"></i>
-                <i class="main-icon fa fa-wrench"></i> <span><?php echo MNU_ITEM_7; ?></span>
-            </a>
-            <ul><!-- submenus -->
-                <li><a href="<?php echo $root;?>ver_estado_ont.php">Comprobar Estado Ont</a></li>
-                <li><a href="<?php echo $root;?>ver_ip_serial.php">Obtener IP & SERIAL</a></li>
-                <li><a href="<?php echo $root;?>ver_estado_olt.php">Comprobar Estado Olt</a></li>
-                <li><a href="<?php echo $root;?>salvar_cabeceras.php">Salvar configuración cabecera</a></li>
-                <?php if (intval($_SESSION['USER_LEVEL'])==0) { ?>
-                    <li><a href="<?php echo $root;?>olt_commands.php">Comandos Especiales</a></li>
-
-                <?php } ?>
-            </ul>
-        </li>
-
-
-        <li>
-            <a href="#">
-                <i class="fa fa-menu-arrow pull-right"></i>
-                <i class="main-icon fa fa-cogs"></i> <span><?php echo MNU_ITEM_4; ?></span>
-            </a>
-            <ul><!-- submenus -->
-                <?php if (intval($_SESSION['USER_LEVEL'])==0) { ?>
-                    <li><a href="<?php echo $root;?>tipos-usuarios.php">Tipos usuarios</a></li>
-                    <li><a href="<?php echo $root;?>niveles.php">Niveles acceso</a></li>
-                <?php } ?>
-                <li><a href="<?php echo $root;?>config_pppoe.php">Servidor PPPoE</a></li>
-
-            </ul>
-        </li>
-
-
-    </ul>
 
     <!-- SECOND MAIN LIST -->
     <ul class="nav nav-list">
