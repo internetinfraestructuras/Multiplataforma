@@ -327,9 +327,14 @@ AND contratos_lineas_detalles.ID_LINEA=250
                                     }
                                     ?>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-4">
+
+                                        <input type="checkbox" name="cascada-precio"  placeholder="0" > ¿Realizar una actualización de precios a todos los clientes con dicho paquete contratado?
 
 
-
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <button type="submit"

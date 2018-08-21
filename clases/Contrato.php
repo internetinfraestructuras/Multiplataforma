@@ -366,7 +366,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     }
 
     //Establece un producto en instalado.
-    public static function setProductoInstalado($idContrato, $productos, $idLineaContrato)
+    public static function setProductoInstalado($productos, $idLineaContrato)
     {
         for ($i = 0; $i < count($productos); $i++) {
 
