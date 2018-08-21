@@ -676,7 +676,7 @@ check_session(2);
                     <input  type="button" name="next" id="next4" class="next action-button" value="Continuar"/>
                 </fieldset>
 
-                <fieldset class="caja">
+                <fieldset class="caja" id="ultima_pantalla">
                     <div id="aqui_los_servicios_y_productos" style="max-height:460px;overflow-x: hidden; overflow-y: scroll;margin-bottom:8px;"></div>
 
                     <input  type="button" name="previous" class="previous action-button-previous"
@@ -713,14 +713,19 @@ check_session(2);
 
                         </div>
                     </div>
-                    <input  type="button" name="previous" class="previous action-button-previous" value="Paso Anterior"/>
+                    <input  type="button" name="previous"  class="previous action-button-previous" value="Paso Anterior"/>
+                    <div class="text-center">
+                        <br><br><br>
+                        <span id="avisofinreserva" style="font-size:1em; color: red; font-weight: 500"></span>
+
+                    </div>
                 </fieldset>
 
             </form>
         </div>
 
 
-        <div id="signature-pad" class="signature-pad" style="position: relative; margin-top:900px; visibility: visible  ">
+        <div id="signature-pad" class="signature-pad" style="position: relative; margin-top:900px; visibility: visible">
             <div class="signature-pad--body">
                 <canvas></canvas>
             </div>
@@ -733,11 +738,7 @@ check_session(2);
                         <button type="button" class="btn btn-default button clear" data-action="clear">Limpiar</button>
                         <br><br><br><br>
                     </div>
-                    <div>
-                        <br><br><br><br>
-                        <span id="avisofinreserva" style="font-size:1em; color: red; font-weight: 500"></span>
-                        <br><br><br><br>
-                    </div>
+
                     <div>
                         <br><br><br><br>
                         <button type="button" class="btn btn-success button save" id="btn-finalizar" data-action="save-svg">Finalizar</button>
@@ -771,6 +772,9 @@ check_session(2);
     var totalMes=0;
     var codigo_reserva=0;
     var meses_permencia=0;
+    var precioPack=0;
+    var contenedordenumeros=0;
+    var numerosNuevos=[];
 
     function mostrarmodal(){
            $("#masservicios").modal();
@@ -1057,6 +1061,8 @@ check_session(2);
         $("#pvp_final3").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
 
         id_paquete_seleccionado=item.value;
+        precioPack=precio;
+        console.log(precioPack);
 
         $.ajax({
             url: 'content/servicios/carga_paquetes.php',
@@ -1091,10 +1097,8 @@ check_session(2);
         });
 
         cargar_servicios();
-
-
         $("#next2").css('display', 'block');
-
+        calcular_facturas();
     }
 
     function campana_seleccionada(item) {
@@ -1139,7 +1143,8 @@ check_session(2);
                         datos[i].pvp + ' &euro;</td>' +
                         '<td class="text-right">' +
                         '<select style="width:40px; height:28px;font-size:1em; padding:0px" data-pvp="' + datos[i].pvp + '" id="' + datos[i].idservicio +'" ' +
-                        'data-id_servicio="' + datos[i].idservicio + '" data-id_familia="' + datos[i].id_tipo +  '" data-servicio="' + datos[i].comercial + '" onchange="add_service(this);">'+
+                        'data-permanencia="' + datos[i].permanencia + '" '+
+                        'data-id_servicio="' + datos[i].idservicio.replace(/\s/g, "")  + '" data-id_familia="' + datos[i].id_tipo +  '" data-servicio="' + datos[i].comercial + '" onchange="add_service(this);">'+
                         '<option value=0 selected>0</option>'+
                         '<option value=1>1</option>'+
                         '<option value=2>2</option>'+
@@ -1225,6 +1230,7 @@ check_session(2);
             }
             $("#campanas").val(0).change();
             guardar_borrador(2);
+
         }
 
 
@@ -1435,11 +1441,11 @@ check_session(2);
 
             var lineas_detalles_contrato =
                 "<div class='row'>"+
-                "<div class='col-lg-1 col-xs-2'><br><b>En Pack</b><br><br></div>" +
-                "<div class='col-lg-3 col-xs-10'><br><b>Servicio</b><br><br></div>" +
+                "<div class='col-lg-1 col-xs-2'><br><b>Info</b><br><br></div>" +
+                "<div class='col-lg-4 col-xs-10'><br><b>Servicio</b><br><br></div>" +
                 "<div class='col-lg-2 col-xs-10'><br><b>Alta / Porta</b><br><br></div>" +
                 "<div class='col-lg-2 col-xs-10'><br><b>Numeraciones</b><br><br></div>" +
-                "<div class='col-lg-4 col-xs-12'><br><b>Producto Asociado</b><br><br></div>"+
+                "<div class='col-lg-3 col-xs-12'><br><b>Producto Asociado</b><br><br></div>"+
                 "</div>";
 
             for (c=0; c<servicios_contratados.length; c++){
@@ -1449,8 +1455,8 @@ check_session(2);
 
                 lineas_detalles_contrato = lineas_detalles_contrato +
                     "<div class='row' style='border-bottom: 1px solid #c9c9c9'>" +
-                    "<div class='col-xs-2 col-lg-1'><img src='img/"+ enpackono + "'></div>" +
-                    "<div class='col-xs-10 col-lg-3'>"+servicios_contratados[c][4] + "</div>";
+                    "<div class='col-xs-2 col-lg-1'><img style='max-width:29px' src='img/"+ enpackono + "'><img  style='max-width:29px' src='img/serv"+ servicios_contratados[c][1] + ".png'></div>" +
+                    "<div class='col-xs-10 col-lg-4'>"+servicios_contratados[c][4] + "</div>";
 
                 if(servicios_contratados[c][1]==2) {
                     lineas_detalles_contrato = lineas_detalles_contrato +
@@ -1470,7 +1476,7 @@ check_session(2);
                     });
                     lineas_detalles_contrato = lineas_detalles_contrato +
                         "</select>" +
-                        "<select class='x100 selnuevo' style='display:none;width:100%' onchange='verifPorta(this,"+c+")' id='nuevo-"+c+"'>";
+                        "<select class='x100 selnuevo' style='display:none;width:100%' onchange='verifNuevo(this,"+c+")' id='nuevo-"+c+"'>";
                     lineas_detalles_contrato = lineas_detalles_contrato +
                         "<option value='0'></option>";
                     $.each(aNuevos, function (i) {
@@ -1500,7 +1506,7 @@ check_session(2);
                     });
                     lineas_detalles_contrato = lineas_detalles_contrato +
                         "</select>" +
-                        "<select class='x100 selnuevo' style='display:none; width:100%' id='nuevo-"+c+"' onchange='verifPorta(this,"+c+")'>";
+                        "<select class='x100 selnuevo' style='display: none; width:100%' id='nuevo-"+c+"' onchange='verifNuevo(this,"+c+")'>";
                     lineas_detalles_contrato = lineas_detalles_contrato +
                         "<option value='0'></option>";
                     $.each(aNuevos, function (i) {
@@ -1516,7 +1522,7 @@ check_session(2);
                         "<div class='col-xs-10 col-lg-2'></div><div class='col-xs-10 col-lg-2'></div>";
 
                 lineas_detalles_contrato = lineas_detalles_contrato +
-                    "<div class='col-xs-12 col-lg-4'>";
+                    "<div class='col-xs-12 col-lg-3'>";
 
                 lineas_detalles_contrato = lineas_detalles_contrato +
                     "<select class='x100 producto' id='prod-"+c+"' onchange='verifProds(this,"+c+")'>";
@@ -1582,9 +1588,13 @@ check_session(2);
 
             }
 
-            if (todos_ok>0)
-                return false;
-            else
+            if (todos_ok>0) {
+                var resp = confirm("No ha asignado productos a todos los servicios,\nAceptar = Si, Cancelar= No. ");
+                if(resp)
+                    return true;
+                else
+                    return false;
+            } else
                 return true;
 
         }
@@ -1597,16 +1607,21 @@ check_session(2);
         var nom_servicio = jQuery(objeto).data("servicio");
         var id_familia = jQuery(objeto).data("id_familia");
         var pvp_extra = parseFloat(jQuery(objeto).data("pvp"));
+        var permanencias = parseFloat(jQuery(objeto).data("permanencia"));
         var cantidad = parseFloat(objeto.value) || 0;
 
-
         for (c=0; c<servicios_contratados.length; c++){
-            if(servicios_contratados[c][0]==id_servicio && servicios_contratados[c][5]=='e')
-                servicios_contratados.splice(c,1);
+            if(servicios_contratados[c][0]==id_servicio && servicios_contratados[c][5]=='e') {
+                servicios_contratados.splice(c, 1);
+                c--;
+            }
+
         }
+
         // con la e controlo que es un extra
         for (d=1; d<=cantidad; d++){
-            var servicio = [id_servicio, id_familia, pvp_extra, 1, nom_servicio, 'e'];
+            var servicio = [id_servicio, id_familia, pvp_extra, 1, nom_servicio, 'e','0','','', permanencias];
+
             servicios_contratados.push(servicio);
         }
         console.log(servicios_contratados);
@@ -1626,7 +1641,6 @@ check_session(2);
 
         $("#pvp_final2").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
         $("#pvp_final3").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
-
 
     }
 
@@ -1814,8 +1828,7 @@ check_session(2);
         if(a==0) {
             $("#porta-" + b).css('display', 'block');
             $("#nuevo-" + b).css('display', 'none');
-        }
-        else {
+        } else {
             $("#porta-" + b).css('display', 'none');
             $("#nuevo-" + b).css('display', 'block');
         }
@@ -1828,70 +1841,115 @@ check_session(2);
         if(c==3)
             url='content/ventas/cargar-moviles-libres.php';
 
-        $("#nuevo-"+b).append("<option value='-1' selected>Seleccione</option>");
-        $.ajax({
-            url: url,
-            type: 'POST',
-            cache: false,
-            async: false,
-            data: {
-                proveedor: id_cliente_seleccionado
-            },
-            success: function (data) {
-                $.each(data, function (i) {
-                    if(i!='codigo_reserva')
-                        if(c==3)
-                            $("#nuevo-"+b).append("<option value='"+data[i]+"'>"+data[i]+"</option>");
 
-                        else
-                            if(data[i].selectable==true)
-                                $("#nuevo-"+b).append("<option value='"+data[i].num+"'>"+data[i].num+"</option>");
-                            else
-                                $("#nuevo-"+b).append("<option disabled value='"+data[i].num+"'>---- "+data[i].num+" ----</option>");
-                    else
-                        codigo_reserva = data[i];
-                });
-            }
-        });
+        if(codigo_reserva==0) {
 
-        if(c==3) {
-            var seconds = 55000;
+            $("#nuevo-" + b).append("<option value='-1' selected>Seleccione</option>");
+            contenedordenumeros=b;
+            $.ajax({
+                url: url,
+                type: 'POST',
+                cache: false,
+                async: false,
+                data: {
+                    proveedor: id_cliente_seleccionado
+                },
+                success: function (data) {
+                    $.each(data, function (i) {
+                        if (i != 'codigo_reserva') {
 
-            // Calcula la fecha de finalización del contador sumando
-            // el número de segundos a la fecha actual
-            var end = (new Date()).getTime() + seconds * 1000;
-            displayCounter();
-            var timeout = setInterval(displayCounter, 300);
+                            if (c == 3) {
+                                $($("#nuevo-" + b)).append("<option value='" + data[i] + "'>" + data[i] + "</option>");
+                                numerosNuevos.push(data[i]);
+                            } else if (data[i].selectable == true) {
+                                $($("#nuevo-" + b)).append("<option value='" + data[i].num + "'>" + data[i].num + "</option>");
+                                numerosNuevos.push(data[i].num);
+                            } else
+                                $($("#nuevo-" + b)).append("<option disabled value='" + data[i].num + "'>---- " + data[i].num + " ----</option>");
+                        } else
+                            codigo_reserva = data[i];
 
-            function displayCounter() {
-                // Calcula el número de segundos que faltan para llegar a la fecha de finalización
-                var counter = Math.floor((end - (new Date()).getTime()) / 1000);
-                if (counter < 0) counter = 0;
+                    });
 
-                document.getElementById('cuentaatras' + b).innerHTML = 'Reserva Expira: ' +
-                    Math.floor(counter / 60) + ':' +
-                    ('00' + Math.floor(counter % 60)).slice(-2);
-                if (counter === 0) {
-                    clearTimeout(timeout);
-                    $(".next").attr('disabled',true);
-                    $("#btn-finalizar").attr('disabled',true);
-                    $("#avisofinreserva").text("Tiempo de reserva para numeros moviles agotado, regrese y recargue");
-                    document.getElementById('cuentaatras' + b).innerHTML = "<span onclick='refrescar(" + b + ")' style='cursor:pointer; color:red; font-weight: 600'>Haga clic para recargar numeros</span>";
+                }
+            });
+
+            if(c==3) {
+                var seconds = 20;
+
+                // Calcula la fecha de finalización del contador sumando
+                // el número de segundos a la fecha actual
+                var end = (new Date()).getTime() + seconds * 1000;
+                displayCounter();
+                var timeout = setInterval(displayCounter, 300);
+
+                function displayCounter() {
+                    // Calcula el número de segundos que faltan para llegar a la fecha de finalización
+                    var counter = Math.floor((end - (new Date()).getTime()) / 1000);
+                    if (counter < 0) counter = 0;
+
+                    document.getElementById('cuentaatras' + b).innerHTML = 'Reserva Expira: ' +
+                        Math.floor(counter / 60) + ':' +
+                        ('00' + Math.floor(counter % 60)).slice(-2);
+                    if (counter === 0) {
+                        clearTimeout(timeout);
+                        $(".next").attr('disabled',true);
+                        $("#btn-finalizar").attr('disabled',true);
+                        $("#avisofinreserva").text("Tiempo de reserva para numeros moviles agotado, regrese y recargue");
+
+                        var loc = document.location.toString().split('#')[0];
+                        document.location = loc + '#ultima_pantalla';
+
+                        document.getElementById('cuentaatras' + b).innerHTML = "<span onclick='refrescar(" + b + ")' style='cursor:pointer; color:red; font-weight: 600'>Haga clic para recargar numeros</span>";
+                        $("#next5").val('No puede Continuar');
+
+                    }
                 }
             }
+
+        } else {
+            $($("#nuevo-" + b)).append("<option value='-1'>Seleccione</option>");
+
+            $.each(numerosNuevos, function (i) {
+                $($("#nuevo-" + b)).append("<option value='" + numerosNuevos[i] + "'>" + numerosNuevos[i] + "</option>");
+            });
+
         }
+
 
     }
 
     function refrescar(id){
-
-        muestra_oculta_porta(1,id, 3);
-        $(".next").attr('disabled',false);
-        $("#btn-finalizar").attr('disabled',false);
+        codigo_reserva=0;
+        $(".selnuevo option").remove();
+        numerosNuevos=[];
+        $(".next").removeAttr('disabled');
+        $("#next5").val('Continuar');
+        $("#btn-finalizar").removeAttr('disabled');
         $("#avisofinreserva").text("");
-
+        muestra_oculta_porta(1,id, 3);
     }
 
+
+    function verifNuevo(s,b){
+        var texto = $(s).find('option:selected').text();
+
+        $('.selnuevo').each(function (){
+            $(this).css('border', 'solid 2px #E5E7E9');
+            if(this.value == s.value && this.id!=s.id && s.value!=0) {
+                alert("El valor " + texto + " ya ha sido seleccionado.");
+                $(this).css('border', 'solid 2px #1D9FC1');
+                $(s).css('border', 'solid 2px orange');
+                s.selectedIndex = 0;
+                s.focus();
+                return false;
+            }
+        });
+
+        servicios_contratados[b][7]=s.value;
+        console.log(servicios_contratados);
+
+    }
 
     function verifPorta(s,b){
         var texto = $(s).find('option:selected').text();
@@ -1912,6 +1970,7 @@ check_session(2);
         console.log(servicios_contratados);
 
     }
+
 
 
     function verifProds(s,b){
@@ -1953,7 +2012,9 @@ check_session(2);
                 firma: firma,
                 lineas: servicios_contratados,
                 cliente: id_cliente_seleccionado,
-                permanencia: permanencia
+                permanencia: permanencia,
+                id_paquete: id_paquete_seleccionado,
+                preciopaquete: precioPack
             }
         });
     }
@@ -1970,7 +2031,7 @@ check_session(2);
                                 '<th>En Pack</th>' +
                                 '<th class="text-right">Precio</th>' +
                                 '<th class="text-right">Número</th>' +
-                                '<th>Producto</th>' +
+                                '<th class="text-right">Permanencia</th>' +
             '</thead><tbody id="aqui_las_lineas_resumen"></tbody></table>');
 
         $.each(servicios_contratados, function (i) {
@@ -1983,7 +2044,7 @@ check_session(2);
                 '</td><td>'+packsino+ '</td>'+
                 '</td><td class="text-right">'+parseFloat(servicios_contratados[i][2]).toFixed(2)+' &euro;</td>'+
                 '</td><td class="text-right">'+servicios_contratados[i][7]+'</td>'+
-                '</td><td>'+servicios_contratados[i][9]+'</td></tr>'
+                '</td><td  class="text-right">'+servicios_contratados[i][9]+' meses</td></tr>'
             );
         });
     }

@@ -6,6 +6,7 @@
  * Time: 8:07
  */
 require_once('config/define.php');
+$root="/";
 ?>
 <nav id="sideNav"><!-- MAIN MENU -->
 <ul class="nav nav-list">
@@ -74,7 +75,11 @@ require_once('config/define.php');
             <li><a href="<?php echo $root;?>content/ventas/solicitudes-cambios.php">Solicitudes cambios</a></li>
             <li><a href="<?php echo $root;?>content/ventas/contratos.php">Contratos</a></li>
             <li><a href="<?php echo $root;?>content/ventas/campanas.php">Promociones</a></li>
-            <li><a href="<?php echo $root;?>.php">Solicitar Portabilidad</a></li>
+            <li><a href="#">Solicitar Portabilidad</a>
+                <ul>
+                    <li><a href="<?php echo $root;?>content/ventas/porta_fijo.php">Fijo</a></li>
+                    <li><a href="<?php echo $root;?>content/ventas/porta_movil.php">Móvil</a></li>
+                </ul></li>
             <li><a href="<?php echo $root;?>edit-clie.php">Ver Estado Portabilidad</a></li>
             <li><a href="<?php echo $root;?>del-clie.php">Borrar</a></li>
             <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->

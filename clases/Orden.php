@@ -8,7 +8,7 @@
 
 class Orden
 {
-    public static function crearOrdenTrabajo($idContrato,$idLinea,$fechaAlta,$tipoOrden,$idProducto)
+    public static function crearOrdenTrabajo($idContrato,$fechaAlta)
     {
         //CREAR LA ORDEN DE TRABAJO PRIMERO
         $util=new util();
@@ -22,8 +22,7 @@ class Orden
 
         $resOrden= $util->insertInto('ordenes', $t_ordenes, $values);
 
-        self::crearLineaOrden($resOrden,$tipoOrden,$idProducto,$idLinea);
-
+        return $resOrden;
 
     }
 
@@ -50,6 +49,8 @@ WHERE ordenes.id=ordenes_lineas.ID_ORDEN AND ordenes_lineas.ID_LINEA_DETALLE_CON
         $values=array($idOrden,$idTipoOrden,$idProducto,$idLineaDetalle);//TIPO DE ESTADO ES 1 DE APERTURA
 
         $resOrden= $util->insertInto('ordenes_lineas', $t_ordenes, $values);
+
+        return $resOrden;
     }
 
 

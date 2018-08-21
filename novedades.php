@@ -77,7 +77,8 @@ $util = new util();
                         </div>
 
                         <div class="panel-body">
-
+                            <b>17.08.218</b><br>
+                            <p><b>Se recomienda:</b> Antes de retirar una ONT de una instalación por bajas o sustitución, dar de baja desde la plataforma desde el menu Aprovisionamiento->Dar Bajas. De este modo la ONT se resetea a fábrica y se realizan todas las bajas de todos los servidores correspondientes para su posterior y correcto aprovisionamiento.</p>
                             <b>11.07.218</b><br>
                             <p>Lanzamiento de <b><a href="http://www.configuraturouter.com" target="_blank">www.configuraturouter.com</a></b>, esta plataforma esta diseñada para que puedas ofrecer a tus clientes una forma fácil de configurar los parametros básicos del router de fibra.<br>
                             Ahora puedes ofrecer a tus clientes la herramienta perfecta de configuración a la que pueden acceder utilizando los datos que aparecen en la etiqueta que tienen las ont modelo IPTVM en la parte inferior.</p>

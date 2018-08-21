@@ -285,7 +285,8 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
             $values = array($idLinea, $tipo, $idservicio, $atributo, $valor, date('Y-m-d '), '', $estado);
         else
             $values = array($idLinea, $tipo, $idservicio, $atributo, $valor, $fechaAlta, '', $estado);
-        return $util->insertInto('contratos_lineas_detalles', $t_contratos_lineas_detalles, $values);
+
+        return $util->insertInto('contratos_lineas_detalles', $t_contratos_lineas_detalles, $values,false,false);
     }
 
     public static function setNuevaLineaDetallesPaquete($idLinea, $tipo, $atributo, $valor, $estado, $idServicio, $fecha = null)
@@ -420,6 +421,8 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
         $result = $util->update('productos,almacenes', $campos, $values, "productos.id_almacen=almacenes.id AND productos.id=" . $idProducto . " AND almacenes.id_empresa=" . $_SESSION['REVENDEDOR']);
     }
+
+
 
     public static function setProductoBaja($idProducto, $estado, $fechaBaja = null)
     {

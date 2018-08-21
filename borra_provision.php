@@ -72,14 +72,14 @@ if (isset($_POST['a']) && $_POST['a'] == 'borrar_en_olt') {
                 $telnet->DoCommand('interface gpon ' . $c . '/' . $t . PHP_EOL, $result);
                 $telnet->DoCommand(PHP_EOL, $result);
                 $util->log('interface gpon ' . $c . "/" . $t . " " . $result . $id_olt);
-                $telnet->DoCommand('clear' . PHP_EOL, $void);
+                //$telnet->DoCommand('clear' . PHP_EOL, $void);
 
-                $telnet->DoCommand('ont factory-setting-restore ' . $p . ' ' . $idont , $result);
-                $telnet->DoCommand("y" . PHP_EOL, $result);
-                $util->log("ont factory-setting-restore " . $p . " " . $idont . " " . $result . " " . $id_olt);
+                $telnet->DoCommand('ont factory-setting-restore ' . $p . ' ' . $idont . PHP_EOL ."y" . PHP_EOL, $result);
 
-                $telnet->DoCommand('quit' . PHP_EOL, $void);
-                $telnet->DoCommand('clear' . PHP_EOL, $void);
+                $util->log( $result . " olt:" . $id_olt);
+
+                $telnet->DoCommand('quit' . PHP_EOL .PHP_EOL, $void);
+                // $telnet->DoCommand('clear' . PHP_EOL, $void);
 
                 /*
               ╔═════════════════════════════════════╗
@@ -89,7 +89,7 @@ if (isset($_POST['a']) && $_POST['a'] == 'borrar_en_olt') {
                 if (intval($idinternet) > 0) {
                     $telnet->DoCommand('undo service-port ' . $idinternet . PHP_EOL, $result);
                     $util->log('undo service-port ' . $idinternet . " " . $result . " " . $id_olt);
-                    $telnet->DoCommand('clear' . PHP_EOL, $void);
+                    //$telnet->DoCommand('clear' . PHP_EOL, $void);
 
                 }
 
@@ -102,7 +102,7 @@ if (isset($_POST['a']) && $_POST['a'] == 'borrar_en_olt') {
 
                     $telnet->DoCommand('undo service-port ' . $idtv . PHP_EOL, $result);
                     $util->log('undo service-port ' . $idtv . " " . $result . " " . $id_olt);
-                    $telnet->DoCommand('clear' . PHP_EOL, $void);
+                    // $telnet->DoCommand('clear' . PHP_EOL, $void);
 
                 }
 
@@ -115,7 +115,7 @@ if (isset($_POST['a']) && $_POST['a'] == 'borrar_en_olt') {
 
                     $telnet->DoCommand('undo service-port ' . $idvoz . PHP_EOL, $result);
                     $util->log('undo service-port ' . $idvoz . " " . $result . " " . $id_olt);
-                    $telnet->DoCommand('clear' . PHP_EOL, $void);
+                    // $telnet->DoCommand('clear' . PHP_EOL, $void);
 
                 }
                 /*
@@ -127,7 +127,7 @@ if (isset($_POST['a']) && $_POST['a'] == 'borrar_en_olt') {
 
                     $telnet->DoCommand('undo service-port ' . $idvpn . PHP_EOL, $result);
                     $util->log('undo service-port ' . $idvpn . " " . $result . " " . $id_olt);
-                    $telnet->DoCommand('clear' . PHP_EOL, $void);
+                    // $telnet->DoCommand('clear' . PHP_EOL, $void);
 
                 }
 
@@ -140,7 +140,7 @@ if (isset($_POST['a']) && $_POST['a'] == 'borrar_en_olt') {
 
                     $telnet->DoCommand('undo service-port ' . $idacs . PHP_EOL, $result);
                     $util->log('undo service-port ' . $idacs . " " . $result . " " . $id_olt);
-                    $telnet->DoCommand('clear' . PHP_EOL, $void);
+                    // $telnet->DoCommand('clear' . PHP_EOL, $void);
 
                 }
 
@@ -153,7 +153,7 @@ if (isset($_POST['a']) && $_POST['a'] == 'borrar_en_olt') {
                 $telnet->DoCommand('interface gpon ' . $c . '/' . $t . PHP_EOL. PHP_EOL, $result);
 //                $telnet->DoCommand(PHP_EOL, $result);
                 $util->log('interface gpon ' . $c . "/" . $t . " " . $result . $id_olt);
-                $telnet->DoCommand('clear' . PHP_EOL, $void);
+                // $telnet->DoCommand('clear' . PHP_EOL, $void);
 
                 $telnet->DoCommand('ont delete ' . $p . ' ' . $idont, $result);
                 $telnet->DoCommand("y" . PHP_EOL, $result);

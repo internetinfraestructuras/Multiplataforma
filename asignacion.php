@@ -846,7 +846,7 @@ check_session(4);
                     </a>
                 </div>
                 <div class="col-lg-3 col-xs-6 text-right">
-                    <a href="#" id="" onclick="enviar();" style="margin-top:25px" class="btn btn-success">
+                    <a href="#" id="btn-enviar" onclick="enviar();" style="margin-top:25px" class="btn btn-success">
                         <span>Activar</span>
                     </a>
                 </div>
@@ -1378,6 +1378,7 @@ check_session(4);
     function enviar() {
 
         $("#msg_error").text('');
+        $("#btn-enviar").attr('disabled','disabled');
 
         if (servicio == 1 || servicio == 4) {
             var serie = $("#serial").val();
