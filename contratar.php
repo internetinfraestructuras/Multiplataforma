@@ -516,7 +516,7 @@ check_session(2);
                 <fieldset class="caja">
                     <div class="row">
                         <div class="col-lg-5 col-xs-12">
-                            <label><b>Paquete que desea contratar</b></label><br><br>
+                            <label><b>Seleccione un pack de servicios o los servicios por separados en la siguiente pantalla</b></label><br>
                             <select  name="paquete" id="paquete"
                                     class="form-control pointer " onchange="paquete_seleccionado(this)">
                                 <option value="">Sin paquete</option>
@@ -552,6 +552,7 @@ check_session(2);
                 <fieldset class="caja">
                     <div class="row">
                         <div class="col-lg-5 col-xs-12">
+                            <label><b>Tanto si ha seleccionado un pack como no,<br>puede seleccionar servicios adicionales</b></label><br>
 
                         </div>
                         <div class="col-lg-1 col-xs-12">
@@ -581,7 +582,7 @@ check_session(2);
                             <tr>
                                 <th>ID</td>
                                 <th>Familia</th>
-                                <th>Nombre Paquete</th>
+                                <th>Servicio</th>
                                 <th  class="text-right">Coste <span class="fa fa-eye" style="font-size:1em; cursor: pointer;margin-left:.5em" onclick="ver_coste();"></span></th>
                                 <th>IVA</th>
                                 <th class="text-right">PVP</th>
@@ -951,7 +952,7 @@ check_session(2);
 
         var hoy = f.getDate();
 
-        for(nm=1; nm<=parseInt(meses); nm++){
+        for(nm=1; nm<=parseInt(meses_permencia); nm++){
             if(nm==1){
                 var totalPrimerMes= totalMes - ((totalMes/30)* (hoy-diaFacturacion));
             }
@@ -960,6 +961,7 @@ check_session(2);
             f.setDate(diaFacturacion);
             // var fecha_mes = (diaFacturacion + "/" + (f.getUTCMonth()+1) + "/" + f.getFullYear()).toLocaleString("es-ES", options);
             var fecha_mes = f.toLocaleString("es-ES", options);
+
             if(nm==1)
                 $("#aqui_las_lineas").append('<tr style="color:#1D9FC1; font-weight:600"><td >'+nm+'</td><td>'+fecha_mes+'</td><td>'+parseFloat(totalPrimerMes).toPrecision(4)+'</td></tr>');
             else
@@ -1875,7 +1877,7 @@ check_session(2);
             });
 
             if(c==3) {
-                var seconds = 20;
+                var seconds = 550;
 
                 // Calcula la fecha de finalización del contador sumando
                 // el número de segundos a la fecha actual
@@ -1995,6 +1997,7 @@ check_session(2);
 
     function guardar_contrato(firma){
         var permanencia = $("#permanencia").val();
+
         $.ajax({
             url: 'content/servicios/guardar-contrato.php',
             type: 'POST',
