@@ -19,7 +19,7 @@ require_once('../../config/util.php');
 $util = new util();
 check_session(3);
 
-$campos=array('servicios.ID','ID_SERVICIO_TIPO','servicios.NOMBRE','PRECIO_PROVEEDOR','IMPUESTO','BENEFICIO','PVP','servicios_tipos.NOMBRE as nombreTipo','PERMANENCIA_MINIMA');
+$campos=array('servicios.ID','ID_SERVICIO_TIPO','servicios.NOMBRE','PRECIO_PROVEEDOR','IMPUESTO','BENEFICIO','PVP','servicios_tipos.NOMBRE as nombreTipo');
 if(isset($_POST['id']))
 {
     $servicios = $util->selectJoin('servicios', $campos, ' LEFT JOIN paquetes_servicios ON paquetes_servicios.ID_SERVICIO = servicios.ID '.
@@ -47,8 +47,7 @@ while ($row = mysqli_fetch_array($servicios))
         'impuesto' => $row[4],
         'beneficio' => $row[5],
         'pvp' => $row[6],
-        'tipo' => $row[7],
-        'permanencia' => $row[8]
+        'tipo' => $row[7]
     );
     array_push($aItems, $aItem);
 

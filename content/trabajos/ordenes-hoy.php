@@ -130,7 +130,7 @@ $root="../../";
                                         <?php
 
                                             $listado= $util->selectWhere3('ordenes,ordenes_estados,contratos,clientes',
-                                                array("ordenes.id,ordenes.fecha_alta,ordenes_estados.nombre,ordenes_estados.id,clientes.nombre,clientes.id"),
+                                                array("ordenes.id,ordenes.fecha_alta,ordenes_estados.nombre,ordenes_estados.id,clientes.nombre,clientes.id,clientes.apellidos"),
                                                 "ordenes.id_contrato=contratos.id 
                                             AND ordenes_estados.id=ordenes.id_tipo_estado 
                                             AND contratos.id_cliente=clientes.id
@@ -149,18 +149,26 @@ $root="../../";
                                             $idEstado=$listado[$i][3];
                                             $cliente=$listado[$i][4];
                                             $idCliente=$listado[$i][5];
+                                            $apellidos=$listado[$i][6];
 
 
 
 
                                             echo "<tr>";
-                                            echo "<td>$id</td><td>$fechaAlta</td><td>$estado</td><td>$cliente<a href='/mul/ficha-cliente.php?idCliente=$idCliente' ><button type=\"button\" rel=\"tooltip\" ><i class=\"fa fa-eye\"></i></button></a></td>";
+                                            echo "<td>$id</td><td>$fechaAlta</td><td>$estado</td><td>$cliente $apellidos <a href='/mul/ficha-cliente.php?idCliente=$idCliente' ><button type=\"button\" rel=\"tooltip\" ><i class=\"fa fa-eye\"></i></button></a></td>";
 
                                             ?>
                                             <td class="td-actions text-right">
                                                 <a href="ficha-orden.php?idOrden=<?php echo $id; ?>">
                                                     <button type="button" rel="tooltip" >
+                                                        <a target="_blank" href="imprimirOrden.php?idOrden=<?php echo $id;?>"
+                                                        <i class="fa fa-print"></i> &nbsp;
+                                                </a>
+                                                <a href="ficha-orden.php?idOrden=<?php echo $id; ?>">
+                                                    <button type="button" rel="tooltip" >
                                                         <i class="fa fa-pencil"></i>
+                                                    </button>
+                                                </a>
                                                     </button>
                                                 </a>
                                                 <button type="button" rel="tooltip" class="">

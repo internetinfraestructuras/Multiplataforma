@@ -210,7 +210,8 @@ check_session(3);
                                         <?php
                                        $listado= $util->selectWhere3
                                        ('productos_tipos,proveedores',
-                                           array("productos_tipos.id","productos_tipos.nombre","proveedores.nombre as n"),"proveedores.id=productos_tipos.id_proveedor","productos_tipos.nombre");
+                                           array("productos_tipos.id","productos_tipos.nombre","proveedores.nombre as n"),
+                                           "proveedores.id=productos_tipos.id_proveedor AND productos_tipos.ID_EMPRESA=".$_SESSION['REVENDEDOR']."","productos_tipos.nombre");
 
                                         for($i=0;$i<count($listado);$i++)
                                         {

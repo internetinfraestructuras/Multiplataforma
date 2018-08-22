@@ -151,6 +151,7 @@ if(
     $margen = $util->cleanstring($_POST['margen']);
     $impuesto = $util->cleanstring($_POST['impuesto']);
     $pvp = $util->cleanstring($_POST['pvp']);
+    @$cascadaPrecio=$_POST['cascada-precio'];
 
     if(isset($_POST['idContrato']))
     {
@@ -166,6 +167,30 @@ if(
 
         $result = $util->update('paquetes', $campos, $values, "id=".$id. " AND id_empresa=".$_SESSION['REVENDEDOR']);
         $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el paquete: '.$id.' con el resultado:'.$result);
+
+        if($cascadaPrecio=="on")
+        {
+            $util = new util();
+            $listadoContratos=$util->selectWhere3('contratos,contratos_lineas',
+                array("contratos_lineas.id,contratos_lineas.id_contrato"),
+                "contratos_lineas.estado!=5 
+                AND contratos.id=contratos_lineas.id_contrato 
+                AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." 
+                AND contratos_lineas.id_tipo=1 
+                AND contratos_lineas.id_asociado=".$id);
+
+            for($i=0;$i<count($listadoContratos);$i++)
+            {
+                $campos=array("precio_proveedor","beneficio","impuesto","pvp");
+
+                $values=array($coste,$margen,$impuesto,$pvp);
+
+                $result = $util->update('contratos_lineas', $campos, $values, "contratos_lineas.id=".$listadoContratos[$i]['id']);
+            }
+
+        }
+
+
     }
 
 
