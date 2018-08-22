@@ -13,7 +13,7 @@ check_session(2);
 
 $listado= $util->selectWhere3('paquetes',
     array("ID","NOMBRE","PRECIO_COSTE","MARGEN","IMPUESTO","PVP"),
-    "paquetes.id_empresa=".$_SESSION['REVENDEDOR']);
+    "paquetes.id_empresa=".$_SESSION['REVENDEDOR']." and paquetes.id=".$_GET['idPaquete']);
 
 $id=$listado[0][0];
 $nombre=$listado[0][1];
@@ -327,9 +327,14 @@ AND contratos_lineas_detalles.ID_LINEA=250
                                     }
                                     ?>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-4">
+
+                                        <input type="checkbox" name="cascada-precio"  placeholder="0" > ¿Realizar una actualización de precios a todos los clientes con dicho paquete contratado?
 
 
-
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <button type="submit"

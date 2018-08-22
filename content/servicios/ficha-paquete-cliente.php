@@ -214,7 +214,7 @@ AND contratos_lineas_detalles.ID_LINEA=250
                                                 AND estados_contratos.id=contratos_lineas_detalles.estado
                                                 AND contratos_lineas_detalles.estado!=2 
                                                 
-                                                AND contratos_lineas_detalles.id_linea='.$_GET['idLineaContrato']." GROUP BY contratos_lineas_detalles.ID_TIPO_SERVICIO");
+                                                AND contratos_lineas_detalles.id_linea='.$_GET['idLineaContrato']." GROUP BY contratos_lineas_detalles.ID_SERVICIO");
                                         }
 
 
