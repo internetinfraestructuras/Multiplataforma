@@ -18,22 +18,8 @@ define('DEF_REVENDEDORES','Revendedores');
 define('DEF_REVENDEDOR','Revendedor');
 define('DEF_USUARIOS','Usuarios');
 define('DEF_CLIENTES','Clientes');
-define('DEF_CAMPANAS','Campañas');
-define('DEF_ANEXOS','Anexos');
-define('DEF_ALMACEN','Almacén');
-define('DEF_ORDENES','Ordenes de trabajo');
-define('DEF_CONTRATOS','Contratos');
-define('DEF_SERVICIOS','Servicios');
-define('DEF_PAQUETES','Paquete');
-define('DEF_PRODUCTO','Producto');
-define('DEF_TIPOS','Tipos de productos');
-define('DEF_MODELOS','Modelos de productos');
-define('DEF_ATRIBUTOS','Atributos de productos');
-define('DEF_PROVEEDORES','Proveedores');
 define('DEF_OLT','Cabeceras');
 define('DEF_PROVISIONES','Provisiones');
-define('DEF_T_FIJO','Telefonía Fija');
-define('DEF_T_MOVIL','Telefonía Móvil');
 
 //Elementos principales del menu lateral izquierdo
 define('MNU_ITEM_1','Usuarios');
@@ -43,18 +29,13 @@ define('MNU_ITEM_4','Configuración');
 define('MNU_ITEM_5','Aprovisionamiento');
 define('MNU_ITEM_6','Cabeceras');
 define('MNU_ITEM_7','Herramientas');
-define('MNU_ITEM_8','Almacén');
-define('MNU_ITEM_9','Ventas');
-define('MNU_ITEM_10','Servicios');
+define('MNU_ITEM_8','Stock');
+define('MNU_ITEM_9','Servicios');
+define('MNU_ITEM_10','Productos');
 define('MNU_ITEM_11','Trabajos');
+define('MNU_ITEM_12','Configuración');
 
 date_default_timezone_set('Europe/Madrid');
-
-/** acceso servidor telefonia */
-define ('DB_TELEFONIA_SERVER' , '89.140.16.198');
-define ('DB_TELEFONIA_DATABASENAME', 'gestioncdr');
-define ('DB_TELEFONIA_USER', 'testerp');
-define ('DB_TELEFONIA_PASSWORD', 'erpDirect18');
 
 
 // comandos SNMP
