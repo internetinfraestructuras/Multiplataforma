@@ -13,9 +13,9 @@ check_session(2);
 
 if(!isset($_GET['idContrato']))
 {
-$listado= $util->selectWhere3('servicios,servicios_tipos',
-    array("servicios.id","servicios.nombre","servicios.pvp","servicios.precio_proveedor","servicios.impuesto","servicios.beneficio","servicios.id_servicio_tipo"),
-    "servicios.id_empresa=".$_SESSION['REVENDEDOR']."
+    $listado= $util->selectWhere3('servicios,servicios_tipos',
+        array("servicios.id","servicios.nombre","servicios.pvp","servicios.precio_proveedor","servicios.impuesto","servicios.beneficio","servicios.id_servicio_tipo"),
+        "servicios.id_empresa=".$_SESSION['REVENDEDOR']."
                                                      AND servicios.id_servicio_tipo=servicios_tipos.id AND servicios.id=".$_GET['idServicio']);
 }
 else
@@ -164,37 +164,37 @@ $actual = date ("Y-m-d");
                                                 </select>
                                             </div>
 
-                                                <?php
-                                                if(isset($_GET['idContrato']))
-                                                {?>
+                                            <?php
+                                            if(isset($_GET['idContrato']))
+                                            {?>
 
-                                                <div class="col-md-4 col-sm-5">
-                                                    <label>Nombre:</label>
-                                                    <select name="servicio" id="servicio"
-                                                            class="form-control pointer " name="nombre"  onchange="carga_datos_servicio(this.value)">
-                                                        <option>--- Seleccionar una ---</option>
-                                                        <?php $util->carga_select('servicios', 'id', 'nombre', 'nombre','servicios.id_servicio_tipo='.$idTipoServicio,'','',$id); ?>
-                                                    </select>
-                                                 </div>
-                                                    <div class="col-md-3 col-sm-5">
-                                                        <label>Permanencia:</label>
-                                                        <input type="date" name="permanencia" value="<?php echo $permanencia;?>"  class="form-control disabled" readonly>
+                                            <div class="col-md-4 col-sm-5">
+                                                <label>Nombre:</label>
+                                                <select name="servicio" id="servicio"
+                                                        class="form-control pointer " name="nombre"  onchange="carga_datos_servicio(this.value)">
+                                                    <option>--- Seleccionar una ---</option>
+                                                    <?php $util->carga_select('servicios', 'id', 'nombre', 'nombre','servicios.id_servicio_tipo='.$idTipoServicio,'','',$id); ?>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 col-sm-5">
+                                                <label>Permanencia:</label>
+                                                <input type="date" name="permanencia" value="<?php echo $permanencia;?>"  class="form-control disabled" readonly>
 
-                                                    </div>
-                                                </div>
-                                                <?php
-                                                }
-                                                else
-                                                {?>
-                                                    <div class="col-md-7 col-sm-5">
-                                                        <label>Nombre:</label>
-                                                        <input type="text" name="nombre" id="servicio" value="<?php echo $nombre; ?>"   class="form-control" >
-                                                    </div>
+                                            </div>
+                                        </div>
+                                        <?php
+                                        }
+                                        else
+                                        {?>
+                                            <div class="col-md-7 col-sm-5">
+                                                <label>Nombre:</label>
+                                                <input type="text" name="nombre" id="servicio" value="<?php echo $nombre; ?>"   class="form-control" >
+                                            </div>
 
 
-                                                <?php }
-                                                ?>
-</div>
+                                        <?php }
+                                        ?>
+                                    </div>
 
 
 
@@ -223,106 +223,111 @@ $actual = date ("Y-m-d");
                                         </div>
                                     </div>
 
-                                    </div>
+                        </div>
 
 
-                                </fieldset>
+                        </fieldset>
 
-                                <hr/>
-                                <div class="panel-body">
-                                    <table id="example2" class="table table-bordered table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>ATRIBUTO</th>
-                                            <th>VALOR</th>
+                        <hr/>
+                        <div class="panel-body">
+                            <table id="example2" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>ATRIBUTO</th>
+                                    <th>VALOR</th>
 
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <?php
-                                        if(!isset($_GET['idContrato']))
-                                        {
-                                            $atributos= $util->selectWhere3('servicios_atributos,servicios_tipos_atributos',
-                                                array("servicios_atributos.id,servicios_tipos_atributos.nombre,servicios_tipos_atributos.id,servicios_atributos.valor"),
-                                                "servicios_atributos.id_servicio=".$_GET['idServicio']." and servicios_atributos.id_tipo_atributo=servicios_tipos_atributos.id");
-                                        }
-                                        else
-                                        {
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                if(!isset($_GET['idContrato']))
+                                {
+                                    $atributos= $util->selectWhere3('servicios_atributos,servicios_tipos_atributos',
+                                        array("servicios_atributos.id,servicios_tipos_atributos.nombre,servicios_tipos_atributos.id,servicios_atributos.valor"),
+                                        "servicios_atributos.id_servicio=".$_GET['idServicio']." and servicios_atributos.id_tipo_atributo=servicios_tipos_atributos.id");
+                                }
+                                else
+                                {
 
-                                            $atributos= $util->selectWhere3('contratos_lineas,contratos_lineas_detalles,servicios_tipos_atributos',
-                                                array("servicios_tipos_atributos.id,servicios_tipos_atributos.nombre,contratos_lineas_detalles.valor"),
-                                                "servicios_tipos_atributos.id=contratos_lineas_detalles.id_atributo_servicio AND contratos_lineas_detalles.id_linea=".$_GET['idLineaContrato']
-                                            ." AND contratos_lineas.id=contratos_lineas_detalles.id_linea");
-                                        }
-
-
-                                        for($i=0;$i<count($atributos);$i++)
-                                        {
-
-                                            $id=$atributos[$i][0];
-                                            $attr=$atributos[$i][1];
-
-                                            if(isset($_GET['idContrato']))
-                                                $valor=$atributos[$i][2];
-                                            else
-                                                $valor=$atributos[$i][3];
+                                    $atributos= $util->selectWhere3('contratos_lineas,contratos_lineas_detalles,servicios_tipos_atributos',
+                                        array("servicios_tipos_atributos.id,servicios_tipos_atributos.nombre,contratos_lineas_detalles.valor"),
+                                        "servicios_tipos_atributos.id=contratos_lineas_detalles.id_atributo_servicio AND contratos_lineas_detalles.id_linea=".$_GET['idLineaContrato']
+                                        ." AND contratos_lineas.id=contratos_lineas_detalles.id_linea");
+                                }
 
 
+                                for($i=0;$i<count($atributos);$i++)
+                                {
+
+                                    $id=$atributos[$i][0];
+                                    $attr=$atributos[$i][1];
+
+                                    if(isset($_GET['idContrato']))
+                                        $valor=$atributos[$i][2];
+                                    else
+                                        $valor=$atributos[$i][3];
 
 
-                                            echo "<tr>";
 
-                                            echo "<tr>";
-                                            echo "<td><input name='atributo[id][]' value='$id' class='form-control' type='hidden' />
+
+                                    echo "<tr>";
+
+                                    echo "<tr>";
+                                    echo "<td><input name='atributo[id][]' value='$id' class='form-control' type='hidden' />
                                             <input name='atributo[id][]' value='$id' class='form-control'  disabled/></td>
                                             <td><input  value='$attr' class='form-control' disabled />
                                             </td><td><input name='atributo[valor][]' value='$valor' class='form-control' id='atributo-$id'/></td>";
 
-                                            ?>
+                                    ?>
 
-                                            </tr>
-
-
-
-                                            </tr>
-
-                                            <?php
-                                        }
-                                        ?>
-
-                                        </tbody>
-
-                                    </table>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12 col-sm-4">
-                                        <?php
-                                        if(!isset($_GET['idContrato'])) {
-                                            echo '<input type="checkbox" name="cascada-precio"  placeholder="0" > ¿Realizar una actualización de precios a todos los clientes con dicho servicio contratado?   El precio no incluye cambios en los precios de los paquetes.';
-                                         //   echo '<input type="checkbox" name="cascada-tecnico"  placeholder="0" > ¿Realizar una actualización de la velocidad para todos los clientes?Si no se selecciona se respetará la velocidad a todos los clientes con este servicio contratado.';
-                                        }
-                                          ?>
-
-                                    </div>
-                                </div>
-                                    <div class="row">
-                                     <div class="col-md-12">
-                                        <button type="submit"
-                                                class="btn btn-3d btn-teal btn-xlg btn-block margin-top-30">
-                                            VALIDAR Y GUARDAR
-                                            <span class="block font-lato">verifique que toda la información es correcta</span>
-                                        </button>
-                                    </div>
-                                    </div>
+                                    </tr>
 
 
-                            </form>
 
+                                    </tr>
+
+                                    <?php
+                                }
+                                ?>
+
+                                </tbody>
+
+                            </table>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-4">
+                                <?php
+                                if(!isset($_GET['idContrato'])) {
+                                    echo '<input type="checkbox" name="cascada-precio"  placeholder="0" > ¿Realizar una actualización de precios a todos los clientes con dicho servicio contratado?   El precio no incluye cambios en los precios de los paquetes.';
+                                    //   echo '<input type="checkbox" name="cascada-tecnico"  placeholder="0" > ¿Realizar una actualización de la velocidad para todos los clientes?Si no se selecciona se respetará la velocidad a todos los clientes con este servicio contratado.';
+                                }
+                                ?>
+
+                            </div>
+                        </div>
+                        <?php
+                        if($idEstado==1)//SI EL ESTADO DEL CONTRATO ES DE ALTA MOSTRAMOS EL CONTENIDO DE BAJA
+                        {?>
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit"
+                                        class="btn btn-3d btn-teal btn-xlg btn-block margin-top-30" >
+                                    VALIDAR Y GUARDAR
+                                    <span class="block font-lato">verifique que toda la información es correcta</span>
+                                </button>
+                            </div>
+                        </div>
+                        <?php  } ?>
+
+                        </form>
 
                     </div>
-                    <!-- /----- -->
+
+                </div>
+                <!-- /----- -->
                 <div class="col-md-4">
 
                     <div class="panel panel-default">
@@ -421,35 +426,36 @@ $actual = date ("Y-m-d");
 
 
 
-        <?php
+                    <?php
 
-        if($idEstado==1)//SI EL ESTADO DEL CONTRATO ES DE ALTA MOSTRAMOS EL CONTENIDO DE BAJA
-        {?>
-            <div class="row">
-                <div class="col-md-12">
-                    <button type="button" onclick="bajaServicio()"
-                            class="btn btn-3d btn-red btn-xlg btn-block margin-top-30">
-                        SOLICITAR BAJA DE SERVICIO
-                    </button>
-                </div>
-            </div>
-            <?php
-        }
-        if($idEstado==4)
-        {?>
-            <div class="row">
-                <div class="col-md-12">
-                    <button type="button" onclick="bajaServicio()"
-                            class="btn btn-3d btn-yellow btn-xlg btn-block margin-top-30">
-                        CANCELAR SOLICITUD DE BAJA
-                    </button>
-                </div>
-            </div>
-        <?php
-        }
+                    if($idEstado==1)//SI EL ESTADO DEL CONTRATO ES DE ALTA MOSTRAMOS EL CONTENIDO DE BAJA
+                    {?>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="button" onclick="bajaServicio()"
+                                        class="btn btn-3d btn-red btn-xlg btn-block margin-top-30">
+                                    SOLICITAR BAJA DE SERVICIO
+                                </button>
+                            </div>
+                        </div>
+                        <?php
+                    }
+
+                    if($idEstado==4 || $idEstado==7)
+                    {?>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="button" onclick="bajaServicio()"
+                                        class="btn btn-3d btn-yellow btn-xlg btn-block margin-top-30">
+                                    CANCELAR SOLICITUD DE BAJA
+                                </button>
+                            </div>
+                        </div>
+                        <?php
+                    }
 
 
-             ?>
+                    ?>
                 </div>
 
                 <div class="col-md-4" id="row-mod-estado" style="display: none;">
@@ -537,21 +543,21 @@ $actual = date ("Y-m-d");
 
                             </table>
                             <?php
-                            if($idEstado==1)
+                            if($idEstado==1 || $idEstado==7)
                             {?>
                                 <label>Seleccione los dispositivos que se tienen que retirar al cliente.</label>
-                            <label>¿Qué día será efectiva la baja?: </label>
-                            <input type="date" name="fecha-baja" id="fecha-baja" value="<?php echo date('Y-m-d'); ?>">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <button type="button" onclick="borrar(<?php echo $id; ?>)"
-                                            class="btn btn-3d btn-red btn-xlg btn-block margin-top-30">
-                                        BAJA DE SERVICIO
-                                    </button>
+                                <label>¿Qué día será efectiva la baja?: </label>
+                                <input type="date" name="fecha-baja" id="fecha-baja" value="<?php echo date('Y-m-d'); ?>">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button type="button" onclick="borrar(<?php echo $id; ?>)"
+                                                class="btn btn-3d btn-red btn-xlg btn-block margin-top-30">
+                                            BAJA DE SERVICIO
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
                             <?php }
-                            if($idEstado==4)
+                            if($idEstado==4 || $idEstado==7)
                             {?>
                                 <label>Seleccione los productos que no se quieren retirar</label>
 
@@ -657,7 +663,7 @@ $actual = date ("Y-m-d");
             },
             error:function (xhr,error)
             {
-            console.log(error);
+                console.log(error);
             }
         });
 
@@ -690,13 +696,13 @@ $actual = date ("Y-m-d");
         $(".check-productos").each(function(i)
         {
 
-           var valor=$(this).prop('checked');
+            var valor=$(this).prop('checked');
             array[i][0]=$(this).val();
 
-           if (valor===true)
-               array[i][1]='on';
-           else
-               array[i][1]='off';
+            if (valor===true)
+                array[i][1]='on';
+            else
+                array[i][1]='off';
 
 
         });
@@ -739,7 +745,7 @@ $actual = date ("Y-m-d");
                 success: function (data) {
 
                     console.log(data);
-                  //  location.reload();
+                    //  location.reload();
                 }
             });
         }
@@ -756,31 +762,31 @@ $actual = date ("Y-m-d");
             var productos=cargarProductos();
 
 
-                    var productos=cargarProductos();
-                    console.log(productos);
+            var productos=cargarProductos();
+            console.log(productos);
 
 
-                    var fecha=$("#fecha-baja").val();
+            var fecha=$("#fecha-baja").val();
 
-                    jQuery.ajax({
-                        url: 'cancelar-baja.php',
-                        type: 'POST',
-                        cache: false,
-                        async: true,
-                        data: {
-                            a: 'cancelar-baja',
-                            id:id,
-                            idContrato:<?php echo $_GET['idContrato']; ?>,
-                            idLinea:<?php echo $_GET['idLineaContrato']; ?>,
-                            idServicio:<?php echo $_GET['idServicio']; ?>,
-                            productos:productos
-                        },
-                        success: function (data) {
+            jQuery.ajax({
+                url: 'cancelar-baja.php',
+                type: 'POST',
+                cache: false,
+                async: true,
+                data: {
+                    a: 'cancelar-baja',
+                    id:id,
+                    idContrato:<?php echo $_GET['idContrato']; ?>,
+                    idLinea:<?php echo $_GET['idLineaContrato']; ?>,
+                    idServicio:<?php echo $_GET['idServicio']; ?>,
+                    productos:productos
+                },
+                success: function (data) {
 
-                            console.log(data);
-                            //  location.reload();
-                        }
-                    });
+                    console.log(data);
+                    //  location.reload();
+                }
+            });
 
         }
     }

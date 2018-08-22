@@ -311,7 +311,7 @@ class util {
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
 
-//            echo "<br>".$query."<br>";
+           echo "<br>".$query."<br>";
 
             if (!($result = $link->query($query)))
                 throw new Exception();
@@ -426,11 +426,13 @@ class util {
             $valores = implode($valor, "', '");
 
             $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
-            //echo $query;
+            echo $query;
             $query = str_replace("º","",$query);
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
-//if($echo) echo $query;
+
+         echo $query;
+
             $lastid = mysqli_insert_id($link);
 
             $link->close();
