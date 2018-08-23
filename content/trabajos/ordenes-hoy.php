@@ -161,7 +161,7 @@ $root="../../";
                                             <td class="td-actions text-right">
                                                 <a href="ficha-orden.php?idOrden=<?php echo $id; ?>">
                                                     <button type="button" rel="tooltip" >
-                                                        <a href="imprimirOrden.php?idOrden=<?php echo $id;?>"
+                                                        <a target="_blank" href="imprimirOrden.php?idOrden=<?php echo $id;?>"
                                                         <i class="fa fa-print"></i> &nbsp;
                                                 </a>
                                                 <a href="ficha-orden.php?idOrden=<?php echo $id; ?>">

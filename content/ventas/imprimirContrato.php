@@ -50,7 +50,7 @@ where contratos.ID=contratos_lineas.ID_CONTRATO AND contratos.id=1 AND contratos
 
 
 $lineasContrato=$util->selectWhere3("contratos,contratos_lineas",array("contratos_lineas.id_tipo,contratos_lineas.id_asociado,contratos_lineas.id"),
-    "contratos.id=contratos_lineas.id_contrato and contratos_lineas.estado!=5
+    "contratos.id=contratos_lineas.id_contrato and contratos_lineas.estado!=2
              AND contratos.id=".$_GET['idContrato']."
              AND contratos.id_empresa=".$_SESSION['REVENDEDOR']."");
 
@@ -63,8 +63,9 @@ $flagTv=false;
 
 $pvpTotal=0;
 
-$contentServiciosContratados="<br><br><br><h2>Anexo: Servicios Contratados</h2><table border=\"1\" style=\"text-align: center;padding:5px;\"><tr style=\"background-color: #9e9e9e\"><th>CONCEPTO</th><th>CUOTA/MES</th></tr>";
+$contentServiciosContratados="<br><br><br><h3>Anexo 1: Servicios Contratados</h3><table border=\"1\" style=\"text-align: center;padding:5px;\"><tr style=\"background-color: #9e9e9e\"><th>CONCEPTO</th><th>CUOTA/MES</th></tr>";
 
+//BUSCAMOS LAS LINEAS DEL SERVICIO PARA HACER EL DESGLOSE EN EL CONTRATO
 for($i=0;$i<count($lineasContrato);$i++)
 {
     if($lineasContrato[$i][0]==1)
@@ -74,9 +75,10 @@ for($i=0;$i<count($lineasContrato);$i++)
             "contratos.id=contratos_lineas.id_contrato 
              AND contratos_lineas.id=".$lineasContrato[$i][2]."
              AND paquetes.id=contratos_lineas.id_asociado
+             AND contratos_lineas.estado!=2
              AND contratos.id=".$_GET['idContrato']."
              AND contratos.id_empresa=".$_SESSION['REVENDEDOR']."");
-            $nombre=$paquete[0][0];
+            $nombrePaq=$paquete[0][0];
             $pvp=$paquete[0][1];
 
             $pvpTotal+=$pvp;
@@ -90,20 +92,23 @@ for($i=0;$i<count($lineasContrato);$i++)
         //AND contratos_lineas_detalles.ID_LINEA=1
         //AND contratos_lineas_detalles.ESTADO!=5
         //AND contratos_lineas_detalles.ID_SERVICIO=servicios.id;
+
         $servicio=$util->selectWhere3("contratos_lineas,contratos_lineas_detalles,servicios",array("distinct(servicios.NOMBRE),servicios.ID_SERVICIO_TIPO"),
             "contratos_lineas.id=contratos_lineas_detalles.ID_LINEA
              AND contratos_lineas_detalles.id_linea=".$paquete[$i][2]." 
-             AND contratos_lineas_detalles.ESTADO!=5 
+             AND contratos_lineas.ESTADO!=2 
              AND contratos_lineas_detalles.id_servicio=servicios.id");
 
-        $contentServiciosContratados.="<tr><td >PAQUETE:$nombre *</td><td>$pvp &euro;</td></tr>";
+        $contentServiciosContratados.="<tr><td >PAQUETE:$nombrePaq *</td><td>$pvp &euro;</td></tr>";
 
+
+        //HACEMOS EL DESGLOSE EN OTRA TABLA A PARTE PARA DETALLAR LOS SERVICIOS DEL PAQUETE CONTRATADO
         $descripcionPaquete="<br><br><br><h4>*Detalles Paquete contratado:</h4><table border=\"1\" style=\"text-align: center;padding:5px;\" ><tr style=\"background-color: #9e9e9e\"><th>DESCRIPCIÓN</th></tr>";
         for($j=0;$j<count($servicio);$j++)
         {
-            $nombre=$servicio[$j][0];
+            $nombreSer1=$servicio[$j][0];
 
-            $descripcionPaquete.="<tr><td>SERVICIO:$nombre</td></tr>";
+            $descripcionPaquete.="<tr><td>SERVICIO:$nombreSer1</td></tr>";
 
             if($servicio[$j][1]==1)
                 $flagInternet=true;
@@ -118,6 +123,7 @@ for($i=0;$i<count($lineasContrato);$i++)
 
     }
 
+    //SI LA LINEA DE CONTRATO ES UN SERVICIO APARTE SE MUESTRAN LOS DATOS
     if($lineasContrato[$i][0]==2)
     {
 
@@ -128,7 +134,7 @@ for($i=0;$i<count($lineasContrato);$i++)
              AND servicios.id=contratos_lineas.id_asociado
              AND contratos.id=".$_GET['idContrato']."
              AND contratos.id_empresa=".$_SESSION['REVENDEDOR']."");
-        $nombre=$servicio[0][0];
+        $nombreSer=$servicio[0][0];
         $pvp=$servicio[0][1];
 
 
@@ -143,13 +149,40 @@ for($i=0;$i<count($lineasContrato);$i++)
             $flagTv=true;
 
         $pvpTotal+=$pvp;
-        $contentServiciosContratados.="<tr><td>SERVICIO:$nombre</td><td>$pvp &euro;</td></tr>";
+        $contentServiciosContratados.="<tr><td>SERVICIO:$nombreSer</td><td>$pvp &euro;</td></tr>";
     }
 }
 $contentServiciosContratados.="<tr><td style=\"background-color: #9e9e9e\">TOTAL:</td><td style=\"background-color: #9e9e9e\"><b>$pvpTotal &euro;</b></td></tr>";
 $contentServiciosContratados.="</table>";
 
 $contentServiciosContratados.=$descripcionPaquete;
+
+/*
+ * BUSCAMOS LAS CAMPAÑAS DE PROMOCIÓN APLICADAS A ESE CONTRATO
+
+
+SELECT campanas.NOMBRE,campanas.DURACION
+from campanas,contratos_campanas
+where campanas.id=contratos_campanas.ID_CONTRATO-*/
+$campanas=$util->selectWhere3("campanas,contratos_campanas",array("campanas.nombre,contratos_campanas.dto,contratos_campanas.dto_hasta"),
+    "campanas.id=contratos_campanas.id_campana AND contratos_campanas.id_contrato=".$_GET['idContrato']." 
+      AND campanas.id_empresa=".$_SESSION['REVENDEDOR']." ");
+$contentCampanas="";
+if($campanas!="null")
+{
+$contentCampanas="<h3>Anexo 2: Campañas promocionales</h3>";
+$contentCampanas.="<table border=\"1\" style=\"text-align: center;padding:5px;\"><tr style=\"background-color: #9e9e9e\"><th>CAMPAÑA</th><th>DESCUENTO %</th><th>HASTA</th></tr>";
+    for($k=0;$k<count($campanas);$k++)
+    {
+        $nombreCampa=$campanas[$k][0];
+        $descuento=$campanas[$k][1];
+        $hasta=$campanas[$k][2];
+        $contentCampanas.="<tr><td>$nombreCampa</td><td>$descuento %</td><td>$hasta</td></tr>";
+
+    }
+    $contentCampanas.="</table>";
+
+}
 
 for($i=0;$i<count($listado);$i++)
 {
@@ -222,6 +255,7 @@ $content.="<div><h1>Condiciones Particulares Televisión:</h1>$textoTV";
 $pdf->writeHTML($content);
 $pdf->writeHTML($contentServiciosContratados);
 
+$pdf->writeHTML($contentCampanas);
 
 
 

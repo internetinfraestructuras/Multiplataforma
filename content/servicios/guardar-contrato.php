@@ -53,7 +53,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
         $r = $util->selectWhere('servicios', array("PRECIO_PROVEEDOR", "BENEFICIO", "IMPUESTO"), ' id = ' . $linea[0]);
         $row = mysqli_fetch_array($r);
 
-        if ($enpack == 0 && intval($idpaquete)>0) {
+        if ($enpack == 0) {
             $idLinea = $contrato->setNuevaLineaContrato(1, $idpaquete, $idContrato, $row[0], $row[1], $row[2], $pack, $permanencia, 3, null, null);
             $enpack = 1;
         }
@@ -100,7 +100,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
 
 
 } else {
-    die("muero");
+    echo "nose";
+    die();
 }
 
 

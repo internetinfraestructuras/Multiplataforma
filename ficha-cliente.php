@@ -375,7 +375,7 @@ $fechaNac=$producto[0][21];
 
                                             ?>
                                             <td class="td-actions text-right">
-                                                <a href="content/ventas/imprimirContrato.php?idContrato=<?php echo $id;?>">
+                                                <a target="_blank" href="content/ventas/imprimirContrato.php?idContrato=<?php echo $id;?>">
                                                     <button type="button" rel="tooltip" >
                                                         <i class="fa fa-print"></i>
                                                     </button>

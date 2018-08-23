@@ -47,7 +47,7 @@ define('MNU_ITEM_8','Almacén');
 define('MNU_ITEM_9','Ventas');
 define('MNU_ITEM_10','Servicios');
 define('MNU_ITEM_11','Trabajos');
-
+define('MNU_ITEM_12','Configuración');
 date_default_timezone_set('Europe/Madrid');
 
 /** acceso servidor telefonia */
