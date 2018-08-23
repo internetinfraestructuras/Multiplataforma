@@ -783,7 +783,11 @@ class Telefonia
         //tambien tenemos que añadir el numero como numero de entrada en la tabla numericos
         $result2 = $this->util->insertInto('numericos', array('numero','descripcion'), array($numero,'numerico'));
 
-        return $result1 * $result2;
+        if($result1 * $result2)
+            return $usuarioTroncal;
+
+        else
+            return 0;
 
 
     }

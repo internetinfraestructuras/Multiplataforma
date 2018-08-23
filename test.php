@@ -1,12 +1,11 @@
-<html>
-<head>
-    <script>
-    myWindow=window.open("","","widht=200,heigh=100");
-    myWindow.document.write("<p>Mi ventana</p>");
-    myWindow.focus();
-    </script>
-</head>
-<body>
+<?php
+require_once 'clases/telefonia/classTelefonia.php';
+require_once 'clases/AltaTecnica.php';
+require_once 'clases/c19.class.php';
 
-</body>
-</html>
+echo"WOO";
+
+AltaTecnica::addNuevoFijo("32075536N","32075536N","diego","c/comercio 18","diego@diego.vom","Mi nuevo grupo",2,"956303859");
+
+
+?>
