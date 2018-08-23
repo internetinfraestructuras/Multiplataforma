@@ -43,6 +43,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
     $idOrden = $orden->crearOrdenTrabajo($idContrato,null);
 
     $enpack = 0;
+    $productoyaagregado=0;
 
     foreach ($lineas as $linea) {
 
@@ -85,9 +86,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
             $idLinea2=$contrato->setNuevaLineaDetalles($idLinea, $linea[1], $linea[0], $row2[0], $row2[1], 3, null);
 
             // damos el producto de alta
-            if($esnuevo) {
+            if($esnuevo && $linea[8]!=$productoyaagregado) {
                 $contrato->setNuevoProductoContrato($idLinea2, $linea[8], 3);
                 $esnuevo=false;
+                $productoyaagregado=$linea[8];
             }
         }
 
@@ -98,6 +100,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
     $util->insertInto('contratos_campanas', array('ID_CONTRATO', 'ID_CAMPANA', 'DTO', 'DTO_DIAS', 'DTO_HASTA'),
         array($idContrato, $id_campana, $dto, $dias, $hasta));
 
+    echo $idContrato;
 
 } else {
     echo "nose";

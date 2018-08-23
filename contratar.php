@@ -516,7 +516,7 @@ check_session(2);
                 <fieldset class="caja">
                     <div class="row">
                         <div class="col-lg-5 col-xs-12">
-                            <label><b>Paquete que desea contratar</b></label><br><br>
+                            <label><b>Seleccione un pack de servicios o los servicios por separados en la siguiente pantalla</b></label><br>
                             <select  name="paquete" id="paquete"
                                     class="form-control pointer " onchange="paquete_seleccionado(this)">
                                 <option value="">Sin paquete</option>
@@ -552,6 +552,7 @@ check_session(2);
                 <fieldset class="caja">
                     <div class="row">
                         <div class="col-lg-5 col-xs-12">
+                            <label><b>Tanto si ha seleccionado un pack como no,<br>puede seleccionar servicios adicionales</b></label><br>
 
                         </div>
                         <div class="col-lg-1 col-xs-12">
@@ -581,7 +582,7 @@ check_session(2);
                             <tr>
                                 <th>ID</td>
                                 <th>Familia</th>
-                                <th>Nombre Paquete</th>
+                                <th>Servicio</th>
                                 <th  class="text-right">Coste <span class="fa fa-eye" style="font-size:1em; cursor: pointer;margin-left:.5em" onclick="ver_coste();"></span></th>
                                 <th>IVA</th>
                                 <th class="text-right">PVP</th>
@@ -597,7 +598,7 @@ check_session(2);
                 </fieldset>
 
                 <fieldset class="caja">
-                    <div class="row">
+                    <div class="row" style="height:40px">
                         <div class="col-lg-4 col-xs-12">
                             <label><b>Aplicar una campaña</b></label><br><br>
                             <select  name="campanas" id="campanas" class="form-control pointer " onchange="campana_seleccionada(this)">
@@ -627,13 +628,15 @@ check_session(2);
 
                     </div>
 
-                    <div class="row">
-                        <div class="col-xs-12 ">
-                            <b>Puede modificar tanto el porcentaje como la duración de la promo, aplicable solo a este contrato</b><br><br>
-                        </div>
+<!--                    <div class="row">-->
+<!--                        <div class="col-xs-12 ">-->
+<!--                            <b>Puede modificar tanto el porcentaje como la duración de la promo, aplicable solo a este contrato</b><br>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="col-lg-4 col-xs-12 ">
+                        <b>Puede seleccionar una promoción y/o modificar tanto el porcentaje de descuento como la duración en días o la fecha de finalización y/o permanencia</b>
                     </div>
-
-                    <div class="col-lg-3 col-xs-12 ">
+                    <div class="col-lg-2 col-xs-12 ">
                         <label><b>Descuento %</b></label>
                         <select  name="dto" id="dto" class="form-control" style="width:80px" onchange="calcular_final(this.value)">
                             <?php
@@ -644,17 +647,17 @@ check_session(2);
                         </select>
                     </div>
 
-                    <div class="col-lg-3 col-xs-12 ">
+                    <div class="col-lg-2 col-xs-12 ">
                         <label><b>Días Promoción</b></label>
                         <input  type="number" name="dto_meses" id="dto_meses" min="0" class="form-control" style="max-width: 80px" onblur="calcular_fin_promo(this.value)" ></input>
                     </div>
 
-                    <div class="col-lg-3 col-xs-12 ">
+                    <div class="col-lg-2 col-xs-12 ">
                         <label><b>Descuento Hasta</b></label>
                         <input  type="date" min="" name="dto_hasta" id="dto_hasta" style="max-width: 200px"  class="form-control">
                     </div>
 
-                    <div class="col-lg-3 col-xs-12 ">
+                    <div class="col-lg-2 col-xs-12 ">
                         <label><b>Permanencia Hasta</b></label>
                         <input  type="date" min="" name="permanencia" id="permanencia" style="max-width: 200px"  class="form-control">
                     </div>
@@ -663,12 +666,11 @@ check_session(2);
                     <div class="row">
                         <div class="col-xs-12">
                             <br>
-                            <b>Próximas facturas:</b>
-                            <br>
+                            <b>Próximas facturas hasta fin de permanencia:</b>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-12" id="aqui_las_facturas"></div>
+                        <div class="col-xs-12" id="aqui_las_facturas" style="overflow-x: hidden; overflow-y: scroll;"></div>
                     </div>
 
                     <input  type="button" name="previous" class="previous action-button-previous"
@@ -733,21 +735,55 @@ check_session(2);
                 <div class="description">Firme y finalice</div>
 
                 <div class="signature-pad--actions">
-                    <div>
+                    <div class="col-lg-3">
                         <br><br><br><br>
                         <button type="button" class="btn btn-default button clear" data-action="clear">Limpiar</button>
                         <br><br><br><br>
                     </div>
+                    <div class="col-lg-3">
 
-                    <div>
+                    </div>
+                    <div class="col-lg-3">
+
+                    </div>
+                    <div class="col-lg-3">
                         <br><br><br><br>
                         <button type="button" class="btn btn-success button save" id="btn-finalizar" data-action="save-svg">Finalizar</button>
                         <br><br><br><br>
+                    </div>
+                    <div>
+
                     </div>
                 </div>
             </div>
         </div>
 
+</div>
+<div class="modal fade" id="imprimir" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Proceso Finalizado</h4>
+            </div>
+            <div class="modal-body">
+                <p>Contrato guardado correctamente. Puede revisar el estado en la ficha del cliente</p>
+                <div class="col-lg-3"></div>
+                <div class="col-lg-3">
+                    <br><br>
+                    <a href="index.php"><img src="img/exit.png"></a>
+                </div>
+                <div class="col-lg-3">
+                    <br><br>
+                    <a href="" id="imprimir_img" target="_blank"><img src="img/printer.png"></a>
+                </div>
+                <div class="col-lg-3"></div>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- JAVASCRIPT FILES -->
@@ -775,6 +811,7 @@ check_session(2);
     var precioPack=0;
     var contenedordenumeros=0;
     var numerosNuevos=[];
+    var totalDescuento=0;
 
     function mostrarmodal(){
            $("#masservicios").modal();
@@ -924,7 +961,7 @@ check_session(2);
         $("#pvp_final2").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
         $("#pvp_final3").html('<p style="font-size:2.5em; font-weight:600; color: #1D9FC1; margin-top:-1px">' + round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2) + ' &euro;</p>');
         totalMes = round(parseFloat(precio + tot_extras) - ((dtos / 100) * parseFloat(precio + tot_extras)), 2);
-
+        totalDescuento=(dtos / 100) * (precio + tot_extras);
         calcular_facturas();
     }
 
@@ -939,7 +976,7 @@ check_session(2);
 
         $("#aqui_las_facturas").empty();
         $("#aqui_las_facturas").append('<div class="row" style="overflow:auto;overflow-x: hidden">');
-        $("#aqui_las_facturas").append('<div class="table-responsive" style="max-height: 160px;">' +
+        $("#aqui_las_facturas").append('<div class="table-responsive" style="max-height: 220px;">' +
             '<table class="table table-condensed nomargin">' +
             '<thead class=""><tr><th>Nº</th><th>Fecha</th><th>Importe</th></thead><tbody id="aqui_las_lineas"></tbody></table>');
 
@@ -951,17 +988,21 @@ check_session(2);
 
         var hoy = f.getDate();
 
-        for(nm=1; nm<=parseInt(meses); nm++){
+        for(nm=1; nm<=parseInt(meses_permencia+1); nm++){
             if(nm==1){
                 var totalPrimerMes= totalMes - ((totalMes/30)* (hoy-diaFacturacion));
             }
+
             f.setSeconds(31*86400);
             var options = {year: "numeric", month: "long", day: "numeric"};
             f.setDate(diaFacturacion);
             // var fecha_mes = (diaFacturacion + "/" + (f.getUTCMonth()+1) + "/" + f.getFullYear()).toLocaleString("es-ES", options);
             var fecha_mes = f.toLocaleString("es-ES", options);
+
             if(nm==1)
                 $("#aqui_las_lineas").append('<tr style="color:#1D9FC1; font-weight:600"><td >'+nm+'</td><td>'+fecha_mes+'</td><td>'+parseFloat(totalPrimerMes).toPrecision(4)+'</td></tr>');
+            else if(nm>meses)
+                $("#aqui_las_lineas").append('<tr><td>'+nm+'</td><td>'+fecha_mes+'</td><td>'+parseFloat(totalMes+totalDescuento).toPrecision(4)+'</td></tr>');
             else
                 $("#aqui_las_lineas").append('<tr><td>'+nm+'</td><td>'+fecha_mes+'</td><td>'+parseFloat(totalMes).toPrecision(4)+'</td></tr>');
         }
@@ -1875,7 +1916,7 @@ check_session(2);
             });
 
             if(c==3) {
-                var seconds = 20;
+                var seconds = 550;
 
                 // Calcula la fecha de finalización del contador sumando
                 // el número de segundos a la fecha actual
@@ -1995,6 +2036,7 @@ check_session(2);
 
     function guardar_contrato(firma){
         var permanencia = $("#permanencia").val();
+
         $.ajax({
             url: 'content/servicios/guardar-contrato.php',
             type: 'POST',
@@ -2015,6 +2057,13 @@ check_session(2);
                 permanencia: permanencia,
                 id_paquete: id_paquete_seleccionado,
                 preciopaquete: precioPack
+            },
+            success: function (data) {
+                if(parseInt(data)>0){
+                    $("#imprimir").modal();
+
+                    $("#imprimir_img").attr('href','content/ventas/imprimirContrato.php?idContrato='+data);
+                }
             }
         });
     }

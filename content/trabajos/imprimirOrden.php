@@ -67,17 +67,16 @@ $pdf->MultiCell(70, 50, $datosCliente, 0, 'J', false, 1, 120, 30, true, 0, true,
 
 $tabla="<table cellspacing=\"0\" cellpadding=\"1\" border=\"1\" style=\"text-align: center;\">
                         <tr>
-                        <th width=\"20px\">#</th><th>TIPO ORDEN</th><th>MODELO</th><th  width=\"180px\">NUMERO SERIE</th><th>TIPO SERVICIO</th><th></th>
+                        <th width=\"20px\">#</th><th>TIPO ORDEN</th><th>TIPO SERVICIO</th><th  width=\"80px\">MODELO</th><th  width=\"180px\">NÚM.SERIE</th><th></th>
                         </tr>";
 
-$lineas= $util->selectWhere3('ordenes,ordenes_lineas,contratos_lineas_detalles,ordenes_tipos,productos,contratos_lineas,contratos_lineas_tipo,contratos,productos_tipos,productos_modelos',
-    array("ordenes_lineas.id","ordenes_tipos.nombre","productos.numero_serie","contratos_lineas_tipo.nombre","contratos_lineas.id_tipo","contratos_lineas.id_asociado","productos_tipos.nombre","productos_modelos.nombre"),
+$lineas= $util->selectWhere3('ordenes,ordenes_lineas,contratos_lineas_detalles,ordenes_tipos,contratos_lineas,contratos_lineas_tipo,contratos,servicios_tipos',
+    array("ordenes_lineas.id","ordenes_tipos.nombre","ordenes_lineas.id_producto","contratos_lineas_tipo.nombre","contratos_lineas.id_tipo","contratos_lineas.id_asociado","servicios_tipos.nombre"),
     "ordenes.id=ordenes_lineas.id_orden AND contratos_lineas_tipo.id=contratos_lineas.id_tipo AND contratos_lineas.id=contratos_lineas_detalles.id_linea
-    AND ordenes_lineas.id_producto=productos.id
     AND ordenes_tipos.id=ordenes_lineas.id_tipo_orden
     AND ordenes.id_contrato=contratos.id
-    AND contratos_lineas_detalles.id=ordenes_lineas.id_linea_detalle_contrato AND ordenes_lineas.id_orden=".$_GET['idOrden'].' AND contratos.id_empresa='.$_SESSION['REVENDEDOR']." 
-    AND productos.id_tipo_producto=productos_tipos.id AND productos.id_modelo_producto=productos_modelos.id");
+    AND servicios_tipos.id=contratos_lineas_detalles.id_tipo_servicio
+    AND contratos_lineas_detalles.id=ordenes_lineas.id_linea_detalle_contrato AND ordenes_lineas.id_orden=".$_GET['idOrden'].' AND contratos.id_empresa='.$_SESSION['REVENDEDOR']);
 
 $total=0;
 
@@ -85,12 +84,27 @@ for($i=0;$i<count($lineas);$i++)
 {
     $id=$lineas[$i][0];
     $tipoOrden=$lineas[$i][1];
-    $producto=$lineas[$i][2];
+    $idProducto=$lineas[$i][2];
+
     $servicioTipo=$lineas[$i][3];
     $idTipo=$lineas[$i][4];
     $idAsociado=$lineas[$i][5];
-    $tipoProducto=$lineas[$i][6];
-    $modelo=$lineas[$i][7];
+    $producto="No hay producto asociado";
+    $nombreServicio=$lineas[$i][6];
+    if($idProducto!=0)
+    {
+        $productos=$util->selectWhere3("productos,productos_tipos,productos_modelos",
+            array("productos.ID","productos.numero_serie","productos_tipos.nombre","productos_modelos.nombre"),
+            "productos.id_tipo_producto=productos_tipos.id AND productos.id_modelo_producto=productos_modelos.id AND productos.id=".$idProducto." ");
+
+        $producto=$productos[0][1];
+        $tipoProducto=$productos[0][2];
+        $modelo=$productos[0][3];
+    }
+
+
+
+
 
     if($idEstado!=3)
         $totalContrato+=$pvp;
@@ -106,7 +120,7 @@ for($i=0;$i<count($lineas);$i++)
     $nombre=$listado[0][1];
 
     $tabla.="<tr>
-                <td>$id</td><td>$tipoOrden</td><td>$modelo</td><td>$producto</td><td>$tipoProducto</td><td>$nombre</td>
+                <td>$id</td><td>$tipoOrden</td><td>$nombreServicio</td><td>$modelo</td><td>$producto</td><td>$nombre</td>
                 </tr>";
 
 }

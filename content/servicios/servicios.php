@@ -389,9 +389,11 @@ check_session(3);
             async:true,
             success: function(data)
             {
+
                 var div = jQuery("#select-1");
                 $.each(data, function(i)
                 {
+
                     var nombre=data[i].nombregrupo;
 
                         div.append('<option>'+nombre+'</option>');
@@ -416,8 +418,10 @@ check_session(3);
                 $.each(data, function(i)
                 {
                     var nombre=data[i].nombrepaquete;
+                    var id=data[i].id_paquetedestino;
 
-                    div.append('<option>'+nombre+'</option>');
+
+                    div.append('<option value="'+id+'">'+nombre+'</option>');
 
 
                 });
