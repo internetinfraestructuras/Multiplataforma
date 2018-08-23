@@ -116,17 +116,17 @@ clearButton.addEventListener("click", function (event) {
 // });
 
 saveSVGButton.addEventListener("click", function (event) {
-  this.attr('disabled','disabled');
-  if (signaturePad.isEmpty()) {
-    if(!confirm("Para continuar SIN firma, pulse aceptar.\nO pulse cancelar para firmar")) {
-        this.removeAttrs('disabled');
-        return;
+    $("#btn-finalizar").attr('disabled','disabled');
+    if (signaturePad.isEmpty()) {
+        if(!confirm("Para continuar SIN firma, pulse aceptar.\nO pulse cancelar para firmar")) {
+            $("#btn-finalizar").removeAttrs('disabled');
+            return;
+        }
     }
-  }
 
     var dataURL = signaturePad.toDataURL('image/svg+xml');
     // download(dataURL, "signature.svg");
-      guardar_contrato(dataURL);
+    guardar_contrato(dataURL);
 
 });
 
