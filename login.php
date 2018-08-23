@@ -69,6 +69,7 @@ error_reporting('E_ALL');
                 $_SESSION['NOM_USER'] = $row['nombre'] . " " . $row['apellidos'];
                 $_SESSION['USER_LEVEL'] = $row['nivel'];
                 $_SESSION['REVENDEDOR'] = $row['id_empresa'];
+                $_SESSION['CIF'] = $row['cif'];
                 $_SESSION['LOGO'] = $row['logo'];
                 $_SESSION['start'] = time();
                 $_SESSION['expire'] = $_SESSION['start'] + (30 * 60);

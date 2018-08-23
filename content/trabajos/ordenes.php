@@ -180,7 +180,7 @@ $root="../../";
                                                         <a href="imprimirOrden.php?idOrden=<?php echo $id;?>"
                                                         <i class="fa fa-print"></i> &nbsp;
                                                         </a>
-
+                                                    </button>
                                                 <a href="ficha-orden.php?idOrden=<?php echo $id; ?>">
                                                     <button type="button" rel="tooltip" >
                                                         <i class="fa fa-pencil"></i>

@@ -82,7 +82,7 @@ $root="../../";
             <h1>Usted esta en</h1>
             <ol class="breadcrumb">
                 <li><a href="#"><?php echo DEF_ORDENES; ?></a></li>
-                <li class="active">Listado de ordenes no tramitadas</li>
+                <li class="active">Listado de ordenes</li>
             </ol>
         </header>
         <!-- /page title -->
@@ -112,31 +112,49 @@ $root="../../";
                                     <!-- /right options -->
 
                                 </div>
-
+                                <div class="col-md-4 col-sm-4">
+                                    <label>Filtrar por estados:</label>
+                                    <select name="producto[proveedor]" id="estados_ordenes" onchange="filtrar(this.value)"
+                                            class="form-control pointer ">
+                                        <option value="">--- Seleccionar una ---</option>
+                                        <?php
+                                        $util->carga_select('ordenes_estados', 'id', 'nombre', 'id'); ?>
+                                    </select>
+                                </div>
                                 <!-- panel content -->
                                 <div class="panel-body">
 
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>FECHA APERTURA</th>
-                                            <th>ESTADO</th>
-                                            <th>CLIENTE</th>
-                                            <th>OPCIONES</th>
+                                            <th width="5%">ID</th>
+                                            <th width="15%">FECHA</th>
+                                            <th width="25%">CLIENTE</th>
+                                            <th  width="40%">DIRECCION</th>
+                                            <th  width="15%">OPCIONES</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <?php
 
+                                        if(!isset($_GET['filtro']))
+                                        {
                                             $listado= $util->selectWhere3('ordenes,ordenes_estados,contratos,clientes',
-                                                array("ordenes.id,ordenes.fecha_alta,ordenes_estados.nombre,ordenes_estados.id,clientes.nombre,clientes.id,clientes.apellidos"),
+                                                array("ordenes.id,ordenes.fecha_alta,clientes.direccion,ordenes_estados.id,clientes.nombre,clientes.id,localidades.nombre, provincias.nombre"),
                                                 "ordenes.id_contrato=contratos.id 
                                             AND ordenes_estados.id=ordenes.id_tipo_estado 
                                             AND contratos.id_cliente=clientes.id
-                                            AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes.fecha_alta<=DATE(now()) AND ordenes.id_tipo_estado=1");
-
-
+                                            AND contratos.id_empresa=".$_SESSION['REVENDEDOR']);
+                                        }
+                                        else
+                                        {
+                                            $listado= $util->selectWhere3('ordenes,ordenes_estados,contratos,clientes',
+                                                array("ordenes.id,ordenes.fecha_alta,ordenes_estados.nombre,ordenes_estados.id,clientes.nombre,clientes.id"),
+                                                "ordenes.id_contrato=contratos.id 
+                                            AND ordenes_estados.id=ordenes.id_tipo_estado 
+                                            AND contratos.id_cliente=clientes.id
+                                            AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes_estados.id=".$_GET['filtro']);
+                                        }
 
 
 
@@ -145,30 +163,27 @@ $root="../../";
 
                                             $id=$listado[$i][0];
                                             $fechaAlta=$listado[$i][1];
-                                            $estado=$listado[$i][2];
+                                            $direccion=$listado[$i][2];
                                             $idEstado=$listado[$i][3];
                                             $cliente=$listado[$i][4];
                                             $idCliente=$listado[$i][5];
-                                            $apellidos=$listado[$i][6];
-
-
+                                            $localidad=$listado[$i][6];
+                                            $provincia=$listado[$i][7];
 
 
                                             echo "<tr>";
-                                            echo "<td>$id</td><td>$fechaAlta</td><td>$estado</td><td>$cliente $apellidos <a href='/mul/ficha-cliente.php?idCliente=$idCliente' ><button type=\"button\" rel=\"tooltip\" ><i class=\"fa fa-eye\"></i></button></a></td>";
+                                            echo "<td>$id</td><td>$fechaAlta</td><td>$cliente</td><td>$direccion<a href='/ver_en_mapa.php?idCliente=$direccion, $localidad, $provincia' ><button type=\"button\" rel=\"tooltip\" ><i class=\"fa fa-eye\"></i></button></a></td>";
 
                                             ?>
                                             <td class="td-actions text-right">
-                                                <a href="ficha-orden.php?idOrden=<?php echo $id; ?>">
                                                     <button type="button" rel="tooltip" >
-                                                        <a target="_blank" href="imprimirOrden.php?idOrden=<?php echo $id;?>"
+                                                        <a href="imprimirOrden.php?idOrden=<?php echo $id;?>"
                                                         <i class="fa fa-print"></i> &nbsp;
-                                                </a>
+                                                        </a>
+                                                    </button>
                                                 <a href="ficha-orden.php?idOrden=<?php echo $id; ?>">
                                                     <button type="button" rel="tooltip" >
                                                         <i class="fa fa-pencil"></i>
-                                                    </button>
-                                                </a>
                                                     </button>
                                                 </a>
                                                 <button type="button" rel="tooltip" class="">
