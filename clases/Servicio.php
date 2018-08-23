@@ -37,8 +37,11 @@ class Servicio
      */
 public static function actualizarServicioContrato($idContrato,$idLinea,$idServicio,$idServicioNuevo,$precioProveedor,$beneficio,$pvp,$impuesto,$atributos)
 {
+    echo "Obtenemos las líneas<br><br><br>";
     $lineaContrato=Contrato::getLineaContratoServicio($idContrato,$idLinea,$idServicio);
 
+
+    echo "Obtenemos las líneas de detalles<br><br><br>";
     $lineaDetalles=Contrato::getLineaDetalles($idLinea);
 
 
@@ -48,6 +51,8 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
     $idContrato=$lineaContrato[0][2];
     $permanencia=$lineaContrato[0][7];
 
+    echo "el tipo de servicio es".$tipo."<br>";
+
     Contrato::setLineaDetallesBaja($idLinea,null);//Seteamos la linea actual a baja
     Contrato::setLineaContratoBaja($idContrato,$idLinea,$idServicio);
 
@@ -55,7 +60,12 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
 
     //Seteamos los detalles de una línea de contrato
 
-    for($i=0;$i<count($atributos);$i++)
+    echo "<hr>ATRIBUTOS";
+    echo "Tenemos que volcar ".count($atributos);
+    var_dump($idLineaNueva);
+    echo "<hr>";
+
+    for($i=0;$i<count($lineaDetalles);$i++)
     {
 
         $idAtrib=$atributos['id'][$i];
@@ -72,7 +82,8 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
         echo "<br>";
         echo "La linea a buscar es".$idLineaDetalle;
         echo "<br>";
-        $idLineaDetalleNueva=Contrato::setNuevaLineaDetalles($idLineaNueva,$tipo,$idAtrib,$valor,1);
+
+        $idLineaDetalleNueva=Contrato::setNuevaLineaDetalles($idLineaNueva,$tipo,$idAsoc,$idAtrib,$valor,1);
 
 
         $productosLinea=Contrato::getProductosLinea($idLineaDetalle);
@@ -204,6 +215,7 @@ public static function darBajaServicio($idContrato,$idLineaContrato,$idServicio,
     Contrato::setLineaContratoBaja($idContrato,$idLineaContrato,$idServicio,$fechaBaja);
     Contrato::setLineaDetallesBaja($idContrato,$fechaBaja);
     $ld=Contrato::getLineaDetalles($idLineaContrato);
+
     $lineaDetalle=$ld[0]['ID'];
 
 

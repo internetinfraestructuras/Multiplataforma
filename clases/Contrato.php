@@ -141,7 +141,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         $fechaBaja = strtotime(date("y-m-d", strtotime($fecha)));
 
         if ($fecha_actual < $fechaBaja)
-            $estado = 7;
+            $estado = 4;
         else
             $estado = 2;
 
@@ -204,14 +204,20 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     {
         $util = new util();
         $campos = array('ESTADO', 'FECHA_BAJA');
-        $tipo = Contrato::comprobarFechas($fechaBaja);
+        $fecha_actual = strtotime(date("y-m-d", time()));
+        $fechaBaja = strtotime(date("y-m-d", strtotime($fechaBaja)));
+        $tipo=0;
+        if ($fecha_actual < $fechaBaja)
+            $tipo = 4;
+        else
+            $tipo = 2;
 
         if ($fechaBaja == null)
             $values = array($tipo, date('Y-m-d'));
         else
             $values = array($tipo, $fechaBaja);
 
-        return $util->update('contratos_lineas_detalles', $campos, $values, "id_linea=" . $_POST['idLinea']);
+        return $util->update('contratos_lineas_detalles', $campos, $values, "id_linea=" . $idLineaContrato);
     }
 
     //Establece una línea detalle a baja
@@ -280,6 +286,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     //Establece una nueva línea de detalle
     public static function setNuevaLineaDetalles($idLinea, $tipo, $idservicio, $atributo, $valor, $estado, $fechaAlta = null)
     {
+        echo "eSCRIBEBEBEBEe";
         $util = new util();
         $t_contratos_lineas_detalles = array("ID_LINEA", "ID_TIPO_SERVICIO", "ID_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR", "FECHA_ALTA", "FECHA_BAJA", "ESTADO");
         if ($fechaAlta == null)
@@ -287,7 +294,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         else
             $values = array($idLinea, $tipo, $idservicio, $atributo, $valor, $fechaAlta, '', $estado);
 
-        return $util->insertInto('contratos_lineas_detalles', $t_contratos_lineas_detalles, $values,false,false);
+        return $util->insertInto('contratos_lineas_detalles', $t_contratos_lineas_detalles, $values);
     }
 
     public static function setNuevaLineaDetallesPaquete($idLinea, $tipo, $atributo, $valor, $estado, $idServicio, $fecha = null)
