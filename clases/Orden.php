@@ -13,12 +13,15 @@ class Orden
         //CREAR LA ORDEN DE TRABAJO PRIMERO
         $util=new util();
 
-        $t_ordenes=array("ID_CONTRATO","FECHA_ALTA","ID_TIPO_ESTADO");
+        $t_ordenes=array("ID_CONTRATO","FECHA_ALTA","ID_TIPO_ESTADO","NUMERO","ID_EMPRESA");
 
         if($fechaAlta==null)
             $fechaAlta=date('Y-m-d h:i:s ');
 
-        $values=array($idContrato,$fechaAlta,1);//TIPO DE ESTADO ES 1 DE APERTURA
+        $nuevaOrden = intval($util->selectMax('ordenes', 'NUMERO','ID_EMPRESA ='.$_SESSION['REVENDEDOR']))+1;
+
+
+        $values=array($idContrato,$fechaAlta,1,$nuevaOrden,$_SESSION['REVENDEDOR']);//TIPO DE ESTADO ES 1 DE APERTURA
 
         $resOrden= $util->insertInto('ordenes', $t_ordenes, $values);
 

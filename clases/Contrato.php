@@ -10,8 +10,9 @@ class Contrato
     public static function setNuevoContrato($cliente, $fechaFin, $estado)
     {
         $util = new util();
-        $t_contratos = array("ID_EMPRESA", "ID_CLIENTE", "FECHA_INICIO", "FECHA_FIN", "ESTADO");
-        $values = array($_SESSION['REVENDEDOR'], $cliente, date("Y-m-d", time()), $fechaFin, $estado);
+        $t_contratos = array("ID_EMPRESA", "ID_CLIENTE", "FECHA_INICIO", "FECHA_FIN", "ESTADO", "NUMERO");
+        $nuevoContrato = intval($util->selectMax('contratos', 'NUMERO','ID_EMPRESA ='.$_SESSION['REVENDEDOR']))+1;
+        $values = array($_SESSION['REVENDEDOR'], $cliente, date("Y-m-d", time()), $fechaFin, $estado, $nuevoContrato);
 
         return $util->insertInto('contratos', $t_contratos, $values);
     }

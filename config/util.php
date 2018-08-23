@@ -429,7 +429,6 @@ class util {
             $query = str_replace("º","",$query);
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
-
             $lastid = mysqli_insert_id($link);
 
             $link->close();
