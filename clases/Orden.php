@@ -46,7 +46,7 @@ WHERE ordenes.id=ordenes_lineas.ID_ORDEN AND ordenes_lineas.ID_LINEA_DETALLE_CON
         $util=new util();
         $t_ordenes=array("ID_ORDEN","ID_TIPO_ORDEN","ID_PRODUCTO","ID_LINEA_DETALLE_CONTRATO");
 
-        $values=array($idOrden,$idTipoOrden,$idProducto,$idLineaDetalle);//TIPO DE ESTADO ES 1 DE APERTURA
+        $values=array($idOrden, $idTipoOrden, $idProducto, $idLineaDetalle);//TIPO DE ESTADO ES 1 DE APERTURA
 
         $resOrden= $util->insertInto('ordenes_lineas', $t_ordenes, $values);
 

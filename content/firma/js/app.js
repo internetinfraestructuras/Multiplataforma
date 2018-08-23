@@ -116,13 +116,18 @@ clearButton.addEventListener("click", function (event) {
 // });
 
 saveSVGButton.addEventListener("click", function (event) {
+  this.attr('disabled','disabled');
   if (signaturePad.isEmpty()) {
-    alert("Please provide a signature first.");
-  } else {
+    if(!confirm("Para continuar SIN firma, pulse aceptar.\nO pulse cancelar para firmar")) {
+        this.removeAttrs('disabled');
+        return;
+    }
+  }
+
     var dataURL = signaturePad.toDataURL('image/svg+xml');
     // download(dataURL, "signature.svg");
       guardar_contrato(dataURL);
-  }
+
 });
 
 

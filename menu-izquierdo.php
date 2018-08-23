@@ -92,8 +92,8 @@ $root="/";
             <i class="main-icon"><img src="/img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_11; ?> </span>
         </a>
         <ul><!-- submenus -->
-            <li><a href="/mul/content/trabajos/ordenes-hoy.php">Ordenes de hoy</a></li>
-            <li><a href="/mul/content/trabajos/ordenes.php">Ordenes de trabajo</a></li>
+            <li><a href="<?php echo $root;?>econtent/trabajos/ordenes-hoy.php">Ordenes de hoy</a></li>
+            <li><a href="<?php echo $root;?>econtent/trabajos/ordenes.php">Ordenes de trabajo</a></li>
 
 
         </ul>

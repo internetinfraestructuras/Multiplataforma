@@ -218,8 +218,7 @@ class util {
 
     }
 
-    public function selectWhere($tabla, $campos, $where=null, $order=null, $group=null, $echo=false){
-
+    public function selectWhere($tabla, $campos, $where=null, $order=null, $group=null){
 
         try {
 
@@ -236,7 +235,7 @@ class util {
 
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
- if ($echo) echo $query;
+
             if (!($result = $link->query($query)))
                 throw new Exception();
 //            $this->log($query);
@@ -311,7 +310,7 @@ class util {
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
 
-           echo "<br>".$query."<br>";
+//           echo "<br>".$query."<br>";
 
             if (!($result = $link->query($query)))
                 throw new Exception();
@@ -411,7 +410,7 @@ class util {
     }
 
 
-    public function insertInto($tabla, $campos, $valor, $log=true, $echo=false)
+    public function insertInto($tabla, $campos, $valor, $log=true)
     {
 
         try {
@@ -426,11 +425,11 @@ class util {
             $valores = implode($valor, "', '");
 
             $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
-            //echo $query;
+
             $query = str_replace("º","",$query);
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
-//if($echo) echo $query;
+
             $lastid = mysqli_insert_id($link);
 
             $link->close();
