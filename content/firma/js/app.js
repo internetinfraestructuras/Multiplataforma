@@ -116,10 +116,10 @@ clearButton.addEventListener("click", function (event) {
 // });
 
 saveSVGButton.addEventListener("click", function (event) {
-  this.attr('disabled','disabled');
+  $("#btn-finalizar").attr('disabled','disabled');
   if (signaturePad.isEmpty()) {
-    if(!confirm("Para continuar SIN firma, pulse aceptar.\nO pulse cancelar para firmar")) {
-        this.removeAttrs('disabled');
+    if(!confirm("Para continuar SIN firmar, pulse aceptar.\nO pulse cancelar para firmar")) {
+        $("#btn-finalizar").removeAttrs('disabled');
         return;
     }
   }

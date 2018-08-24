@@ -78,7 +78,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
             $contrato->setNuevoProductoContrato($idLinea2, $linea[8], 3);
         }
 
-
         $r2 = $util->selectWhere('servicios_atributos', array("ID_TIPO_ATRIBUTO", "VALOR", "VALOR_TECNICO"), ' ID_SERVICIO = ' . $linea[0],'','');
 
         while ($row2 = mysqli_fetch_array($r2)) {

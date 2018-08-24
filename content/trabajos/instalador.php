@@ -10,7 +10,9 @@ if (!isset($_SESSION)) {
     @session_start();
 }
 require_once('../../config/util.php');
+require_once('../../clases/orden.php');
 $util = new util();
+$orden = new Orden();
 
 // solo los usuarios de nivel 3 a 0 pueden agregar clientes
 check_session(3);
@@ -21,7 +23,7 @@ $root="../../";
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
-    <title><?php echo OWNER; ?> <?php echo DEF_CLIENTES; ?> / Altas</title>
+    <title><?php echo OWNER; ?> Instalaciones</title>
     <meta name="description" content=""/>
     <meta name="Author" content="<?php echo AUTOR; ?>" />
 
@@ -50,31 +52,8 @@ $root="../../";
 <!-- WRAPPER -->
 <div id="wrapper">
 
-    <aside id="aside" style="position:fixed;left:0">
 
-        <?php require_once('../../menu-izquierdo.php'); ?>
-
-        <span id="asidebg"><!-- aside fixed background --></span>
-    </aside>
-    <!-- /ASIDE -->
-
-
-    <!-- HEADER -->
-    <header id="header">
-
-        <?php require_once('../../menu-superior.php');
-
-
-        ?>
-
-    </header>
-    <!-- /HEADER -->
-
-
-    <!--
-        MIDDLE
-    -->
-    <section id="middle">
+    <section id="">
 
 
         <!-- page title -->
@@ -89,8 +68,6 @@ $root="../../";
 
 
         <div id="content" class="padding-20">
-
-
 
             <div class="row">
 
@@ -121,87 +98,7 @@ $root="../../";
                                         $util->carga_select('ordenes_estados', 'id', 'nombre', 'id'); ?>
                                     </select>
                                 </div>
-                                <!-- panel content -->
-                                <div class="panel-body">
 
-                                    <table id="example2" class="table table-bordered table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th width="5%">ID</th>
-                                            <th width="15%">FECHA</th>
-                                            <th width="25%">CLIENTE</th>
-                                            <th  width="40%">DIRECCION</th>
-                                            <th  width="15%">OPCIONES</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <?php
-
-                                        if(!isset($_GET['filtro']))
-                                        {
-                                            $listado= $util->selectWhere3('ordenes,ordenes_estados,contratos,clientes',
-                                                array("ordenes.id,ordenes.fecha_alta,clientes.direccion,ordenes_estados.id,clientes.nombre,clientes.id,localidades.nombre, provincias.nombre"),
-                                                "ordenes.id_contrato=contratos.id 
-                                            AND ordenes_estados.id=ordenes.id_tipo_estado 
-                                            AND contratos.id_cliente=clientes.id
-                                            AND contratos.id_empresa=".$_SESSION['REVENDEDOR']);
-                                        }
-                                        else
-                                        {
-                                            $listado= $util->selectWhere3('ordenes,ordenes_estados,contratos,clientes',
-                                                array("ordenes.id,ordenes.fecha_alta,ordenes_estados.nombre,ordenes_estados.id,clientes.nombre,clientes.id"),
-                                                "ordenes.id_contrato=contratos.id 
-                                            AND ordenes_estados.id=ordenes.id_tipo_estado 
-                                            AND contratos.id_cliente=clientes.id
-                                            AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes_estados.id=".$_GET['filtro']);
-                                        }
-
-
-
-                                        for($i=0;$i<count($listado);$i++)
-                                        {
-
-                                            $id=$listado[$i][0];
-                                            $fechaAlta=$listado[$i][1];
-                                            $direccion=$listado[$i][2];
-                                            $idEstado=$listado[$i][3];
-                                            $cliente=$listado[$i][4];
-                                            $idCliente=$listado[$i][5];
-                                            $localidad=$listado[$i][6];
-                                            $provincia=$listado[$i][7];
-
-
-                                            echo "<tr>";
-                                            echo "<td>$id</td><td>$fechaAlta</td><td>$cliente</td><td>$direccion<a href='/ver_en_mapa.php?idCliente=$direccion, $localidad, $provincia' ><button type=\"button\" rel=\"tooltip\" ><i class=\"fa fa-eye\"></i></button></a></td>";
-
-                                            ?>
-                                            <td class="td-actions text-right">
-                                                    <button type="button" rel="tooltip" >
-                                                        <a href="imprimirOrden.php?idOrden=<?php echo $id;?>"
-                                                        <i class="fa fa-print"></i> &nbsp;
-                                                        </a>
-                                                    </button>
-                                                <a href="ficha-orden.php?idOrden=<?php echo $id; ?>">
-                                                    <button type="button" rel="tooltip" >
-                                                        <i class="fa fa-pencil"></i>
-                                                    </button>
-                                                </a>
-                                                <button type="button" rel="tooltip" class="">
-                                                    <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>');"></i>
-                                                </button>
-
-                                            </td>
-                                            </tr>
-
-                                            <?php
-                                        }
-                                        ?>
-                                        </tbody>
-
-                                    </table>
-
-                                </div>
-                                <!-- /panel content -->
 
                                 <!-- panel footer -->
                                 <div class="panel-footer">
@@ -216,7 +113,55 @@ $root="../../";
                     </div>
                 </div>
 
+            </div>
 
+            <?php
+            $listado= $orden->obtenerOrdenesAsignadas($_SESSION['REVENDEDOR'], $_SESSION['USER_ID'],1, '2018-08-01', '2018-08-30');
+            var_dump($listado);
+            ?>
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body" id="listado">
+                            <div id="panel-1" class="panel panel-default">
+                                <div class="panel-heading">
+                                <span class="title elipsis">
+                                    <strong><?php echo $cliente; ?></strong>
+                                </span>
+
+                                    <!-- right options -->
+                                    <ul class="options pull-right list-inline">
+                                        <li><a href="#" class="opt panel_colapse" data-toggle="tooltip" title="Colapse" data-placement="bottom"></a></li>
+                                        <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen" data-placement="bottom"><i class="fa fa-expand"></i></a></li>
+                                        <li><a href="#" class="opt panel_close" data-confirm-title="Confirm" data-confirm-message="¿Deseas eleminar este panel?" data-toggle="tooltip" title="Close" data-placement="bottom"><i class="fa fa-times"></i></a></li>
+                                    </ul>
+                                    <!-- /right options -->
+
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <label>Filtrar por estados:</label>
+                                    <select name="producto[proveedor]" id="estados_ordenes" onchange="filtrar(this.value)"
+                                            class="form-control pointer ">
+                                        <option value="">--- Seleccionar una ---</option>
+                                        <?php
+                                        $util->carga_select('ordenes_estados', 'id', 'nombre', 'id'); ?>
+                                    </select>
+                                </div>
+
+
+                                <!-- panel footer -->
+                                <div class="panel-footer">
+
+
+                                </div>
+                                <!-- /panel footer -->
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
 
             </div>
 

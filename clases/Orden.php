@@ -43,6 +43,21 @@ WHERE ordenes.id=ordenes_lineas.ID_ORDEN AND ordenes_lineas.ID_LINEA_DETALLE_CON
             AND contratos.id_empresa=".$_SESSION['REVENDEDOR']);
     }
 
+    public static function obtenerOrdenesAsignadas($idEmpresa, $idEmpleado, $estado, $fechaInicio, $fechaFin)
+    {
+        $util=new util();
+        $campos=array('clientes.NOMBRE','clientes.APELLIDOS','clientes.DIRECCION','clientes.MOVIL',
+                        'municipios.municipio','ordenes_usuario.FECHA_ASIGNACION');
+        $join='JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID JOIN clientes ON clientes.ID = contratos.ID_CLIENTE
+                JOIN municipios ON municipios.id = clientes.localidad JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO ';
+        $where='contratos.ID_EMPRESA = '.$idEmpresa . ' AND ordenes_usuarios.ID_USUARIO='.$idEmpleado .' AND ordenes.ID_TIPO_ESTADO='.$estado
+                        . 'ordenes_usuario.FECHA_ASIGNACION BETWEEN "'.$fechaInicio . '" AND "'.$fechaFin.'"';
+        return $util->selectJoin('ordenes_usuario', $campos,  $join, 'ordenes_usuario.FECHA_ASIGNACION', $where);
+
+    }
+
+
+
 
     public static function crearLineaOrden($idOrden,$idTipoOrden,$idProducto,$idLineaDetalle)
     {
