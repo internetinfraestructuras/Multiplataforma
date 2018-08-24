@@ -69,4 +69,33 @@ WHERE ordenes.id=ordenes_lineas.ID_ORDEN AND ordenes_lineas.ID_LINEA_DETALLE_CON
 
         $util->update('ordenes', $t_ordenes, $values,"ID=".$idOrden[0]['id']);
     }
+
+    public static function asignarOrdenUsuario($idOrden,$idUsuario)
+    {
+        $util=new util();
+        $values = array($idOrden,$idUsuario);
+        $t_ordenes_usuario=array("ID_ORDEN","ID_USUARIO");
+        $result = $util->insertInto('ordenes_usuario', $t_ordenes_usuario, $values);
+
+        self::cambiarEstadoOrden($idOrden,2);
+        $result= $util->log('El usuario:'.$_SESSION['USER_ID'].' ha asociado a asignado la orden:'.$idOrden.'al usuario:'.$idUsuario);
+    }
+    public static function cambiarEstadoOrden($idOrden,$idEstado)
+    {
+        $util=new util();
+        $campos=array("id_tipo_estado");
+        $values=array($idEstado);
+        $result = $util->update('ordenes', $campos, $values, "ordenes.id=".$idOrden);
+    }
+
+    public static function getOrdenesPendientes()
+    {
+        $util=new util();
+        return $util->selectWhere3('ordenes,ordenes_estados,contratos,clientes',
+            array("ordenes.id,ordenes.fecha_alta,ordenes_estados.nombre,ordenes_estados.id,clientes.nombre,clientes.id,clientes.apellidos"),
+            "ordenes.id_contrato=contratos.id 
+                                            AND ordenes_estados.id=ordenes.id_tipo_estado 
+                                            AND contratos.id_cliente=clientes.id
+                                            AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes.fecha_alta<=DATE(now()) AND ordenes.id_tipo_estado=1");
+    }
 }

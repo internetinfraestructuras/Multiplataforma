@@ -430,7 +430,7 @@ class util {
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
             $lastid = mysqli_insert_id($link);
-
+            echo $query;
             $link->close();
             if($log){
                 $consulta= str_replace("'"," ",$query);
@@ -473,7 +473,7 @@ class util {
         }catch (Exception $e){
             $this->log('eror update: ' . $e->getFile());
         }
-        //echo $query."<br/>";
+        echo $query."<br/>";
 //        if (!($result = $link->query($query))) {
 //
 //            throw new Exception('Error en selectWhere.');

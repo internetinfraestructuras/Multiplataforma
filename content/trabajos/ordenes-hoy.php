@@ -10,6 +10,8 @@ if (!isset($_SESSION)) {
     @session_start();
 }
 require_once('../../config/util.php');
+require_once ('../../clases/Orden.php');
+require_once ('../../clases/Usuarios.php');
 $util = new util();
 
 // solo los usuarios de nivel 3 a 0 pueden agregar clientes
@@ -93,7 +95,9 @@ $root="../../";
 
 
             <div class="row">
-
+                <form class="validate" action="guardar-asignar-orden.php" method="post"
+                      enctype="multipart/form-data">
+                    <input type="hidden" name="action" value="ordenes"/>
                 <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-body" id="listado">
@@ -130,17 +134,9 @@ $root="../../";
                                         <tbody>
                                         <?php
 
-                                            $listado= $util->selectWhere3('ordenes,ordenes_estados,contratos,clientes',
-                                                array("ordenes.id,ordenes.fecha_alta,ordenes_estados.nombre,ordenes_estados.id,clientes.nombre,clientes.id,clientes.apellidos"),
-                                                "ordenes.id_contrato=contratos.id 
-                                            AND ordenes_estados.id=ordenes.id_tipo_estado 
-                                            AND contratos.id_cliente=clientes.id
-                                            AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes.fecha_alta<=DATE(now()) AND ordenes.id_tipo_estado=1");
+                                        $listado=Orden::getOrdenesPendientes();
 
-
-
-
-
+                                      $empleados=Usuarios::getInstaladores();
                                         for($i=0;$i<count($listado);$i++)
                                         {
 
@@ -153,19 +149,17 @@ $root="../../";
                                             $apellidos=$listado[$i][6];
 
                                             echo "<tr>";
-                                            echo "<td>$id</td><td>$fechaAlta</td><td>$estado</td><td>$cliente $apellidos<a href='/mul/ficha-cliente.php?idCliente=$idCliente' >&nbsp;<button type=\"button\" rel=\"tooltip\" ><i class=\"fa fa-eye\"></i></button></a></td>";
-                                            echo'<td><select id="empleados"  name="ordenes[orden]" class="form-control">';
+                                            echo "<td><input name='ordenes[ordenId][]' value='$id' ></td><td>$fechaAlta</td><td>$estado</td><td>$cliente $apellidos<a href='/mul/ficha-cliente.php?idCliente=$idCliente' >&nbsp;<button type=\"button\" rel=\"tooltip\" ><i class=\"fa fa-eye\"></i></button></a></td>";
+                                            echo'<td><select id="empleados"  name="ordenes[orden][]" class="form-control">';
 
-                                                 $listado= $util->selectWhere3('usuarios',
-                                                array("usuarios.id,usuarios.nombre,usuarios.apellidos,usuarios.email"),
-                                                "usuarios.nivel=2 AND id_empresa=".$_SESSION['REVENDEDOR']);
+
                                             echo "<option data-id='".$id."' value='0'>Sin Asignar</option>";
-                                            for($i=0;$i<count($listado);$i++)
+                                            for($j=0;$j<count($empleados);$j++)
                                             {
 
-                                                $id=$listado[$i][0];
-                                                $nombre=$listado[$i][1];
-                                                $apellidos=$listado[$i][2];
+                                                $id=$empleados[$j][0];
+                                                $nombre=$empleados[$j][1];
+                                                $apellidos=$empleados[$j][2];
 
                                                 echo "<option data-id='".$id."' value='" .$id. "'>".$nombre."--".$apellidos."</option>";
                                             }
@@ -205,6 +199,22 @@ $root="../../";
 
                                 <!-- panel footer -->
                                 <div class="panel-footer">
+                                    <div class="row">
+
+
+
+
+
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <center>
+
+                                                    <button type="submit" class="btn btn-3d btn-teal btn-xlg btn-block margin-top-30">ASIGNAR TAREAS</button>
+                                                </center>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
 
 
                                 </div>
@@ -214,26 +224,13 @@ $root="../../";
                         </div>
 
                     </div>
+
                 </div>
 
 
 
             </div>
-            <div class="row">
 
-
-
-
-
-                <div class="row">
-                    <div class="col-lg-12">
-                        <center>
-
-                            <button type="submit" class="btn btn-3d btn-teal btn-xlg btn-block margin-top-30">ASIGNAR TAREAS</button>
-                        </center>
-                    </div>
-                </div>
-            </div>
 
         </div>
 
@@ -250,7 +247,7 @@ $root="../../";
 
 
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
-<script type="text/javascript" src="../../assets/js/app.js"></script>
+<!-- <script type="text/javascript" src="../../assets/js/app.js"></script>-->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.css">
 
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.js"></script>

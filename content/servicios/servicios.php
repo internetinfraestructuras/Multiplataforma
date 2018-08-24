@@ -331,6 +331,7 @@ check_session(3);
             data:{id:id},
             success: function(data)
             {
+                    console.log(data);
                 $.each(data, function(i){
                     select.append('<option value="'+data[i].id+'">'+data[i].nombre+'</option>');
                 });
