@@ -9,11 +9,8 @@
 
 if (!isset($_SESSION)) {@session_start();}
 
-
-
-require_once('config/define.php');
-
-require_once('config/def_tablas.php');
+require_once('./../../config/define.php');
+require_once('./../../config//def_tablas.php');
 
 date_default_timezone_set('Europe/Madrid');
 
@@ -23,7 +20,7 @@ class util {
     function generateRandomString($length = 20) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
-        $randomString = '';
+        $randomString='';
         for ($i = 0; $i < $length; $i++) {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
