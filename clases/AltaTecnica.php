@@ -8,7 +8,6 @@
 
 class AltaTecnica
 {
-
     public static function addNuevoFijo($cifEmpresa,$cifCliente,$nombreCliente,$direccion,$email,$nombreGrupoRecarga,$paqueteDestino,$numero)
     {
 
@@ -66,7 +65,5 @@ class AltaTecnica
         }
 
     }
-
-
 
 }

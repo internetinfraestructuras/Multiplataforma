@@ -18,6 +18,7 @@ if (!isset($_SESSION))
 require_once ('../../clases/telefonia/classTelefonia.php');
 
 
+
 $util = new util();
 check_session(3);
 
