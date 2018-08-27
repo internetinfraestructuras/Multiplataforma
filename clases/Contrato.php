@@ -84,8 +84,8 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     public static function getLineaDetalles($idLinea)
     {
         $util = new util();
-        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR", "ID"),
-            "contratos_lineas_detalles.id_linea=" . $_POST['idLinea']);
+        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR", "ID","ID_SERVICIO"),
+            "contratos_lineas_detalles.estado=1 AND contratos_lineas_detalles.id_linea=" . $_POST['idLinea']);
     }
 
     //obtiene las linea de detalle de un contrato
