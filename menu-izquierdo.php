@@ -162,7 +162,7 @@ $root="/";
             <i class="main-icon fa fa-hdd-o"></i> <span><?php echo MNU_ITEM_5; ?></span>
         </a>
         <ul><!-- submenus -->
-            <li><a href="<?php echo $root;?>content/trabajos/instalar.php">Órdenes de trabajo</a></li>
+            <li><a href="<?php echo $root;?>content/instalador/instalador.php">Órdenes de trabajo</a></li>
             <li><a href="<?php echo $root;?>asignacion.php">Dar Altas</a></li>
             <?php if (intval($_SESSION['USER_LEVEL'])<2) { ?>
                 <li><a href="<?php echo $root;?>bajas.php">Dar Bajas</a></li>

@@ -38,6 +38,8 @@ if($tipo==2) {
     $tit_cp = $_POST['tit_cp'];
     $tipo_acceso = $_POST['tipo_acceso'];
     $hora_porta = $_POST['hora_porta'];
+    $tipo_cli = $_POST['tipo_cli'];
+    $tipo_doc = $_POST['tipo_doc'];
 
 } else {
 
@@ -50,12 +52,12 @@ if($tipo==2) {
 
 if (isset($_POST['action']) && $_POST['action'] == 'porta') {
 
-    $campos = array('ID_CLIENTE','ID_EMPRESA',          'FECHA_SOLICITUD',      'TIPO','NOMBRE_TITULAR',    'TIPO_TITULAR',
+    $campos = array('ID_CLIENTE','ID_EMPRESA', 'FECHA_SOLICITUD',      'TIPO','NOMBRE_TITULAR',    'TIPO_TITULAR',
         'CIF_TITULAR','DIR_TITULAR','REGION_TITULAR','PROV_TITULAR','POBLACION_TITULAR','CP_TITULAR','TIPO_DOC',
         'DONANTE','HORARIO','NUMERO_PORTAR','FIRMA','TIPO_ACCESO');
 
-    $values = array($id_cliente, $_SESSION['REVENDEDOR'],$util->hoy('fecha'), $tipo, $tit_n." ". $tit_a,$tit_tcli,
-        $tit_dni,       $tit_dir,    $tit_region,     $tit_prov,     $tit_loc,           $tit_cp,   $tit_tdoc,
+    $values = array($id_cliente, $_SESSION['REVENDEDOR'],$util->hoy('fecha'), $tipo, $tit_n." ". $tit_a,$tipo_cli,
+        $tit_dni,       $tit_dir,    $tit_region,     $tit_prov,     $tit_loc,           $tit_cp,   $tipo_doc,
         $donante, $hora_porta, $num_porta,    $firma, $tipo_acceso);
 
     if($tipo==3) {

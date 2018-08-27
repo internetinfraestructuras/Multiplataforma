@@ -76,8 +76,9 @@ error_reporting('E_ALL');
                 date_default_timezone_set('Europe/Madrid');
                 $date = date('Y/m/d H:i:s');
                 $result = $util->update('usuarios', array('ultimo_acceso'), array($date), "id=".$row['id']);
+
                 if(intval($row['nivel'])>1)
-                    header("Location:content/trabajos/instalador.php");
+                    header("Location:content/instalador/instalador.php");
                 else
                     header("Location:index.php");
             } else {

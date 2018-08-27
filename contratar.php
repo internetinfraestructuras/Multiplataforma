@@ -2038,7 +2038,8 @@ check_session(2);
 
     function guardar_contrato(firma){
         var permanencia = $("#permanencia").val();
-
+        trabajando();
+        trabajando(1);
         $.ajax({
             url: 'content/servicios/guardar-contrato.php',
             type: 'POST',

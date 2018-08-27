@@ -401,6 +401,7 @@ check_session(3);
                            value="Paso Anterior"/>
                     <input  type="button" name="next" id="next3" class="next action-button" value="Continuar"/>
                 </fieldset>
+                </fieldset>
 
 
                 <fieldset class="caja">
@@ -867,7 +868,7 @@ check_session(3);
         }
     });
 
-    function guardar_porta(firma) {
+    function guardar_contrato(firma) {
 
         // paso 1 quiere decir que se ha seleccionado o creado el cliente,
         // entonces creamos el contrato en borrador y guardamos el id del borrador
@@ -883,6 +884,10 @@ check_session(3);
         var tit_loc = $("#tit-localidades").val();
         var tit_dir = $("#tit-direccion").val();
         var tit_cp = $("#tit-cp").val();
+
+        var tipo_cli = $("#tipocli").val();
+        var tipo_doc = $("#tipodoc").val();
+
         
         var donante = $("#donante").val();
         var tipo_acceso = $("#tipo_acceso").val();
@@ -913,6 +918,8 @@ check_session(3);
                 num_porta  :num_porta  ,
                 hora_porta :hora_porta,
                 firma : firma,
+                tipo_cli:tipo_cli,
+                tipo_doc:tipo_doc,
                 tipo:2
             },
             success: function (data) {

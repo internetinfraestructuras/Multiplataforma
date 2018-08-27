@@ -93,7 +93,12 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
             }
         }
 
-        $orden->crearLineaOrden($idOrden, 1, $linea[8],$idLinea2);
+        if($linea[8]=='' || intval($linea[8])<=0)
+            $idProducto=null;
+        else
+            $idProducto=$linea[8];
+
+        $orden->crearLineaOrden($idOrden, 1, $idProducto,$idLinea2);
         $contrato->setProductoAlta($linea[8], 2);
     }
 

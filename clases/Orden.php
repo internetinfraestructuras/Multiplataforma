@@ -43,19 +43,24 @@ WHERE ordenes.id=ordenes_lineas.ID_ORDEN AND ordenes_lineas.ID_LINEA_DETALLE_CON
             AND contratos.id_empresa=".$_SESSION['REVENDEDOR']);
     }
 
+    // ruben
     public static function obtenerOrdenesAsignadas($idEmpresa, $idEmpleado, $estado, $fechaInicio, $fechaFin)
     {
         $util=new util();
-        $campos=array('clientes.NOMBRE','clientes.APELLIDOS','clientes.DIRECCION','clientes.MOVIL',
+        $campos=array('ordenes.ID,clientes.NOMBRE','clientes.APELLIDOS','clientes.DIRECCION','clientes.MOVIL',
                         'municipios.municipio','ordenes_usuario.FECHA_ASIGNACION');
-        $join='JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID JOIN clientes ON clientes.ID = contratos.ID_CLIENTE
-                JOIN municipios ON municipios.id = clientes.localidad JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO ';
-        $where='contratos.ID_EMPRESA = '.$idEmpresa . ' AND ordenes_usuarios.ID_USUARIO='.$idEmpleado .' AND ordenes.ID_TIPO_ESTADO='.$estado
-                        . 'ordenes_usuario.FECHA_ASIGNACION BETWEEN "'.$fechaInicio . '" AND "'.$fechaFin.'"';
+        $join=' JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE 
+                JOIN municipios ON municipios.id = clientes.LOCALIDAD ';
+        $where='contratos.ID_EMPRESA = '.$idEmpresa . ' AND ordenes_usuario.ID_USUARIO='.$idEmpleado .' AND ordenes.ID_TIPO_ESTADO='.$estado;
+
+        if($fechaInicio!='' && $fechaFin!='')
+            $where = $where. ' AND ordenes_usuario.FECHA_ASIGNACION BETWEEN "'.$fechaInicio . '" AND "'.$fechaFin.'"';
+
         return $util->selectJoin('ordenes_usuario', $campos,  $join, 'ordenes_usuario.FECHA_ASIGNACION', $where);
 
     }
-
 
 
 
@@ -103,14 +108,73 @@ WHERE ordenes.id=ordenes_lineas.ID_ORDEN AND ordenes_lineas.ID_LINEA_DETALLE_CON
         $result = $util->update('ordenes', $campos, $values, "ordenes.id=".$idOrden);
     }
 
-    public static function getOrdenesPendientes()
+    public static function getOrdenesPendientes($id=null)
     {
+        if($id!=null)
+            $idBuscado=" AND ordenes.id = " .$id;
+        else
+            $idBuscado="";
+
         $util=new util();
         return $util->selectWhere3('ordenes,ordenes_estados,contratos,clientes',
-            array("ordenes.id,ordenes.fecha_alta,ordenes_estados.nombre,ordenes_estados.id,clientes.nombre,clientes.id,clientes.apellidos"),
-            "ordenes.id_contrato=contratos.id 
-                                            AND ordenes_estados.id=ordenes.id_tipo_estado 
-                                            AND contratos.id_cliente=clientes.id
-                                            AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes.fecha_alta<=DATE(now()) AND ordenes.id_tipo_estado=1");
+            array("ordenes.id,ordenes.fecha_alta,ordenes_estados.nombre,ordenes_estados.id,clientes.nombre,clientes.id,clientes.apellidos,clientes.direccion, clientes.movil"),
+                    "ordenes.id_contrato=contratos.id 
+                    AND ordenes_estados.id=ordenes.id_tipo_estado 
+                    AND contratos.id_cliente=clientes.id
+                    $idBuscado
+                    AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes.fecha_alta<=DATE(now()) AND ordenes.id_tipo_estado=1");
     }
+
+    public static function getOrden($id=null)
+    {
+
+        $util=new util();
+        return $util->selectWhere3('ordenes,ordenes_estados,contratos,clientes',
+            array("ordenes.id,ordenes.fecha_alta,ordenes_estados.nombre,ordenes_estados.id,clientes.nombre,clientes.id,clientes.apellidos,clientes.direccion, clientes.movil"),
+            "ordenes.id_contrato=contratos.id 
+                    AND ordenes_estados.id=ordenes.id_tipo_estado 
+                    AND contratos.id_cliente=clientes.id
+                    AND ordenes.id = $id
+                    AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes.fecha_alta<=DATE(now()) AND ordenes.id_tipo_estado=1");
+    }
+
+
+
+    public static function getLineasOrden($id=null)
+    {
+
+        $util=new util();
+        $campos=array('ordenes_lineas.ID_LINEA_DETALLE_CONTRATO','ordenes_lineas.ID_PRODUCTO',
+                        'productos.NUMERO_SERIE as serial','productos_modelos.NOMBRE as modelo',
+                        'productos_tipos.NOMBRE as tipo','contratos_lineas_detalles.ID_TIPO_SERVICIO as servicio','ordenes_lineas.ID');
+
+        $where='ordenes_lineas.id_orden='.$id.' AND ordenes.id_empresa='.$_SESSION['REVENDEDOR'];
+
+        $join=' JOIN contratos_lineas_detalles ON contratos_lineas_detalles.ID = ordenes_lineas.ID_LINEA_DETALLE_CONTRATO  
+                JOIN productos ON productos.ID =ordenes_lineas.ID_PRODUCTO 
+                JOIN servicios_tipos ON servicios_tipos.ID = contratos_lineas_detalles.ID_TIPO_SERVICIO
+                JOIN productos_modelos ON productos_modelos.ID = productos.ID_MODELO_PRODUCTO
+                JOIN productos_tipos ON productos_tipos.ID = productos_modelos.ID_TIPO
+                JOIN ordenes ON ordenes.ID = ordenes_lineas.id_orden';
+
+        return $util->selectJoin('ordenes_lineas',$campos, $join,'',$where);
+
+    }
+
+    public static function getLineasOrdenDetalles($id=null)
+    {
+        $util=new util();
+        $campos=array('contratos_lineas_detalles.VALOR','contratos_lineas_detalles.ID_ATRIBUTO_SERVICIO');
+
+        $where='contratos_lineas_detalles.ESTADO = 3 AND ordenes_lineas.id_orden='.$id.' AND ordenes.id_empresa='.$_SESSION['REVENDEDOR'];
+
+        $join=' JOIN ordenes_lineas ON ordenes_lineas.ID_LINEA_DETALLE_CONTRATO =  contratos_lineas_detalles.ID_LINEA';
+
+        return $util->selectJoin('contratos_lineas_detalles',$campos, $join,'',$where);
+
+    }
+
+
+
+
 }

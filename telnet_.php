@@ -135,6 +135,7 @@ if ($respuesta_olt == 0) {
         $responder = 0;
         $err_num = 0;
     }
+    $util->log($respuesta_olt);
 
     if (strpos($respuesta_olt, 'ONT ID has already') !== false) {
         $responder = "Error: Numero de PON de ONT ya está aprovisionado";
@@ -215,9 +216,9 @@ if ($respuesta_olt == 0) {
 
             $telnet->DoCommand("quit" . PHP_EOL, $void);
             // creamos servicio en la vlan 100 para datos
-            if(intval($gestionada)==1)
-                $comando1 = "service-port " . $id_internet . " vlan 100 gpon " . $gpon . " ont " . $ont_id . " gemport 1 multi-service user-vlan 100 tag-transform translate inbound traffic-table index 300 outbound traffic-table index 300 " . PHP_EOL;
-            else
+//            if(intval($gestionada)==1)
+//                $comando1 = "service-port " . $id_internet . " vlan 100 gpon " . $gpon . " ont " . $ont_id . " gemport 1 multi-service user-vlan 100 tag-transform translate inbound traffic-table index 300 outbound traffic-table index 300 " . PHP_EOL;
+//            else
                 $comando1 = "service-port " . $id_internet . " vlan 100 gpon " . $gpon . " ont " . $ont_id . " gemport 1 multi-service user-vlan 100 tag-transform translate inbound traffic-table index " . $up . " outbound traffic-table index " . $dw . " " . PHP_EOL;
 
 
@@ -264,29 +265,31 @@ if ($respuesta_olt == 0) {
 
             $telnet->DoCommand('  interface gpon ' . $c . "/" . $t . PHP_EOL.PHP_EOL, $respuesta_olt);
             sleep(1);
-            $util->log('interface gpon ' . $c . '/' . $t .' ' . $respuesta_olt . ' ' . $id_olt );
+            $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( 'interface gpon " . $respuesta_olt . "','" . $id_olt . "');");
+
 
             if ($act_vpn != 'true') {
                 $telnet->DoCommand('ont ipconfig ' . $p . ' ' . $ont_id . ' dhcp vlan '.$vlan_acs . PHP_EOL . PHP_EOL, $respuesta_olt1);
                 sleep(1);
-                $util->log($respuesta_olt1);
+
             }
+            if(intval($id_olt)!= 4 && intval($id_olt)!= 6 && intval($id_olt)!=13){
+                $telnet->DoCommand('  if-sip add ' . $p . ' ' . $ont_id . ' 1 sipagent-profile profile-id 2' . PHP_EOL . PHP_EOL, $respuesta_olt2);
+                sleep(1);
+                $util->log($respuesta_olt2);
 
-            $telnet->DoCommand('  if-sip add '.$p.' '.$ont_id.' 1 sipagent-profile profile-id 2'.PHP_EOL.PHP_EOL, $respuesta_olt2);
-            sleep(1);
-            $util->log($respuesta_olt2);
+                $telnet->DoCommand('  sippstnuser add ' . $p . ' ' . $ont_id . ' 1 mgid 1 username "' . $num_pon . '" password "' . ($num_pon . "**") . '" telno "' . $num_pon . '"' . PHP_EOL . PHP_EOL, $respuesta_olt3);
+                sleep(1);
+                $util->log($respuesta_olt3);
 
-            $telnet->DoCommand('  sippstnuser add '.$p.' '.$ont_id.' 1 mgid 1 username "'.$num_pon.'" password "'.($num_pon."**").'" telno "'. $num_pon .'"' .PHP_EOL.PHP_EOL, $respuesta_olt3);
-            sleep(1);
-            $util->log($respuesta_olt3);
+                $telnet->DoCommand("  ont tr069-server-config " . $p . " " . $ont_id . " profile-name acs" . PHP_EOL . PHP_EOL, $respuesta_olt4);
+                $util->log($respuesta_olt4);
 
-            $telnet->DoCommand("  ont tr069-server-config ".$p." ".$ont_id." profile-name acs" .PHP_EOL.PHP_EOL, $respuesta_olt4);
-            $util->log($respuesta_olt4);
-
-            setcookie('cabecera_acs', $id_olt, time() + 100, "/");
-            setcookie('pon_acs', $num_pon, time() + 100, "/");
-            setcookie('ssid', $_POST['ssid'], time() + 100, "/");
-            setcookie('clavewifi', $_POST['clavewifi'], time() + 100, "/");
+                setcookie('cabecera_acs', $id_olt, time() + 200, "/");
+                setcookie('pon_acs', $num_pon, time() + 200, "/");
+                setcookie('ssid', $_POST['ssid'], time() + 200, "/");
+                setcookie('clavewifi', $_POST['clavewifi'], time() + 200, "/");
+            }
 
         }
 
@@ -378,32 +381,6 @@ if ($respuesta_olt == 0) {
         $util->insertInto("control_id_ont", array('olt', 'c', 't', 'p', 'ont_id', 'id_datos', 'id_voz', 'id_tv', 'id_vpn','id_acs'), array($id_olt, $c, $t, $p, $ont_id, $id_internet, $idvoz, $idtv, $idvpn, $id_acs));
 
 
-        /*
-         *
-        WANPPPConnection:
-        ConnectionType:                     TransportType:
-
-        Unconfigured                        PPPoA
-        IP_Routed                           PPPoE
-        DHCP_Spoofed
-        PPPoE_Bridged
-        PPPoE_Relay
-        PPTP_Relay
-        L2TP_Relay
-        *************************************************
-
-        WANIPConnection:
-        ConnectionType:                     AddressingType:
-
-        Unconfigured                        DCHP
-        IP_Routed                           Static
-        IP_Bridged
-
-
-
-
-         */
-
 
         // guardo los datos referentes a la provision acs
 
@@ -428,6 +405,27 @@ if ($respuesta_olt == 0) {
         $telnet->DoCommand(PHP_EOL, $respuesta_olt);
         $telnet->DoCommand('config', $respuesta_olt);
         $telnet->DoCommand(PHP_EOL, $respuesta_olt);
+
+        $cmd = 'display ont wan-info ' . $c ."/" .$t ." ". $p . " " . $ont_id;
+
+        $c=0; $mac='';
+        while ($mac!='' || $c<4){
+            $c++;
+            $respuesta_olt="";
+
+            $telnet->DoCommand($cmd . PHP_EOL .ESPACIO ."q", $respuesta_olt);
+
+            //echo $respuesta_olt;
+            $rows = explode("---------------------------------------------------------------------", $respuesta_olt);
+            if(isset($rows[2])) {
+                $rows2 = explode(PHP_EOL, $rows[2]);
+                $m = explode(':', $rows2[14]);
+                $mac = $m[1];
+            }
+            if($mac!='')
+                break;
+        }
+
         $telnet->DoCommand('interface gpon ' . $c . "/" . $t, $void);
         $telnet->DoCommand(PHP_EOL, $respuesta_olt);
         $telnet->DoCommand('cls ' . PHP_EOL, $void);
@@ -458,12 +456,14 @@ if ($respuesta_olt == 0) {
                 'rx_olt' => str_replace('out of range', 'rango: ', $rx_olt),
                 'temp' => $temp,
                 'volt' => $volt,
-                'marca' => $vendor
+                'marca' => $vendor,
+                'mac' => $mac
             );
 
         } else {
             $aItem = array(
-                'result' => $err_num
+                'result' => $err_num,
+                 'mac' => $mac
             );
         }
         array_push($aItems, $aItem);

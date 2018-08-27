@@ -10,7 +10,7 @@ if (!isset($_SESSION)) {
     @session_start();
 }
 require_once('../../config/util.php');
-require_once('../../clases/orden.php');
+require_once('../../clases/Orden.php');
 $util = new util();
 $orden = new Orden();
 
@@ -80,14 +80,6 @@ $root="../../";
 								    <strong>LISTADO DE <?php echo DEF_ORDENES; ?></strong>
 							    </span>
 
-                                    <!-- right options -->
-                                    <ul class="options pull-right list-inline">
-                                        <li><a href="#" class="opt panel_colapse" data-toggle="tooltip" title="Colapse" data-placement="bottom"></a></li>
-                                        <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen" data-placement="bottom"><i class="fa fa-expand"></i></a></li>
-                                        <li><a href="#" class="opt panel_close" data-confirm-title="Confirm" data-confirm-message="¿Deseas eleminar este panel?" data-toggle="tooltip" title="Close" data-placement="bottom"><i class="fa fa-times"></i></a></li>
-                                    </ul>
-                                    <!-- /right options -->
-
                                 </div>
                                 <div class="col-md-4 col-sm-4">
                                     <label>Filtrar por estados:</label>
@@ -114,39 +106,65 @@ $root="../../";
                 </div>
 
             </div>
-
+            <div class="row">
             <?php
-            $listado= $orden->obtenerOrdenesAsignadas($_SESSION['REVENDEDOR'], $_SESSION['USER_ID'],1, '2018-08-01', '2018-08-30');
-            var_dump($listado);
+            $listado= $orden->obtenerOrdenesAsignadas($_SESSION['REVENDEDOR'], $_SESSION['USER_ID'], 2);
             foreach ($listado as $linea){
             ?>
-
-            <div class="row">
-
-                <div class="col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-body" id="listado">
-                            <div id="panel-1" class="panel panel-default">
-                                <div class="panel-heading">
-                                <span class="title elipsis">
-                                    <strong><?php echo $linea['nombre']." ".$linea['apellidos']; ?></strong>
-                                </div>
-
-                                <div class="panel-footer">
-                                    <div class="col-xs-12">
-                                    <?php echo $linea['direccion']."</div></div><br><div class='col-xs-12'>Télefono: ".$linea['movil']; ?>
-
-                                </div>
-
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-body" id="listado">
+                        <div id="panel-1" class="panel panel-default">
+                            <div class="panel-heading">
+                            <span class="title elipsis">
+                                <strong><?php echo $linea['NOMBRE']." ".$linea['APELLIDOS']; ?></strong>
+                            </span>
+                                <ul class="options pull-right list-inline">
+                                    <b>
+                                        <?php echo "<span style='font-size:1.5em'>Nº: " . $linea['ID'] . " </span>"; ?>
+                                    </b>
+                                </ul>
                             </div>
+
+
+
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="col-xs-12 col-lg-6">
+                                        <div class="col-xs-12">
+                                            <b><?php echo $linea['DIRECCION']?></b><br><br>
+                                            <b>Télefono:</b> <?php echo $linea['MOVIL']; ?>
+                                            <br>
+                                            <b>Fecha:</b> <span style='color:red'><?php echo $util->fecha_eur($linea['FECHA_ALTA']);?></span><br>
+                                            <b>Distancia:</b>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 visible-xs">
+                                        <br>
+                                    </div>
+                                    <div class="col-xs-12 col-lg-6 text-center">
+                                        <a href="tel:<?php echo $linea['MOVIL'];?>">
+                                            <img src="../../img/call.png" style="display:inline; margin-right:5%">
+                                        </a>
+
+                                        <a href="https://maps.google.com?q=<?php echo $linea['DIRECCION'];?>" target="_blank">
+                                           <img src="../../img/map.png"  style="display:inline; margin-right:5%">
+                                        </a>
+
+                                        <a href="ver_orden_trabajo.php?id=<?php echo $linea['ID'];?>">
+                                            <img src="../../img/ver.png"  style="display:inline">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
-
                     </div>
+
                 </div>
-
             </div>
-
             <?php } ?>
+            </div>
         </div>
 
     </section>

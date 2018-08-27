@@ -18,7 +18,7 @@ if (!isset($_SESSION)) {
 }
 
 
-require_once('../../clases/fijos/classTelefonia.php');
+require_once('../../clases/telefonia/classTelefonia.php');
 //echo "test\n";
 $tel = new Telefonia();
 $aItems = array();

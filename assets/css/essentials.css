@@ -971,6 +971,20 @@ video.fullvideo 		{ width:100%; height:100%; }
     float: left;
 }
 
+/*ruben corrales*/
+/*ordenes trabajo*/
+.datos{
+	padding: 0;
+	color: #666;
+	display: inline-block;
+	font-weight: 300;
+	text-shadow: #fff 0 1px;
+	font-size: 22px;
+	line-height: 22px;
+	margin: 7px 0;
+}
+
+
 @media (min-width: 768px) {
     .col-sm-5th {
         width: 20%;
@@ -1128,6 +1142,19 @@ video.fullvideo 		{ width:100%; height:100%; }
 		   -moz-column-count: 1;
 				column-count: 1;
 	}
+
+	.datos{
+		padding: 0;
+		color: #666;
+		display: inline-block;
+		font-weight: 300;
+		text-shadow: #fff 0 1px;
+		font-size: 12px;
+		line-height: 14px;
+		margin: 7px 0;
+	}
+
+
 }
 
 

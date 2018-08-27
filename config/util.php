@@ -175,7 +175,7 @@ class util {
 
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
-            echo $query;
+//           echo $query;
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectJoin.');
 
@@ -425,12 +425,12 @@ class util {
             $valores = implode($valor, "', '");
 
             $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
+//            echo $query;
 
             $query = str_replace("º","",$query);
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
             $lastid = mysqli_insert_id($link);
-            echo $query;
             $link->close();
             if($log){
                 $consulta= str_replace("'"," ",$query);
@@ -473,7 +473,7 @@ class util {
         }catch (Exception $e){
             $this->log('eror update: ' . $e->getFile());
         }
-        echo $query."<br/>";
+//        echo $query."<br/>";
 //        if (!($result = $link->query($query))) {
 //
 //            throw new Exception('Error en selectWhere.');
@@ -735,7 +735,7 @@ class util {
     function fecha_eur($source){
         $date = date_create($source);
 
-        return date_format($date, 'yyyy-mm-dd');
+        return date_format($date, 'd/m/Y');
     }
 
     function fecha_usa($source){

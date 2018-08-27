@@ -42,6 +42,9 @@ $root="../../";
     <link href="../../assets/css/layout.css" rel="stylesheet" type="text/css"/>
     <link href="../../assets/css/color_scheme/green.css" rel="stylesheet" type="text/css" id="color_scheme"/>
 
+    <style>
+
+    </style>
 </head>
 <!--
     .boxed = boxed version
@@ -61,7 +64,7 @@ $root="../../";
             <h1>Usted esta en</h1>
             <ol class="breadcrumb">
                 <li><a href="#"><?php echo DEF_ORDENES; ?></a></li>
-                <li class="active">Listado de ordenes</li>
+                <li class="active">Mostrar una orden</li>
             </ol>
         </header>
         <!-- /page title -->
@@ -69,90 +72,76 @@ $root="../../";
 
         <div id="content" class="padding-20">
 
-            <div class="row">
 
-                <div class="col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-body" id="listado">
-                            <div id="panel-1" class="panel panel-default">
-                                <div class="panel-heading">
-							    <span class="title elipsis">
-								    <strong>LISTADO DE <?php echo DEF_ORDENES; ?></strong>
-							    </span>
-
-                                </div>
-                                <div class="col-md-4 col-sm-4">
-                                    <label>Filtrar por estados:</label>
-                                    <select name="producto[proveedor]" id="estados_ordenes" onchange="filtrar(this.value)"
-                                            class="form-control pointer ">
-                                        <option value="">--- Seleccionar una ---</option>
-                                        <?php
-                                        $util->carga_select('ordenes_estados', 'id', 'nombre', 'id'); ?>
-                                    </select>
-                                </div>
-
-
-                                <!-- panel footer -->
-                                <div class="panel-footer">
-
-
-                                </div>
-                                <!-- /panel footer -->
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
             <div class="row">
             <?php
-            $listado= $orden->getOrdenesPendientes();
+            $listado= $orden->getOrden($_GET['id']);
             foreach ($listado as $linea){
             ?>
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <div class="col-xs-12">
                 <div class="panel panel-default">
                     <div class="panel-body" id="listado">
                         <div id="panel-1" class="panel panel-default">
                             <div class="panel-heading">
-                            <span class="title elipsis">
+                            <span class="title elipsis h2">
                                 <strong><?php echo $linea['nombre']." ".$linea['apellidos']; ?></strong>
                             </span>
                                 <ul class="options pull-right list-inline">
-                                    <b>
-                                        <?php echo $util->fecha_eur($linea['fecha_alta']); ?>
+                                    <b>Orden ID:
+                                        <?php echo $_GET['id']; ?>
                                     </b>
                                 </ul>
                             </div>
 
-
-
                             <div class="panel-footer">
                                 <div class="row">
-                                    <div class="col-xs-12 col-lg-6">
-                                        <div class="col-xs-12">
-                                            <b><?php echo $linea['direccion']?></b><br><br>
-                                            Télefono: <?php echo $linea['movil']; ?>
-                                            <br>
-                                        </div>
-                                    </div>
+                                    <?php
+                                    $lineas= $orden->getLineasOrden($linea[0]);
+                                    foreach ($lineas as $lineaD){
+                                        echo "<div class='row'>";
+                                        echo "<div class='col-xs-2 col-lg-1'>";
+                                        echo    "<img src='../../img/serv".$lineaD['servicio'].".png'>";
+                                        echo "</div>";
+                                        echo "<div class='col-xs-4 col-lg-2'><b>Servicio:</b><br><span class='datos'>";
+                                        echo   $lineaD['tipo'];
+                                        echo "</span></div>";
+                                        echo "<div class='col-xs-6 col-lg-2'><b>Modelo:</b><br><span class='datos'>";
+                                        echo   $lineaD['modelo'];
+                                        echo "</span></div>";
+                                        echo "<div class='col-xs-10 col-lg-2'><b>Serial:</b><br><span class='datos'>";
+                                        echo   $lineaD['serial'];
+                                        echo "</span></div>";
+                                        echo "<div class='col-xs-10 col-lg-2'><b>Configuración:</b><br><span class='datos'>";
+                                            $config= $orden->getLineasOrdenDetalles($lineaD['ID_LINEA_DETALLE_CONTRATO']);
+                                            foreach ($config as $valor){
+                                                var_dump($valor);
+                                            }
+                                        echo "</span></div>";
+                                        echo "<div class='col-xs-6 col-lg-2'>";
+                                        echo    '
+                                            <div class="btn-group">
+                                                <button type="button" onclick="aprovisionar('.$lineaD['ID'].')" class="btn btn-primary">Aprovisionar</button>
+                                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                    <span class="caret"></span>
+                                                    <span class="sr-only">Opciones Disponibles</span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li><a href="#"><i class="fa fa-edit"></i> Verificar Estado</a></li>
+                                                    <li><a href="#"><i class="fa fa-recycle"></i> Reaprovisionar</a></li>
+                                                    <li><a href="#"><i class="fa fa-question-circle"></i> Abrir Incidencia</a></li>
+                                                </ul>
+                                            </div>
+                                        ';
+                                        echo "</div>";
+
+
+                                        echo "</div><br><br>";
+                                    }
+                                    ?>
                                     <div class="col-xs-12 visible-xs">
                                         <br>
                                     </div>
-                                    <div class="col-xs-12 col-lg-6 text-center">
-                                        <a href="tel:<?php echo $linea['movil'];?>">
-                                            <img src="../../img/call.png" style="display:inline; margin-right:5%">
-                                        </a>
 
-                                        <a href="https://maps.google.com?q=<?php echo $linea['direccion'];?>" target="_blank">
-                                           <img src="../../img/map.png"  style="display:inline; margin-right:5%">
-                                        </a>
-
-                                        <a href="ver_orden_trabajo.php?id=<?php echo $linea['id'];?>">
-                                            <img src="../../img/ver.png"  style="display:inline">
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
 
