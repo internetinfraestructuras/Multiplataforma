@@ -11,13 +11,14 @@ $util=new utilPDF();
 
 
     $listado= $util->selectWhere3('ordenes,ordenes_estados,contratos,clientes,provincias,municipios',
-        array("ordenes.id,ordenes.fecha_alta,ordenes_estados.nombre,ordenes_estados.id,clientes.nombre,clientes.id,clientes.apellidos,clientes.direccion,provincias.provincia,municipios.municipio,clientes.fijo,clientes.movil"),
+        array("ordenes.id,ordenes.fecha_alta,ordenes_estados.nombre,ordenes_estados.id,clientes.nombre,clientes.id,clientes.apellidos,clientes.direccion,provincias.provincia,municipios.municipio,clientes.fijo,clientes.movil,ordenes.numero"),
         "ordenes.id_contrato=contratos.id 
                                             AND ordenes_estados.id=ordenes.id_tipo_estado 
                                             AND contratos.id_cliente=clientes.id
                                             AND provincias.id=clientes.provincia
                                             AND municipios.id=clientes.localidad
-                                            AND contratos.id_empresa=".$_SESSION['REVENDEDOR']);
+                                            AND ordenes.id=".$_GET['idOrden']." 
+                                             AND contratos.id_empresa=".$_SESSION['REVENDEDOR']);
 
     $idOrden=$listado[0][0];
     $fecha=$listado[0][1];
@@ -30,6 +31,9 @@ $util=new utilPDF();
 $localidad=$listado[0][9];
 $fijo=$listado[0][10];
 $movil=$listado[0][11];
+$numero=$listado[0][12];
+
+
 
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 $pdf->SetCreator(PDF_CREATOR);
@@ -37,9 +41,9 @@ $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('REVENDEDOR');
 
 $pdf->SetTitle('ORDEN DE TRABAJO');
-$pdf->SetSubject('FACTURA MES CURSO');
-$pdf->SetKeywords('FACTURA CLIENTE DEMO');
-$pdf->SetHeaderData("","","", " ORDEN DE TRABAJO #".$idOrden, array(0,64,255), array(0,64,128));
+$pdf->SetSubject('ORDEN DE TRABAJO');
+$pdf->SetKeywords('ORDEN DE TRABAJO');
+$pdf->SetHeaderData("","","", " ORDEN DE TRABAJO #".$numero, array(0,64,255), array(0,64,128));
 
 $pdf->setFooterData(array(0,64,0), array(0,64,128));
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -50,7 +54,7 @@ $reporte="PRUEBAS";
 
 //CABECERA DEL LISTADO
 $pdf->MultiCell(70, 50, $txt, 0, 'J', false, 1, 125, 30, true, 0, false, true, 0, 'T', false);
-$datosCliente = '<b>#ORDEN:</b>'.$idOrden."<br/><b>FECHA:</b>".$fecha;
+$datosCliente = '<b>#ORDEN:</b>'.$numero."<br/><b>FECHA:</b>".$fecha;
 $pdf->MultiCell(70, 50, $datosCliente, 0, 'J', false, 1, 10, 30, true, 0, true, true, 0, 'T', false);
 
 
@@ -67,7 +71,7 @@ $pdf->MultiCell(70, 50, $datosCliente, 0, 'J', false, 1, 120, 30, true, 0, true,
 
 $tabla="<table cellspacing=\"0\" cellpadding=\"1\" border=\"1\" style=\"text-align: center;\">
                         <tr>
-                        <th width=\"20px\">#</th><th>TIPO ORDEN</th><th>TIPO SERVICIO</th><th  width=\"80px\">MODELO</th><th  width=\"180px\">NÚM.SERIE</th><th></th>
+                        <th width=\"20px\">#</th><th>TIPO ORDEN</th><th>TIPO SERVICIO</th><th  width=\"80px\">MODELO</th><th  width=\"180px\">NÚM.SERIE</th><th>PAQ/SERV</th>
                         </tr>";
 
 $lineas= $util->selectWhere3('ordenes,ordenes_lineas,contratos_lineas_detalles,ordenes_tipos,contratos_lineas,contratos_lineas_tipo,contratos,servicios_tipos',

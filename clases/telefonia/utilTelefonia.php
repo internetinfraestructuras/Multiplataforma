@@ -9,7 +9,10 @@
 
 if (!isset($_SESSION)) {@session_start();}
 
+
+
 require_once('config/define.php');
+
 require_once('config/def_tablas.php');
 
 date_default_timezone_set('Europe/Madrid');
@@ -409,7 +412,7 @@ class util {
         //mod by paco
         $query.= " order by $campo desc limit 1 ";
 
-        echo $query;
+       // echo $query;
         if (!($result = $link->query($query)))
             throw new Exception('Error en selectLast.');
 
@@ -437,7 +440,7 @@ class util {
 
             $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
             //echo "<br/>";
-            //echo $query;
+            //echo $query."<br><br><br><br>";
             $query = str_replace("º","",$query);
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');

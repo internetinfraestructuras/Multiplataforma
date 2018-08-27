@@ -118,7 +118,9 @@ $root="../../";
             <?php
             $listado= $orden->obtenerOrdenesAsignadas($_SESSION['REVENDEDOR'], $_SESSION['USER_ID'],1, '2018-08-01', '2018-08-30');
             var_dump($listado);
+            foreach ($listado as $linea){
             ?>
+
             <div class="row">
 
                 <div class="col-md-12">
@@ -127,35 +129,14 @@ $root="../../";
                             <div id="panel-1" class="panel panel-default">
                                 <div class="panel-heading">
                                 <span class="title elipsis">
-                                    <strong><?php echo $cliente; ?></strong>
-                                </span>
-
-                                    <!-- right options -->
-                                    <ul class="options pull-right list-inline">
-                                        <li><a href="#" class="opt panel_colapse" data-toggle="tooltip" title="Colapse" data-placement="bottom"></a></li>
-                                        <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen" data-placement="bottom"><i class="fa fa-expand"></i></a></li>
-                                        <li><a href="#" class="opt panel_close" data-confirm-title="Confirm" data-confirm-message="¿Deseas eleminar este panel?" data-toggle="tooltip" title="Close" data-placement="bottom"><i class="fa fa-times"></i></a></li>
-                                    </ul>
-                                    <!-- /right options -->
-
-                                </div>
-                                <div class="col-md-4 col-sm-4">
-                                    <label>Filtrar por estados:</label>
-                                    <select name="producto[proveedor]" id="estados_ordenes" onchange="filtrar(this.value)"
-                                            class="form-control pointer ">
-                                        <option value="">--- Seleccionar una ---</option>
-                                        <?php
-                                        $util->carga_select('ordenes_estados', 'id', 'nombre', 'id'); ?>
-                                    </select>
+                                    <strong><?php echo $linea['nombre']." ".$linea['apellidos']; ?></strong>
                                 </div>
 
-
-                                <!-- panel footer -->
                                 <div class="panel-footer">
-
+                                    <div class="col-xs-12">
+                                    <?php echo $linea['direccion']."</div></div><br><div class='col-xs-12'>Télefono: ".$linea['movil']; ?>
 
                                 </div>
-                                <!-- /panel footer -->
 
                             </div>
                         </div>
@@ -165,6 +146,7 @@ $root="../../";
 
             </div>
 
+            <?php } ?>
         </div>
 
     </section>

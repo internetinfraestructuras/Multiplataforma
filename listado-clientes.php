@@ -111,7 +111,7 @@ check_session(2);
                             <!-- panel content -->
                             <div class="panel-body">
 
-                                <table id="example2" class="table table-bordered table-hover">
+                                <table id="example1" class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
                                         <th>ID</th>
@@ -189,16 +189,14 @@ check_session(2);
 <script type="text/javascript">var plugin_path = 'assets/plugins/';</script>
 <script type="text/javascript" src="assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 <script type="text/javascript" src="assets/js/app.js"></script>
+
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.css">
-
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.js"></script>
-
-<!-- PAGE LEVEL SCRIPTS -->
-<script type="text/javascript">
+<script>
 
     $(function () {
         $('#example1').DataTable()
-        $('#example2').DataTable({
+        $('#example1').DataTable({
             'paging'      : true,
             'lengthChange': false,
             'searching'   : true,
@@ -227,7 +225,6 @@ check_session(2);
             },
         })
     });
-
 </script>
 
 

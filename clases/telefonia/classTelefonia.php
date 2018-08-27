@@ -7,7 +7,6 @@
  */
 
 require_once('utilTelefonia.php');
-require_once ('../../config/db_config.php');
 
 
 class Telefonia
@@ -16,9 +15,8 @@ class Telefonia
 
     public $SERVER_TELEFONIA='t1.voipreq.com';
 
-
     function __construct() {
-       $this->util= new Util();
+        $this->util= new Util();
     }
 
 
@@ -508,8 +506,7 @@ class Telefonia
      * Establece un numerico de la tabla de numeros al estado $estado = "LIBRE" O "ASIGNADO"
      * @param $estado
      */
-    public function setNumericoDisponibleEstado($numero,$estado)
-{
+    public function setNumericoDisponibleEstado($numero,$estado){
 
 
         if($numero==""){
@@ -626,6 +623,26 @@ class Telefonia
      */
 
     /**
+     * Devuelve true si ya existe el cliente, false en caso contrario
+     * @param $cifCliente
+     * @throws Exception
+     */
+    public function existeCliente($cifCliente){
+
+        //verificamos que no exista ya un cliente con dicho CIF para este reventa:
+        $cif="'".$cifCliente."'";
+
+        $existeCliente=$this->util->selectLast('usuarios', 'cif','cif='.$cif);
+
+        if($existeCliente!="")
+            return true;
+        else
+            return false;
+
+
+    }
+
+    /**
      * Funcion Añadir un cliente a la plataforma
      * @param $cifSuperUsuario
      * @param $cifCliente
@@ -639,8 +656,7 @@ class Telefonia
      * @param $nombregruporecarga
      */
     public function addCliente($cifSuperUsuario,$cifCliente,$nombreCliente,$direccion,$email,
-    $umbralAlerta=5,$noficado='no',$tipoFacturacion,$nombreGrupoRecarga)
-    {
+                               $umbralAlerta=5,$noficado='no',$tipoFacturacion,$nombreGrupoRecarga){
 
         if($cifSuperUsuario==""){
             throw new Exception('Cif superuser vacio');
@@ -746,24 +762,26 @@ class Telefonia
             $passwordTroncal="PA".$this->util->generateRandomString(18);
         }
 
-        echo "here";
+        //echo "here";
 
         if($numero==""){
-                throw new Exception("Error numerico vacio");
+            throw new Exception("Error numerico vacio");
         }
 
-        echo "por alli";
+        //echo "por alli";
 
         //resto de campos para la tabla:
         $cif="'".$cifUsuario."'";
         $idCentralita=$this->util->selectLast('centralitas', 'id_centralita','cif_user='.$cif);
         $codecs="g729,gsm,alaw,ulaw";
-        $dialplan="dlpn_".$cifUsuario;
+        $rest = substr($usuarioTroncal, 0, -5);
+        $dialplan="dlpn_".$rest;
         $servidor_destino=$this->SERVER_TELEFONIA;
         $protocolo="SIP";
         $habilitado='si';
         $operadorsalida='7238#';
-        $estado='UP';
+        //$estado='UP';
+        $estado="PENDIENTE";
         $iporigen='0.0.0.0';
         $fechaactualizacion='0000-00-00 00:00:00';
         $numerollamadas=0;
@@ -781,7 +799,9 @@ class Telefonia
 
 
         //tambien tenemos que añadir el numero como numero de entrada en la tabla numericos
-        $result2 = $this->util->insertInto('numericos', array('numero','descripcion'), array($numero,'numerico'));
+        $result2 = $this->util->insertInto('numericos', array('usuario_troncal','numero','descripcion'), array($usuarioTroncal,$numero,'numerico'));
+
+        //return $result1 * $result2;
 
         if($result1 * $result2)
             return $usuarioTroncal;
@@ -792,6 +812,56 @@ class Telefonia
 
     }
 
+    /**
+     * Devuelve true si esta linea esta instalada, para ello consulta el CDR si tiene llamadas realizadas hacia el exterior
+     * @param $numero
+     */
+    public function verificarInstalacionLineaFija($numero){
+
+
+        if($numero==""){
+            throw new Exception('numero vacio');
+        }
+
+        //Controlamos que  existe una llamada desde ese numero, al menos hoy
+        date_default_timezone_set('Europe/Madrid');
+        $fecha= date('Y-m-d');
+        $fecha = $fecha." 00:00:00";
+        $existeLlamada=false;
+        $numero="'".$numero."'";
+        $fecha="'".$fecha."'";
+        $existeLlamada=$this->util->selectLast('detallescoste', 'calldate','clid='.$numero.' and calldate > '.$fecha);
+
+        return $existeLlamada;
+
+
+    }
+
+    /**
+     * Devuelve true si ese numero movil ha llamada al fijo preestablecido 856001011
+     * @param $numero
+     * @return bool
+     * @throws Exception
+     */
+    public function verificarInstalacionLineaMovil($numero){
+
+        if($numero==""){
+            throw new Exception('numero vacio');
+        }
+
+        //Controlamos que  existe una llamada desde ese numero, al menos hoy
+        date_default_timezone_set('Europe/Madrid');
+        $fecha= date('Y-m-d');
+        $fecha = $fecha." 00:00:00";
+        $existeLlamada=false;
+        $numero="'".$numero."'";
+        $fecha="'".$fecha."'";
+        $existeLlamada=$this->util->selectLast('movilcontrol', 'calldate','movil='.$numero.' and calldate > '.$fecha);
+
+        return $existeLlamada;
+
+
+    }
 
     /**
      *
