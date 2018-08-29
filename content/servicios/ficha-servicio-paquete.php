@@ -195,7 +195,7 @@ $actual = date ("Y-m-d");
 
 
                                     $atributos= $util->selectWhere3('contratos_lineas,contratos_lineas_detalles,servicios_tipos_atributos',
-                                        array("servicios_tipos_atributos.id,servicios_tipos_atributos.nombre,contratos_lineas_detalles.valor"),
+                                        array("distinct(servicios_tipos_atributos.id),servicios_tipos_atributos.nombre,contratos_lineas_detalles.valor"),
                                         "servicios_tipos_atributos.id=contratos_lineas_detalles.id_atributo_servicio AND contratos_lineas_detalles.id_linea=".$_GET['idLineaContrato']
                                         ." AND contratos_lineas.id=contratos_lineas_detalles.id_linea AND contratos_lineas_detalles.id_servicio=".$_GET['idServicio']."
                                         AND contratos_lineas_detalles.estado!=5");
@@ -254,9 +254,7 @@ $actual = date ("Y-m-d");
                             </div>
 
                         </div>
-                        <?php
-                        if($estado==1)
-                        {?>
+
                         <div class="row">
                             <div class="col-md-12">
                                 <button type="submit"
@@ -266,8 +264,7 @@ $actual = date ("Y-m-d");
                                 </button>
                             </div>
                         </div>
-                        <?php
-                        }
+                <?php
                         if($estado==4 || $estado==6 || $estado==7 || $estado==8)
                         {?>
                         <div class="row">

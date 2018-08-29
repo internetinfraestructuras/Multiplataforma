@@ -264,7 +264,7 @@ AND contratos_lineas_detalles.ID_LINEA=250
                                                 <a href="ficha-servicio.php?idServicio=<?php echo $idServicio;?>">
                                                     <button type="button" rel="tooltip" >
                                                         <?php
-                                                        echo "<a href='/mul/content/servicios/ficha-servicio-paquete.php?idServicio=".$id."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$_GET['idLineaContrato']."&tipo=$servicioId''>";
+                                                        echo "<a href='/atTotal/content/servicios/ficha-servicio-paquete.php?idServicio=".$id."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$_GET['idLineaContrato']."&tipo=$servicioId''>";
                                                         echo ' <i class="fa fa-pencil"></i>';
                                                         echo "</a>";
                                                         ?>
