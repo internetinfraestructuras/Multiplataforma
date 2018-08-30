@@ -43,7 +43,9 @@ if(
     @$atributos=$_POST['atributo'];
 
 
+
     //Si el servicio proviende de un contrato
+
     if(isset($_POST['idContrato']))
     {
        // Llamada a la rutina compleja actualizar servicio de un contrato

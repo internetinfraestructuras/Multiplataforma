@@ -115,6 +115,7 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
     {
 
 
+
         $lineaContrato=Contrato::getLineaContrato($idContrato,$idLinea);
 
 
@@ -135,9 +136,10 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
 
 
 
-        Contrato::setLineaContratoBaja($idContrato,$idLinea,$idPaquete,$fechaCambio);
+       Contrato::setLineaContratoBaja($idContrato,$idLinea,$idPaquete,$fechaCambio);
 
          $nuevaLinea=Contrato::setNuevaLineaContrato(1,$idPaquete,$idContrato,$precioProveedor,$beneficio,$impuesto,$pvp,$permanencia,1,$fechaCambio);
+
 
 
         for($k=0;$k<count($lineaDetallesAll);$k++)
@@ -150,9 +152,9 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
 
                 if($atributos!=null)
                 {
-                    echo "HAY ".count($atributos)." ATRIBUTOS<BR/>";
 
-                    for($i=0;$i<count($atributos);$i++)
+
+                    for($i=0;$i<count($atributos['id']);$i++)
                     {
                         if($atributos['id'][$i]==$lineaDetallesAll[$k]['ID_ATRIBUTO_SERVICIO'])
                         {
@@ -181,7 +183,7 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
                 $tipo=$lineaDetallesAll[$k]['ID_TIPO_SERVICIO'];
                 $ser=$lineaDetallesAll[$k]['ID_SERVICIO'];
 
-                  $idLineaDetalleNueva=Contrato::setNuevaLineaDetallesPaquete($nuevaLinea,$tipo,$idAtrib,$valor,1,$ser,$fechaCambio);
+                 $idLineaDetalleNueva=Contrato::setNuevaLineaDetallesPaquete($nuevaLinea,$tipo,$idAtrib,$valor,1,$ser,$fechaCambio);
             }
 
             Contrato::setLineaDetallesBajaServicio($idLinea,$ser,$fechaCambio);//Seteamos la linea actual a baja

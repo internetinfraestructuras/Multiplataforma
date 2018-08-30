@@ -207,25 +207,41 @@ AND contratos_lineas_detalles.ID_LINEA=250
                                         {
                                             //AND contratos_lineas_detalles.id=(SELECT max(contratos_lineas_detalles.id) FROM contratos_lineas_detalles)
                                             $atributos= $util->selectWhere3('contratos_lineas,contratos_lineas_detalles,servicios,servicios_tipos,estados_contratos',
-                                                array('servicios.id,servicios.nombre,servicios_tipos.nombre,servicios.id_servicio_tipo,estados_contratos.nombre,estados_contratos.id'),
+                                                array('servicios.id,servicios.nombre,servicios_tipos.nombre,servicios.id_servicio_tipo,estados_contratos.nombre,estados_contratos.id,contratos_lineas_detalles.id'),
                                                 'contratos_lineas.id=contratos_lineas_detalles.id_linea
                                                 AND contratos_lineas_detalles.id_servicio=servicios.id
                                                 AND servicios.id_servicio_tipo=servicios_tipos.id
                                                 AND estados_contratos.id=contratos_lineas_detalles.estado
                                                 AND contratos_lineas_detalles.estado!=2 
                                                 
-                                                AND contratos_lineas_detalles.id_linea='.$_GET['idLineaContrato']." GROUP BY contratos_lineas_detalles.ID_SERVICIO");
+                                                AND contratos_lineas_detalles.id_linea='.$_GET['idLineaContrato']."");
                                         }
 
 
+
+                                        //Se utiliza un contador para agrupar las líneas de los servicios
+                                        $contador=1;
                                         for($i=0;$i<count($atributos);$i++)
                                         {
+                                            if($contador==1)
+                                                $idLineaDetalle=$atributos[$i][6];
+
+
                                             $id=$atributos[$i][0];
+
                                             $nombre=$atributos[$i][1];
                                             $tipo=$atributos[$i][2];
                                             $servicioId=$atributos[$i][3];
                                             $estado=$atributos[$i][4];
                                             $idEstadoId=$atributos[$i][5];
+
+
+                                            $numero= $util->selectWhere3('servicios_tipos_atributos',
+                                                array("count(id)"),
+                                                "servicios_tipos_atributos.id_servicio=$servicioId AND servicios_tipos_atributos.id_tipo=2");
+
+                                            $numero=$numero[0][0];
+
 
                                             if($idEstadoId==1)
                                             {
@@ -248,11 +264,14 @@ AND contratos_lineas_detalles.ID_LINEA=250
                                                 $color="white";
                                             }
 
-                                            echo "El estado es".$estadoId;
 
 
 
 
+                                            if($contador==$numero)
+                                            {
+
+                                                $contador=1;
                                             echo "<tr>";
                                             echo "<td>$id</td>
                                                   <td>$nombre</td>
@@ -264,7 +283,7 @@ AND contratos_lineas_detalles.ID_LINEA=250
                                                 <a href="ficha-servicio.php?idServicio=<?php echo $idServicio;?>">
                                                     <button type="button" rel="tooltip" >
                                                         <?php
-                                                        echo "<a href='/atTotal/content/servicios/ficha-servicio-paquete.php?idServicio=".$id."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$_GET['idLineaContrato']."&tipo=$servicioId''>";
+                                                        echo "<a href='/atTotal/content/servicios/ficha-servicio-paquete.php?idServicio=".$id."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$_GET['idLineaContrato']."&idLineaDetalle=".$idLineaDetalle."&tipo=$servicioId''>";
                                                         echo ' <i class="fa fa-pencil"></i>';
                                                         echo "</a>";
                                                         ?>
@@ -278,8 +297,15 @@ AND contratos_lineas_detalles.ID_LINEA=250
                                             </td>
 
                                             </tr>
+                                                <?php
+                                                }
+                                                else
+                                                {
+                                                    $contador++;
 
-                                            <?php
+                                                }
+
+
                                         }
                                         ?>
                                         </tbody>

@@ -193,16 +193,34 @@ $actual = date ("Y-m-d");
                                 <tbody>
                                 <?php
 
+                                $numero= $util->selectWhere3('servicios_tipos_atributos',
+                                    array("count(id)"),
+                                    "servicios_tipos_atributos.id_servicio=$idTipoServicio AND servicios_tipos_atributos.id_tipo=2");
+                                $numero=$numero[0][0];
 
-                                    $atributos= $util->selectWhere3('contratos_lineas,contratos_lineas_detalles,servicios_tipos_atributos',
+                                $idLineaDetalle=$_GET['idLineaDetalle'];
+                                /*
+                                $atributos= $util->selectWhere3('contratos_lineas,contratos_lineas_detalles,servicios_tipos_atributos',
+                                    array("distinct(servicios_tipos_atributos.id),servicios_tipos_atributos.nombre,contratos_lineas_detalles.valor"),
+                                    "servicios_tipos_atributos.id=contratos_lineas_detalles.id_atributo_servicio AND contratos_lineas_detalles.id_linea=".$_GET['idLineaContrato']
+                                    ." AND contratos_lineas.id=contratos_lineas_detalles.id_linea AND contratos_lineas_detalles.id_servicio=".$_GET['idServicio']."
+                                        AND contratos_lineas_detalles.estado!=5 ");*/
+
+                                $numeroMax=$idLineaDetalle+($numero-1);
+
+                                $atributos= $util->selectWhere3('contratos_lineas,contratos_lineas_detalles,servicios_tipos_atributos',
                                         array("distinct(servicios_tipos_atributos.id),servicios_tipos_atributos.nombre,contratos_lineas_detalles.valor"),
                                         "servicios_tipos_atributos.id=contratos_lineas_detalles.id_atributo_servicio AND contratos_lineas_detalles.id_linea=".$_GET['idLineaContrato']
                                         ." AND contratos_lineas.id=contratos_lineas_detalles.id_linea AND contratos_lineas_detalles.id_servicio=".$_GET['idServicio']."
-                                        AND contratos_lineas_detalles.estado!=5");
+                                        AND contratos_lineas_detalles.estado!=5 AND contratos_lineas_detalles.id>=$idLineaDetalle AND contratos_lineas_detalles.id<=$numeroMax");
 
 
 
-                                for($i=0;$i<count($atributos);$i++)
+
+
+
+
+                                for($i=0;$i<$numero;$i++)
                                 {
 
                                     $id=$atributos[$i][0];
