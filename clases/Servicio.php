@@ -143,25 +143,27 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
         for($k=0;$k<count($lineaDetallesAll);$k++)
         {
 
-            echo "La linea detalle es".$lineaDetallesAll[$k]['ID_SERVICIO']." y la comparamos con ".$idServicio;
+
 
             if($lineaDetallesAll[$k]['ID_SERVICIO']==$idServicioOriginal)
             {
 
                 if($atributos!=null)
                 {
+                    echo "HAY ".count($atributos)." ATRIBUTOS<BR/>";
+
                     for($i=0;$i<count($atributos);$i++)
                     {
                         if($atributos['id'][$i]==$lineaDetallesAll[$k]['ID_ATRIBUTO_SERVICIO'])
                         {
-
+                            echo "Attr:".$i;
                             $idAtrib=$atributos['id'][$i];
                             $valor=$atributos['valor'][$i];
 
                             $tipo=$lineaDetallesAll[$k]['ID_TIPO_SERVICIO'];
                             $ser=$lineaDetallesAll[$k]['ID_SERVICIO'];
 
-                           Contrato::setNuevaLineaDetallesPaquete($nuevaLinea,$tipo,$idAtrib,$valor,1,$idServicio,$fechaCambio);
+                            $idLineaDetalleNueva=Contrato::setNuevaLineaDetallesPaquete($nuevaLinea,$tipo,$idAtrib,$valor,1,$idServicio,$fechaCambio);
                         }
 
                     }
@@ -179,20 +181,24 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
                 $tipo=$lineaDetallesAll[$k]['ID_TIPO_SERVICIO'];
                 $ser=$lineaDetallesAll[$k]['ID_SERVICIO'];
 
-                  Contrato::setNuevaLineaDetallesPaquete($nuevaLinea,$tipo,$idAtrib,$valor,1,$ser,$fechaCambio);
+                  $idLineaDetalleNueva=Contrato::setNuevaLineaDetallesPaquete($nuevaLinea,$tipo,$idAtrib,$valor,1,$ser,$fechaCambio);
             }
 
             Contrato::setLineaDetallesBajaServicio($idLinea,$ser,$fechaCambio);//Seteamos la linea actual a baja
+            echo "<hr/>";
+
+            $productosLinea=Contrato::getProductosLinea($lineaDetallesAll[$k]['ID']);
+
+            for($j=0;$j<count($productosLinea);$j++)
+            {
+                echo "CAMBIAMOS LA LINEA DEL PRODUCTO";
+                Contrato::cambiarLineaProducto($lineaDetallesAll[$k]['ID'],$idLineaDetalleNueva);
+            }
 
         }
 
 
-        $productosLinea=Contrato::getProductosLinea($idLinea);
 
-        for($j=0;$j<count($productosLinea);$j++)
-        {
-            Contrato::cambiarLineaProducto($idLinea,$nuevaLinea);
-        }
 
 
 

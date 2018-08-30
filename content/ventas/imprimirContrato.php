@@ -33,7 +33,7 @@ $util=new utilPDF();
     $inicio=$listado[0][13];
     $fin=$listado[0][14];
 
-$listado=$util->selectWhere3("textos_legales",array("texto,id_servicio"),"id_empresa=".$_SESSION['REVENDEDOR']."");
+$listado=$util->selectWhere3("textos_legales",array("texto,id_servicio"),"id_empresa=".$_SESSION['REVENDEDOR']." AND ubicacion=''");
 
 $textosGenerales="";
 $textoInternet="";
@@ -168,8 +168,11 @@ $campanas=$util->selectWhere3("campanas,contratos_campanas",array("campanas.nomb
     "campanas.id=contratos_campanas.id_campana AND contratos_campanas.id_contrato=".$_GET['idContrato']." 
       AND campanas.id_empresa=".$_SESSION['REVENDEDOR']." ");
 $contentCampanas="";
-if($campanas!="null")
+
+
+if($campanas[0]!=NULL)
 {
+
 $contentCampanas="<h3>Anexo 2: Campañas promocionales</h3>";
 $contentCampanas.="<table border=\"1\" style=\"text-align: center;padding:5px;\"><tr style=\"background-color: #9e9e9e\"><th>CAMPAÑA</th><th>DESCUENTO %</th><th>HASTA</th></tr>";
     for($k=0;$k<count($campanas);$k++)
@@ -183,6 +186,7 @@ $contentCampanas.="<table border=\"1\" style=\"text-align: center;padding:5px;\"
     $contentCampanas.="</table>";
 
 }
+
 
 for($i=0;$i<count($listado);$i++)
 {

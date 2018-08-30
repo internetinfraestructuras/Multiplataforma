@@ -197,11 +197,11 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
                         <td class="td-actions text-right">
                             <?php
                             if($idTipo==1)
-                                echo "<a href='/m3/content/servicios/ficha-paquete-cliente.php?idPaquete=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."''>";
+                                echo "<a href='/atTotal/content/servicios/ficha-paquete-cliente.php?idPaquete=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."''>";
                             else if($idTipo==2)
-                                echo "<a href='/m3/content/servicios/ficha-servicio-contrato.php?idServicio=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."&tipo=$idTipo''>";
+                                echo "<a href='/atTotal/content/servicios/ficha-servicio-contrato.php?idServicio=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."&tipo=$idTipo''>";
                             if($idTipo==3)
-                                echo '<a href="/m3/content/almacen/ficha-producto.php?idProducto='.$idAsociado.'">';
+                                echo '<a href="/atTotal/content/almacen/ficha-producto.php?idProducto='.$idAsociado.'">';
                             ?>
 
                                 <button type="button" rel="tooltip" >

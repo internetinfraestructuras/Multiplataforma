@@ -430,7 +430,7 @@ class util {
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
             $lastid = mysqli_insert_id($link);
-            echo $query;
+          //  echo $query;
             $link->close();
             if($log){
                 $consulta= str_replace("'"," ",$query);

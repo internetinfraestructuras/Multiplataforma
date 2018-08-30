@@ -84,7 +84,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     public static function getLineaDetalles($idLinea)
     {
         $util = new util();
-        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR", "ID","ID_SERVICIO"),
+        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR", "ID","ID_SERVICIO","ID"),
             "contratos_lineas_detalles.estado=1 AND contratos_lineas_detalles.id_linea=" . $_POST['idLinea']);
     }
 
@@ -324,7 +324,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
                 $values = array($idLinea, $tipo, $atributo, $valor, $fecha, '', $estado, $idServicio);
         }
 
-        $util->insertInto('contratos_lineas_detalles', $t_contratos_lineas_detalles, $values);
+        return $util->insertInto('contratos_lineas_detalles', $t_contratos_lineas_detalles, $values);
     }
 
     //obtener productos asociados a una línea de contrato
