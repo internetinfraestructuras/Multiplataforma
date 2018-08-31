@@ -148,6 +148,7 @@ $actual = date ("Y-m-d");
                                                 {
                                                     echo '<input type="hidden" name="idContrato" value='.$_GET['idContrato'].' id="id" class="form-control">';
                                                     echo '<input type="hidden" name="idLinea" value='.$_GET['idLineaContrato'].' id="id" class="form-control">';
+                                                    echo '<input type="hidden" name="idLineaDetalle" value='.$_GET['idLineaDetalle'].' id="id" class="form-control">';
                                                 }
 
                                                 ?>
@@ -193,10 +194,13 @@ $actual = date ("Y-m-d");
                                 <tbody>
                                 <?php
 
-                                $numero= $util->selectWhere3('servicios_tipos_atributos',
+
+                               $numero= $util->selectWhere3('servicios_tipos_atributos',
                                     array("count(id)"),
                                     "servicios_tipos_atributos.id_servicio=$idTipoServicio AND servicios_tipos_atributos.id_tipo=2");
                                 $numero=$numero[0][0];
+
+
 
                                 $idLineaDetalle=$_GET['idLineaDetalle'];
                                 /*
@@ -347,7 +351,7 @@ and contratos_lineas_detalles.ID_LINEA=277 AND contratos_lineas_detalles.ID_TIPO
                                                 AND contratos_lineas.id=contratos_lineas_detalles.id_linea
                                                 AND contratos_lineas_detalles.id=contratos_lineas_productos.id_linea
                                                 AND contratos_lineas_productos.id_producto=productos.id 
-                                                AND contratos_lineas_detalles.id_linea=".$_GET['idLineaContrato']." 
+                                                AND contratos_lineas_productos.id_linea=".$_GET['idLineaDetalle']." 
                                                 AND contratos_lineas_detalles.id_tipo_servicio=".$_GET['tipo']);
                                 }
 
