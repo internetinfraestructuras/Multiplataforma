@@ -358,98 +358,71 @@ public static function cancelarBajaServicio($idContrato,$idLineaContrato,$idServ
 
     public static function  romperPaquete($idContrato,$idLinea,$servicio,$fechaCambio)
     {
-        //Sacamos las fechas para los estados
 
-        //Si la fecha es hoy se pasa el anterior a BAJA(2) y el siguiente a 1(ALTA)
-        //Si la fecha es superior a hoy se pasa el actual a PROCESO DE BAJA(4) y el nuevo a (3).
-        $estadoLineaActual=self::obtenerEstadosPorFechas($fechaCambio);
-        $estadoLineaNueva=0;
-        $cambioHoy=false;
-        if($estadoLineaActual==2)
+        echo "La linea es $idLinea";
+        $lineaDetalles=Contrato::getLineaDetalles($idLinea);
+
+        Contrato::setLineaContratoBaja($idContrato,$idLinea,$servicio);
+
+        $numeroMax=0;
+        $util=new util();
+        $flag=false;
+        $idLineaContratoNueva=0;
+        $idServicio=0;
+        for($i=0;$i<count($lineaDetalles);$i++)
         {
-            $estadoLineaNueva=1;
-            $cambioHoy=true;
-        }
 
-        else if($estadoLineaActual==4)
-            $estadoLineaNueva=8;
-
-
-        //1-Obtener líneas de detalles de esa línea de contrato
-        //2-Obtener de cada linea de detalles los productos
-        //3-Obtener los productos de cada linea de detalles
-        //4-Generar nueva línea como servicios independientes
-        //5-Generar la nueva linea de detalle
-        //5-Asociad la linea de detalle a la nueva línea
-        //6-Actualizar los productos a la nueva linea de detalle
-
-        $lineasDetalles=Contrato::getLineaDetallesActivasAgrupadasServicio($idLinea);
+            $tipoServicio=$lineaDetalles[$i]['ID_TIPO_SERVICIO'];
+            $idLineaDetalle=$lineaDetalles[$i]['ID'];
+            $idAtributo=$lineaDetalles[$i]['ID_ATRIBUTO_SERVICIO'];
+            $valor=$lineaDetalles[$i]['VALOR'];
 
 
 
-        for($i=0;$i<count($lineasDetalles);$i++)
-        {
-            //Obtengo el paquete
-            $rsPaquete=Contrato::getIdPaqueteLinea($idContrato,$idLinea);
+            echo "La linea de detalle es $idLineaDetalle y su maximo $numeroMax<br>";
 
-            $idPaquete=$rsPaquete[0]['ID_ASOCIADO'];
-            $productosLineas=Contrato::getProductosLinea($lineasDetalles[$i]['ID']);
-
-
-            $tipoServicio=$lineasDetalles[$i]['ID_TIPO_SERVICIO'];
-            $servicio=$lineasDetalles[$i]['ID_SERVICIO'];
-            //Obtengo los precios del servicio estandar de esta empresa
-            $datosServicio=self::getDetallesServicio($servicio);
-            $precioProveedor=$datosServicio[0]['PRECIO_PROVEEDOR'];
-            $beneficio=$datosServicio[0]['PRECIO_PROVEEDOR'];
-            $impuesto=$precioProveedor=$datosServicio[0]['PRECIO_PROVEEDOR'];
-            $pvp=$precioProveedor=$datosServicio[0]['PRECIO_PROVEEDOR'];
-
-
-            //Genero las lineas nuevas de contrato
-            $lineaNueva=Contrato::setNuevaLineaContrato(2,$servicio,$idContrato,$precioProveedor,$beneficio,$impuesto,$pvp,"",$estadoLineaNueva,$fechaCambio);
-
-            //Pongo a baja la anterior linea
-            //Contrato::setNuevaLineaContratoBaja();
-
-            //Obtengo las lineas de detalles por el servicio.
-            $detalles=Contrato::getLineaDetallesServicioActivas($idLinea,$servicio);
-
-            for($j=0;$j<count($detalles);$j++)
+            if($numeroMax==$idLineaDetalle || $flag==false)
             {
-                var_dump($detalles[$j]);
-                $tipo=$detalles[$j]['ID_TIPO_SERVICIO'];
-                $atributo=$detalles[$j]['ID_ATRIBUTO_SERVICIO'];
-                $valor=$detalles[$j]['VALOR'];
-                $lineaDetalle=$detalles[$j]['ID'];
-                $estado=6;
+                echo "<hr>";
+                $idServicio=$lineaDetalles[$i]['ID_SERVICIO'];
 
-                $idLineaDetalleNueva=Contrato::setNuevaLineaDetalles($lineaNueva,$tipo,$atributo,$valor,$estadoLineaNueva,$fechaCambio);
+                $numero = $util->selectWhere3('servicios_tipos_atributos',
+                    array("count(id)"),
+                    "servicios_tipos_atributos.id_servicio=$tipoServicio AND servicios_tipos_atributos.id_tipo=2");
 
-                echo "<hr>Linea detalle BAJA";
-                Contrato::setLineaDetallesBaja($lineaDetalle,$fechaCambio);
+                $numero = $numero[0][0];
+                $numeroMax = $idLineaDetalle + ($numero);
+
+                $detallesServicio=Servicio::getDetallesServicio($idServicio);
+
+                $precioProveedor=$detallesServicio[0]['PRECIO_PROVEEDOR'];
+                $impuesto=$detallesServicio[0]['IMPUESTO'];
+                $beneficio=$detallesServicio[0]['BENEFICIO'];
+                $pvp=$detallesServicio[0]['PVP'];
+
+                $permanencia=null;
+
+                $idLineaContratoNueva=Contrato::setNuevaLineaContrato(2,$idServicio,$idContrato,$precioProveedor,$beneficio,$impuesto,$pvp,$permanencia,1);
+
+                $flag=true;
+
+            }
+
+
+
+            Contrato::setNuevaLineaDetalles($idLineaContratoNueva,$tipoServicio,$idServicio,$idAtributo,$valor,1);
+            Contrato::setLineaDetallesBaja($idLineaDetalle);
+            $productos=Contrato::getProductosLinea($idLineaDetalle);
+
+            for($k=0;$k<count($productos);$k++)
+            {
+                echo "El producto es:$productos[$k]<br>";
 
 
             }
-            //Cambiamos los productos de líneas si es el día actual, sino se cambiarían en el cron;
-            if($cambioHoy)
-                Contrato::cambiarLineaProducto($lineaDetalle,$idLineaDetalleNueva);
-            //GENERAR ANEXO BAJA SERVICIO
-
-
 
         }
 
-
-
-        //Dar de Baja todas las líneas de detalles antiguas;
-
-        //Generar anexo de rotura de paquete y de alta de servicios nuevos
-        Contrato::generarAnexo($idContrato,$servicio,8);
-        if($cambioHoy)
-            Contrato::setLineaContratoBaja($idContrato,$idLinea,$idPaquete,$fechaCambio);
-        else
-            Contrato::setLineaContratoBajaCambio($idContrato,$idLinea,$idPaquete,$fechaCambio);
 
 
     }
