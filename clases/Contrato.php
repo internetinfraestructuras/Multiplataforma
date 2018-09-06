@@ -117,7 +117,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     public static function getLineaDetallesServicioActivas($idLinea, $idServicio)
     {
         $util = new util();
-        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR"),
+        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR","ID_SERVICIO","contratos_lineas_detalles.ID"),
             "contratos_lineas_detalles.id_linea=" . $idLinea . " AND contratos_lineas_detalles.id_servicio=" . $idServicio . " AND contratos_lineas_detalles.estado=1");
     }
 
@@ -200,7 +200,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     }
 
     //Establece una línea detalle a baja
-    public static function setLineaDetallesBaja($idLineaContrato, $fechaBaja)
+    public static function setLineaDetallesBaja($idLineaContrato, $fechaBaja=null)
     {
         $util = new util();
         $campos = array('ESTADO', 'FECHA_BAJA');
@@ -347,9 +347,11 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     //Generar un anexo de contrato
     public static function generarAnexo($idContrato, $idServicio, $tipoAnexo)
     {
+
         $util = new util();
         $t_contratos_anexos = array("ID_CONTRATO", "ID_SERVICIO", "ID_TIPO_TRAMITE");
         $values = array($idContrato, $idServicio, $tipoAnexo);
+
         $resAnexo = $util->insertInto('contratos_anexos', $t_contratos_anexos, $values);
     }
 
