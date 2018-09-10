@@ -221,7 +221,8 @@ if(
 
 
 
-                $values=array($ls[$i]['id_contrato'],date('Y-m-d h:i:s '),"MODIFICACIÓN DEL SERVICIO DE LA LINEA:".$ls[$i]['id']." PARA EL CLIENTE","");
+                $values=array($ls[$i]['id_contrato'],$idServicio,$_POST['idLinea'],3);
+
                 $resAnexo= $util->insertInto('contratos_anexos', $t_contratos_anexos, $values);
 
             }

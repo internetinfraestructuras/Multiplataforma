@@ -151,7 +151,8 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         else
             $values = array($estado, $fecha);
 
-        $result = $util->update('contratos_lineas', $campos, $values, "id_asociado=" . $idServicio . " AND id_contrato=" . $idContrato . " AND id=" . $idLinea);
+
+        $result = $util->update('contratos_lineas', $campos, $values,"id_asociado=$idServicio AND id_contrato=$idContrato AND id=$idLinea");
     }
 
     //Establece una línea de un contrato de baja

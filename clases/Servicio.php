@@ -362,7 +362,9 @@ public static function cancelarBajaServicio($idContrato,$idLineaContrato,$idServ
         echo "La linea es $idLinea";
         $lineaDetalles=Contrato::getLineaDetalles($idLinea);
 
-        Contrato::setLineaContratoBaja($idContrato,$idLinea,$servicio);
+        $idPaquete=Contrato::getIdPaqueteLinea($idContrato,$idLinea);
+        $idPaquete=$idPaquete[0][0];
+        Contrato::setLineaContratoBaja($idContrato,$idLinea,$idPaquete);
 
         $numeroMax=0;
         $util=new util();

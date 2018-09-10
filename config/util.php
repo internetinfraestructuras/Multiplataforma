@@ -310,7 +310,7 @@ class util {
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
 
-          echo "<br>".$query."<br>";
+         echo "<br>".$query."<br>";
 
             if (!($result = $link->query($query)))
                 throw new Exception();
@@ -430,7 +430,7 @@ class util {
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
             $lastid = mysqli_insert_id($link);
-         // echo $query;
+            echo $query;
             $link->close();
             if($log){
                 $consulta= str_replace("'"," ",$query);
@@ -449,9 +449,11 @@ class util {
 
     public function update($tabla, $campos, $valor, $where, $log=true){
 
+
         if($where=='')
             return;
 
+        echo "EL WHERE ".$where."<br>";
         $link = $this->conectar();
 
         $columnas = limpiar(implode($campos, ", "));
@@ -465,15 +467,18 @@ class util {
 
         $query = substr($query, 0, -1);
 
+
         if($where != null)
             $query = $query  . " WHERE " . $where;
+
         $this->log($query);
+        echo $query."<br/>";
         try {
             $link->query($query);
         }catch (Exception $e){
             $this->log('eror update: ' . $e->getFile());
         }
-        echo $query."<br/>";
+
 //        if (!($result = $link->query($query))) {
 //
 //            throw new Exception('Error en selectWhere.');

@@ -19,6 +19,8 @@ define('DEF_REVENDEDOR','Revendedor');
 define('DEF_USUARIOS','Usuarios');
 define('DEF_CLIENTES','Clientes');
 define('DEF_PORTA_CONF','Portabilidades');
+define('DEF_LISTADO_MOVILES','Líneas móviles activas');
+define('DEF_CDR','Líneas móviles activas');
 define('DEF_CAMPANAS','Campañas');
 define('DEF_ANEXOS','Anexos');
 define('DEF_ALMACEN','Almacén');

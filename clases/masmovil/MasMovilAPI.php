@@ -737,34 +737,45 @@ class MasMovilAPI
         for($i=$primerDia;$i<$hoy;$i++)
             $cdr->setLineas($this->getCDRLineaDia($msidn,$this->getFechaMesActual($i)));
 
+
         return $cdr;
 
     }
 
-    public function getCDRLineaDia($msidn,$fecha)
+    /* RECORRE EL FICHERO Y NOS DEVUELVE LAS LÍNEAS DE ESE FICHERO*/
+    private function getCDRLineaDia($msidn,$fecha)
     {
 
+        $nombreFichero=$fecha.".txt";
 
         $arrayLineas=array();
-
-        if(file_exists($fecha.".txt"))
+        if(file_exists("C://xampp/htdocs/atTotal/cdr/".$nombreFichero))
         {
+            try
+            {
+            $fp = fopen("C://xampp/htdocs/atTotal/cdr/".$nombreFichero, "r");
 
-
-            $fp = fopen($fecha . ".txt", "r");
-
-            while (!feof($fp)) {
+            while (!feof($fp))
+            {
                 $linea = fgets($fp);
                 $array = explode(';', $linea);
 
-                if ($array[1] == $msidn) {
-                    $linea=new CDRLinea($array[0], $array[1], $array[2], $array[3], $array[4], $array[5], $array[6], $array[7], $array[8], $array[9]);
+                if ($array[1] == $msidn)
+                {
+                    //$tipo, $origen, $destino, $tarifa, $fecha, $hora, $tiempo, $trafico, $velocidad, $detalle
+
+                    $linea=new CDRLinea($array[0], $array[1], $array[2], $array[3], $array[5], $array[6], $array[7], $array[8], $array[9], $array[10]);
                     array_push($arrayLineas, $linea);
                 }
             }
 
             fclose($fp);
+            }catch (Exception $ex)
+            {
+                echo "No se puede abrir";
+            }
         }
+
 
         return $arrayLineas;
 

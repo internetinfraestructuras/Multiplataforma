@@ -22,7 +22,7 @@ $t_servicios=array("ID_SERVICIO_TIPO","ID_EMPRESA","NOMBRE","PRECIO_PROVEEDOR","
 $t_servicios_atributos=array("ID_TIPO_ATRIBUTO","ID_SERVICIO","VALOR");
 $t_contratos_lineas=array("ID_TIPO","ID_ASOCIADO","ID_CONTRATO","PRECIO_PROVEEDOR","BENEFICIO","IMPUESTO","PVP","PERMANENCIA","ESTADO","FECHA_ALTA","FECHA_BAJA");
 $t_contratos_lineas_detalles=array("ID_LINEA","ID_TIPO_SERVICIO","ID_ATRIBUTO_SERVICIO","VALOR","FECHA_ALTA","FECHA_BAJA","ESTADO");
-$t_contratos_anexos=array("ID_CONTRATO","FECHA","DESCRIPCION","FICHERO");
+$t_contratos_anexos=array("ID_CONTRATO","ID_SERVICIO","ID_LINEA_CONTRATO","ID_TIPO_TRAMITE");
 $t_productos_atributos=array("ID_ATRIBUTO","ID_PRODUCTO","VALOR");
 
 $t_productos_modelos=array("ID_TIPO","NOMBRE","ID_EMPRESA");
