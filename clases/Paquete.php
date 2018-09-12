@@ -114,4 +114,9 @@ public static function modificarPaqueteContrato($idContrato,$idLinea,$id,$precio
 
 }
 
+public static function getNombrePaquete($idPaquete)
+{
+    $util = new util();
+    return $util->selectWhere3('paquetes', array('NOMBRE'),'ID='.$idPaquete);
+}
 }

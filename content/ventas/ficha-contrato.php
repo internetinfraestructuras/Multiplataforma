@@ -223,7 +223,7 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
                         <td colspan="3"></td>
                         <td><strong>Total: </strong><?php echo $totalContrato; ?>€</td>
                         <td colspan="4">
-                            <a target="_blank" href="facturar.php?idContrato=<?php echo $id;?>">
+                            <a target="_blank" href="facturar.php?idContrato=<?php echo $_GET['idContrato'];?>">
                             <button type="button" rel="tooltip" class="">
                                 <i class="fa  fa-file-archive-o" style="font-size:1em; color:green; cursor: pointer" onclick="facturar(<?php echo $id;?>)"></i>
                             </button></a>

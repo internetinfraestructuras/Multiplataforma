@@ -17,6 +17,13 @@ class Contrato
         return $util->insertInto('contratos', $t_contratos, $values);
     }
 
+    public static function getContratosAltaEmpresa($idEmpresa)
+    {
+        $util = new util();
+
+        return $util->selectWhere3("contratos", array("ID", "NUMERO", "ID_CLIENTE", "FECHA_INICIO", "FECHA_FIN", "ESTADO"),
+            "contratos.id_empresa=$idEmpresa AND contratos.estado=1");
+    }
     //Devuelve la linea contratos_lineas de un contrato de una dicha linea con un idServicio especifico.
     public static function getLineaContratoServicio($idContrato, $idLinea, $idServicio)
     {
@@ -25,6 +32,15 @@ class Contrato
 
         return $util->selectWhere3("contratos_lineas", array("ID_TIPO", "ID_ASOCIADO", "ID_CONTRATO", "PRECIO_PROVEEDOR", "BENEFICIO", "IMPUESTO", "PVP", "PERMANENCIA"),
             "contratos_lineas.id_asociado=" . $idServicio . " AND contratos_lineas.id_contrato=" . $idContrato . " AND id=" . $idLinea);
+    }
+
+    //Nos da la campaña activa para un contrato actualmente
+    public static function getCampanasContrato($idContrato)
+    {
+        $util = new util();
+
+        return $util->selectWhere3("contratos_campanas", array("ID_CAMPANA","DTO","DTO_HASTA"),
+            "contratos_campanas.id_contrato=$idContrato AND contratos_campanas.dto_hasta>=date(now())");
     }
 
     // Agrega documentos tipo firma y escaneados al contrato (Rubén)
@@ -66,7 +82,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         $util = new util();
 
         return $util->selectWhere3("contratos_lineas,contratos_lineas_detalles",
-            array("ID_TIPO", "ID_ASOCIADO", "ID_CONTRATO", "PRECIO_PROVEEDOR", "BENEFICIO", "IMPUESTO", "PVP", "PERMANENCIA"),
+            array("ID_TIPO", "ID_ASOCIADO", "ID_CONTRATO", "PRECIO_PROVEEDOR", "BENEFICIO", "IMPUESTO", "PVP", "PERMANENCIA","FECHA_ALTA"),
             "contratos_lineas.id=contratos_lineas_detalles.id_linea AND contratos_lineas_detalles.id_servicio=" . $idServicio . " 
             AND contratos_lineas.id_contrato=" . $idContrato . " AND contratos_lineas.id=" . $idLinea);
     }
@@ -78,6 +94,15 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
         return $util->selectWhere3("contratos_lineas", array("ID_TIPO", "ID_ASOCIADO", "ID_CONTRATO", "PRECIO_PROVEEDOR", "BENEFICIO", "IMPUESTO", "PVP", "PERMANENCIA"),
             "contratos_lineas.id_contrato=" . $idContrato . " AND id=" . $idLinea);
+    }
+
+    public static function getLineasContratoAlta($idContrato)
+    {
+
+        $util = new util();
+
+        return $util->selectWhere3("contratos_lineas", array("ID_TIPO", "ID_ASOCIADO", "ID_CONTRATO", "PRECIO_PROVEEDOR", "BENEFICIO", "IMPUESTO", "PVP", "PERMANENCIA"),
+            "contratos_lineas.id_contrato=$idContrato AND contratos_lineas.estado=1");
     }
 
     //obtiene las linea de detalle de un contrato
