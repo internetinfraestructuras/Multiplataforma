@@ -24,6 +24,14 @@ class Contrato
         return $util->selectWhere3("contratos", array("ID", "NUMERO", "ID_CLIENTE", "FECHA_INICIO", "FECHA_FIN", "ESTADO"),
             "contratos.id_empresa=$idEmpresa AND contratos.estado=1");
     }
+    public static function getContratosBajaHoy($idEmpresa)
+    {
+        $util = new util();
+
+        return $util->selectWhere3("contratos", array("ID", "NUMERO", "ID_CLIENTE", "FECHA_INICIO", "FECHA_FIN", "ESTADO"),
+            "contratos.id_empresa=$idEmpresa AND contratos.fecha_fin=date(now()) AND contratos.estado!=5");
+    }
+
     //Devuelve la linea contratos_lineas de un contrato de una dicha linea con un idServicio especifico.
     public static function getLineaContratoServicio($idContrato, $idLinea, $idServicio)
     {
@@ -101,7 +109,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
         $util = new util();
 
-        return $util->selectWhere3("contratos_lineas", array("ID_TIPO", "ID_ASOCIADO", "ID_CONTRATO", "PRECIO_PROVEEDOR", "BENEFICIO", "IMPUESTO", "PVP", "PERMANENCIA"),
+        return $util->selectWhere3("contratos_lineas", array("ID_TIPO", "ID_ASOCIADO", "ID_CONTRATO", "PRECIO_PROVEEDOR", "BENEFICIO", "IMPUESTO", "PVP", "PERMANENCIA","ID"),
             "contratos_lineas.id_contrato=$idContrato AND contratos_lineas.estado=1");
     }
 
@@ -110,7 +118,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     {
         $util = new util();
         return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR", "ID","ID_SERVICIO","ID"),
-            "contratos_lineas_detalles.estado=1 AND contratos_lineas_detalles.id_linea=" . $_POST['idLinea']);
+            "contratos_lineas_detalles.estado=1 AND contratos_lineas_detalles.id_linea=$idLinea");
     }
 
     //obtiene las linea de detalle de un contrato
@@ -156,7 +164,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     }
 
     //Establece una línea de un contrato de baja
-    public static function setLineaContratoBaja($idContrato, $idLinea, $idServicio, $fecha = null)
+    public static function setLineaContratoBaja($idContrato, $idLinea, $idAsociado, $fecha = null)
     {
         $util = new util();
 
@@ -177,7 +185,16 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
             $values = array($estado, $fecha);
 
 
-        $result = $util->update('contratos_lineas', $campos, $values,"id_asociado=$idServicio AND id_contrato=$idContrato AND id=$idLinea");
+        $result = $util->update('contratos_lineas', $campos, $values,"id_asociado=$idAsociado AND id_contrato=$idContrato AND id=$idLinea");
+    }
+
+
+    public static function setContratoBaja($idContrato,$idEmpresa)
+    {
+        $util = new util();
+        $campos = array('ESTADO');
+        $values = array("6");
+        $result = $util->update('contratos', $campos, $values,"id=$idContrato AND id_empresa=$idEmpresa");
     }
 
     //Establece una línea de un contrato de baja

@@ -18,10 +18,9 @@ $listadoEmpresas=Empresa::getListadoEmpresas();
 
 $fechaActual=date("Y-m-d");
 
-$idEmpresa=1;
-//for($k=0;$k<count($listadoEmpresas);$k++)
-//{
-    //$idEmpresa=$listadoEmpresas[$k][0];
+for($k=0;$k<count($listadoEmpresas);$k++)
+{
+    $idEmpresa=$listadoEmpresas[$k][0];
 
     $diaFacturacion=Factura::getDiaFacturacion($idEmpresa);
 
@@ -34,13 +33,10 @@ $idEmpresa=1;
         $diaFacturacion=5;
 
 
-echo "Contratos de la empresa $idEmpresa y se factura $diaFacturacion";
-echo "<hr>";
 
 //Hay que hacer un prorrateo de los contraros de líneas para saber si estamos todo el mes y esta establecido la facturación automática
     if($diaFacturacion==date('d') && $automatica[0][0]==1)
     {
-
 
         $listaContratos=Contrato::getContratosAltaEmpresa($idEmpresa);
 
@@ -61,7 +57,7 @@ echo "<hr>";
             }
             //OBTENEMOS LAS FACTURAS DEL MES EN CURSO DE DICHA EMPRESA,SI LA FACTURA YA ESTUVIESE GENERADA NO SE VUELVE A GENERAR!!!
 
-          /*  $facturasMes=Factura::getFacturasMesCurso($idEmpresa);
+           $facturasMes=Factura::getFacturasMesCurso($idEmpresa);
             $flag=false;
 
            for($o=0;$o<count($facturasMes);$o++)
@@ -71,12 +67,12 @@ echo "<hr>";
                    $flag=true;
                    break;
                }
-           }*/
+           }
 
            //SI EL FLAG ES FALSO QUIERE DECIR QUE NO EXISTE UNA FACTURA EN EL MES EN CURSO DE DICHO CONTRATO
             if($flag==false)
             {
-              //  $idFactura=Factura::setNuevaFactura($listaContratos[$i][0],$_SESSION['REVENDEDOR'],$total,$impuesto,$descuento);
+                $idFactura=Factura::setNuevaFactura($listaContratos[$i][0],$_SESSION['REVENDEDOR'],$total,$impuesto,$descuento);
                 $total=0;
 
 
@@ -89,7 +85,7 @@ echo "<hr>";
 
                     $total+=$importe;
 
-                  //  $rs= Factura::setNuevaLineaFactura($idFactura,$idLinea,$importe,$impuesto);
+                    $rs= Factura::setNuevaLineaFactura($idFactura,$idLinea,$importe,$impuesto);
 
                 }
 
@@ -125,7 +121,7 @@ echo "<hr>";
 
 
 
-                //Factura::setImporteTotal($idFactura,$total,21,$dto,$totalDto);
+                Factura::setImporteTotal($idFactura,$total,21,$dto,$totalDto);
             }
 
         }
@@ -135,7 +131,7 @@ echo "<hr>";
         echo "Hoy no se factura primo<br>";
     }
 
-//}
+}
 
 
 ?>
