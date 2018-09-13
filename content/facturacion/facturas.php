@@ -161,7 +161,7 @@ check_session(3);
                                     $total=$listado[$i][4];
 
                                     echo "<tr>";
-                                    echo "<td >$id</td><td>$fecha</td><td>$impuesto</td><td>$dto</td><td>$total</td>";
+                                    echo "<td >$id</td><td>$fecha </td><td>$impuesto %</td><td>$dto %</td><td>$total €</td>";
 
                                     ?>
                                     <td class="td-actions text-right">
