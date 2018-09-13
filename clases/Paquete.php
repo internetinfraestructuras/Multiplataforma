@@ -14,32 +14,109 @@ require_once ('Contrato.php');
 class Paquete
 {
 
-public static function modificarPaqueteContrato($idContrato,$idLinea,$id,$precioProveedor,$beneficio,$impuestos,$pvp)
+public static function modificarPaqueteContrato($idContrato,$idLinea,$id,$precioProveedor,$beneficio,$impuesto,$pvp)
 {
 
-  $lineaContrato=Contrato::getLineaContrato($idContrato,$idLinea);//LINEA DEL CONTRATO
-  $lineaDetalles=Contrato::getLineaDetalles($idLinea);//ARRAY DE LOS ATRIBUTOS DE LOS SERVICIOS DEL PAQUETE
-  $lineasProductos=Contrato::getProductosLinea($idLinea);
+
+    $lineaContrato=Contrato::getLineaContrato($idContrato,$idLinea);
 
 
-  $idTipo=$lineaContrato[0]['ID_TIPO'];//Tipo de servicio
-  $idAsociado=$lineaContrato[0]['ID_ASOCIADO'];//ID del servicio/paquete
-  $permanencia=$lineaContrato[0]['PERMANENCIA'];
+    $permanencia=$lineaContrato[0]['PERMANENCIA'];
 
-    //ACTUALIZAR LINEA CONTRATO A BAJA
-    Contrato::setLineaContratoBaja($idContrato,$idLinea,$idAsociado);
+    $lineaDetallesAll=Contrato::getLineaDetalles($idLinea);
 
 
-
-    //ACTUALIZAR LINEA DETALLES A BAJA
+    $idPaquete=Contrato::getIdPaqueteLinea($idContrato,$idLinea);
 
 
 
-    //CREAR NUEVA LINEA DE CONTRATO
-    //CREAR NUEVAS LÍNEAS DE DETALLES A BAJA
-    //ACTUALIZAR PRODUCTOS A LA NUEVA LINEA
-    //GENERAR ANEXO
+    $idPaquete=$idPaquete[0]['ID_ASOCIADO'];
+
+
+
+    Contrato::setLineaContratoBaja($idContrato,$idLinea,$idPaquete,$fechaCambio);
+
+    $nuevaLinea=Contrato::setNuevaLineaContrato(1,$idPaquete,$idContrato,$precioProveedor,$beneficio,$impuesto,$pvp,$permanencia,1,$fechaCambio);
+
+
+    $util=new util();
+    $numero= $util->selectWhere3('servicios_tipos_atributos',
+        array("count(id)"),
+        "servicios_tipos_atributos.id_servicio=$tipo AND servicios_tipos_atributos.id_tipo=2");
+
+    $numero=$numero[0][0];
+    $numeroMax=$idLineaDetalle+($numero-1);
+
+
+
+    for($k=0;$k<count($lineaDetallesAll);$k++)
+    {
+
+
+
+        if($lineaDetallesAll[$k]['ID_SERVICIO']==$idServicioOriginal && $lineaDetallesAll[$k]['ID']<=$numeroMax )
+        {
+
+            if($atributos!=null)
+            {
+
+
+                for($i=0;$i<count($atributos['id']);$i++)
+                {
+
+
+                    if($atributos['id'][$i]==$lineaDetallesAll[$k]['ID_ATRIBUTO_SERVICIO'] )
+                    {
+
+                        $idAtrib=$atributos['id'][$i];
+                        $valor=$atributos['valor'][$i];
+
+                        $tipo=$lineaDetallesAll[$k]['ID_TIPO_SERVICIO'];
+                        $ser=$lineaDetallesAll[$k]['ID_SERVICIO'];
+
+                        $idLineaDetalleNueva=Contrato::setNuevaLineaDetallesPaquete($nuevaLinea,$tipo,$idAtrib,$valor,1,$idServicio,$fechaCambio);
+
+                        Contrato::generarAnexo($idContrato,$ser,3);
+                    }
+
+                }
+
+            }
+
+
+        }
+        else
+        {
+
+            $idAtrib=$lineaDetallesAll[$k]['ID_ATRIBUTO_SERVICIO'];
+            $valor=$lineaDetallesAll[$k]['VALOR'];
+
+            $tipo=$lineaDetallesAll[$k]['ID_TIPO_SERVICIO'];
+            $ser=$lineaDetallesAll[$k]['ID_SERVICIO'];
+
+            $idLineaDetalleNueva=Contrato::setNuevaLineaDetallesPaquete($nuevaLinea,$tipo,$idAtrib,$valor,1,$ser,$fechaCambio);
+        }
+
+        Contrato::setLineaDetallesBajaServicio($idLinea,$ser,$fechaCambio);//Seteamos la linea actual a baja
+
+
+        $productosLinea=Contrato::getProductosLinea($lineaDetallesAll[$k]['ID']);
+
+        for($j=0;$j<count($productosLinea);$j++)
+        {
+
+            Contrato::cambiarLineaProducto($lineaDetallesAll[$k]['ID'],$idLineaDetalleNueva);
+        }
+
+    }
+
+
 
 }
 
+public static function getNombrePaquete($idPaquete)
+{
+    $util = new util();
+    return $util->selectWhere3('paquetes', array('NOMBRE'),'ID='.$idPaquete);
+}
 }

@@ -80,7 +80,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'ordenes')
         }
     }
 
-
+/*
     if(intval($result)>0){
         if($is_ajax === false) {
             _redirect('#alert_success');
@@ -96,7 +96,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'ordenes')
             die('_failed_');
         }
     }
-
+*/
 }
 
 // todo: --------------------------------------------

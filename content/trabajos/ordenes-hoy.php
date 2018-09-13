@@ -157,11 +157,11 @@ $root="../../";
                                             for($j=0;$j<count($empleados);$j++)
                                             {
 
-                                                $id=$empleados[$j][0];
+                                                $idEmpleado=$empleados[$j][0];
                                                 $nombre=$empleados[$j][1];
                                                 $apellidos=$empleados[$j][2];
 
-                                                echo "<option data-id='".$id."' value='" .$id. "'>".$nombre."--".$apellidos."</option>";
+                                                echo "<option data-id='".$idEmpleado."' value='" .$idEmpleado. "'>".$nombre."--".$apellidos."</option>";
                                             }
                                             echo '</select></td>';
 

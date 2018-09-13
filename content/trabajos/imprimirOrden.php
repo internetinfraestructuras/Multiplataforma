@@ -103,9 +103,6 @@ for($i=0;$i<count($lineas);$i++)
     }
 
 
-
-
-
     if($idEstado!=3)
         $totalContrato+=$pvp;
 

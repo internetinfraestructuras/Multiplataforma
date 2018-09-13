@@ -15,10 +15,13 @@ define('AUTOR','Internet Infraestructuras S.L.');
 define('OWNER','AT Control');
 
 define('DEF_REVENDEDORES','Revendedores');
+define('DEF_FACTURACION','Facturación');
 define('DEF_REVENDEDOR','Revendedor');
 define('DEF_USUARIOS','Usuarios');
 define('DEF_CLIENTES','Clientes');
 define('DEF_PORTA_CONF','Portabilidades');
+define('DEF_LISTADO_MOVILES','Líneas móviles activas');
+define('DEF_CDR','Líneas móviles activas');
 define('DEF_CAMPANAS','Campañas');
 define('DEF_ANEXOS','Anexos');
 define('DEF_ALMACEN','Almacén');
@@ -48,7 +51,9 @@ define('MNU_ITEM_8','Almacén');
 define('MNU_ITEM_9','Ventas');
 define('MNU_ITEM_10','Servicios');
 define('MNU_ITEM_11','Trabajos');
+
 define('MNU_ITEM_12','Configuración');
+define('MNU_ITEM_13','Facturación');
 date_default_timezone_set('Europe/Madrid');
 
 /** acceso servidor telefonia */

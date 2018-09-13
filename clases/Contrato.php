@@ -27,7 +27,6 @@ class Contrato
             "contratos_lineas.id_asociado=" . $idServicio . " AND contratos_lineas.id_contrato=" . $idContrato . " AND id=" . $idLinea);
     }
 
-
     // Agrega documentos tipo firma y escaneados al contrato (Rubén)
     public static function setNuevoDocumento($contrato, $tipo, $url, $svg)
     {
@@ -287,6 +286,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     //Establece una nueva línea de detalle
     public static function setNuevaLineaDetalles($idLinea, $tipo, $idservicio, $atributo, $valor, $estado, $fechaAlta = null)
     {
+
         $util = new util();
         $t_contratos_lineas_detalles = array("ID_LINEA", "ID_TIPO_SERVICIO", "ID_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR", "FECHA_ALTA", "FECHA_BAJA", "ESTADO");
         if ($fechaAlta == null)

@@ -148,6 +148,7 @@ $actual = date ("Y-m-d");
                                                 {
                                                     echo '<input type="hidden" name="idContrato" value='.$_GET['idContrato'].' id="id" class="form-control">';
                                                     echo '<input type="hidden" name="idLinea" value='.$_GET['idLineaContrato'].' id="id" class="form-control">';
+                                                    echo '<input type="hidden" name="idLineaDetalle" value='.$_GET['idLineaDetalle'].' id="id" class="form-control">';
                                                 }
 
                                                 ?>
@@ -194,15 +195,36 @@ $actual = date ("Y-m-d");
                                 <?php
 
 
-                                    $atributos= $util->selectWhere3('contratos_lineas,contratos_lineas_detalles,servicios_tipos_atributos',
-                                        array("servicios_tipos_atributos.id,servicios_tipos_atributos.nombre,contratos_lineas_detalles.valor"),
+                               $numero= $util->selectWhere3('servicios_tipos_atributos',
+                                    array("count(id)"),
+                                    "servicios_tipos_atributos.id_servicio=$idTipoServicio AND servicios_tipos_atributos.id_tipo=2");
+                                $numero=$numero[0][0];
+
+
+
+                                $idLineaDetalle=$_GET['idLineaDetalle'];
+                                /*
+                                $atributos= $util->selectWhere3('contratos_lineas,contratos_lineas_detalles,servicios_tipos_atributos',
+                                    array("distinct(servicios_tipos_atributos.id),servicios_tipos_atributos.nombre,contratos_lineas_detalles.valor"),
+                                    "servicios_tipos_atributos.id=contratos_lineas_detalles.id_atributo_servicio AND contratos_lineas_detalles.id_linea=".$_GET['idLineaContrato']
+                                    ." AND contratos_lineas.id=contratos_lineas_detalles.id_linea AND contratos_lineas_detalles.id_servicio=".$_GET['idServicio']."
+                                        AND contratos_lineas_detalles.estado!=5 ");*/
+
+                                $numeroMax=$idLineaDetalle+($numero-1);
+
+                                $atributos= $util->selectWhere3('contratos_lineas,contratos_lineas_detalles,servicios_tipos_atributos',
+                                        array("distinct(servicios_tipos_atributos.id),servicios_tipos_atributos.nombre,contratos_lineas_detalles.valor"),
                                         "servicios_tipos_atributos.id=contratos_lineas_detalles.id_atributo_servicio AND contratos_lineas_detalles.id_linea=".$_GET['idLineaContrato']
                                         ." AND contratos_lineas.id=contratos_lineas_detalles.id_linea AND contratos_lineas_detalles.id_servicio=".$_GET['idServicio']."
-                                        AND contratos_lineas_detalles.estado!=5");
+                                        AND contratos_lineas_detalles.estado!=5 AND contratos_lineas_detalles.id>=$idLineaDetalle AND contratos_lineas_detalles.id<=$numeroMax");
 
 
 
-                                for($i=0;$i<count($atributos);$i++)
+
+
+
+
+                                for($i=0;$i<$numero;$i++)
                                 {
 
                                     $id=$atributos[$i][0];
@@ -254,9 +276,7 @@ $actual = date ("Y-m-d");
                             </div>
 
                         </div>
-                        <?php
-                        if($estado==1)
-                        {?>
+
                         <div class="row">
                             <div class="col-md-12">
                                 <button type="submit"
@@ -266,8 +286,7 @@ $actual = date ("Y-m-d");
                                 </button>
                             </div>
                         </div>
-                        <?php
-                        }
+                <?php
                         if($estado==4 || $estado==6 || $estado==7 || $estado==8)
                         {?>
                         <div class="row">
@@ -332,7 +351,7 @@ and contratos_lineas_detalles.ID_LINEA=277 AND contratos_lineas_detalles.ID_TIPO
                                                 AND contratos_lineas.id=contratos_lineas_detalles.id_linea
                                                 AND contratos_lineas_detalles.id=contratos_lineas_productos.id_linea
                                                 AND contratos_lineas_productos.id_producto=productos.id 
-                                                AND contratos_lineas_detalles.id_linea=".$_GET['idLineaContrato']." 
+                                                AND contratos_lineas_productos.id_linea=".$_GET['idLineaDetalle']." 
                                                 AND contratos_lineas_detalles.id_tipo_servicio=".$_GET['tipo']);
                                 }
 

@@ -6,11 +6,11 @@ if (!isset($_SESSION)) {
 
     /*
         ╔════════════════════════════════════════════════════════════╗
-        ║ Interfaz que muestra el listado de clientes      ║
+        ║ Interfaz que muestra el listado de contratos moviles del cliente    ║
         ╚════════════════════════════════════════════════════════════╝
     */
 
-require_once('config/util.php');
+require_once('../../config/util.php');
 $util = new util();
 check_session(2);
 
@@ -32,16 +32,16 @@ check_session(2);
           rel="stylesheet" type="text/css"/>
 
     <!-- CORE CSS -->
-    <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 
     <!-- THEME CSS -->
-    <link href="assets/css/essentials.css" rel="stylesheet" type="text/css" />
-    <link href="assets/css/layout.css" rel="stylesheet" type="text/css" />
-    <link href="assets/css/color_scheme/green.css" rel="stylesheet" type="text/css" id="color_scheme" />
+    <link href="../../assets/css/essentials.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/css/layout.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/css/color_scheme/green.css" rel="stylesheet" type="text/css" id="color_scheme" />
 
     <!-- JQGRID TABLE -->
-    <link href="assets/plugins/jqgrid/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
-    <link href="assets/css/layout-jqgrid.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/plugins/jqgrid/css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/css/layout-jqgrid.css" rel="stylesheet" type="text/css" />
 
 </head>
 <!--
@@ -55,7 +55,7 @@ check_session(2);
 
     <aside id="aside" style="position:fixed;left:0">
 
-        <?php require_once('menu-izquierdo.php'); ?>
+        <?php require_once('../../menu-izquierdo.php'); ?>
 
         <span id="asidebg"><!-- aside fixed background --></span>
     </aside>
@@ -65,7 +65,7 @@ check_session(2);
     <!-- HEADER -->
     <header id="header">
 
-        <?php require_once ('menu-superior.php'); ?>
+        <?php require_once ('../../menu-superior.php'); ?>
 
     </header>
     <!-- /HEADER -->
@@ -81,7 +81,7 @@ check_session(2);
         <header id="page-header">
             <h1>Usted esta en</h1>
             <ol class="breadcrumb">
-                <li><a href="#"><?php echo DEF_CLIENTES; ?></a></li>
+                <li><a href="#"><?php echo DEF_CDR; ?></a></li>
                 <li class="active">Listar</li>
             </ol>
         </header>
@@ -95,7 +95,7 @@ check_session(2);
                         <div id="panel-1" class="panel panel-default">
                             <div class="panel-heading">
 							    <span class="title elipsis">
-								    <strong>LISTADO DE <?php echo DEF_CLIENTES; ?></strong>
+								    <strong>LISTADO DE <?php echo DEF_CDR; ?></strong>
 							    </span>
 
                                 <!-- right options -->
@@ -114,39 +114,52 @@ check_session(2);
                                 <table id="example1" class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>NOMBRE</th>
-                                        <th>APELLIDOS</th>
-                                        <th>DNI</th>
+                                        <th>NUMERO</th>
+                                        <th>CLIENTE</th>
                                         <th>OPCIONES</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <?php
-                                    $listado= $util->selectWhere3('clientes',
-                                        array("clientes.ID","clientes.nombre",
-                                            "clientes.apellidos",
-                                            "clientes.dni","clientes.direccion"),
-                                        " clientes.baja=0 AND clientes.id_empresa=".$_SESSION['REVENDEDOR']);
+                                    /*
+                                     * SELECT contratos_lineas_detalles.VALOR
+                                        FROM contratos,contratos_lineas,contratos_lineas_detalles
+                                        where contratos.ID_EMPRESA=1
+                                        AND contratos_lineas.ID_CONTRATO=contratos.id
+                                        AND contratos_lineas.id=contratos_lineas_detalles.ID_LINEA AND contratos_lineas.ESTADO=1
+                                        ANd contratos_lineas_detalles.ID_ATRIBUTO_SERVICIO=48
+                                     */
+                                    $listado= $util->selectWhere3('contratos,contratos_lineas,contratos_lineas_detalles,clientes',
+                                        array("contratos_lineas_detalles.valor","clientes.nombre","clientes.apellidos","clientes.id"),
+                                        " contratos_lineas.id_contrato=contratos.id 
+                                            AND clientes.id=contratos.id_cliente
+                                            AND contratos_lineas.id=contratos_lineas_detalles.id_linea 
+                                            AND contratos_lineas.estado=1 
+                                            AND contratos_lineas_detalles.id_atributo_servicio=48 AND contratos_lineas_detalles.valor!=''
+                                            AND contratos.id_empresa=".$_SESSION['REVENDEDOR']);
 
 
                                     for($i=0;$i<count($listado);$i++)
                                     {
 
-                                        $id=$listado[$i][0];
-                                        $numeroSerie=$listado[$i][1];
-                                        $tipo=$listado[$i][2];
-                                        $modelo=$listado[$i][3];
+                                        $msidn=$listado[$i][0];
+                                        $nombreCliente=$listado[$i][1]." ".$listado[$i][2];
+                                        $idCliente=$listado[$i][3];
+
 
 
                                         echo "<tr>";
-                                        echo "<td>$id</td><td>$numeroSerie</td><td>$tipo</td><td>$modelo</td>";
+                                        echo "<td>$msidn</td><td>$nombreCliente<a href=../../ficha-cliente.php?idCliente=$idCliente >
+                                                <button type=\"button\" rel=\"tooltip\" >
+                                                    <i class=\"fa fa-eye\"></i>
+                                                </button>
+                                            </a></td>";
 
                                         ?>
                                         <td class="td-actions text-right">
-                                            <a href=ficha-cliente.php?idCliente=<?php echo $id; ?>>
+                                            <a href=cdr-actual.php?msidn=<?php echo $msidn;?> target="_blank">
                                                 <button type="button" rel="tooltip" >
-                                                    <i class="fa fa-eye"></i>
+                                                    <i class="fa fa-list"></i>
                                                 </button>
                                             </a>
 

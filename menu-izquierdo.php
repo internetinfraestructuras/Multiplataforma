@@ -6,7 +6,7 @@
  * Time: 8:07
  */
 require_once('config/define.php');
-$root="/";
+$root="/atTotal/";
 ?>
 <nav id="sideNav"><!-- MAIN MENU -->
 <ul class="nav nav-list">
@@ -27,7 +27,7 @@ $root="/";
         <ul><!-- submenus -->
             <li><a href="<?php echo $root;?>add-clie.php">Agregar</a></li>
             <li><a href="<?php echo $root;?>edit-clie.php">Modificar</a></li>
-            <li><a href="<?php echo $root;?>list-clie.php">Listar</a></li>
+            <li><a href="<?php echo $root;?>listado-clientes.php">Listar</a></li>
             <li><a href="<?php echo $root;?>del-clie.php">Borrar</a></li>
             <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->
         </ul>
@@ -58,6 +58,7 @@ $root="/";
             <li><a href="<?php echo $root;?>content/servicios/servicios.php">Servicios</a></li>
             <li><a href="<?php echo $root;?>content/servicios/proveedores.php">Proveedores</a></li>
             <li><a href="<?php echo $root;?>content/servicios/paquetes.php">Paquetes</a></li>
+            <li><a href="<?php echo $root;?>content/servicios/listados-moviles.php">CDR´s</a></li>
 
 
             <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->
@@ -92,8 +93,32 @@ $root="/";
             <i class="main-icon"><img src="/img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_11; ?> </span>
         </a>
         <ul><!-- submenus -->
-            <li><a href="<?php echo $root;?>econtent/trabajos/ordenes-hoy.php">Ordenes de hoy</a></li>
-            <li><a href="<?php echo $root;?>econtent/trabajos/ordenes.php">Ordenes de trabajo</a></li>
+            <li><a href="<?php echo $root;?>content/trabajos/ordenes-hoy.php">Ordenes de hoy</a></li>
+            <li><a href="<?php echo $root;?>content/trabajos/ordenes.php">Ordenes de trabajo</a></li>
+
+
+        </ul>
+    </li>
+    <li>
+        <a href="#">
+            <i class="fa fa-menu-arrow pull-right"></i>
+            <i class="main-icon"><img src="/img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_13; ?> </span>
+        </a>
+        <ul><!-- submenus -->
+            <li><a href="<?php echo $root;?>content/facturacion/facturas.php">Facturas</a></li>
+
+
+        </ul>
+    </li>
+    <li>
+        <a href="#">
+            <i class="fa fa-menu-arrow pull-right"></i>
+            <i class="main-icon"><img src="/img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_12; ?> </span>
+        </a>
+        <ul><!-- submenus -->
+            <li><a href="<?php echo $root;?>content/configuracion/configuracion-contratos.php">Contratos</a></li>
+            <li><a href="<?php echo $root;?>content/configuracion/configuracion-portabilidades.php">Portabilidades</a></li>
+            <li><a href="<?php echo $root;?>content/configuracion/configuracion-facturacion.php">Facturación</a></li>
 
 
         </ul>

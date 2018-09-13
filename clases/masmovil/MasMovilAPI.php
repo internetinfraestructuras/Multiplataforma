@@ -5,6 +5,10 @@
  * Date: 13/08/2018
  * Time: 13:36
  */
+require_once 'FTP.php';
+require_once 'FileProcess.php';
+require_once 'CDRLinea.php';
+require_once 'CDR.php';
 
 class MasMovilAPI
 {
@@ -13,6 +17,7 @@ class MasMovilAPI
     var $parametrosCliente;
     var $resellerId;
     var $pass;
+
 
     /**
      * MasMovilAPI constructor.
@@ -33,9 +38,14 @@ class MasMovilAPI
 
         $this->resellerId="216358";
         $this->pass="ksRsJjH039qCJ";
+        $this->ftpServer="ftp.xtratelecom.es";
+        $this->userFtp="c216358";
+        $this->passFtp="8roA1WK6";
 
 
     }
+
+
 
     private function getTimeStamp()
     {
@@ -50,7 +60,7 @@ class MasMovilAPI
         $parametros['soap_request']=array("Operation"=>array("instruction"=>array("message"=>$mensajePruebas)));
         $client = new SoapClient($this->servicio."cablePing-test.wsdl", $this->parametrosCliente);
         $resultado=$client->ping($parametros);
-       // var_dump($client->__getFunctions());
+        // var_dump($client->__getFunctions());
         return json_encode($resultado->return);
     }
 
@@ -76,18 +86,18 @@ class MasMovilAPI
         $parametros=array();
 
         $arrayFind=array("findName"=>$nombre,
-                        "phone"=>$numero,
-                        "status"=>$estado,
-                        "activateDate"=>"");
+            "phone"=>$numero,
+            "status"=>$estado,
+            "activateDate"=>"");
 
         $paramsInstruction=array("timeStamp"=>$ts,
-                                "resellerId"=>$this->resellerId,
-                                "resellerPin"=>$this->pass,
-                                "branchId"=>"",
-                                "posId"=>"",
-                                "transactionId"=>$ts,
-                                "operationType"=>"FIND",
-                                "refCustomerId"=>"");
+            "resellerId"=>$this->resellerId,
+            "resellerPin"=>$this->pass,
+            "branchId"=>"",
+            "posId"=>"",
+            "transactionId"=>$ts,
+            "operationType"=>"FIND",
+            "refCustomerId"=>"");
 
 
         $parametros['soap_request']=array("Operation"=>array("instruction"=>$paramsInstruction,"find"=>$arrayFind));
@@ -106,7 +116,7 @@ class MasMovilAPI
     public function crearNuevoCliente($nombre,$nombreEmpresa,$tipoDocumento,$dni,
                                       $nombreContacto,$telContacto,$movilContacto,$faxContacto,$emailContacto,
                                       $calle,$localidad,$codigoProvincia,$codigoPais,$codigoPostal,
-                                        $titularCuenta,$nombreBanco,$codigoBanco,$oficina,$digitoControl,$numeroCuenta)
+                                      $titularCuenta,$nombreBanco,$codigoBanco,$oficina,$digitoControl,$numeroCuenta)
     {
         $ts=$this->getTimeStamp();
         $parametros=array();
@@ -119,12 +129,12 @@ class MasMovilAPI
             "operationType"=>"NEW");
         $individual=array("Name"=>$nombre,"companyName"=>$nombreEmpresa,"identityType"=>$tipoDocumento,"identityValue"=>$dni);
         $contact=array("contactName"=>$nombreContacto,"contactPhone"=>$telContacto,"contactMobile"=>$movilContacto,"contactFax"=>$faxContacto,"contactEmail"=>$emailContacto);
-         $address=array("streetName"=>$calle,"locality"=>$localidad,"postalTown"=>$codigoProvincia,"country"=>$codigoPais,"postcode"=>$codigoPostal);
-         $bankDetails=array("holderName"=>$titularCuenta,"bankAccountName"=>$nombreBanco,"bankCode"=>$codigoBanco,"branchCode"=>$oficina,"checkDigit"=>$digitoControl,"bankAccountNumber"=>$numeroCuenta);
-         $services=array("defaultTariffPlan"=>"");
+        $address=array("streetName"=>$calle,"locality"=>$localidad,"postalTown"=>$codigoProvincia,"country"=>$codigoPais,"postcode"=>$codigoPostal);
+        $bankDetails=array("holderName"=>$titularCuenta,"bankAccountName"=>$nombreBanco,"bankCode"=>$codigoBanco,"branchCode"=>$oficina,"checkDigit"=>$digitoControl,"bankAccountNumber"=>$numeroCuenta);
+        $services=array("defaultTariffPlan"=>"");
         $parametros['soap_request']=
             array("Operation"=>
-            array("instruction"=>$instructions,"activate"=>array("individualDetails"=>$individual,"contact"=>$contact,"address"=>$address,"bankDetails"=>$bankDetails,"services"=>$services)));
+                array("instruction"=>$instructions,"activate"=>array("individualDetails"=>$individual,"contact"=>$contact,"address"=>$address,"bankDetails"=>$bankDetails,"services"=>$services)));
 
 
         $client = new SoapClient($this->servicio."cableCustomersNew-test.wsdl", $this->parametrosCliente);
@@ -132,9 +142,9 @@ class MasMovilAPI
         return json_encode($resultado->return);
     }
     public function modificarCliente($refCliente,$nombre,$nombreEmpresa,$tipoDocumento,$dni,
-                                      $nombreContacto,$telContacto,$movilContacto,$faxContacto,$emailContacto,
-                                      $calle,$localidad,$codigoProvincia,$codigoPais,$codigoPostal,
-                                      $titularCuenta,$nombreBanco,$codigoBanco,$oficina,$digitoControl,$numeroCuenta)
+                                     $nombreContacto,$telContacto,$movilContacto,$faxContacto,$emailContacto,
+                                     $calle,$localidad,$codigoProvincia,$codigoPais,$codigoPostal,
+                                     $titularCuenta,$nombreBanco,$codigoBanco,$oficina,$digitoControl,$numeroCuenta)
     {
         $ts=$this->getTimeStamp();
         $parametros=array();
@@ -208,7 +218,7 @@ class MasMovilAPI
             "refCustomerId"=>$refCliente,
             "operationType"=>"NEWLINE");
 
-            $lineDetails=array("iccid"=>$icc);
+        $lineDetails=array("iccid"=>$icc);
         $lineProducts=array("productProfile"=>$perfilProducto,"bonosAlta"=>$bonos);
 
         $parametros['soap_request']=
@@ -217,6 +227,60 @@ class MasMovilAPI
 
 
         $client = new SoapClient($this->servicio."cableMsisdnsNewline-test.wsdl", $this->parametrosCliente);
+        $resultado=$client->msisdnsMaintenance($parametros);
+        return json_encode($resultado->return);
+    }
+
+    public function suspensionLineaMovil($refCliente,$msid)
+    {
+
+        $ts=$this->getTimeStamp();
+        $parametros=array();
+        $instructions= array("timeStamp"=>$ts,
+            "resellerId"=>$this->resellerId,
+            "resellerPin"=>$this->pass,
+            "branchId"=>"",
+            "posId"=>"",
+            "transactionId"=>$ts,
+            "refCustomerId"=>$refCliente,
+            "operationType"=>"SERVICE");
+
+        $lineDetails=array("msisdn"=>$msid);
+        $lineServices=array("serviceAction"=>"J");
+
+        $parametros['soap_request']=
+            array("Operation"=>
+                array("instruction"=>$instructions,"activate"=>array("lineDetails"=>$lineDetails,"lineServices"=>$lineServices)));
+
+
+        $client = new SoapClient($this->servicio."cableMsisdnsErased-test.wsdl", $this->parametrosCliente);
+        $resultado=$client->msisdnsMaintenance($parametros);
+        return json_encode($resultado->return);
+    }
+
+    public function reactivacionLineaMovil($refCliente,$msid)
+    {
+
+        $ts=$this->getTimeStamp();
+        $parametros=array();
+        $instructions= array("timeStamp"=>$ts,
+            "resellerId"=>$this->resellerId,
+            "resellerPin"=>$this->pass,
+            "branchId"=>"",
+            "posId"=>"",
+            "transactionId"=>$ts,
+            "refCustomerId"=>$refCliente,
+            "operationType"=>"SERVICE");
+
+        $lineDetails=array("msisdn"=>$msid);
+        $lineServices=array("serviceAction"=>"R");
+
+        $parametros['soap_request']=
+            array("Operation"=>
+                array("instruction"=>$instructions,"activate"=>array("lineDetails"=>$lineDetails,"lineServices"=>$lineServices)));
+
+
+        $client = new SoapClient($this->servicio."cableMsisdnsErased-test.wsdl", $this->parametrosCliente);
         $resultado=$client->msisdnsMaintenance($parametros);
         return json_encode($resultado->return);
     }
@@ -280,6 +344,32 @@ class MasMovilAPI
 
 
         $client = new SoapClient($this->servicio."cableMsisdnsServices-test.wsdl", $this->parametrosCliente);
+        $resultado=$client->msisdnsMaintenance($parametros);
+        return json_encode($resultado->return);
+    }
+
+    public function buscarLineaIcc($refCliente,$iccid)
+    {
+        $ts=$this->getTimeStamp();
+        $parametros=array();
+        $instructions= array("timeStamp"=>$ts,
+            "resellerId"=>$this->resellerId,
+            "resellerPin"=>$this->pass,
+            "branchId"=>"",
+            "posId"=>"",
+            "transactionId"=>$ts,
+            "refCustomerId"=>$refCliente,
+            "operationType"=>"FIND");
+
+        $find=array("iccid"=>$iccid,"msisdn"=>"","status"=>"","activateDate"=>"");
+
+
+        $parametros['soap_request']=
+            array("Operation"=>
+                array("instruction"=>$instructions,"find"=>$find));
+
+
+        $client = new SoapClient($this->servicio."cableMsisdnsFind-test.wsdl", $this->parametrosCliente);
         $resultado=$client->msisdnsMaintenance($parametros);
         return json_encode($resultado->return);
     }
@@ -413,7 +503,7 @@ class MasMovilAPI
         $client = new SoapClient($this->servicio."cableMsisdnsUtilsGetPro-test.wsdl", $this->parametrosCliente);
 
         $resultado=$client->msisdnUtilsMaintenance($parametros);
-       // var_dump($resultado);
+        // var_dump($resultado);
         return json_encode($resultado->return);
     }
 
@@ -620,4 +710,104 @@ class MasMovilAPI
 
         return json_encode($resultado->return);
     }
+    /*
+* =================================================================================================================
+* |                                                                                                               |
+* |                                        FUNCIONES PARA GESTIONES DE CDR´S                                      |
+* |                                                                                                               |
+* =================================================================================================================
+*/
+    public function getCDRFTP()
+    {
+        $ftp=new FTP();
+        $ftp->conectar();
+        $ftp->descargarCDRDia();
+
+    }
+
+    /*
+     * OBTIENE EL CDR DE LA LÍNEA DÍA A DÍA DEL MES EN CURSO
+     */
+    public function getCDRMesActualDias($msidn)
+    {
+        $primerDia= $this->getPrimerDiaMes();
+        $cdr=new CDR();
+        $hoy=date('d');
+
+        for($i=$primerDia;$i<$hoy;$i++)
+            $cdr->setLineas($this->getCDRLineaDia($msidn,$this->getFechaMesActual($i)));
+
+
+        return $cdr;
+
+    }
+
+    /* RECORRE EL FICHERO Y NOS DEVUELVE LAS LÍNEAS DE ESE FICHERO*/
+    private function getCDRLineaDia($msidn,$fecha)
+    {
+
+        $nombreFichero=$fecha.".txt";
+
+        $arrayLineas=array();
+        if(file_exists("C://xampp/htdocs/atTotal/cdr/".$nombreFichero))
+        {
+            try
+            {
+            $fp = fopen("C://xampp/htdocs/atTotal/cdr/".$nombreFichero, "r");
+
+            while (!feof($fp))
+            {
+                $linea = fgets($fp);
+                $array = explode(';', $linea);
+
+                if ($array[1] == $msidn)
+                {
+                    //$tipo, $origen, $destino, $tarifa, $fecha, $hora, $tiempo, $trafico, $velocidad, $detalle
+
+                    $linea=new CDRLinea($array[0], $array[1], $array[2], $array[3], $array[5], $array[6], $array[7], $array[8], $array[9], $array[10]);
+                    array_push($arrayLineas, $linea);
+                }
+            }
+
+            fclose($fp);
+            }catch (Exception $ex)
+            {
+                echo "No se puede abrir";
+            }
+        }
+
+
+        return $arrayLineas;
+
+    }
+
+
+
+    private function getUltimoDiaMes()
+    {
+        $month = date('m');
+        $year = date('Y');
+        $day = date("d", mktime(0,0,0, $month+1, 0, $year));
+
+        return date('Y-m-d', mktime(0,0,0, $month, $day, $year));
+    }
+
+    private function getPrimerDiaMes()
+    {
+        $month = date('m');
+        $year = date('Y');
+        //return date('Ymd', mktime(0,0,0, $month, 1, $year));
+        return date('d', mktime(0,0,0, $month, 1, $year));
+    }
+
+    private function getFechaMesActual($dia)
+    {
+        $month = date('m');
+        $year = date('Y');
+        //return date('Ymd', mktime(0,0,0, $month, 1, $year));
+        return date('Ymd', mktime(0,0,0, $month, $dia, $year));
+    }
+
+
+
 }
