@@ -1,7 +1,6 @@
 <?php
-
 //error_reporting(E_ALL);
-//ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 require_once('../../pdf/utilPDF.php');
 require_once('../../pdf/tcpdf/tcpdf.php');
 
@@ -17,8 +16,7 @@ $util=new utilPDF();
         contratos.fecha_fin"),
         "contratos.id_empresa=empresas.id AND contratos.id_cliente=clientes.id  AND municipios.id=clientes.localidad 
         AND provincias.id=clientes.provincia AND clientes.comunidad=comunidades.id AND clientes.nacionalidad=pais.id 
-        AND contratos.id=".trim($util->cleanstring($_GET['idContrato']))."AND contratos.id_empresa=".$_SESSION['REVENDEDOR']);
-
+        AND contratos.id=".trim($util->cleanstring($_GET['idContrato']))." AND contratos.id_empresa=".$_SESSION['REVENDEDOR']);
 
 
     $idContrato=$listado[0][0];
@@ -138,7 +136,7 @@ for($i=0;$i<count($lineasContrato);$i++)
              AND contratos_lineas.id=".$lineasContrato[$i][2]."
              AND servicios.id=contratos_lineas.id_asociado
              AND contratos.id=".trim($util->cleanstring($_GET['idContrato']))."
-             AND contratos.id_empresa=".$_SESSION['REVENDEDOR']."");
+              AND contratos.id_empresa=".$_SESSION['REVENDEDOR']."");
         $nombreSer=$servicio[0][0];
         $pvp=$servicio[0][1];
 
@@ -218,13 +216,18 @@ $pdf->SetAuthor('REVENDEDOR');
 $pdf->SetTitle('CONTRATO DE CLIENTE');
 $pdf->SetSubject('CONTRATO');
 $pdf->SetKeywords('CONTRATO DE CLIENTE');
-$pdf->SetHeaderData("","","", " CONTRATO #".$idContrato, array(0,64,255), array(0,64,128));
+
+
+
+$pdf->SetHeaderData($file="../../img/antena.png","10px", " CONTRATO#".$idContrato, array(0,64,255), array(0,64,128));
+
 
 $pdf->setFooterData(array(0,64,0), array(0,64,128));
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 $pdf->SetFont('dejavusans', '', 9, '', true);
 $pdf->AddPage();
-$content = '';
+
+
 
 $datosCliente = 'DATOS DE LA EMPRESA<BR>
 C/ Pruebas 123<br>
@@ -267,8 +270,6 @@ $pdf->writeHTML($content);
 $pdf->writeHTML($contentServiciosContratados);
 
 $pdf->writeHTML($contentCampanas);
-
-
 
 $pdf->output('Reporte.pdf', 'I');
 
