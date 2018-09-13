@@ -12,9 +12,10 @@ if (!isset($_SESSION)) {
 require_once('../../config/util.php');
 $util = new util();
 require_once('../../clases/telefonia/classTelefonia.php');
+
 $telef = new Telefonia();
 
-// solo los usuarios de nivel 3 a 0 pueden agregar clientes
+// solo los usuarios de nivel 3 a 0 pueden agregar clientes*/
 check_session(3);
 
 ?>

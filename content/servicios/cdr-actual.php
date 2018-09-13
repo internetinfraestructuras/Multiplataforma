@@ -56,6 +56,8 @@ $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 $pdf->SetFont('dejavusans', '', 9, '', true);
 $pdf->AddPage();
 
+$pdf->SetHeaderData($file="../../img/antena.png","10px", " CONTRATO#".$idContrato, array(0,64,255), array(0,64,128));
+
 $datosCliente = 'DATOS DE LA EMPRESA<BR>
 C/ Pruebas 123<br>
 11400 Jerez de la Frontera<br>

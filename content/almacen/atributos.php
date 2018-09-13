@@ -226,8 +226,8 @@ check_session(3);
                                             <!-- right options -->
                                             <ul class="options pull-right list-inline">
                                                 <li><a href="#" class="opt panel_colapse" data-toggle="tooltip" title="Colapse" data-placement="bottom"></a></li>
-                                                <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen" data-placement="bottom"><i class="fa fa-expand"></i></a></li>
-                                                <li><a href="#" class="opt panel_close" data-confirm-title="Confirm" data-confirm-message="¿Deseas eleminar este panel?" data-toggle="tooltip" title="Close" data-placement="bottom"><i class="fa fa-times"></i></a></li>
+                                                <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen" data-placement="bottom"><i class="fas fa-expand"></i></a></li>
+                                                <li><a href="#" class="opt panel_close" data-confirm-title="Confirm" data-confirm-message="¿Deseas eleminar este panel?" data-toggle="tooltip" title="Close" data-placement="bottom"><i class="fas fa-times"></i></a></li>
                                             </ul>
                                             <!-- /right options -->
 
@@ -249,15 +249,15 @@ check_session(3);
                                                 <?php
                                                 $listado= $util->selectWhere3
                                                 ('productos_modelos_atributos,productos_modelos',
-                                                    array("productos_modelos.id","productos_modelos.nombre","productos_modelos.nombre AS nom"),
-                                                    "productos_modelos.id_tipo=productos_modelos_atributos.id","productos_modelos.ID_TIPO,productos_modelos.NOMBRE");
+                                                    array("productos_modelos.id","productos_modelos_atributos.nombre","productos_modelos.nombre AS nom"),
+                                                    "productos_modelos.id=productos_modelos_atributos.id_modelo","productos_modelos.ID_TIPO,productos_modelos.NOMBRE");
 
                                                 for($i=0;$i<count($listado);$i++)
                                                 {
 
                                                     $id=$listado[$i][0];
-                                                    $nombre=$listado[$i][1];
-                                                    $prov=$listado[$i][2];
+                                                    $nombre=$listado[$i][2];
+                                                    $prov=$listado[$i][1];
 
                                                     echo "<tr>";
                                                     echo "<td>$id</td><td>$nombre</td><td>$prov</td>";
@@ -266,7 +266,7 @@ check_session(3);
                                                     <td class="td-actions text-right">
                                                         <a href="ficha-modelo.php?idModelo=<?php echo $id; ?>">
                                                             <button type="button" rel="tooltip" >
-                                                                <i class="fa fa-pencil"></i>
+                                                                <i class="fas fa-edit"></i>
                                                             </button>
                                                         </a>
                                                         <button type="button" rel="tooltip" class="">

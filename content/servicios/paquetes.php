@@ -107,7 +107,7 @@ $root="../../";
                     <center>
                         <label><strong>Internet</strong></label>
                     </center>
-                    <a href="servicios.php" id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px"><i class="fa fa-pencil"></i> Nueva </a>
+                    <a href="servicios.php" id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px"><i class="fa fa-edit"></i> Nueva </a>
 
                     <select id="internet" multiple="multiple" name="paquete[internet]" style="height:260px" class="form-control" onchange="calcularPVP(this)">
                         <?php
@@ -133,7 +133,7 @@ $root="../../";
                     <center>
                         <label><strong>Telefonía FIJA</strong></label>
                     </center>
-                    <a href="servicios.php" id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px"><i class="fa fa-pencil"></i> Nueva </a>
+                    <a href="servicios.php" id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px"><i class="fa fa-edit"></i> Nueva </a>
 
                     <select id="fijo" multiple="multiple" style="height:260px" class="form-control" name="paquete[fijo]" onchange="calcularPVP(this)" >
                         <?php
@@ -161,7 +161,7 @@ $root="../../";
                     <center>
                         <label><strong>Telefonía MOVIL</strong></label>
                     </center>
-                    <a href="servicios.php" id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px"><i class="fa fa-pencil"></i> Nueva </a>
+                    <a href="servicios.php" id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px"><i class="fa fa-edit"></i> Nueva </a>
 
                     <select id="movil"  multiple="multiple" style="height:260px" class="form-control" name="paquete[movil][]" onchange="calcularPVP(this)">
                         <?php
@@ -188,7 +188,7 @@ $root="../../";
                     <center>
                         <label><strong>TELEVISIÓN</strong></label>
                     </center>
-                    <a href="servicios.php" id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px"><i class="fa fa-pencil"></i> Nueva </a>
+                    <a href="servicios.php" id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px"><i class="fa fa-edit"></i> Nueva </a>
 
                     <select id="tv" multiple="multiple"  style="height:260px" class="form-control" name="paquete[tv]" onchange="calcularPVP(this)">
                         <?php
@@ -260,8 +260,8 @@ $root="../../";
                                     <!-- right options -->
                                     <ul class="options pull-right list-inline">
                                         <li><a href="#" class="opt panel_colapse" data-toggle="tooltip" title="Colapse" data-placement="bottom"></a></li>
-                                        <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen" data-placement="bottom"><i class="fa fa-expand"></i></a></li>
-                                        <li><a href="#" class="opt panel_close" data-confirm-title="Confirm" data-confirm-message="¿Deseas eleminar este panel?" data-toggle="tooltip" title="Close" data-placement="bottom"><i class="fa fa-times"></i></a></li>
+                                        <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen" data-placement="bottom"><i class="fas fa-expand"></i></a></li>
+                                        <li><a href="#" class="opt panel_close" data-confirm-title="Confirm" data-confirm-message="¿Deseas eleminar este panel?" data-toggle="tooltip" title="Close" data-placement="bottom"><i class="fas fa-times"></i></a></li>
                                     </ul>
                                     <!-- /right options -->
 
@@ -301,7 +301,7 @@ $root="../../";
                                             <td class="td-actions text-right">
                                                 <a href="ficha-paquete.php?idPaquete=<?php echo $id; ?>">
                                                     <button type="button" rel="tooltip" >
-                                                        <i class="fa fa-pencil"></i>
+                                                        <i class="fa fa-edit"></i>
                                                     </button>
                                                 </a>
                                                 <button type="button" rel="tooltip" class="">

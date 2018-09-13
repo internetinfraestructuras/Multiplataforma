@@ -382,7 +382,7 @@ $fechaNac=$producto[0][21];
                                                 </a>
                                                 <a href="content/ventas/ficha-contrato.php?idContrato=<?php echo $id;?>">
                                                     <button type="button" rel="tooltip" >
-                                                        <i class="fa fa-pencil"></i>
+                                                        <i class="fas fa-edit"></i>
                                                     </button>
                                                 </a>
                                                 <a href="content/ventas/anexos.php?idContrato=<?php echo $id;?>">

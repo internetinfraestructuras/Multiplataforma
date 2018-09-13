@@ -81,8 +81,8 @@ $root="../../";
         <header id="page-header">
             <h1>Usted esta en</h1>
             <ol class="breadcrumb">
-                <li><a href="#"><?php echo DEF_CAMPANA;?></a></li>
-                <li class="active">Agregar una campaña</li>
+                <li><a href="#"><?php echo DEF_CONTRATOS;?></a></li>
+                <li class="active">Contratos con solicitudes de cambios</li>
             </ol>
         </header>
         <!-- /page title -->
@@ -157,14 +157,11 @@ $root="../../";
 
                                             ?>
                                             <td class="td-actions text-right">
-                                                <a href="ficha-promocion.php?idPaquete=<?php echo $id; ?>">
+                                                <a target="_blank" href="imprimirContrato.php?idContrato=<?php echo $id;?>">
                                                     <button type="button" rel="tooltip" >
-                                                        <i class="fa fa-pencil"></i>
+                                                        <i class="fas fa-print"></i>
                                                     </button>
                                                 </a>
-                                                <button type="button" rel="tooltip" class="">
-                                                    <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>');"></i>
-                                                </button>
 
                                             </td>
                                             </tr>

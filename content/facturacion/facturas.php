@@ -224,9 +224,9 @@ check_session(3);
 </div>
 
 <!-- JAVASCRIPT FILES -->
-<script type="text/javascript">var plugin_path = 'assets/plugins/';</script>
+<script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
-<script type="text/javascript" src="assets/js/app.js"></script>
+<script type="text/javascript" src="../../assets/js/app.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.css">
 
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.js"></script>
@@ -303,8 +303,7 @@ check_session(3);
 
     function cargarFacturaMes(id)
     {
-       // window.location.href=window.location.href+"?mes="+id);
-        location.reload();
+        location.href="facturas.php?mes="+id;
 
     }
 
