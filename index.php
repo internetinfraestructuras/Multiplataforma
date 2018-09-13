@@ -94,10 +94,10 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                     <!-- tabs nav -->
                                     <ul class="nav nav-tabs pull-right">
                                         <li class="active"><!-- TAB 1 -->
-                                            <a href="#ttab1_nobg" data-toggle="tab">En Curso</a>
+                                            <a href="#porta_curso" data-toggle="tab">En Curso</a>
                                         </li>
                                         <li class=""><!-- TAB 2 -->
-                                            <a href="#ttab2_nobg" data-toggle="tab">Completadas</a>
+                                            <a href="#porta_completas" data-toggle="tab">Completadas</a>
                                         </li>
                                     </ul>
                                     <!-- /tabs nav -->
@@ -111,7 +111,7 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                     <!-- tabs content -->
                                     <div class="tab-content transparent">
 
-                                        <div id="ttab1_nobg" class="tab-pane active" ><!-- TAB 1 CONTENT -->
+                                        <div id="porta_curso" class="tab-pane active" ><!-- TAB 1 CONTENT -->
 
                                             <div class="table-responsive" style="height:380px; overflow-y: scroll; overflow-x: hidden">
                                                 <table class="table table-striped table-hover table-bordered">
@@ -157,7 +157,7 @@ if ($_SESSION['USER_LEVEL'] == 0) {
 
                                         </div><!-- /TAB 1 CONTENT -->
 
-                                        <div id="ttab2_nobg" class="tab-pane"><!-- TAB 2 CONTENT -->
+                                        <div id="porta_completas" class="tab-pane"><!-- TAB 2 CONTENT -->
 
                                             <div class="table-responsive" style="height:380px; overflow-y: scroll; overflow-x: hidden">
                                                 <table class="table table-striped table-hover table-bordered">
@@ -223,10 +223,10 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                     <!-- tabs nav -->
                                     <ul class="nav nav-tabs pull-right">
                                         <li class="active"><!-- TAB 1 -->
-                                            <a href="#ttab3_nobg" data-toggle="tab">En Curso</a>
+                                            <a href="#orden_curso" data-toggle="tab">En Curso</a>
                                         </li>
                                         <li class=""><!-- TAB 2 -->
-                                            <a href="#ttab4_nobg" data-toggle="tab">completados</a>
+                                            <a href="#orden_completa" data-toggle="tab">completados</a>
                                         </li>
                                     </ul>
                                     <!-- /tabs nav -->
@@ -240,27 +240,30 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                     <!-- tabs content -->
                                     <div class="tab-content transparent">
 
-                                        <div id="ttab3_nobg" class="tab-pane active"><!-- TAB 1 CONTENT -->
+                                        <div id="orden_curso" class="tab-pane active"><!-- TAB 1 CONTENT -->
 
-                                            <div class="table-responsive">
+                                            <div class="table-responsive" style="height:380px; overflow-y: scroll; overflow-x: hidden">
                                                 <table class="table table-striped table-hover table-bordered">
                                                     <thead>
                                                     <tr>
-                                                        <th>Cliente</th>
                                                         <th>Estado</th>
+                                                        <th>Fecha</th>
+                                                        <th>Cliente</th>
+                                                        <th>Número</th>
                                                         <th></th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <tr>
-                                                        <td><a href="#">Cliente</a></td>
-                                                        <td>Estado</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">Ver</a></td>
+                                                    <?php
+                                                        require_once ('clases/Orden.php');
+                                                        $ordenes = new Orden();
+                                                        print_r($ordenes->getOrdenesEstados());
+                                                    ?>
 
-                                                    </tr>
 
                                                     </tbody>
                                                 </table>
+
 
                                                 <a class="size-12" href="#">
                                                     <i class="fa fa-arrow-right text-muted"></i>
@@ -271,7 +274,7 @@ if ($_SESSION['USER_LEVEL'] == 0) {
 
                                         </div><!-- /TAB 1 CONTENT -->
 
-                                        <div id="ttab4_nobg" class="tab-pane"><!-- TAB 2 CONTENT -->
+                                        <div id="orden_completa" class="tab-pane"><!-- TAB 2 CONTENT -->
 
                                             <div class="table-responsive">
                                                 <table class="table table-striped table-hover table-bordered">
@@ -508,10 +511,11 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                                 </div>
 
                                             </div>
-                                            <div id="graph-normal-bar2">
+                                            <div class="panel-body nopadding">
+
+                                                <div id="graph-donut"><!-- GRAPH CONTAINER --></div>
 
                                             </div>
-
                                         </div><!-- /TAB 1 CONTENT -->
                                     </div>
                                     <!-- /tabs content -->
@@ -617,7 +621,6 @@ if ($_SESSION['USER_LEVEL'] == 0) {
 
                     }
                 });
-
 
             }
         </script>

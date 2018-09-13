@@ -129,6 +129,24 @@ WHERE ordenes.id=ordenes_lineas.ID_ORDEN AND ordenes_lineas.ID_LINEA_DETALLE_CON
                     AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes.fecha_alta<=DATE(now()) AND ordenes.id_tipo_estado=1");
     }
 
+    public static function getOrdenesEstados($id=null)
+    {
+        if($id!=null)
+            $idBuscado=" AND ordenes.id = " .$id;
+        else
+            $idBuscado="";
+
+        $util=new util();
+        return $util->selectWhere3('ordenes,ordenes_estados,contratos,clientes',
+            array("ordenes.id,ordenes.fecha_alta,ordenes_estados.nombre,ordenes_estados.id,clientes.nombre,clientes.id,clientes.apellidos,clientes.direccion, clientes.movil"),
+            "ordenes.id_contrato=contratos.id 
+                    AND ordenes_estados.id=ordenes.id_tipo_estado 
+                    AND contratos.id_cliente=clientes.id
+                    $idBuscado
+                    AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes.fecha_alta<=DATE(now()) AND ordenes.id_tipo_estado=1");
+    }
+
+
     public static function getOrden($id=null)
     {
 
