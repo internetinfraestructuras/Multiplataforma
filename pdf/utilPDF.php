@@ -26,6 +26,8 @@
 
      }
 
+
+
      function cleanstring($string) {
 
          $string= str_replace("\""," ",$string);
@@ -57,6 +59,9 @@
          $string= str_replace(" Or "," ",$string);
          $string= str_replace(" oR "," ",$string);
          $string= str_replace("||"," ",$string);
+         $string = str_replace("º","",$string);
+
+
          $string = stripslashes($string);
          $string = strip_tags($string);
          return  $string;
@@ -82,7 +87,7 @@
              if ($order != null)
                  $query = $query . " ORDER BY ".$order ;
 
-      // echo "<br>".$query."<br>";
+//       echo "<br>".$query."<br>";
 
              if (!($result = $link->query($query)))
                  throw new Exception();
@@ -102,9 +107,75 @@
              $this->log('Error SelectWhere 3: ' . $query);
 
          }
-         return $fieldNames;
+//         return $fieldNames;
 
      }
+
+     public function selectJoin($tabla, $campos, $join, $order, $where=null, $group=null){
+         try {
+
+             $link = $this->conectar();
+             $columnas = implode($campos, ", ");
+
+             $query = 'SELECT '. $columnas. ' FROM ' . $tabla;
+
+             if($join != null)
+                 $query = $query  . " ". $join;
+
+             if($where != null)
+                 $query = $query  . " WHERE " . $where;
+
+             if ($group != null)
+                 $query = $query . " GROUP BY ".$group ;
+
+             if ($order != null)
+                 $query = $query . " ORDER BY ".$order ;
+
+//       echo "<br>".$query."<br>";
+
+             if (!($result = $link->query($query)))
+                 throw new Exception('Error en selectJoin.');
+
+             $fieldNames=array();
+
+
+             while ($row = mysqli_fetch_array($result))
+             {
+                 array_push($fieldNames, $row);
+             }
+//              var_dump($fieldNames);
+             $link->close();
+
+             return $fieldNames;
+
+         } catch (Exception $e) {
+             $this->log('Error selectJoin: ' . $query);
+         }
+
+
+     }
+
+
+     function log($action){
+
+         $ip=$this->ip();
+         $link = $this->conectar();
+         $query="INSERT INTO logs (log, ip) VALUES ('".$this->cleanstring($action)."','$ip')";
+         $link->query($query);
+         $link->close();
+
+     }
+
+     function ip() {
+         if     (getenv('HTTP_CLIENT_IP'))       { $ip = getenv('HTTP_CLIENT_IP');       }
+         elseif (getenv('HTTP_X_FORWARDED_FOR')) { $ip = getenv('HTTP_X_FORWARDED_FOR'); }
+         elseif (getenv('HTTP_X_FORWARDED'))     { $ip = getenv('HTTP_X_FORWARDED');     }
+         elseif (getenv('HTTP_FORWARDED_FOR'))   { $ip = getenv('HTTP_FORWARDED_FOR');   }
+         elseif (getenv('HTTP_FORWARDED'))       { $ip = getenv('HTTP_FORWARDED');       }
+         else { $ip = $_SERVER['REMOTE_ADDR'];        }
+         return $ip;
+     }
+
  }
 
  ?>

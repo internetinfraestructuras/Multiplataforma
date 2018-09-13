@@ -5,6 +5,7 @@
  * Date: 27/02/2018
  * Time: 8:47
  */
+
 ?>
 <style>
     .spinner div {

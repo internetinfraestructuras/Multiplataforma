@@ -235,9 +235,10 @@ class util {
 
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
-
+//echo $query;
             if (!($result = $link->query($query)))
                 throw new Exception();
+
 //            $this->log($query);
            $link->close();
 
@@ -310,7 +311,7 @@ class util {
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
 
-           echo "<br>".$query."<br>";
+//           echo "<br>".$query."<br>";
 
             if (!($result = $link->query($query)))
                 throw new Exception();
@@ -447,6 +448,44 @@ class util {
     }
 
 
+    public function insertInto2($tabla, $campos, $valor, $log=true)
+    {
+
+        try {
+
+
+            $link = $this->conectar();
+
+            $columnas = limpiar(implode($campos, ", "));
+
+            $aItems = array();
+
+            $valores = implode($valor, "', '");
+
+            $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
+            $query = str_replace("''",'null',$query);
+
+            $query = str_replace("º","",$query);
+            if (!($result = $link->query($query)))
+                throw new Exception('Error en selectWhere.');
+            $lastid = mysqli_insert_id($link);
+            $link->close();
+            if($log){
+                $consulta= str_replace("'"," ",$query);
+                $consulta.= str_replace(","," ",$query);
+                $consulta.= "','".$lastid . "')";
+                $this->loginsert($this->cleanstring($consulta),$lastid);
+            }
+
+            return $lastid;
+
+        } catch (Exception $e) {
+            if($log==true)  $this->log('Error Insert: ' . $query);
+        }
+    }
+
+
+
     public function update($tabla, $campos, $valor, $where, $log=true){
 
         if($where=='')
@@ -510,7 +549,7 @@ class util {
 //                        //echo $query;
 
             if (!($result = $link->query($query)))
-                throw new Exception('Error en selectWhere.');
+                throw new Exception('Error en Delete.');
             $lastid = mysqli_affected_rows($link);
 
               // echo $query;
@@ -1080,3 +1119,6 @@ class PHPTelnet {
 }
 
 ?>
+
+
+

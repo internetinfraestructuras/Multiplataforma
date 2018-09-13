@@ -11,6 +11,8 @@ if (!isset($_SESSION)) {
 }
 require_once('../../config/util.php');
 $util = new util();
+require_once('../../clases/telefonia/classTelefonia.php');
+$telef = new Telefonia();
 
 // solo los usuarios de nivel 3 a 0 pueden agregar clientes
 check_session(3);
@@ -385,7 +387,7 @@ check_session(3);
                                 <div class="col-xs-3 col-sm-3 text-center">
                                     <label class="image-radio">
                                         <img class="img-responsive" src="../../'.$row[2].'" style="border-radius:5px; width:120px; height:120px"/>
-                                        <input type="radio" id="donante" name="donante" value="'.$row[0].'" />
+                                        <input type="radio" class="donanterb" name="donante" value="'.$row[0].'" />
                                         <i class="glyphicon glyphicon-ok hidden"></i>
                                     </label>
                                     <br>
@@ -417,7 +419,7 @@ check_session(3);
                                 <div class="col-xs-4 col-sm-2 text-center">
                                     <label class="image-radio">
                                         <img class="img-responsive" src="../../'.$row[2].'" style="border-radius:5px; width:auto; height:auto"/>
-                                        <input type="radio" id="tipo_acceso" name="tipo_acceso" value="'.$row[0].'" />
+                                        <input type="radio" name="tipo_acceso" value="'.$row[0].'" />
                                         <i class="glyphicon glyphicon-ok hidden"></i>
                                     </label>
                                     <br>
@@ -428,13 +430,25 @@ check_session(3);
                         ?>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 col-xs-12">
+                        <div class="col-md-4 col-xs-12">
                             <br><br><br><br>
                             <label>Indique el número a portar</label>
-                            <input  type="text" name="num_porta" id="num_porta"
-                                    class="form-control datoscli" style="width:150px">
+                            <input  type="tel" name="num_porta" id="num_porta"
+                                    class="form-control datoscli" style="max-width:200px">
                         </div>
-                        <div class="col-md-6 col-xs-12">
+                        <div class="col-md-4 col-xs-12">
+                            <br><br><br><br>
+                            <label>Seleccione la tarifa deseada</label>
+                            <select id="tarifa" class="form-control">
+                                <?php
+                                    $tarifas = $telef->getPaquetesDestino($_SESSION['CIF']);
+                                    while ($tarifa = mysqli_fetch_array($tarifas)){
+                                        echo "<option value='$tarifa[0]'>".$tarifa[1]."</option>";
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-xs-12">
                             <br><br><br>
                             <label>Indique horario preferido para el cambio <br>(bajo disponibilidad del operador donante)</label>
                             <input  type="text" name="hora_porta" id="hora_porta"
@@ -509,9 +523,24 @@ check_session(3);
                         <h4 class="modal-title">Proceso completado correctamente</h4>
                     </div>
                     <div class="modal-body">
-                        <p>La solicitud de portabilidad ha sido generada correctamente. Por favor imprima el contrato</p>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <p>La solicitud de portabilidad ha sido generada correctamente. Por favor imprima el contrato</p>
+                            </div>
+                        </div>
                         <br><br>
-                        <a href="" id="descargarcontrato" target="_blank">Haga clic aquí para descargar el contrato</a>
+                        <div class="row">
+                            <div class="col-lg-3"></div>
+                            <div class="col-lg-3">
+                                <br><br>
+                                <a href="/index.php"><img src="../../img/exit.png"></a>
+                            </div>
+                            <div class="col-lg-3">
+                                <br><br>
+                                <a href="" id="imprimir_img" target="_blank"><img src="../../img/printer.png"></a>
+                            </div>
+                            <div class="col-lg-3"></div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" onclick="location.href='porta_fijo.php';">Cerrar</button>
@@ -787,7 +816,6 @@ check_session(3);
 
         if (animating) return false;
 
-
         current_fs = $(this).parent();
         next_fs = $(this).parent().next();
 
@@ -887,10 +915,12 @@ check_session(3);
 
         var tipo_cli = $("#tipocli").val();
         var tipo_doc = $("#tipodoc").val();
+        var tarifa = $("#tarifa").val();
 
         
-        var donante = $("#donante").val();
-        var tipo_acceso = $("#tipo_acceso").val();
+        var donante =$('input[name=donante]:checked').val();
+
+        var tipo_acceso = $('input[name=tipo_acceso]:checked').val();
         
         var num_porta = $("#num_porta").val();
         var hora_porta = $("#hora_porta").val();
@@ -920,18 +950,22 @@ check_session(3);
                 firma : firma,
                 tipo_cli:tipo_cli,
                 tipo_doc:tipo_doc,
-                tipo:2
+                tipo:2,
+                tarifa:tarifa
             },
             success: function (data) {
 
-                if(parseInt(data)>0)
+                if(parseInt(data)>0) {
+                    $("#imprimir_img").attr('href', 'imprimirPortabilidad.php?idContrato=' + data+'&tipo=portaFijo');
                     $("#imprimir").modal();
+                }
 
             }
         });
 
 
     }
+
 
 
     $(".previous").click(function () {

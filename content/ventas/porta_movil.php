@@ -411,9 +411,24 @@ check_session(3);
                         <h4 class="modal-title">Proceso completado correctamente</h4>
                     </div>
                     <div class="modal-body">
-                        <p>La solicitud de portabilidad ha sido generada correctamente. Por favor imprima el contrato</p>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <p>La solicitud de portabilidad ha sido generada correctamente. Por favor imprima el contrato</p>
+                            </div>
+                        </div>
                         <br><br>
-                        <a href="" id="descargarcontrato" target="_blank">Haga clic aquí para descargar el contrato</a>
+                        <div class="row">
+                            <div class="col-lg-3"></div>
+                            <div class="col-lg-3">
+                                <br><br>
+                                <a href="/index.php"><img src="../../img/exit.png"></a>
+                            </div>
+                            <div class="col-lg-3">
+                                <br><br>
+                                <a href="" id="imprimir_img" target="_blank"><img src="../../img/printer.png"></a>
+                            </div>
+                            <div class="col-lg-3"></div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" onclick="location.href='porta_fijo.php';">Cerrar</button>
@@ -793,7 +808,7 @@ check_session(3);
         }
     });
 
-    function guardar_porta(firma) {
+    function guardar_contrato(firma) {
 
         // paso 1 quiere decir que se ha seleccionado o creado el cliente,
         // entonces creamos el contrato en borrador y guardamos el id del borrador
@@ -805,6 +820,8 @@ check_session(3);
         var dc = $("#dc").val();
         var telportar = $("#telportar").val();
         var modalidad = $("#modalidad").val();
+        var tipo_cli = $("#tipocli").val();
+        var tipo_doc = $("#tipodoc").val();
 
         $.ajax({
             url: 'guardar-porta.php',
@@ -821,12 +838,17 @@ check_session(3);
                 num_porta :telportar,
                 modalidad :modalidad,
                 firma : firma,
-                tipo:3
+                tipo:3,
+                tipo_cli:tipo_cli,
+                tipo_doc:tipo_doc
             },
             success: function (data) {
 
-                if(parseInt(data)>0)
+                if(parseInt(data)>0){
+                    $("#imprimir_img").attr('href', 'imprimirPortabilidad.php?idContrato=' + data+'&tipo=portaMovil');
                     $("#imprimir").modal();
+                }
+
 
             }
         });

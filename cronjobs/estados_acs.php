@@ -18,7 +18,7 @@
 
 /*  OBETENER LAS VELOCIDADES DISPONIBLES
     *
-    * ruta:    ftth.internetinfraestructuras.es/cmr/verificar.php
+    * ruta:    ftth.internetinfraestructuras.es/api/verificar.php
     * espera:  id_orden: Identificador de la orden de la que se desea consultar el estado
 
         !!!!!  NOTA: la consulta se realiza sobre el dispositivo obteniendo la informacion real del momento de la consulta!!!!!!

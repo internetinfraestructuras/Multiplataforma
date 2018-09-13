@@ -58,7 +58,7 @@ error_reporting('E_ALL');
             $pass = md5($util->cleanstring($_POST['password']));
 
             $where = ' (usuarios.email="' . $email . '" and usuarios.clave="' . $pass . '") OR (usuarios.usuario="' . $email . '" and usuarios.clave="' . $pass . '") ';
-            $result = $util->selectJoin("usuarios",array("usuarios.id", "usuarios.nombre", "usuarios.apellidos", "nivel", " usuarios.id_empresa", "empresas.logo as logo"), "join empresas on usuarios.id_empresa = empresas.id","",$where);
+            $result = $util->selectJoin("usuarios",array("usuarios.id", "usuarios.nombre", "usuarios.apellidos", "nivel", " usuarios.id_empresa", "empresas.logo as logo", "municipios.municipio as localidad"), "join empresas on usuarios.id_empresa = empresas.id join municipios on municipios.id = empresas.MUNICIPIO","",$where);
 
             $row = mysqli_fetch_array($result);
 
@@ -69,6 +69,7 @@ error_reporting('E_ALL');
                 $_SESSION['NOM_USER'] = $row['nombre'] . " " . $row['apellidos'];
                 $_SESSION['USER_LEVEL'] = $row['nivel'];
                 $_SESSION['REVENDEDOR'] = $row['id_empresa'];
+                $_SESSION['LOCALIDADEMPRESA'] = $row['localidad'];
                 $_SESSION['CIF'] = $row['cif'];
                 $_SESSION['LOGO'] = $row['logo'];
                 $_SESSION['start'] = time();
@@ -76,6 +77,7 @@ error_reporting('E_ALL');
                 date_default_timezone_set('Europe/Madrid');
                 $date = date('Y/m/d H:i:s');
                 $result = $util->update('usuarios', array('ultimo_acceso'), array($date), "id=".$row['id']);
+                $_SESSION['dia_facturacion'] = $util->selectLast('empresas_configuracion','DIA_FACTURACION','ID_EMPRESA='.$row['id_empresa']);
 
                 if(intval($row['nivel'])>1)
                     header("Location:content/instalador/instalador.php");

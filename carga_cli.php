@@ -20,6 +20,7 @@ require_once('config/util.php');
 $util = new util();
 check_session(3);
 
+
 $where = " clientes.id > 0";
 
 /*
@@ -36,7 +37,7 @@ if(isset($_POST['filtro'])) {
 //              0           1       2           3           4       5           6           7           8
 //    9       10          11    12    13      14      15          16            17              18
 //   19                    20                   21              22
-$campos=array('clientes.ID','DNI','NOMBRE','APELLIDOS','DIRECCION','LOCALIDAD','PROVINCIA','COMUNIDAD','IBAN',
+$campos=array('clientes.ID','DNI','NOMBRE','APELLIDOS','DIRECCION','LOCALIDAD','clientes.PROVINCIA','COMUNIDAD','IBAN',
     'SWIFT','ID_EMPRESA','CP','FIJO','MOVIL','EMAIL','FECHA_ALTA','BANCO', 'DOCUMENTO_URL','DOCUMENTO',
     'TIPO_DOCUMENTO','ID_CONSENTIMIENTO','ID_TIPO_CLIENTE','FECHA_NACIMIENTO','NOTAS');
 
@@ -67,7 +68,7 @@ if($_SESSION['USER_LEVEL']==0) {
 //        $rowprovision = mysqli_fetch_array($provision);
 
     } else {
-        $result = $util->selectJoin("clientes", $campos, "LEFT JOIN municipios ON municipios.id = clientes.localidad LEFT JOIN provincias ON provincias.id=clientes.provincia", "nombre", $where . ' and user_create in (select id from usuarios where revendedor = '.$_SESSION['REVENDEDOR'].')');
+        $result = $util->selectJoin("clientes", $campos, "LEFT JOIN municipios ON municipios.id = clientes.localidad LEFT JOIN provincias ON provincias.id=clientes.provincia", "nombre", $where . ' and ID_EMPRESA = '.$_SESSION['REVENDEDOR']);
     }
 
 }
@@ -127,3 +128,7 @@ if($_SESSION['USER_LEVEL']==0) {
 
 header('Content-type: application/json; charset=utf-8');
 echo json_encode($aItems);
+
+
+//90	Online	48575443239DA49D - Becerra Piñero José Antonio	49	-18.6	2.11	-19.5	3.280	10.201.134.152	20:19:19
+//91	Online	48575443239E929D - Macías Jiménez Manuel	48	-28.2	1.92	-26.2	3.280		20:24:13	2018-09-07 01:16:432018-09-07 01:16:43

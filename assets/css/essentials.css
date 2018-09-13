@@ -834,7 +834,9 @@ video.fullvideo 		{ width:100%; height:100%; }
 		   filter: gray; 
 }
 
-
+.title{
+	font-size:1.5em;
+}
 /* ellipsis */
 .elipsis { 
 	overflow:hidden; 
@@ -979,9 +981,9 @@ video.fullvideo 		{ width:100%; height:100%; }
 	display: inline-block;
 	font-weight: 300;
 	text-shadow: #fff 0 1px;
-	font-size: 22px;
-	line-height: 22px;
-	margin: 7px 0;
+	font-size: 20px;
+	line-height: 18px;
+	margin: 3px 0;
 }
 
 

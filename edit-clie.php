@@ -105,7 +105,22 @@ check_session(2);
                                     <div class="row">
                                         <div class="col-md-6 col-sm-6">
                                              <label>Clientes a modificar</label>
-                                            <select id="id" name="id" onchange="seleccionado(this.value)" class="form-control required">
+                                            <select id="id" name="id" onchange="seleccionado(this.value)" class="form-control select2 required">
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-3">
+                                            <label>Cambiar el método de ordenación</label>
+                                            <select onchange="carga_clientes()" class="form-control">
+                                                <option value="1">Ordenar por Nombre</option>
+                                                <option value="2">Ordenar por Apellidos</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-3">
+                                            <label>Cambiar la posición</label>
+
+                                            <select onchange="carga_clientes()" class="form-control">
+                                                <option value="1">Nombre -> Apellidos</option>
+                                                <option value="2">Apellidos -> Nombre</option>
                                             </select>
                                         </div>
                                     </div>
@@ -315,7 +330,7 @@ check_session(2);
     }
 
     // cargo los clientes para que pueda seleccionarse y editarlo
-    function carga_clientes(){
+    function carga_clientes(orden, posicion){
         var select = $("#id");
         select.empty();
         select.append('<option value="">--- Seleccionar una ---</option>');
@@ -324,10 +339,13 @@ check_session(2);
             type: 'POST',
             cache: false,
             async:true,
+            data: {orden: orden},
             success: function(data) {
                 $.each(data, function(i){
-
-                    select.append('<option value="'+data[i].id+'">'+data[i].apellidos+" "+data[i].nombre+'</option>');
+                    if (posicion == 1)
+                        select.append('<option value="'+data[i].id+'">'+data[i].apellidos+" "+data[i].nombre+'</option>');
+                    else
+                        select.append('<option value="'+data[i].id+'">'+data[i].nombre+" "+data[i].apellidos+'</option>');
                 });
             }
         });

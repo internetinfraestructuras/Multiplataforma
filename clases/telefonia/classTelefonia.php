@@ -5,9 +5,7 @@
  * Date: 23/07/2018
  * Time: 9:25
  */
-
-require_once('utilTelefonia.php');
-
+require_once($_SERVER['DOCUMENT_ROOT'].'clases/telefonia/utilTelefonia.php');
 
 class Telefonia
 {
@@ -16,7 +14,7 @@ class Telefonia
     public $SERVER_TELEFONIA='t1.voipreq.com';
 
     function __construct() {
-        $this->util= new Util();
+        $this->util= new UtilT();
     }
 
 
@@ -208,6 +206,20 @@ class Telefonia
         $paquetes=$this->util->selectWhere('paquetesdestino', $campos,'cif_super='.$cifSuperUsuario, $order=null, $group=null);
 
         return $paquetes;
+    }
+
+    /**
+     * Devuelve el nombre de un paquete pasandole el id del mismo
+     * @param $id
+     * By Ruben Corrales
+     */
+    public function getPaqueteNombre($id){
+
+        $campos=array('nombrepaquete');
+        $paquetes=$this->util->selectWhere('paquetesdestino', $campos,'id_paquetedestino='.$id, $order=null, $group=null);
+//        var_dump($paquetes);
+        $row = mysqli_fetch_array($paquetes);
+        return $row[0];
     }
 
     /**

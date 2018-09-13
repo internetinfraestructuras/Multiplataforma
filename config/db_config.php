@@ -16,8 +16,8 @@ ini_set("display_errors", 0);
     define ('DB_USER', 'root');
     define ('DB_PASSWORD', 'telereq1430*sql');
 
-define ('DB_TELEFONIA_SERVER' , '89.140.16.198');
-define ('DB_TELEFONIA_DATABASENAME', 'gestioncdr');
-define ('DB_TELEFONIA_USER', 'testerp');
-define ('DB_TELEFONIA_PASSWORD', 'erpDirect18');
+    define ('DB_TELEFONIA_SERVER' , '89.140.16.198');
+    define ('DB_TELEFONIA_DATABASENAME', 'gestioncdr');
+    define ('DB_TELEFONIA_USER', 'testerp');
+    define ('DB_TELEFONIA_PASSWORD', 'erpDirect18');
 

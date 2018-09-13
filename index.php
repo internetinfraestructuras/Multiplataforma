@@ -7,11 +7,22 @@ if (!isset($_SESSION)) {@session_start();}
 require_once(__DIR__ . '/config/define.php');   // definicion de variables
 require_once(__DIR__ . '/config/util.php');     // herramientas y utilidades
 
+if(intval($_SESSION['USER_LEVEL'])>1)
+    header("Location:content/instalador/instalador.php");
+
 // se encarga de comprobar que el usuario tiene nivel suficiente para visualizar esta pagina
 // 0 admin, 1 revendedor, 2 operador, 3 instalador, 4 todos
-check_session(4);
-?>
+check_session(2);
+$util= new util();
 
+
+// si el usuario es root cargará siempre los datos de todos
+if ($_SESSION['USER_LEVEL'] == 0) {
+    $cabeceras = $util->selectWhere('fibra.olts', array('id', 'descripcion'), '', 'descripcion');
+} else {    // si no es root cargara solo los datos de este usuario y todos los que pertenezcan al mismo revendedor
+    $cabeceras = $util->selectWhere('fibra.olts', array('id', 'descripcion'), ' wifero = (SELECT revendedor FROM usuarios WHERE usuarios.id=' . $_SESSION["USER_ID"] . ')', 'descripcion');
+}
+?>
 <!doctype html>
 <html lang="en-US">
 	<head>
@@ -69,14 +80,13 @@ check_session(4);
 
 			<section id="middle" style="margin-top:60px;">
 				<div id="content" class="dashboard padding-20">
-
-
+                    <!-- primera fila de cajas de información-->
+                    <!-- portabilidades y ordenes de trabajo  -->
                     <div class="row">
-
                         <div class="col-md-6">
 
                             <div id="panel-2" class="panel panel-default">
-                                <div class="panel-heading">
+                                <div class="panel-heading" >
 									<span class="title elipsis">
 										<strong>Portabilidades</strong> <!-- panel title -->
 									</span>
@@ -96,12 +106,141 @@ check_session(4);
                                 </div>
 
                                 <!-- panel content -->
-                                <div class="panel-body">
+                                <div class="panel-body" style="height:400px">
 
                                     <!-- tabs content -->
                                     <div class="tab-content transparent">
 
-                                        <div id="ttab1_nobg" class="tab-pane active"><!-- TAB 1 CONTENT -->
+                                        <div id="ttab1_nobg" class="tab-pane active" ><!-- TAB 1 CONTENT -->
+
+                                            <div class="table-responsive" style="height:380px; overflow-y: scroll; overflow-x: hidden">
+                                                <table class="table table-striped table-hover table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Estado</th>
+                                                        <th>Fecha</th>
+                                                        <th>Cliente</th>
+                                                        <th>Número</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <?php
+                                                        $estados = array("SOLICITADA","TRAMITADA","PROCESANDO","RECHAZADA","ACEPTADA","CONTRATADA");
+                                                        $estadosColores = array("label label-primary","label label-info","label label-warning","label label-danger","label label-success","label label-default");
+                                                        $portas = $util->selectJoin("portabilidades",
+                                                        array('FECHA_SOLICITUD', 'NOMBRE_TITULAR',  'NUMERO_PORTAR','clientes.NOMBRE', 'clientes.APELLIDOS','clientes.EMAIL','portabilidades.ESTADO','portabilidades.ID'),
+                                                        " left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE", 'FECHA_SOLICITUD','ESTADO != 6 AND portabilidades.ID_EMPRESA='.$_SESSION['USER_ID']);
+
+                                                        while ($row = mysqli_fetch_array( $portas)) {
+                                                            echo '
+                                                                <tr >
+                                                                    <td><span class="'.$estadosColores[intval($row[6])-1].'">'.$estados[intval($row[6])-1].'</span></td >
+                                                                    <td >'.$row[0].'</td >
+                                                                    <td >'.$row[3].' '.$row[4].'</td >
+                                                                    <td >'.$row[2].'</td >
+                                                                    <td ><span class="btn btn-default btn-xs btn-block" onclick="ver_mas('.$row[7].');" > Más</span ></td >
+                                                                </tr >';
+                                                    }
+                                                    ?>
+
+
+                                                    </tbody>
+                                                </table>
+
+                                                <a class="size-12" href="#">
+                                                    <i class="fa fa-arrow-right text-muted"></i>
+                                                    Ver todo
+                                                </a>
+
+                                            </div>
+
+                                        </div><!-- /TAB 1 CONTENT -->
+
+                                        <div id="ttab2_nobg" class="tab-pane"><!-- TAB 2 CONTENT -->
+
+                                            <div class="table-responsive" style="height:380px; overflow-y: scroll; overflow-x: hidden">
+                                                <table class="table table-striped table-hover table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                    <tr>
+                                                        <th>Estado</th>
+                                                        <th>Fecha</th>
+                                                        <th>Cliente</th>
+                                                        <th>Número</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </tr>
+                                                    </thead>
+                                                   <tbody>
+                                                   <?php
+                                                   $estados = array("SOLICITADA","TRAMITADA","PROCESANDO","RECHAZADA","ACEPTADA","CONTRATADA");
+                                                   $estadosColores = array("label label-primary","label label-info","label label-warning","label label-danger","label label-success","label label-default");
+                                                   $portas = $util->selectJoin("portabilidades",
+                                                       array('FECHA_SOLICITUD', 'NOMBRE_TITULAR',  'NUMERO_PORTAR','clientes.NOMBRE', 'clientes.APELLIDOS','clientes.EMAIL','portabilidades.ESTADO','portabilidades.ID'),
+                                                       " left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE", 'FECHA_SOLICITUD','ESTADO = 6 AND portabilidades.ID_EMPRESA='.$_SESSION['USER_ID']);
+
+                                                   while ($row = mysqli_fetch_array( $portas)) {
+                                                       echo '
+                                                                <tr >
+                                                                    <td><span class="'.$estadosColores[intval($row[6])-1].'">'.$estados[intval($row[6])-1].'</span></td >
+                                                                    <td >'.$row[0].'</td >
+                                                                    <td >'.$row[3].' '.$row[4].'</td >
+                                                                    <td >'.$row[2].'</td >
+                                                                    <td ><span class="btn btn-default btn-xs btn-block" onclick="ver_mas('.$row[7].');" > Más</span ></td >
+                                                                </tr >';
+                                                   }
+                                                   ?>
+                                                   </tbody>
+                                                </table>
+
+                                                <a class="size-12" href="#">
+                                                    <i class="fa fa-arrow-right text-muted"></i>
+                                                    More Most Visited
+                                                </a>
+
+                                            </div>
+
+                                        </div><!-- /TAB 1 CONTENT -->
+
+                                    </div>
+                                    <!-- /tabs content -->
+
+                                </div>
+                                <!-- /panel content -->
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+
+                            <div id="panel-2" class="panel panel-default">
+                                <div class="panel-heading">
+									<span class="title elipsis">
+										<strong>Ordenes de trabajo</strong> <!-- panel title -->
+									</span>
+
+                                    <!-- tabs nav -->
+                                    <ul class="nav nav-tabs pull-right">
+                                        <li class="active"><!-- TAB 1 -->
+                                            <a href="#ttab3_nobg" data-toggle="tab">En Curso</a>
+                                        </li>
+                                        <li class=""><!-- TAB 2 -->
+                                            <a href="#ttab4_nobg" data-toggle="tab">completados</a>
+                                        </li>
+                                    </ul>
+                                    <!-- /tabs nav -->
+
+
+                                </div>
+
+                                <!-- panel content -->
+                                <div class="panel-body" style="height:400px">
+
+                                    <!-- tabs content -->
+                                    <div class="tab-content transparent">
+
+                                        <div id="ttab3_nobg" class="tab-pane active"><!-- TAB 1 CONTENT -->
 
                                             <div class="table-responsive">
                                                 <table class="table table-striped table-hover table-bordered">
@@ -132,7 +271,7 @@ check_session(4);
 
                                         </div><!-- /TAB 1 CONTENT -->
 
-                                        <div id="ttab2_nobg" class="tab-pane"><!-- TAB 2 CONTENT -->
+                                        <div id="ttab4_nobg" class="tab-pane"><!-- TAB 2 CONTENT -->
 
                                             <div class="table-responsive">
                                                 <table class="table table-striped table-hover table-bordered">
@@ -144,49 +283,106 @@ check_session(4);
                                                         <th></th>
                                                     </tr>
                                                     </thead>
+                                                   <tbody>
+                                                    aqui los completados
+                                                   </tbody>
+                                                </table>
+
+                                                <a class="size-12" href="#">
+                                                    <i class="fa fa-arrow-right text-muted"></i>
+                                                    More Most Visited
+                                                </a>
+
+                                            </div>
+
+                                        </div><!-- /TAB 1 CONTENT -->
+
+                                    </div>
+                                    <!-- /tabs content -->
+
+                                </div>
+                                <!-- /panel content -->
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- segunda fila de cajas de información-->
+                    <!-- estado ont y estadisticas instalaciones  -->
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <div id="panel-2" class="panel panel-default">
+                                <div class="panel-heading" >
+									<span class="title elipsis">
+										<strong>Portabilidades</strong> <!-- panel title -->
+									</span>
+
+                                    <!-- tabs nav -->
+                                    <ul class="nav nav-tabs pull-right">
+                                        <li class="active"><!-- TAB 1 -->
+                                            <a href="#ttab1_nobg" data-toggle="tab">En Curso</a>
+                                        </li>
+                                        <li class=""><!-- TAB 2 -->
+                                            <a href="#ttab2_nobg" data-toggle="tab">Completadas</a>
+                                        </li>
+                                    </ul>
+                                    <!-- /tabs nav -->
+
+
+                                </div>
+
+                                <!-- panel content -->
+                                <div class="panel-body" style="height:400px">
+
+                                    <!-- tabs content -->
+                                    <div class="tab-content transparent">
+
+                                        <div id="ttab1_nobg" class="tab-pane active" ><!-- TAB 1 CONTENT -->
+
+                                            <div class="table-responsive" style="height:380px; overflow-y: scroll; overflow-x: hidden">
+                                                <table class="table table-striped table-hover table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Estado</th>
+                                                        <th>Fecha</th>
+                                                        <th>Cliente</th>
+                                                        <th>Número</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </thead>
                                                     <tbody>
+
+                                                    </tbody>
+                                                </table>
+
+                                                <a class="size-12" href="#">
+                                                    <i class="fa fa-arrow-right text-muted"></i>
+                                                    Ver todo
+                                                </a>
+
+                                            </div>
+
+                                        </div><!-- /TAB 1 CONTENT -->
+
+                                        <div id="ttab2_nobg" class="tab-pane"><!-- TAB 2 CONTENT -->
+
+                                            <div class="table-responsive" style="height:380px; overflow-y: scroll; overflow-x: hidden">
+                                                <table class="table table-striped table-hover table-bordered">
+                                                    <thead>
                                                     <tr>
-                                                        <td><a href="#">Motorola Droid 4 XT894 - 16GB - Black </a></td>
-                                                        <td>$878.50</td>
-                                                        <td>784</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
                                                     <tr>
-                                                        <td><a href="#">Gigabyte NVIDIA GeForce GT 730</a></td>
-                                                        <td>$122.00</td>
-                                                        <td>3499</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
+                                                        <th>Estado</th>
+                                                        <th>Fecha</th>
+                                                        <th>Cliente</th>
+                                                        <th>Número</th>
+                                                        <th></th>
                                                     </tr>
-                                                    <tr>
-                                                        <td><a href="#">HyperX FURY Blue 8GB, DDR3, 1600MHz</a></td>
-                                                        <td>$19.50</td>
-                                                        <td>2334</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
                                                     </tr>
-                                                    <tr>
-                                                        <td><a href="#">Intel Core i5-4460, 3.2GHz</a></td>
-                                                        <td>$42.33</td>
-                                                        <td>3556</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a href="#">Samsung Galaxy Note 3 </a></td>
-                                                        <td>$655.00</td>
-                                                        <td>3987</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a href="#">Apple iPhone 5 - 32GB</a></td>
-                                                        <td>$612.50</td>
-                                                        <td>789</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a href="#">Allview Ax4 Nano - Cortex A7 Dual-Core 1.30GHz, 7"</a></td>
-                                                        <td>$215.50</td>
-                                                        <td>3411</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+
                                                     </tbody>
                                                 </table>
 
@@ -213,16 +409,16 @@ check_session(4);
                             <div id="panel-2" class="panel panel-default">
                                 <div class="panel-heading">
 									<span class="title elipsis">
-										<strong>Contratos</strong> <!-- panel title -->
+										<strong>INSTALACIONES REALIZADAS</strong> <!-- panel title -->
 									</span>
 
                                     <!-- tabs nav -->
                                     <ul class="nav nav-tabs pull-right">
                                         <li class="active"><!-- TAB 1 -->
-                                            <a href="#ttab1_nobg" data-toggle="tab">En Curso</a>
+                                            <a href="#inst_sema" data-toggle="tab">Semanales</a>
                                         </li>
-                                        <li class=""><!-- TAB 2 -->
-                                            <a href="#ttab2_nobg" data-toggle="tab">completados</a>
+                                        <li class=""><!-- TAB 1 -->
+                                            <a href="#inst_mes" data-toggle="tab">Mensuales</a>
                                         </li>
                                     </ul>
                                     <!-- /tabs nav -->
@@ -231,109 +427,92 @@ check_session(4);
                                 </div>
 
                                 <!-- panel content -->
-                                <div class="panel-body">
+                                <div class="panel-body" style="height:400px">
 
                                     <!-- tabs content -->
                                     <div class="tab-content transparent">
 
-                                        <div id="ttab1_nobg" class="tab-pane active"><!-- TAB 1 CONTENT -->
+                                        <div id="inst_sema" class="tab-pane active"><!-- TAB 1 CONTENT -->
+                                            <div class="row">
+                                                <div class="col-xs-12 col-lg-3">
+                                                    <label>Cabecera</label>
+                                                    <select id="cabecera" name="o" class="form-control">
+                                                        <option value='0' selected>Todas agrupadas</option>
+                                                        <option value='-1' >Todas separadas</option>
+                                                        <?php
+                                                        $c = 0;
+                                                        // carga lista de cabeceras en el combo para poder filtrar los datos
+                                                        while ($row = mysqli_fetch_array($cabeceras)) {
+                                                            if ($c == 0) {
+                                                                $ultimo = $row;
+                                                                $c = 1;
+                                                            }
+                                                            echo "<option value='" . $row['id'] . "'>" . $row['descripcion'] . "</option>";
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-xs-12 col-lg-3">
+                                                    <label>Desde: </label><br>
+                                                    <input type="date" id="desde" name="desde" class="form-control">
+                                                </div>
+                                                <div class="col-xs-12 col-lg-3">
+                                                    <label>Hasta: </label><br>
+                                                    <input type="date" id="hasta" name="hasta" class="form-control">
+                                                </div>
 
-                                            <div class="table-responsive">
-                                                <table class="table table-striped table-hover table-bordered">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>Cliente</th>
-                                                        <th>Estado</th>
-                                                        <th></th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr>
-                                                        <td><a href="#">Cliente</a></td>
-                                                        <td>Estado</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">Ver</a></td>
+                                                <div class="col-xs-12 col-lg-3">
+                                                    <br>
+                                                    <input type="submit" class="btn btn-primary" value="Consultar">
+                                                </div>
 
-                                                    </tr>
-
-                                                    </tbody>
-                                                </table>
-
-                                                <a class="size-12" href="#">
-                                                    <i class="fa fa-arrow-right text-muted"></i>
-                                                    Ver todo
-                                                </a>
+                                            </div>
+                                            <div id="graph-normal-bar">
 
                                             </div>
 
                                         </div><!-- /TAB 1 CONTENT -->
 
-                                        <div id="ttab2_nobg" class="tab-pane"><!-- TAB 2 CONTENT -->
+                                        <div id="inst_mes" class="tab-pane"><!-- TAB 1 CONTENT -->
+                                            <div class="row">
+                                                <div class="col-xs-12 col-lg-3">
+                                                    <label>Cabecera</label>
+                                                    <select id="cabecera" name="o" class="form-control">
+                                                        <option value='0' selected>Todas agrupadas</option>
+                                                        <option value='-1' >Todas separadas</option>
+                                                        <?php
+                                                        $c = 0;
+                                                        // carga lista de cabeceras en el combo para poder filtrar los datos
+                                                        while ($row = mysqli_fetch_array($cabeceras)) {
+                                                            if ($c == 0) {
+                                                                $ultimo = $row;
+                                                                $c = 1;
+                                                            }
+                                                            echo "<option value='" . $row['id'] . "'>" . $row['descripcion'] . "</option>";
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-xs-12 col-lg-3">
+                                                    <label>Desde: </label><br>
+                                                    <input type="date" id="desde" name="desde" class="form-control">
+                                                </div>
+                                                <div class="col-xs-12 col-lg-3">
+                                                    <label>Hasta: </label><br>
+                                                    <input type="date" id="hasta" name="hasta" class="form-control">
+                                                </div>
 
-                                            <div class="table-responsive">
-                                                <table class="table table-striped table-hover table-bordered">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>Product Name</th>
-                                                        <th>Price</th>
-                                                        <th>Sold</th>
-                                                        <th></th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr>
-                                                        <td><a href="#">Motorola Droid 4 XT894 - 16GB - Black </a></td>
-                                                        <td>$878.50</td>
-                                                        <td>784</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a href="#">Gigabyte NVIDIA GeForce GT 730</a></td>
-                                                        <td>$122.00</td>
-                                                        <td>3499</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a href="#">HyperX FURY Blue 8GB, DDR3, 1600MHz</a></td>
-                                                        <td>$19.50</td>
-                                                        <td>2334</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a href="#">Intel Core i5-4460, 3.2GHz</a></td>
-                                                        <td>$42.33</td>
-                                                        <td>3556</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a href="#">Samsung Galaxy Note 3 </a></td>
-                                                        <td>$655.00</td>
-                                                        <td>3987</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a href="#">Apple iPhone 5 - 32GB</a></td>
-                                                        <td>$612.50</td>
-                                                        <td>789</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a href="#">Allview Ax4 Nano - Cortex A7 Dual-Core 1.30GHz, 7"</a></td>
-                                                        <td>$215.50</td>
-                                                        <td>3411</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
+                                                <div class="col-xs-12 col-lg-3">
+                                                    <br>
+                                                    <input type="submit" class="btn btn-primary" value="Consultar">
+                                                </div>
 
-                                                <a class="size-12" href="#">
-                                                    <i class="fa fa-arrow-right text-muted"></i>
-                                                    More Most Visited
-                                                </a>
+                                            </div>
+                                            <div id="graph-normal-bar2">
 
                                             </div>
 
                                         </div><!-- /TAB 1 CONTENT -->
-
                                     </div>
                                     <!-- /tabs content -->
 
@@ -344,256 +523,8 @@ check_session(4);
 
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-5">
 
-                            <div id="panel-2" class="panel panel-default">
-                                <div class="panel-heading">
-									<span class="title elipsis">
-										<strong>Ordenes de Trabajo</strong> <!-- panel title -->
-									</span>
-
-                                    <!-- tabs nav -->
-                                    <ul class="nav nav-tabs pull-right">
-                                        <li class="active"><!-- TAB 1 -->
-                                            <a href="#ttab1_nobg" data-toggle="tab">En Curso</a>
-                                        </li>
-                                        <li class=""><!-- TAB 2 -->
-                                            <a href="#ttab2_nobg" data-toggle="tab">completadas</a>
-                                        </li>
-                                    </ul>
-                                    <!-- /tabs nav -->
-
-
-                                </div>
-
-                                <!-- panel content -->
-                                <div class="panel-body">
-
-                                    <!-- tabs content -->
-                                    <div class="tab-content transparent">
-
-                                        <div id="ttab1_nobg" class="tab-pane active"><!-- TAB 1 CONTENT -->
-
-                                            <div class="table-responsive">
-                                                <table class="table table-striped table-hover table-bordered">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>Cliente</th>
-                                                        <th>Estado</th>
-                                                        <th></th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr>
-                                                        <td><a href="#">Cliente</a></td>
-                                                        <td>Estado</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">Ver</a></td>
-
-                                                    </tr>
-
-                                                    </tbody>
-                                                </table>
-
-                                                <a class="size-12" href="#">
-                                                    <i class="fa fa-arrow-right text-muted"></i>
-                                                    Ver todo
-                                                </a>
-
-                                            </div>
-
-                                        </div><!-- /TAB 1 CONTENT -->
-
-                                        <div id="ttab2_nobg" class="tab-pane"><!-- TAB 2 CONTENT -->
-
-                                            <div class="table-responsive">
-                                                <table class="table table-striped table-hover table-bordered">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>Product Name</th>
-                                                        <th>Price</th>
-                                                        <th>Sold</th>
-                                                        <th></th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr>
-                                                        <td><a href="#">Motorola Droid 4 XT894 - 16GB - Black </a></td>
-                                                        <td>$878.50</td>
-                                                        <td>784</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a href="#">Gigabyte NVIDIA GeForce GT 730</a></td>
-                                                        <td>$122.00</td>
-                                                        <td>3499</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a href="#">HyperX FURY Blue 8GB, DDR3, 1600MHz</a></td>
-                                                        <td>$19.50</td>
-                                                        <td>2334</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a href="#">Intel Core i5-4460, 3.2GHz</a></td>
-                                                        <td>$42.33</td>
-                                                        <td>3556</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a href="#">Samsung Galaxy Note 3 </a></td>
-                                                        <td>$655.00</td>
-                                                        <td>3987</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a href="#">Apple iPhone 5 - 32GB</a></td>
-                                                        <td>$612.50</td>
-                                                        <td>789</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><a href="#">Allview Ax4 Nano - Cortex A7 Dual-Core 1.30GHz, 7"</a></td>
-                                                        <td>$215.50</td>
-                                                        <td>3411</td>
-                                                        <td><a href="#" class="btn btn-default btn-xs btn-block">View</a></td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-
-                                                <a class="size-12" href="#">
-                                                    <i class="fa fa-arrow-right text-muted"></i>
-                                                    More Most Visited
-                                                </a>
-
-                                            </div>
-
-                                        </div><!-- /TAB 1 CONTENT -->
-
-                                    </div>
-                                    <!-- /tabs content -->
-
-                                </div>
-                                <!-- /panel content -->
-
-                            </div>
-
-                        </div>
-
-                        <div class="col-md-4">
-
-                            <div id="panel-3" class="panel panel-default">
-                                <div class="panel-heading">
-									<span class="title elipsis">
-										<strong>RECENT ACTIVITIES</strong> <!-- panel title -->
-									</span>
-                                </div>
-
-                                <!-- panel content -->
-                                <div class="panel-body">
-
-                                    <ul class="list-unstyled list-hover slimscroll height-300" data-slimscroll-visible="true">
-
-                                        <li>
-                                            <span class="label label-danger"><i class="fa fa-bell-o size-15"></i></span>
-                                            Urgent task: add new theme to fastAdmin
-                                        </li>
-
-                                        <li>
-                                            <span class="label label-success"><i class="fa fa-user size-15"></i></span>
-                                            <a href="#">5 pending memership</a>
-                                        </li>
-
-                                        <li>
-                                            <span class="label label-warning"><i class="fa fa-comment size-15"></i></span>
-                                            <a href="#">24 New comments that needs your approval</a>
-                                        </li>
-
-                                        <li>
-                                            <span class="label label-default"><i class="fa fa-briefcase size-15"></i></span>
-                                            No work for tomorrow &ndash; everyone is free!
-                                        </li>
-
-                                        <li>
-                                            <span class="label label-info"><i class="fa fa-shopping-cart size-15"></i></span>
-                                            You have new 3 orders unprocessed
-                                        </li>
-
-                                        <li>
-                                            <span class="label label-success"><i class="fa fa-bar-chart-o size-15"></i></span>
-                                            Generate the finance report for the previous year
-                                        </li>
-
-                                        <li>
-                                            <span class="label label-success bg-black"><i class="fa fa-cogs size-15"></i></span>
-                                            CentOS server need a kernel update
-                                        </li>
-
-                                        <li>
-                                            <span class="label label-warning"><i class="fa fa-file-excel-o size-15"></i></span>
-                                            <a href="#">XCel finance report for 2014 released</a>
-                                        </li>
-
-                                        <li>
-                                            <span class="label label-danger"><i class="fa fa-bell-o size-15"></i></span>
-                                            Power grid is off. Moving to solar backup.
-                                        </li>
-
-                                        <li>
-                                            <span class="label label-warning"><i class="fa fa-comment size-15"></i></span>
-                                            <a href="#">24 New comments that need your approval</a>
-                                        </li>
-
-                                        <li>
-                                            <span class="label label-default"><i class="fa fa-briefcase size-15"></i></span>
-                                            No work for tomorrow &ndash; everyone is free!
-                                        </li>
-
-                                        <li>
-                                            <span class="label label-info"><i class="fa fa-shopping-cart size-15"></i></span>
-                                            You have new 3 orders unprocessed
-                                        </li>
-
-                                        <li>
-                                            <span class="label label-success"><i class="fa fa-bar-chart-o size-15"></i></span>
-                                            Generate the finance report for the previous year
-                                        </li>
-
-                                        <li>
-                                            <span class="label label-success bg-black"><i class="fa fa-cogs size-15"></i></span>
-                                            CentOS server need a kernel update
-                                        </li>
-
-                                        <li>
-                                            <span class="label label-warning"><i class="fa fa-file-excel-o size-15"></i></span>
-                                            <a href="#">XCel finance report for 2014 released</a>
-                                        </li>
-
-                                        <li>
-                                            <span class="label label-danger"><i class="fa fa-bell-o size-15"></i></span>
-                                            Power grid is off. Moving to solar backup.
-                                        </li>
-                                    </ul>
-
-                                </div>
-                                <!-- /panel content -->
-
-                                <!-- panel footer -->
-                                <div class="panel-footer">
-
-                                    <a href="#"><i class="fa fa-arrow-right text-muted"></i> View Activities Archive</a>
-
-                                </div>
-                                <!-- /panel footer -->
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-				</div>
+                </div>
 			</section>
 			<!-- /MIDDLE -->
 
@@ -614,15 +545,81 @@ check_session(4);
 
 		<!-- PAGE LEVEL SCRIPT -->
 		<script type="text/javascript">
+            function ver_mas(id) {
+                alert(id);
+            }
 
-            // todo: -------------------------------------------------------------------------------------------
-            // cuando se selecciona una cabecera en el combo, cargo los datos que pertenecen a ella
-            // esta funcion muestra los datos del estado de las ont de los clientes, esta informacion
-            // la genera un fichero localizado en /cronjobs/ont_infos.php que se ejecuta por crontab cada hora
-            // todo: -------------------------------------------------------------------------------------------
+            var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+            $(document).ready(function () {
+                // $('#desde').val(new Date().toDateInputValue());
+                // $('#hasta').val(new Date().toDateInputValue());
+
+                var olt = '<?php echo $olt;?>';
+
+                if(olt=='')
+                    olt = $("#cabecera").val();
+
+                var desde = '<?php echo $desde;?>';
+                var hasta = '<?php echo $hasta;?>';
+                estadisticas(olt, desde, hasta);
+            });
+
+            Date.prototype.toDateInputValue = (function () {
+                var local = new Date(this);
+                local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+                return local.toJSON().slice(0, 10);
+            });
+
+            function estadisticas(olt, desde, hasta){
 
 
+                $.ajax({
+                    url: 'php/carga_estadisticas.php',
+                    type: 'POST',
+                    cache: false,
+                    cache: false,
+                    async: true,
+                    data: {
+                        olt: olt,
+                        desde: desde,
+                        hasta: hasta
+                    },
+                    success: function (data) {
 
+                        var datos=[];
+                        var total=0;
+
+                        for (var x = 0; x < data.length; x++) {
+
+                            datos[x]={x: data[x]['mes'], y: parseInt(data[x]['cant'])}
+                            total = total + parseInt(data[x]['cant']);
+                        }
+                        $("#total").text(total);
+                        loadScript(plugin_path + "raphael-min.js", function(){
+                            loadScript(plugin_path + "chart.morris/morris.min.js", function(){
+
+                                if (jQuery('#graph-normal-bar').length > 0){
+
+                                    Morris.Bar({
+                                        element: 'graph-normal-bar',
+                                        data: datos,
+                                        xkey: 'x',
+                                        ykeys: ['y'],
+                                        labels: ['Instalaciones']
+                                    });
+
+                                }
+
+                            });
+                        });
+
+
+                    }
+                });
+
+
+            }
         </script>
     </body>
 </html>

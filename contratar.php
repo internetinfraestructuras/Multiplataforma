@@ -480,7 +480,7 @@ check_session(2);
                                 <select disabled name="consentimiento" id="consentimiento"
                                         class="form-control pointer">
                                     <option value="-1">--- Seleccionar una ---</option>
-                                    <?php $util->carga_select('clientes_consentimientos', 'ID', 'NOMBRE', 'NOMBRE'); ?>
+                                    <?php $util->carga_select('clientes_consentimientos', 'ID', 'NOMBRE', 'NOMBRE','ID_EMPRESA = '.$_SESSION['REVENDEDOR']); ?>
 
                                 </select>
                             </div>
@@ -520,7 +520,7 @@ check_session(2);
                             <select  name="paquete" id="paquete"
                                     class="form-control pointer " onchange="paquete_seleccionado(this)">
                                 <option value="">Sin paquete</option>
-                                <?php $util->carga_select('paquetes', 'id', 'NOMBRE, PVP', 'NOMBRE', '', 2, array('', ' €')); ?>
+                                <?php $util->carga_select('paquetes', 'id', 'NOMBRE, PVP', 'NOMBRE', 'ID_EMPRESA = '.$_SESSION['REVENDEDOR'], 2, array('', ' €')); ?>
                             </select>
                         </div>
 
@@ -817,6 +817,14 @@ check_session(2);
            $("#masservicios").modal();
     }
 
+    $('#imprimir').on('hidden.bs.modal', function () {
+        alert('Para salir, utilice el boton correspondiente');
+        clickEvent.preventDefault();
+        clickEvent.stopPropagation();
+        return false;
+        location.href('index.php');
+    });
+
     // carga las provincias en el combo correspondiente
     // se llama cada vez que selecciona una comunidad autonoma
 
@@ -966,7 +974,9 @@ check_session(2);
     }
 
     function calcular_fin_promo(dias) {
+
         diaspromo=dias;
+
         $( "#dto_hasta" ).val(sumarDias(dias));
         calcular_facturas();
     }
@@ -980,7 +990,7 @@ check_session(2);
             '<table class="table table-condensed nomargin">' +
             '<thead class=""><tr><th>Nº</th><th>Fecha</th><th>Importe</th></thead><tbody id="aqui_las_lineas"></tbody></table>');
 
-        var diaFacturacion = 5;
+        var diaFacturacion = <?php echo intval( $_SESSION['dia_facturacion']) ?>;
         var meses = diaspromo / 30;
 
         var f = new Date();
@@ -996,7 +1006,7 @@ check_session(2);
             f.setSeconds(31*86400);
             var options = {year: "numeric", month: "long", day: "numeric"};
             f.setDate(diaFacturacion);
-            // var fecha_mes = (diaFacturacion + "/" + (f.getUTCMonth()+1) + "/" + f.getFullYear()).toLocaleString("es-ES", options);
+
             var fecha_mes = f.toLocaleString("es-ES", options);
 
             if(nm==1)
@@ -1103,7 +1113,7 @@ check_session(2);
 
         id_paquete_seleccionado=item.value;
         precioPack=precio;
-        console.log(precioPack);
+        // console.log(precioPack);
 
         $.ajax({
             url: 'content/servicios/carga_paquetes.php',
@@ -1116,7 +1126,7 @@ check_session(2);
             success: function (datos) {
                 servicios_contratados=[];
                 $.each(datos, function (i) {
-                    $("#aqui_la_tabla").append('<tr><td>' + datos[i].idservicio + '</td><td>' + datos[i].tipo + '</td><td>' +
+                    $("#aqui_la_tabla").append('<tr><td>' + datos[i].idservicio + '</td><td>' + datos[i].tipo + '</td><td><i class="fa fa-question-circle"></i> ' +
                         datos[i].comercial + '</td><td class="text-right"><span class="oculta_coste" style="display:none">' + datos[i].coste + ' &euro;</td><td>' + datos[i].impuesto + '%</td><td class="text-right">' +
                         datos[i].pvp + ' &euro;</td>' +
                         '<td class="text-right"><input type="number" min="0" value="' + datos[i].permanencia + '" style="height:25px; font-size:1em;width:40px; padding:1px;"> Meses</td></tr>');
@@ -1131,7 +1141,7 @@ check_session(2);
                     if(parseInt(datos[i].permanencia)>=parseInt(meses_permencia))
                         meses_permencia=parseInt(datos[i].permanencia);
                 });
-                console.log(servicios_contratados);
+                // console.log(servicios_contratados);
                 $(".ocultar").css('display', 'block');
 
             }
@@ -1179,7 +1189,7 @@ check_session(2);
             success: function (datos) {
 
                 $.each(datos, function (i) {
-                    $("#aqui_la_tabla2").append('<tr><td>' + datos[i].idservicio + '</td><td>' + datos[i].tipo + '</td><td>' +
+                    $("#aqui_la_tabla2").append('<tr><td>' + datos[i].idservicio + '</td><td>' + datos[i].tipo + '</td><td><i class="fa fa-question-circle"> </i> ' +
                         datos[i].comercial + '</td><td class="text-right"><span class="oculta_coste" style="display:none">' + datos[i].coste + ' &euro;</span></td><td>' + datos[i].impuesto + '%</td><td class="text-right">' +
                         datos[i].pvp + ' &euro;</td>' +
                         '<td class="text-right">' +
@@ -1471,9 +1481,9 @@ check_session(2);
                     });
                 }
             });
-            console.log(aFijos);
-            console.log(aMoviles);
-            console.log(aProductos);
+            // console.log(aFijos);
+            // console.log(aMoviles);
+            // console.log(aProductos);
 
             // listo los servicios y productos para ir asociando datos a cada linea del contrato
             // como los numeros de tarjetas, numeros de telefonos, imeis, pons, etc.
@@ -1497,7 +1507,7 @@ check_session(2);
                 lineas_detalles_contrato = lineas_detalles_contrato +
                     "<div class='row' style='border-bottom: 1px solid #c9c9c9'>" +
                     "<div class='col-xs-2 col-lg-1'><img style='max-width:29px' src='img/"+ enpackono + "'><img  style='max-width:29px' src='img/serv"+ servicios_contratados[c][1] + ".png'></div>" +
-                    "<div class='col-xs-10 col-lg-4'>"+servicios_contratados[c][4] + "</div>";
+                    "<div class='col-xs-10 col-lg-4'><i class='fa fa-question-circle'> </i> "+servicios_contratados[c][4] + "</div>";
 
                 if(servicios_contratados[c][1]==2) {
                     lineas_detalles_contrato = lineas_detalles_contrato +
@@ -1630,7 +1640,7 @@ check_session(2);
             }
 
             if (todos_ok>0) {
-                var resp = confirm("No ha asignado productos a todos los servicios,\nAceptar = Si, Cancelar= No. ");
+                var resp = confirm("No ha asignado productos a todos los servicios,\n¿Deseas continuar?\nAceptar = Si, Cancelar= No. ");
                 if(resp)
                     return true;
                 else
@@ -1665,7 +1675,7 @@ check_session(2);
 
             servicios_contratados.push(servicio);
         }
-        console.log(servicios_contratados);
+        // console.log(servicios_contratados);
 
         for (c=0; c<servicios_contratados.length; c++){
             if(servicios_contratados[c][5]=='e')
@@ -1867,13 +1877,19 @@ check_session(2);
     function muestra_oculta_porta(a,b, c) {
 
         if(a==0) {
-            $("#porta-" + b).css('display', 'block');
+            // $("#porta-" + b).css('display', 'block');
             $("#nuevo-" + b).css('display', 'none');
         } else {
             $("#porta-" + b).css('display', 'none');
-            $("#nuevo-" + b).css('display', 'block');
+            if(c!=3)
+                $("#nuevo-" + b).css('display', 'block');
         }
         servicios_contratados[b][6]=a;
+
+        if(c==3)
+            return;
+
+
 
         $("#nuevo-"+b).empty();
 
@@ -1990,7 +2006,7 @@ check_session(2);
         });
 
         servicios_contratados[b][7]=s.value;
-        console.log(servicios_contratados);
+        // console.log(servicios_contratados);
 
     }
 
@@ -2010,7 +2026,7 @@ check_session(2);
         });
 
         servicios_contratados[b][7]=s.value;
-        console.log(servicios_contratados);
+        // console.log(servicios_contratados);
 
     }
 
@@ -2033,7 +2049,7 @@ check_session(2);
         servicios_contratados[b][8]=s.value;
         servicios_contratados[b][10]=s.options[s.selectedIndex].text;
 
-        console.log(servicios_contratados);
+        // console.log(servicios_contratados);
     }
 
     function guardar_contrato(firma){
@@ -2059,7 +2075,11 @@ check_session(2);
                 cliente: id_cliente_seleccionado,
                 permanencia: permanencia,
                 id_paquete: id_paquete_seleccionado,
-                preciopaquete: precioPack
+                preciopaquete: precioPack,
+                cif: $("#dni").val(),
+                nombreapellidos:$("#nombre").val()+" " +$("#apellidos").val(),
+                direccion: $("#direccion").val() + ", " + $("#localidades").val()+ ", " + $("#provincias").val()+ ", " + $("#cp").val() + ", " + $("#regiones").val() + ", " + $("#nacion").val(),
+                email: $("#email").val()
             },
             success: function (data) {
                 if(parseInt(data)>0){

@@ -4,19 +4,22 @@
 // estos clientes se asocian al revendedor al que esta asociado el usuario que lo crea
 // todo: -------------------------------------------------------------
 
-
+//ini_set('display_errors',0);
 
 if (!isset($_SESSION)) {
     @session_start();
 }
 require_once('../../config/util.php');
 require_once('../../clases/Orden.php');
+require_once "../../clases/telefonia/classTelefonia.php";
+
+$telefonia = new Telefonia();
 $util = new util();
 $orden = new Orden();
 
 // solo los usuarios de nivel 3 a 0 pueden agregar clientes
 check_session(3);
-$root="../../";
+$root = "../../";
 ?>
 <!doctype html>
 <html lang="en-US">
@@ -25,7 +28,7 @@ $root="../../";
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
     <title><?php echo OWNER; ?> Instalaciones</title>
     <meta name="description" content=""/>
-    <meta name="Author" content="<?php echo AUTOR; ?>" />
+    <meta name="Author" content="<?php echo AUTOR; ?>"/>
 
     <!-- mobile settings -->
     <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0"/>
@@ -51,14 +54,15 @@ $root="../../";
 -->
 <body>
 
-
 <!-- WRAPPER -->
-<div id="wrapper">
+<div id="wrapper" class="clearfix">
+
 
 
     <section id="">
 
-
+        <?php require_once ($root.'menu-superior.php'); ?>
+        <br><br><br>
         <!-- page title -->
         <header id="page-header">
             <h1>Usted esta en</h1>
@@ -71,75 +75,154 @@ $root="../../";
 
 
         <div id="content" class="padding-20">
+            <form id="ordenar" action="<?php echo RUTA_ANTIGUA;?>api/pre_provision.php" method="post"
+                  enctype="multipart/form-data">
+
+                <input type="hidden" name="act_internet" value="false">
+                <input type="hidden" name="act_voz" value="false">
+                <input type="hidden" name="act_tv" value="false">
+                <div class="row">
+                    <?php
+                    $listado = $orden->getOrden($_GET['id']);
+
+                    $olt = $orden->getOlts();
+                    foreach ($olt as $item) {
+                        $olts = $olts . $item[0] . ",";
+                    }
+
+                    $parametros = array();
+
+                    foreach ($listado as $linea){
+                    ?>
+                    <div class="col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body" id="listado">
+                                <div id="panel-1" class="panel panel-default">
+                                    <div class="panel-heading">
+                                    <span class="title elipsis h2">
+                                        <strong><?php echo $linea['nombre'] . " " . $linea['apellidos']; ?></strong> /
+                                    </span>
+
+                                        <span class="title elipsis h2">
+                                        <b>Orden ID:
+                                            <?php
+                                            echo $_GET['id'];
+                                            echo '<input type = "hidden" name= "orden" value ="' . $_GET['id'] . '">';
+                                            echo '<input type = "hidden" name= "IDCLIENTE" value ="' . $linea['idcliente'] . '">';
+                                            echo '<input type = "hidden" name= "olts" value ="' . $olts . '">';
+                                            echo '<input type = "hidden" name= "claveapi" value ="' . CLAVE_API . '">';
+                                            echo '<input type = "hidden" name= "userlevel" value ="' . $_SESSION['USER_LEVEL'] . '">';
+                                            echo '<input type = "hidden" name= "userid" value ="' . $_SESSION['USER_ID'] . '">';
+                                            echo '<input type = "hidden" name= "revendedor" value ="' . $_SESSION['REVENDEDOR'] . '">';
+                                            echo '<input type = "hidden" name= "descripcion" value ="' . $linea['nombre'] . " " . $linea['apellidos'] . '">';
+                                            ?>
+                                        </b>
+                                    </span>
+                                    </div>
+
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <?php
+
+                                            $lineas = $orden->getLineasOrden($linea[0]);
+                                            foreach ($lineas as $lineaD) {
+                                                echo "<div class='row' style='border-bottom:1px solid #c9c9c9'>";
+                                                echo "<div class='col-xs-2 col-md-1'>";
+                                                echo "<img src='../../img/serv" . $lineaD['servicio'] . ".png'>";
+
+                                                if (intval($lineaD['servicio']) == 1)
+                                                    echo '<input type = "hidden" name= "act_internet"  value="true">';
+                                                if (intval($lineaD['servicio']) == 2)
+                                                    echo '<input type = "hidden" name= "act_voz"  value="true">';
+                                                if (intval($lineaD['servicio']) == 4)
+                                                    echo '<input type = "hidden" name= "act_tv"  value="true">';
 
 
-            <div class="row">
-            <?php
-            $listado= $orden->getOrden($_GET['id']);
-            foreach ($listado as $linea){
-            ?>
-            <div class="col-xs-12">
-                <div class="panel panel-default">
-                    <div class="panel-body" id="listado">
-                        <div id="panel-1" class="panel panel-default">
-                            <div class="panel-heading">
-                            <span class="title elipsis h2">
-                                <strong><?php echo $linea['nombre']." ".$linea['apellidos']; ?></strong>
-                            </span>
-                                <ul class="options pull-right list-inline">
-                                    <b>Orden ID:
-                                        <?php echo $_GET['id']; ?>
-                                    </b>
-                                </ul>
-                            </div>
+                                                echo "</div>";
+                                                echo "<div class='hidden-xs col-md-2'><b>Servicio:</b><br><span class='datos'>";
+                                                echo $lineaD['tipo'];
+                                                echo "</span></div>";
+                                                echo "<div class='col-xs-4 col-md-2'><b>Modelo:</b><br><span class='datos'>";
+                                                echo $lineaD['modelo'];
+                                                echo "</span></div>";
+                                                echo "<div class='col-xs-6 col-md-2 col-lg-3'><b>Serial:</b><br><span class='datos'>";
+                                                echo $lineaD['serial'];
+                                                echo "</span></div>";
+                                                echo "<div class='col-xs-12 col-md-2  '><b>Configuración:</b><br>";
+                                                $config = $orden->getLineasOrdenDetalles($lineaD['ID_LINEA_DETALLE_CONTRATO']);
+                                                foreach ($config as $valor) {
+                                                    echo "<span style='font-size:1em;'><b>" . $valor['NOMBRE'] . ": </b>";
+                                                    if ($valor['NOMBRE'] == 'PAQUETE DESTINO')
+                                                        echo "<br>" . $telefonia->getPaqueteNombre($valor['VALOR']);
+                                                    else
+                                                        echo $valor['VALOR'];
 
-                            <div class="panel-footer">
-                                <div class="row">
-                                    <?php
-                                    $lineas= $orden->getLineasOrden($linea[0]);
-                                    foreach ($lineas as $lineaD){
-                                        echo "<div class='row'>";
-                                        echo "<div class='col-xs-2 col-lg-1'>";
-                                        echo    "<img src='../../img/serv".$lineaD['servicio'].".png'>";
-                                        echo "</div>";
-                                        echo "<div class='col-xs-4 col-lg-2'><b>Servicio:</b><br><span class='datos'>";
-                                        echo   $lineaD['tipo'];
-                                        echo "</span></div>";
-                                        echo "<div class='col-xs-6 col-lg-2'><b>Modelo:</b><br><span class='datos'>";
-                                        echo   $lineaD['modelo'];
-                                        echo "</span></div>";
-                                        echo "<div class='col-xs-10 col-lg-2'><b>Serial:</b><br><span class='datos'>";
-                                        echo   $lineaD['serial'];
-                                        echo "</span></div>";
-                                        echo "<div class='col-xs-10 col-lg-2'><b>Configuración:</b><br><span class='datos'>";
-                                            $config= $orden->getLineasOrdenDetalles($lineaD['ID_LINEA_DETALLE_CONTRATO']);
-                                            foreach ($config as $valor){
-                                                var_dump($valor);
+                                                    if ($valor['NOMBRE'] == 'BAJADA') {
+                                                        echo " Mb ";
+                                                        echo '<input type = "hidden" name= "BAJADA" value ="' . $valor['VALOR'] . '">';
+                                                    }
+                                                    if ($valor['NOMBRE'] == 'SUBIDA') {
+                                                        echo " Mb ";
+                                                        echo '<input type = "hidden" name= "SUBIDA" value ="' . $valor['VALOR'] . '">';
+                                                    }
+                                                    if ($valor['NOMBRE'] == 'DATOS') {
+                                                        echo " Mb ";
+                                                    }
+
+                                                    echo "</span><br>";
+                                                }
+                                                echo "</div>";
+                                                echo "<div class='col-xs-12 col-md-3 col-lg-2'>";
+                                                if (intval($lineaD['servicio']) == 1) {
+                                                    echo '<input type = "hidden" name= "serial" value ="' . $linea['serial'] . '">';
+                                                    echo '
+                                                <br class=\'visible-xs\'>
+                                                <div class="btn-group">
+                                                    <button type="button" onclick="aprovisionar(this,' . $lineaD['ID'] . ')" class="btn btn-warning">Aprovisionar</button>
+                                                    <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
+                                                        <span class="caret"></span>
+                                                        <span class="sr-only">Opciones Disponibles</span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="#"><i class="fa fa-edit"></i> Verificar Estado</a></li>
+                                                        <li><a href="#"><i class="fa fa-recycle"></i> Reaprovisionar</a></li>
+                                                        <li><a href="#"><i class="fa fa-question-circle"></i> Abrir Incidencia</a></li>
+                                                    </ul>
+                                                </div>
+                                                <br class=\'visible-xs\'><br class=\'visible-xs\'>
+                                            ';
+
+
+                                                } else if (intval($lineaD['servicio']) != 3)
+                                                    echo '
+                                                <br class=\'visible-xs\'>
+                                                <div class="btn-group" >
+                                                    <button type="button" onclick="aprovisionar(' . $lineaD['ID'] . ')" class="btn btn-primary">Herramientas</button>
+                                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                        <span class="caret"></span>
+                                                        <span class="sr-only">Opciones Disponibles</span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="#"><i class="fa fa-edit"></i> Verificar Estado</a></li>
+                                                        <li><a href="#"><i class="fa fa-recycle"></i> Reaprovisionar</a></li>
+                                                        <li><a href="#"><i class="fa fa-question-circle"></i> Abrir Incidencia</a></li>
+                                                    </ul>
+                                                </div>
+                                                <br class=\'visible-xs\'><br class=\'visible-xs\'>
+                                            ';
+
+
+                                                echo "</div>";
+
+
+                                                echo "</div><br>";
                                             }
-                                        echo "</span></div>";
-                                        echo "<div class='col-xs-6 col-lg-2'>";
-                                        echo    '
-                                            <div class="btn-group">
-                                                <button type="button" onclick="aprovisionar('.$lineaD['ID'].')" class="btn btn-primary">Aprovisionar</button>
-                                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                                    <span class="caret"></span>
-                                                    <span class="sr-only">Opciones Disponibles</span>
-                                                </button>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#"><i class="fa fa-edit"></i> Verificar Estado</a></li>
-                                                    <li><a href="#"><i class="fa fa-recycle"></i> Reaprovisionar</a></li>
-                                                    <li><a href="#"><i class="fa fa-question-circle"></i> Abrir Incidencia</a></li>
-                                                </ul>
+                                            ?>
+                                            <div class="col-xs-12 visible-xs">
+                                                <br>
                                             </div>
-                                        ';
-                                        echo "</div>";
 
-
-                                        echo "</div><br><br>";
-                                    }
-                                    ?>
-                                    <div class="col-xs-12 visible-xs">
-                                        <br>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -147,15 +230,14 @@ $root="../../";
 
                         </div>
                     </div>
-
-                </div>
-            </div>
-            <?php } ?>
-            </div>
+            </form>
+            <?php }
+            ?>
         </div>
+</div>
 
-    </section>
-    <!-- /MIDDLE -->
+</section>
+<!-- /MIDDLE -->
 
 </div>
 
@@ -165,7 +247,6 @@ $root="../../";
 <script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
 
 
-
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 <script type="text/javascript" src="../../assets/js/app.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.css">
@@ -173,45 +254,17 @@ $root="../../";
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.js"></script>
 <script>
 
-    $(function () {
-        $('#example1').DataTable()
-        $('#example2').DataTable({
-            'paging'      : true,
-            'lengthChange': false,
-            'searching'   : true,
-            'ordering'    : true,
-            'info'        : true,
-            'autoWidth'   : true,
-            language: {
-                "decimal": "",
-                "emptyTable": "No hay información",
-                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-                "infoPostFix": "",
-                "thousands": ",",
-                "lengthMenu": "Mostrar _MENU_ Entradas",
-                "loadingRecords": "Cargando...",
-                "processing": "Procesando...",
-                "search": "Buscar : ",
-                "zeroRecords": "Sin resultados encontrados",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Ultimo",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
-                }
-            },
-        })
-    });
-function filtrar(id)
-{
+    function aprovisionar(boton, id) {
 
-}
+        $(boton).attr("disabled", true);
+        boton.textContent = "Espere...";
+
+        $("#ordenar").submit();
+
+    }
 
 
 </script>
-
 
 
 </body>

@@ -12,12 +12,41 @@ if (!isset($_SESSION)) {
     @session_start();
 }
 
+//descomentar borrar
+//$_SESSION['REVENDEDOR']=1;
+//$_SESSION['USER_LEVEL']=0;
+
 require_once('config/util.php');
 
 ini_set('display_errors', 0);
 error_reporting('E_ALL');
 $util = new util();
 check_session(4);
+
+echo $_SESSION['USER_ID'] ."<br>";
+echo $_SESSION['NOM_USER']."<br>" ;
+echo $_SESSION['USER_LEVEL']."<br>";
+echo $_SESSION['REVENDEDOR']."<br>" ;
+echo $_SESSION['CIF']."<br>" ;
+echo $_SESSION['LOGO'] ;
+
+print_r($_POST);
+
+if(isset($_POST["orden"]) && intval($_POST["orden"])>0) {
+    $orden = $_POST["orden"];
+    $idcliente = $_POST["IDCLIENTE"];
+    $down = $_POST["BAJADA"];
+    $up = $_POST["SUBIDA"];
+    
+    if ($_POST["act_internet"] == "true")
+        $act_internet = true;
+
+    if ($_POST["act_voz"] == "true")
+        $act_voz = true;
+
+    if ($_POST["act_tv"] == "true")
+        $act_tv = true;
+}
 
 ?>
 <!doctype html>
@@ -74,6 +103,24 @@ check_session(4);
             text-align: left;
             transition-duration: 3s;
         }
+        .olts label{
+            color:#1965A7;
+            font-weight: 600;
+        }
+        .onts label{
+            color:#46b8da;
+            font-weight: 600;
+        }
+        .pppoes label{
+            color: #da8e0f;
+            font-weight: 600;
+        }
+        .chasis label{
+            color: red;
+            font-weight: 700;
+        }
+
+
     </style>
 </head>
 
@@ -82,53 +129,49 @@ check_session(4);
 
 <!-- WRAPPER -->
 <div id="wrapper">
+    <?php if(!isset($_POST['orden'])) { ?>
+        <aside id="aside" style="position:fixed;left:0">
 
-    <aside id="aside" style="position:fixed;left:0">
+            <?php require_once('menu-izquierdo.php'); ?>
 
-        <?php require_once('menu-izquierdo.php'); ?>
-
-        <span id="asidebg"><!-- aside fixed background --></span>
-    </aside>
-    <!-- /ASIDE -->
-
-
-    <!-- HEADER -->
-    <header id="header">
-
-        <?php require_once('php/header-menu.php'); ?>
-
-    </header>
-    <!-- /HEADER -->
+            <span id="asidebg"><!-- aside fixed background --></span>
+        </aside>
+        <!-- /ASIDE -->
 
 
-    <!--
-        MIDDLE
-    -->
-    <section id="middle">
+        <!-- HEADER -->
+        <header id="header">
 
-        <!-- page title -->
-        <header id="page-header">
-            <h1>Usted esta en</h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><?php echo DEF_PROVISIONES; ?></a></li>
-                <li class="active">Dar Altas</li>
-            </ol>
+            <?php require_once('php/header-menu.php'); ?>
+
         </header>
-        <!-- /page title -->
+        <!-- /HEADER -->
 
-        <?php
+
+        <!--
+            MIDDLE
+        -->
+        <section id="middle">
+
+            <!-- page title -->
+            <header id="page-header">
+                <h1>Usted esta en</h1>
+                <ol class="breadcrumb">
+                    <li><a href="#"><?php echo DEF_PROVISIONES; ?></a></li>
+                    <li class="active">Dar Altas</li>
+                </ol>
+            </header>
+            <!-- /page title -->
+
+        <?php }
         //*******************************************************************************************************
         // si el usuario es root cargo todas las cabeceras para poder realizar operaciones en cualquiera de ellas
         // si no solo cargo las que pertenecen al usuario activo
         //*******************************************************************************************************
         if ($_SESSION['USER_LEVEL'] == 0) {
             $cabeceras = $util->selectWhere('olts', array('id', 'descripcion'), '', 'descripcion');
-//            $result = $util->selectWhere('clientes', array('id', 'nombre', 'apellidos', 'direccion'), ' clientes.id NOT IN (SELECT id_cliente FROM aprovisionados) ', 'id DESC');
-            //$result = $util->selectWhere('clientes', array('id', 'nombre', 'apellidos', 'direccion'), '', 'id DESC');
         } else {
-            $cabeceras = $util->selectWhere('olts', array('id', 'descripcion'), ' wifero = (SELECT revendedor FROM usuarios WHERE usuarios.id=' . $_SESSION["USER_ID"] . ')', 'descripcion');
-//            $result = $util->selectWhere('clientes', array('id', 'nombre', 'apellidos', 'direccion'), 'user_create in (SELECT id FROM usuarios WHERE revendedor = (select revendedor from usuarios where id = ' . $_SESSION["USER_ID"] . '))  AND clientes.id NOT IN (SELECT id_cliente FROM aprovisionados) ', 'id DESC');
-            // $result = $util->selectWhere('clientes', array('id', 'nombre', 'apellidos', 'direccion'), 'user_create in (SELECT id FROM usuarios WHERE revendedor = (select revendedor from usuarios where id = ' . $_SESSION["USER_ID"] . '))', 'id DESC');
+            $cabeceras = $util->selectWhere('olts', array('id', 'descripcion'), ' wifero = (SELECT ID_EMPRESA FROM usuarios WHERE usuarios.id=' . $_SESSION["USER_ID"] . ')', 'descripcion');
         }
 
         ?>
@@ -163,33 +206,40 @@ check_session(4);
                                 ?>
                             </select>
                         </div>
+                        <?php
+                            if(isset($_POST['orden'])){
 
-                        <div class="col-lg-4 col-sm-6 col-md-6 col-xs-9">
-                            <label>Seleccionar Cliente</label><br>
-                            <select id="cliente" class="form-control select2" onchange="cambiarcliente(this.value)">
-                                <option value='0' selected disabled>Seleccione uno</option>
+                            }
+//                            if(!isset($_POST['orden'])) {
+                        ?>
 
-                            </select>
-                        </div>
-                        <div class="col-lg-1 col-sm-2 col-md-2 col-xs-3 text-center">
-                            <label class="switch switch">
-                                Ver todos<br>
-                                <input type="checkbox" onchange="mostrartodos(this.checked);">
-                                <span class="switch-label" data-on="SI" data-off="NO"></span>
-                            </label>
-                        </div>
+                            <div class="col-lg-4 col-sm-6 col-md-6 col-xs-9 ocultar_si_es_orden">
+                                <label>Seleccionar Cliente</label><br>
+                                <select id="cliente" class="form-control select2" onchange="cambiarcliente(this.value)">
+                                    <option value='0' selected disabled>Seleccione uno</option>
 
-                        <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12">
-                            <label>Cliente Rápido</label><br>
-                            <input type="text" name="nuevo_nom" id="nuevo_nom" class="form-control"
-                                   style="width:39%; display:inline" placeholder="Nombre">
-                            <input type="text" name="nuevo_ape" id="nuevo_ape" class="form-control"
-                                   style="width:59%; display:inline" placeholder="Apellidos">
+                                </select>
+                            </div>
+                            <div class="col-lg-1 col-sm-2 col-md-2 col-xs-3 text-center ocultar_si_es_orden">
+                                <label class="switch switch">
+                                    Ver todos<br>
+                                    <input type="checkbox" id="ckmostrartodos" onchange="mostrartodos(this.checked);">
+                                    <span class="switch-label" data-on="SI" data-off="NO"></span>
+                                </label>
+                            </div>
 
-                            <!--                            <a href="add-clie.php">-->
-                            <!--                                <button type="button" class="btn btn-primary" style="margin-top:25px"> Nuevo </button>-->
-                            <!--                            </a>-->
-                        </div>
+                            <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 ocultar_si_es_orden">
+                                <label>Cliente Rápido</label><br>
+                                <input type="text" name="nuevo_nom" id="nuevo_nom" class="form-control"
+                                       style="width:39%; display:inline" placeholder="Nombre">
+                                <input type="text" name="nuevo_ape" id="nuevo_ape" class="form-control"
+                                       style="width:59%; display:inline" placeholder="Apellidos">
+
+                                <!--                            <a href="add-clie.php">-->
+                                <!--                                <button type="button" class="btn btn-primary" style="margin-top:25px"> Nuevo </button>-->
+                                <!--                            </a>-->
+                            </div>
+<!--                        --><?php //} ?>
                     </div>
                     <br>
 
@@ -218,21 +268,21 @@ check_session(4);
 
                 </div>
             </div>
-            <div class="panel panel-default">
+            <div class="panel panel-default ocultar_si_es_orden">
                 <div class="panel-heading panel-heading-transparent">
                     <strong>SELECCION DEL SERVICIO</strong>
                 </div>
 
-                <div class="panel-body">
+                <div class="panel-body ">
 
-                    <div class="row">
+                    <div class="row ">
                         <div class="col-lg-3 text-center">
                             <br>
                             <div style="zoom:200%; border: 1px #898989 solid; border-radius:5px;padding-bottom:10px;">
                                 <label class="switch switch-info switch-round">
                                     <span style="font-size:.8em">Internet</span><br>
                                     <i class="fa fa-internet-explorer fa-2x"></i>
-                                    <input type="checkbox" id="internet_btn">
+                                    <input type="checkbox" id="internet_btn" <?php if ($act_internet) echo 'checked' ?>>
                                     <span class="switch-label" data-on="SI" data-off="NO"></span>
                                 </label>
                             </div>
@@ -244,7 +294,7 @@ check_session(4);
                                 <label class="switch switch-info  switch-round">
                                     <span style="font-size:.8em">Telefonía</span><br>
                                     <i class="fa fa-phone fa-2x"></i>
-                                    <input type="checkbox" id="voip_btn">
+                                    <input type="checkbox" id="voip_btn" <?php if ($act_voz) echo 'checked' ?>>
                                     <span class="switch-label" data-on="SI" data-off="NO"></span>
                                 </label>
                             </div>
@@ -257,7 +307,7 @@ check_session(4);
                                 <label class="switch switch-info switch-round">
                                     <span style="font-size:.8em">Televisión</span><br>
                                     <i class="fa fa-tv fa-2x"></i>
-                                    <input type="checkbox" id="iptv_btn">
+                                    <input type="checkbox" id="iptv_btn" <?php if ($act_tv) echo 'checked' ?>>
                                     <span class="switch-label" data-on="SI" data-off="NO"></span>
                                 </label>
                             </div>
@@ -280,13 +330,14 @@ check_session(4);
                 </div>
             </div>
 
-            <div class="panel panel-default" id="panel_internet" style="display:none">
+            <div class="panel panel-default mostrar_si_es_orden" id="panel_internet" style="display:none">
                 <div class="panel-heading panel-heading-transparent">
                     <strong>Datos Internet</strong>
                 </div>
                 <div class="panel-borde" style="height:8px"></div>
                 <div class="panel-body">
-                    <div class="row">
+
+                    <div class="row olts">
                         <div class="col-lg-2 col-sm-3 col-md-2 col-xs-6">
                             <label>Modelo Ont</label>
                             <select name="ont-profile" id="ont-profile"
@@ -294,7 +345,7 @@ check_session(4);
                                 <option value="">Seleccionar una</option>
                             </select>
                         </div>
-                        <div class="col-lg-2 col-sm-3 col-md-2 col-xs-6">
+                        <div class="col-lg-3 col-sm-3 col-md-2 col-xs-6">
                             <label>Gestionada Por</label>
                             <select name="gestionada" id="gestionada"
                                     class="form-control pointer required" onchange="gestionada(this.value);">
@@ -303,44 +354,42 @@ check_session(4);
                                     echo '<option value="0">CABECERA</option>';
                                     echo '<option value="1" selected="selected">ROUTER EXTERNO</option>';
                                 }
-                                //                                } else {
-                                //                                    echo '<option value="0" selected="selected">CABECERA</option>';
-                                //                                    echo '<option value="1" >ROUTER EXTERNO</option>';
-                                //                                }
+
                                 ?>
                             </select>
                         </div>
-                        <div class="col-lg-3 col-xs-12">
-                            <div class="col-xs-6">
-                                <label>Tipo Ip</label>
-                                <select name="tipoip" id="tipoip" onchange="tipoip(this.value)"
-                                        class="form-control pointer required">
-                                    <option value="0" selected>Dinámica</option>
-                                    <option value="1">Fija</option>
-                                    <!--                                --><?php //if($_COOKIE['tipoip']==1)
-                                    //                                    echo '<option value="1" selected>Fija</option>';
-                                    //                                else
-                                    //                                    echo '<option value="1">Fija</option>';
-                                    //                                ?>
-                                </select>
-                                <!--                            --><?php //if(intval($_COOKIE['gestionada'])==0) echo 'disabled="disabled"';?>
-                            </div>
-                            <div class="col-lg-4 col-xs-12" id="aqui_vpn" style="display:none">
+                        <div class="col-lg-2 col-xs-6">
 
-                            </div>
-                            <div class="col-xs-6">
-                                <label>Asignación Ip</label>
-                                <select name="asignaip" id="asignaip" onchange="asignada(this.value);"
-                                        class="form-control pointer required">
-                                    <option value="0">OLT</option>
-                                    <?php if ($_COOKIE['asignada'] == 1)
-                                        echo '<option value="1" selected>PPPOE</option>';
-                                    else
-                                        echo '<option value="1">PPPOE</option>';
-                                    ?>
-                                </select>
-                            </div>
+                            <label>Tipo Ip</label>
+                            <select name="tipoip" id="tipoip" onchange="tipoip(this.value)"
+                                    class="form-control pointer required">
+                                <option value="0" selected>Dinámica</option>
+                                <option value="1">Fija</option>
+                                <!--                                --><?php //if($_COOKIE['tipoip']==1)
+                                //                                    echo '<option value="1" selected>Fija</option>';
+                                //                                else
+                                //                                    echo '<option value="1">Fija</option>';
+                                //                                ?>
+                            </select>
+                            <!--                            --><?php //if(intval($_COOKIE['gestionada'])==0) echo 'disabled="disabled"';?>
                         </div>
+                        <div class="col-lg-2 col-xs-6">
+
+                            <label>Asignación Ip</label>
+                            <select name="asignaip" id="asignaip" onchange="asignada(this.value);"
+                                    class="form-control pointer required">
+                                <option value="0">OLT</option>
+                                <?php if ($_COOKIE['asignada'] == 1)
+                                    echo '<option value="1" selected>PPPOE</option>';
+                                else
+                                    echo '<option value="1">PPPOE</option>';
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-xs-12" id="aqui_vpn" style="display:none">
+
+                        </div>
+
                         <div class="col-lg-3 col-xs-12">
 
                             <div class="col-xs-6" id="velup_ocultar">
@@ -363,29 +412,16 @@ check_session(4);
                                 </select>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-sm-3 col-md-2 col-xs-6" id="pppoes_ocultar">
-                            <!--                             style="display: -->
-                            <?php //echo $_COOKIE['asignada']==1? 'block':'none'; ?><!--"-->
-
-                            <label>PPPoE Profile</label>
-                            <select name="pppoe_profile" id="pppoe_profile"
-                                    class="form-control pointer">
-
-                            </select>
-                        </div>
-
-
                     </div>
-                    <br><br>
-                    <div class="row">
+                    <br>
+                    <div class="row onts">
                         <div class="col-lg-3 col-xs-12">
                             <label>Número PON ONT</label>
-                            <input type="text" name="serial_pon" id="serial_pon" class="required form-control masked"
-                                   data-format="****************" data-placeholder="_"
-                                   placeholder="16 Caracteres (puede buscar auto o usar lector)">
+                            <input type="text" name="serial_pon" id="serial_pon" class="required form-control masked" data-format="****************" data-placeholder="_"
+                                   placeholder="Utilice el icono de buscar automáticamente">
                         </div>
 
-                        <div class="col-lg-1 col-xs-6 col-md-6 col-sm-6 text-center" id="btn-autofind">
+                        <div class="col-lg-1 col-xs-12 col-md-6 col-sm-6 text-center" id="btn-autofind">
                             <span class="btn btn-primary" style="margin-top:25px; width:100%; z-index:400000">
                                 <i class="fa fa-2x fa-search"></i>
                             </span>
@@ -403,19 +439,20 @@ check_session(4);
                                    placeholder="010118IPTV12123456">
                         </div>
                         <div class="col-lg-2 col-xs-12">
-                            <label class="visible-xs" style="margin-top:20px;">SSID Wifi<i
-                                        class="fa fa-question-circle"></i></label>
-                            <label class="hidden-xs">SSID Wifi<i class="fa fa-question-circle"></i></label>
+                            <label class="visible-xs" style="margin-top:20px;">SSID Wifi <i
+                                        class="fa fa-asterisk"></i></label>
+                            <label class="hidden-xs">SSID Wifi <i class="fa fa-asterisk"></i></label>
                             <input type="text" name="ssid" id="ssid" class="form-control" placeholder="Mi Fibra Wifi">
                         </div>
                         <div class="col-lg-2 col-xs-12">
-                            <label class="visible-xs" style="margin-top:20px;">Clave Wifi<i
-                                        class="fa fa-question-circle"></i></label>
-                            <label class="hidden-xs">Clave Wifi<i class="fa fa-question-circle"></i></label>
-                            <input type="text" name="clavewifi" id="clavewifi" class="form-control">
+                            <label class="visible-xs" style="margin-top:20px;">Clave Wifi <i
+                                        class="fa fa-asterisk"></i></label>
+                            <label class="hidden-xs">Clave Wifi <i class="fa fa-asterisk"></i></label>
+                            <input type="text" name="clavewifi" id="clavewifi"
+                                   class="form-control" data-placeholder="">
                         </div>
                         <div class="col-lg-2 col-xs-12 text-center">
-                            <i class="fa fa-2x fa-question-circle"></i><br>Exclusivo<br>IPTV11M / IPTV12M / IPTV22M
+                            <i class="fa fa-asterisk"></i><br>Solo Routers Internet Infraestructuras
                         </div>
 
                         <!--                        <div class="col-lg-1 col-xs-12 col-md-6 col-sm-6 text-center" id="btn-barcode2">-->
@@ -425,7 +462,47 @@ check_session(4);
 
 
                     </div>
-                    <div class="row">
+                    <br>
+                    <div class="row pppoes" id="pppoes_ocultar">
+
+                        <div class="col-lg-2 col-sm-3 col-md-2 col-xs-12">
+                            <label>PPPoE Profile</label>
+                            <select name="pppoe_profile" id="pppoe_profile" class="form-control pointer">
+                            </select>
+                        </div>
+                        <div class="col-xs-12 col-md-4">
+                            <div class=" col-xs-6">
+                                <label class="visible-xs" style="margin-top:20px;">Usuario PPPoE</label>
+                                <label class="hidden-xs">Usuario PPPoE</label>
+                                <input type="text" name="user_pppoe" id="user_pppoe" class="form-control">
+                            </div>
+                            <div class="col-xs-6">
+                                <label class="visible-xs" style="margin-top:20px;">Password PPPoE</label>
+                                <label class="hidden-xs">Password PPPoE</label>
+                                <input type="text" name="pass_pppoe" id="pass_pppoe" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <div class="col-xs-4  voip_text" style="display:none">
+                                <label class="visible-xs" style="margin-top:20px;">Usuario Voz Ip</label>
+                                <label class="hidden-xs">Usuario Voz Ip</label>
+                                <input type="text" name="user_vozip" id="user_vozip" class="form-control">
+                            </div>
+                            <div class="col-xs-4  voip_text"  style="display:none">
+                                <label class="visible-xs" style="margin-top:20px;">Password Voz Ip</label>
+                                <label class="hidden-xs">Password Voz Ip</label>
+                                <input type="text" name="pass_vozip" id="pass_vozip" class="form-control">
+                            </div>
+                            <div class="col-xs-4  voip_text"  style="display:none">
+                                <label class="visible-xs" style="margin-top:20px;">Télefono fijo</label>
+                                <label class="hidden-xs">Télefono fijo</label>
+                                <input type="tel" name="num_tel" id="num_tel" class="form-control">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row chasis">
                         <br>
                         <div class="col-lg-2 col-xs-4">
                             <label>Chasis</label>
@@ -485,7 +562,7 @@ check_session(4);
                                 <option value="">Seleccionar una</option>
                             </select>
                         </div>
-                        <div class="col-lg-2 col-sm-3 col-md-2 col-xs-6">
+                        <div class="col-lg-3 col-sm-3 col-md-2 col-xs-6">
                             <label>Gestionada Por</label>
                             <select name="vo-gestionada" id="vo-gestionada"
                                     class="form-control pointer required" onchange="gestionada(this.value);">
@@ -568,6 +645,7 @@ check_session(4);
 
                         </div>
                     </div>
+
                     <div class="row">
                         <br>
                         <div class="col-lg-2 col-xs-4">
@@ -944,7 +1022,7 @@ check_session(4);
 
     // cuando se pulsa el checkbox de aprovisionar internet
 
-    $("#internet_btn").bind('click', function () {
+    $("#internet_btn, #iptv_btn").bind('click', function () {
         var nuevo_nom = $('#nuevo_nom').val();
         var clienteselected = $("#cliente").val();
 
@@ -1010,119 +1088,11 @@ check_session(4);
         $("#activar-internet").append('<span>Revisar y Activar </span><i class="fa fa-internet-explorer"></i>');
     });
 
-
-    // si se pulsa el check de aprovisionar vpn
-
-    $("#iptv_btn").bind('click', function () {
-
-        var nuevo_nom = $('#nuevo_nom').val();
-        var clienteselected = $("#cliente").val();
-
-        // si esta habilitado el check de aprovisionar internet, regreso sin hacer nada
-        if ($("#internet_btn").prop('checked') == true)
-            return;
-
-        // si no se ha seleccionado o tecleado un cliente, aviso y regreso
-        if (clienteselected == null && nuevo_nom == '') {
-            alert("Debes seleccionar o teclear un cliente");
-            $("#voip_btn").prop('checked', false);
-            return;
-        }
-
-        // cuento cuantos servicios hay activado
-        var cuantos = 0;
-        if ($("#internet_btn").prop('checked') == true)
-            cuantos = cuantos + 1;
-        if ($("#iptv_btn").prop('checked') == true)
-            cuantos = cuantos + 1;
-        if ($("#voip_btn").prop('checked') == true)
-            cuantos = cuantos + 1;
-        if ($("#vpn_btn").prop('checked') == true)
-            cuantos = cuantos + 1;
-
-        $("#vpn_btn").prop('checked', false);
-
-        // si no hay ninguno oculto los paneles
-        if (cuantos == 0) {
-            $("#panel_internet").css('display', 'none');
-            $("#panel_iptv").css('display', 'none');
-            $("#panel_voip").css('display', 'none');
-            $(".panel-borde").css('background-color', '#c9c9c9');
-        }
-
-        // si al menos hay uno muestro el panel de internet
-        if (cuantos == 1) {
-            $("#panel_internet").css('display', 'none');
-            $("#panel_iptv").css('display', 'block');
-            $("#panel_voip").css('display', 'none');
-            $(".panel-borde").css('background-color', '#c9c9c9');
-        }
-
-        // indica que se va a aprovisionar voz, esto se diferencia de un alta normal
-        // en que se le prioriza un servicio de 9 megas exclusivo para la tv
-        // ademas hay que activar un service port y unas prioridades diferentes
-
-        servicio = 2;
-    });
-
-    // igual pero el service port es diferente,
-
     $("#voip_btn").bind('click', function () {
-
-        if ($("#internet_btn").prop('checked') == true)
-            return;
-
-        var nuevo_nom = $('#nuevo_nom').val();
-        var clienteselected = $("#cliente").val();
-
-        if (clienteselected == null && nuevo_nom == '') {
-            alert("Debes seleccionar o teclear un cliente");
-            $("#voip_btn").prop('checked', false);
-            return;
-        }
-
-        $("#vpn_btn").prop('checked', false);
-
-
-        var cuantos = 0;
-        if ($("#internet_btn").prop('checked') == true)
-            cuantos = cuantos + 1;
-        if ($("#iptv_btn").prop('checked') == true)
-            cuantos = cuantos + 1;
-        if ($("#voip_btn").prop('checked') == true)
-            cuantos = cuantos + 1;
-        if ($("#vpn_btn").prop('checked') == true)
-            cuantos = cuantos + 1;
-
-        if (cuantos == 1) {
-            $("#panel_internet").css('display', 'none');
-            $("#panel_iptv").css('display', 'none');
-            $("#panel_voip").css('display', 'block');
-            $(".panel-borde").css('background-color', '#c9c9c9');
-        }
-
-        if (cuantos == 0) {
-            $("#panel_internet").css('display', 'none');
-            $("#panel_iptv").css('display', 'none');
-            $("#panel_voip").css('display', 'none');
-            $(".panel-borde").css('background-color', '#c9c9c9');
-        }
-
-        if ($("#internet_btn").prop('checked') == true) {
-            $("#img-provision2").attr('src', 'img/ont.png');
-            $("#img-provision").attr('src', 'img/telefono.png');
-        } else {
-            $("#img-provision").attr('src', 'img/telefono.png');
-            $("#img-provision2").attr('src', '');
-        }
-
-        // $("#img-provision").attr('src','img/telefono.png');
-
-        // indica que se va a aprovisionar voz, esto se diferencia de un alta normal
-        // en que se le prioriza un servicio de 9 megas exclusivo para la voz
-        // ademas hay que activar un service port y unas prioridades diferentes
-
-        servicio = 3;
+        if(this.checked)
+            $(".voip_text").css('display', 'block');
+        else
+            $(".voip_text").css('display', 'none');
 
     });
 
@@ -1187,7 +1157,16 @@ check_session(4);
         var p = $("#p").val();
         var puerto = $("#puerto").val();
         var npon = $("#serial_pon").val();
+        var clavewifi = $("#clavewifi").val();
 
+        // pppoe
+        var userpppoe = $("#user_pppoe").val();
+        var passpppoe = $("#pass_pppoe").val();
+
+        // vozip
+        var uservoip = $("#user_vozip").val();
+        var passvoip = $("#pass_vozip").val();
+        var numtel = $("#num_tel").val();
 
         $("#prev_serial").html(serie);
         $("#prev_pon").html(npon);
@@ -1204,6 +1183,8 @@ check_session(4);
 
 
         var mensaje = "";
+
+
 
         if (olt == '') {
             mensaje = mensaje + "Debes seleccionar una cabecera\n";
@@ -1267,6 +1248,17 @@ check_session(4);
             mensaje = mensaje + "Falta el número de puerto\n";
         }
 
+        if (clavewifi.length < 8 && clavewifi.length > 0) {
+            mensaje = mensaje + "La clave wifi debe tener al menos 8 caracteres\n";
+        }
+
+        if ($('#voip_btn').is(':checked')) {
+            if(uservoip == '' || passvoip == '')
+                mensaje = mensaje + "Si desea aprovisionar la Voz IP, debe especificar el usuario y clave del proveedor";
+        }
+
+
+
         if (mensaje != '') {
             alert(mensaje);
             return;
@@ -1291,6 +1283,7 @@ check_session(4);
         var p = $("#vo-p").val();
         var puerto = $("#vo-puerto").val();
         var npon = $("#vo-serial_pon").val();
+        var clavewifi = $("#clavewifi").val();
 
 
         $("#prev_serial").html(serie);
@@ -1303,6 +1296,7 @@ check_session(4);
         $("#prev_t").html(t);
         $("#prev_p").html(p);
         $("#prev_puerto").html(puerto);
+
 
         var nuevo_nom = $('#nuevo_nom').val() + " " + $('#nuevo_ape').val();
 
@@ -1378,7 +1372,17 @@ check_session(4);
     function enviar() {
 
         $("#msg_error").text('');
-        $("#btn-enviar").attr('disabled','disabled');
+        $("#btn-enviar").attr('disabled', 'disabled');
+
+        // pppoe
+        var userpppoe = $("#user_pppoe").val();
+        var passpppoe = $("#pass_pppoe").val();
+
+        // vozip
+        var uservoip = $("#user_vozip").val();
+        var passvoip = $("#pass_vozip").val();
+        var numtel = $("#num_tel").val();
+
 
         if (servicio == 1 || servicio == 4) {
             var serie = $("#serial").val();
@@ -1591,8 +1595,14 @@ check_session(4);
                 mascara: mascara,
                 ssid: ssid,
                 clavewifi: clavewifi,
-                pppoe_profile: pppoe_profile
-            },
+                pppoe_profile: pppoe_profile,
+                userpppoe : userpppoe,
+                passpppoe : passpppoe,
+                uservoip : uservoip,
+                passvoip : passvoip,
+                numtel : numtel
+
+    },
             success: function (data) {
                 $("#contenido_resultado").empty();
                 var error_content = "<center>";
@@ -1691,13 +1701,6 @@ check_session(4);
 
                 $("#contenido_resultado").append(error_content);
 
-                // borrarlo
-                /*  $.featherlight.close();
-                  $("#trabajando").css('display', 'none');
-                  $("#ajax").modal('hide');
-                  $("#resultado_modal").modal();
-                  $("#resultado_modal").css('z-index','10000');
-                  abortado=true;*/
 
             }, complete(data) {
                 $.ajax({
@@ -1710,7 +1713,8 @@ check_session(4);
                         pon: npon,
                         ssid: ssid,
                         clavewifi: clavewifi,
-                        mac: mac
+                        mac: mac,
+                        act_voz: act_voz
                     },
                     complete: function () {
                         $.featherlight.close();
@@ -2200,6 +2204,28 @@ check_session(4);
         $("#tv-serial_pon").val(serial);
         $("#vo-serial_pon").val(serial);
 
+
+        $("#user_pppoe").val(serie);
+        // $("#tv-user_pppoe").val(serial);
+        // $("#vo-user_pppoe").val(serial);
+
+
+        $("#pass_pppoe").val(serial+"**");
+        // $("#tv-pass_pppoe").val(serial)+"**";
+        // $("#vo-pass_pppoe").val(serial)+"**";
+
+
+        $("#user_vozip").val(serial);
+        // $("#tv-user_pppoe").val(serial);
+        // $("#vo-user_pppoe").val(serial);
+
+
+        $("#pass_vozip").val(serial);
+        // $("#tv-pass_pppoe").val(serial)+"**";
+        // $("#vo-pass_pppoe").val(serial)+"**";
+
+
+
         $("#serial").val(serie);
         $("#vo-serial").val(serie);
         $("#tv-serial").val(serie);
@@ -2217,6 +2243,10 @@ check_session(4);
         $("#vo-t").val(parseInt(t)).change();
         $("#vo-p").val(parseInt(p)).change();
 
+        $("#c").attr('disabled',true);
+        $("#t").attr('disabled',true);
+        $("#p").attr('disabled',true);
+
         $("#encontradas").hide(1000);
     }
 
@@ -2228,6 +2258,7 @@ check_session(4);
     function cargar_clientes(filtro) {
         $('#cliente').empty();
         $('#cliente').append("<option value='0' selected disabled>Seleccione uno</option>");
+        var cli_desde_orden = <?php echo $idcliente;?>;
 
         $.ajax({
             url: 'carga_cli.php',
@@ -2238,7 +2269,13 @@ check_session(4);
             success: function (datos) {
                 if (datos.length > 0) {
                     for (var x = 0; x < datos.length; x++) {
-                        $('#cliente').append("<option value='" + datos[x].id + "'>" + datos[x].apellidos + " " + datos[x].nombre + "</option>");
+                        if(parseInt(cli_desde_orden)==parseInt(datos[x].id)) {
+                            $('#cliente').append("<option selected value='" + datos[x].id + "'>" + datos[x].apellidos + " " + datos[x].nombre + "</option>");
+                            $('.ocultar_si_es_orden').css('display', 'none');
+                            $('.mostrar_si_es_orden').css('display', 'block');
+
+                        } else
+                            $('#cliente').append("<option value='" + datos[x].id + "'>" + datos[x].apellidos + " " + datos[x].nombre + "</option>");
                     }
                 }
             }

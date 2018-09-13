@@ -5,8 +5,8 @@
  * Date: 02/08/2018
  * Time: 13:15
  */
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
 require_once ('Contrato.php');
 /*
 
@@ -444,6 +444,28 @@ public static function cancelarBajaServicio($idContrato,$idLineaContrato,$idServ
         $util=new util();
         return $util->selectWhere3("servicios", array("PRECIO_PROVEEDOR","IMPUESTO","BENEFICIO","PVP","ID"),
             "servicios.id=".$idServicio." AND servicios.id_empresa=".$_SESSION['REVENDEDOR']);
+    }
+
+
+    // ruben corrales
+
+    //Devuelve el grupo de recarga y el paquete destino de un servicio dado
+    public static function getGrupoRecargayPaqueteDestino($idServicio)
+    {
+
+        $util = new util();
+        //selectJoin($tabla, $campos, $join, $order, $where=null, $group=null)
+        $result= $util->selectJoin( "servicios_atributos", array("servicios_atributos.VALOR"),
+                                    "join servicios on servicios_atributos.ID_SERVICIO = servicios.id " ,
+                                    ' servicios_atributos.ID_TIPO_ATRIBUTO ',' servicios.id = '. $idServicio. ' and servicios_atributos.ID_TIPO_ATRIBUTO IN (43,44)');
+        $fieldNames=array();
+
+        while ($row = mysqli_fetch_array($result))
+        {
+            array_push($fieldNames, $row[0]);
+        }
+
+        return $fieldNames;
     }
 
 }

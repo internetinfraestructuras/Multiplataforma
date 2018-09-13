@@ -38,6 +38,32 @@ $act_tv = $_POST['act_tv'];
 $act_vpn = $_POST['act_vpn'];
 
 
+//vozip
+/*
+ *             userpppoe : userpppoe,
+                passpppoe : passpppoe,
+                uservoip : uservoip,
+                passvoip : passvoip,
+                numtel : numtel
+ */
+
+$userpppoe = $_POST['userpppoe'];
+$passpppoe = $_POST['passpppoe'];
+
+$uservoip = $_POST['uservoip'];
+$passvoip = $_POST['passvoip'];
+
+$numtel = $_POST['numtel'];
+
+// ruben borrar esta linea
+// cuando termine de editar asignacion.php, se podrá pasar los datos de vozip y ppoe
+// personalizados por el instalador mientras cojo los de siempre
+
+$numtel = $_POST['num_pon'];
+$uservoip = $_POST['num_pon'];
+$passvoip = $_POST['num_pon']."**";
+
+
 
 setcookie('c', $c, time() + (86400 * 30), "/");
 setcookie('t', $t, time() + (86400 * 30), "/");
@@ -45,6 +71,7 @@ setcookie('p', $p, time() + (86400 * 30), "/");
 setcookie('caja', $caja, time() + (86400 * 30), "/");
 setcookie('puerto', $puerto, time() + (86400 * 30), "/");
 setcookie('cabecera', $id_olt, time() + (86400 * 30), "/");
+setcookie('activarvoz', $act_voz, time() + (600), "/");
 
 $command = $_POST['command'];
 $serial = $_POST['serial'];  // este es el serial
@@ -164,7 +191,8 @@ if ($respuesta_olt == 0) {
     }
 
 
-    $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( '" . $comando . "','" . $respuesta_olt . "','" . $id_olt . "');");
+//    $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( '" . $comando . "','" . $respuesta_olt . "','" . $id_olt . "');");
+        $util->log($respuesta_olt);
 
 //    if (str_replace(' ', '', $ont_id) == '') {
         $telnet->DoCommand("quit", $void);
@@ -177,19 +205,20 @@ if ($respuesta_olt == 0) {
         $ont_ids = explode(':', $rows[2]);
         $ont_id = explode(':', $ont_ids[1]);
         $ont_id = str_replace(':','',$ont_id[0]);
-        $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( '" . $comando_1 . "','" . $respuesta_olt . "','" . $id_olt . "');");
+//        $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( '" . $comando_1 . "','" . $respuesta_olt . "','" . $id_olt . "');");
+        $util->log($respuesta_olt);
         $err_num = 0;
 //        echo "2: " .$ont_id;
         $telnet->DoCommand('interface gpon ' . $c . "/" . $t, $void);
         $telnet->DoCommand(PHP_EOL, $void);
 
-        $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( '2:" . $ont_id . "','" . $respuesta_olt . "','" . $id_olt . "');");
-
+//        $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( '2:" . $ont_id . "','" . $respuesta_olt . "','" . $id_olt . "');");
+        $util->log($respuesta_olt);
 //    }
 
 
-    $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( '" . $comando . "','" . $respuesta_olt . "','" . $id_olt . "');");
-
+//    $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( '" . $comando . "','" . $respuesta_olt . "','" . $id_olt . "');");
+    $util->log($respuesta_olt);
     if ($nuevo_nom != '' && $err_num == 1 && (intval($vpn) == 2) && (intval($vpn) == 3))
         $util->consulta("DELETE FROM clientes WHERE id=" . $idcliente);
 
@@ -223,10 +252,13 @@ if ($respuesta_olt == 0) {
 
 
             $telnet->DoCommand($comando1 . PHP_EOL . PHP_EOL, $respuesta_olt);
+            $util->log($respuesta_olt);
 
             // creamos servicio en la vlan 200 para el acs
             $comando2 = "service-port " . $id_acs . " vlan 200 gpon " . $gpon . " ont " . $ont_id . " gemport 2 multi-service user-vlan 200 tag-transform translate inbound traffic-table index 0 outbound traffic-table index 0 " . PHP_EOL;
             $telnet->DoCommand($comando2 . PHP_EOL . PHP_EOL, $respuesta_olt);
+            $util->log($respuesta_olt);
+
 
             if (strpos($respuesta_olt, 'The traffic table does not exist') > 0) {
                 $responder = "Error: El / Los perfiles de velocidad no existen en la cabecera";
@@ -238,7 +270,7 @@ if ($respuesta_olt == 0) {
                 $err_num = 3;
             }
 
-            $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( '" . $comando1 . "','" . $respuesta_olt . "','" . $id_olt . "');");
+//            $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( '" . $comando1 . "','" . $respuesta_olt . "','" . $id_olt . "');");
 
             if ($err_num == 3) {
                 $telnet->DoCommand('interface gpon ' . $c . "/" . $t, $respuesta_olt);
@@ -246,16 +278,20 @@ if ($respuesta_olt == 0) {
                 $telnet->DoCommand('ont delete ' . $p . " " . $ont_id, $respuesta_olt);
                 $telnet->DoCommand(PHP_EOL, $respuesta_olt);
                 $telnet->DoCommand("quit" . PHP_EOL, $void);
-                $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( 'interface gpon " . $c . "/" . $t . "','" . $respuesta_olt . "','" . $id_olt . "');");
+//                $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( 'interface gpon " . $c . "/" . $t . "','" . $respuesta_olt . "','" . $id_olt . "');");
+
+                $util->log($respuesta_olt);
 
                 if ($nuevo_nom != '')
                     $util->consulta("DELETE FROM clientes WHERE id=" . $idcliente);
             } else {
                 $respuesta_olt = null;
-                $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( 'display service-port " . $id_internet . "','" . $respuesta_olt . "','" . $id_olt . "');");
+//                $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( 'display service-port " . $id_internet . "','" . $respuesta_olt . "','" . $id_olt . "');");
                 $telnet->DoCommand('display service-port ' . $id_internet . PHP_EOL, $respuesta_olt);
                 $telnet->DoCommand(PHP_EOL, $respuesta_olt);
                 $telnet->DoCommand(PHP_EOL, $respuesta_olt);
+                $util->log($respuesta_olt);
+
             }
             $respuesta_olt = null;
 
@@ -264,24 +300,39 @@ if ($respuesta_olt == 0) {
             //----------------------------------------------------------------------------------------------------------
 
             $telnet->DoCommand('  interface gpon ' . $c . "/" . $t . PHP_EOL.PHP_EOL, $respuesta_olt);
-            sleep(1);
-            $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( 'interface gpon " . $respuesta_olt . "','" . $id_olt . "');");
-
+            sleep(2);
+//            $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( 'interface gpon " . $respuesta_olt . "','" . $id_olt . "');");
+            $util->log($respuesta_olt);
 
             if ($act_vpn != 'true') {
                 $telnet->DoCommand('ont ipconfig ' . $p . ' ' . $ont_id . ' dhcp vlan '.$vlan_acs . PHP_EOL . PHP_EOL, $respuesta_olt1);
                 sleep(1);
 
             }
-            if(intval($id_olt)!= 4 && intval($id_olt)!= 6 && intval($id_olt)!=13){
+
+            // si se han especificado los datos pppoe
+            if($userpppoe!='' && $passpppoe!=''){
+                $ppoe_usuario=$userpppoe;
+                $ppoe_passw=$passpppoe;
+            }
+
+
+            if($uservoip=='' || $passvoip==''){
+                $uservoip=$serial;
+                $passvoip=($num_pon."**");
+            }
+
+
+//            if(intval($id_olt)!= 4 && intval($id_olt)!= 6 && intval($id_olt)!=13){
                 $telnet->DoCommand('  if-sip add ' . $p . ' ' . $ont_id . ' 1 sipagent-profile profile-id 2' . PHP_EOL . PHP_EOL, $respuesta_olt2);
                 sleep(1);
                 $util->log($respuesta_olt2);
 
-                $telnet->DoCommand('  sippstnuser add ' . $p . ' ' . $ont_id . ' 1 mgid 1 username "' . $num_pon . '" password "' . ($num_pon . "**") . '" telno "' . $num_pon . '"' . PHP_EOL . PHP_EOL, $respuesta_olt3);
+                $telnet->DoCommand('  sippstnuser add ' . $p . ' ' . $ont_id . ' 1 mgid 1 username "' . $uservoip . '" password "' . $passvoip . '" telno "' . $numtel . '"' . PHP_EOL . PHP_EOL, $respuesta_olt3);
                 sleep(1);
                 $util->log($respuesta_olt3);
-
+//            }
+            
                 $telnet->DoCommand("  ont tr069-server-config " . $p . " " . $ont_id . " profile-name acs" . PHP_EOL . PHP_EOL, $respuesta_olt4);
                 $util->log($respuesta_olt4);
 
@@ -289,7 +340,7 @@ if ($respuesta_olt == 0) {
                 setcookie('pon_acs', $num_pon, time() + 200, "/");
                 setcookie('ssid', $_POST['ssid'], time() + 200, "/");
                 setcookie('clavewifi', $_POST['clavewifi'], time() + 200, "/");
-            }
+
 
         }
 
@@ -314,6 +365,7 @@ if ($respuesta_olt == 0) {
             $telnet->DoCommand(PHP_EOL, $respuesta_olt);
             $telnet->DoCommand($comando1 . PHP_EOL, $respuesta_olt);
             $util->log( $comando1 . "" . $respuesta_olt . "" . $id_olt);
+
             $telnet->DoCommand(PHP_EOL, $respuesta_olt);
             $telnet->DoCommand(PHP_EOL, $respuesta_olt);
             $telnet->DoCommand('interface gpon ' . $c . "/" . $t, $respuesta_olt);
@@ -341,7 +393,8 @@ if ($respuesta_olt == 0) {
 
             $telnet->DoCommand($comando1, $respuesta_olt);
 
-            $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( '" . $comando1 . "','" . $respuesta_olt . "','" . $id_olt . "');");
+//            $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( '" . $comando1 . "','" . $respuesta_olt . "','" . $id_olt . "');");
+            $util->log($respuesta_olt);
 
         }
 
@@ -361,9 +414,9 @@ if ($respuesta_olt == 0) {
 
             $telnet->DoCommand($comando1 . PHP_EOL . PHP_EOL, $respuesta_olt);
 
-            $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( '" . $comando1 . "','" . $respuesta_olt . "','" . $id_olt . "');");
+//            $util->consulta("INSERT INTO logs_telnet ( comando, respuesta, cabecera) VALUES ( '" . $comando1 . "','" . $respuesta_olt . "','" . $id_olt . "');");
 
-
+            $util->log($respuesta_olt);
 
         }
     }
@@ -390,8 +443,11 @@ if ($respuesta_olt == 0) {
         //$tipoip = $tipoip  == 0 ? 'IP_Routed' : 'IP_Routed';
         $util->delete('provision_acs',"pon",$num_pon);
 
-        $idcfg = $util->insertInto("provision_acs", array('pon','id_provision', 'ppoe_user', 'ppoe_pass', 'sip_user', 'sip_pass','ConnectionType','AddressingType','ExternalIPAddress','SubnetMask','gestionada','descripcion'),
-                array($num_pon,$lastid, $ppoe_usuario, $ppoe_passw, $serial, ($num_pon."**"), $tipoip, $asignada,$ipfija,$mascara,$gestionada,$_POST['descrp']));
+
+        $idcfg = $util->insertInto("provision_acs", array('pon','id_provision', 'ppoe_user', 'ppoe_pass', 'sip_user', 'sip_pass','ConnectionType','AddressingType','ExternalIPAddress','SubnetMask','gestionada','descripcion','ssid','wifipass'),
+            array($num_pon,$lastid, $ppoe_usuario, $ppoe_passw, $uservoip, $passvoip, $tipoip, $asignada,$ipfija,$mascara,$gestionada,$_POST['descrp'],$_POST['ssid'],$_POST['clavewifi']));
+
+
 //
 //        if($idcfg=='' || $idcfg==0 || $idcfg==null)
 //            $util->update("provision_acs", array('id_provision', 'ppoe_user', 'ppoe_pass', 'sip_user', 'sip_pass','ConnectionType','AddressingType','ExternalIPAddress','SubnetMask','gestionada'),
@@ -414,7 +470,7 @@ if ($respuesta_olt == 0) {
             $respuesta_olt="";
 
             $telnet->DoCommand($cmd . PHP_EOL .ESPACIO ."q", $respuesta_olt);
-
+    
             //echo $respuesta_olt;
             $rows = explode("---------------------------------------------------------------------", $respuesta_olt);
             if(isset($rows[2])) {

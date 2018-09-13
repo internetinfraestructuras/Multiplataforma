@@ -19,7 +19,7 @@
 
 //if (!isset($_SESSION)) {@session_start();}
 //
-ini_set('display_errors',1);
+ini_set('display_errors',0);
 error_reporting('E_ALL');
 
 ini_set('max_execution_time', 70);
@@ -36,12 +36,13 @@ $mac = str_replace("-",":",$mac);
 $mac1 = substr($mac,0,2) . ":" .substr($mac,2,3) . substr($mac,5,2) . ":" .
     substr($mac,7,3).substr($mac,10,2). ":" .substr($mac,12,2);
 
-echo $mac;
+$act_voz = $_POS['act_voz'];
+
 
 // leo el listado de las ont que el ACS esta encontrando, recojo el id del device y con el puedo atacar a cada una de ellas
 //---------------------------------------------------------------------------------------------------------------------------
-$url='http://10.211.2.2:7557/devices/?query=%7B"InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection.1.MACAddress%22%3A"'.$mac1.'"%7D';
-echo $url;
+$url=trim('http://10.211.2.2:7557/devices/?query=%7B"InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection.1.MACAddress%22%3A"'.$mac1.'"%7D');
+$util->log($url);
 
 $ch = curl_init($url);
 curl_setopt($ch, CURLOPT_BUFFERSIZE, 256);
@@ -55,35 +56,13 @@ $esta = true;
 $id_device=$json[0]['_id'];
 $pon=$json[0]['_deviceId']['_SerialNumber'];
 
-echo $pon."<br>";
-echo $id_device."<br>";
 curl_close($ch);
 
-
-
-//$ch = curl_init('http://10.211.2.2:7557/devices/');
-//curl_setopt($ch, CURLOPT_INFILESIZE , 256);
-//curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
-//curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//$result = curl_exec($ch);
-//$json=json_decode($result,true);
-//curl_close($ch);
-//$esta=false;
-//
-//
-//for ($c=0; $c<count($json);$c++ ){
-//
-//    if($json[$c]['_deviceId']['_SerialNumber'] == $num_pon){
-//        $esta = true;
-//        $id_device=$json[$c]['_id'];
-//        $pon=$json[$c]['_deviceId']['_SerialNumber'];
-//        break;
-//        break;
-//    }
-//}
+$util->log($id_device);
+$util->log($pon);
 
 if($esta==false) {
-    echo "return";
+//    echo "return";
 //    return;
 }
 
@@ -165,7 +144,7 @@ if($esta==false) {
 
         include("lista_parametros_acs.php");
         $url = "http://10.211.2.2:7557/devices/" . $id_device . "/tasks?connection_request";
-
+        $util->log($url);
         $ch = curl_init($url);
 
         foreach ($aItems as $clave) {
@@ -174,6 +153,7 @@ if($esta==false) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json', 'Accept:application/json'));
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $result = curl_exec($ch);
+//            $util->log($payload . " - " . $result);
         }
         curl_close($ch);
 ?>

@@ -27,6 +27,7 @@ class Contrato
             "contratos_lineas.id_asociado=" . $idServicio . " AND contratos_lineas.id_contrato=" . $idContrato . " AND id=" . $idLinea);
     }
 
+
     // Agrega documentos tipo firma y escaneados al contrato (Rubén)
     public static function setNuevoDocumento($contrato, $tipo, $url, $svg)
     {

@@ -57,33 +57,38 @@ define ('DB_TELEFONIA_DATABASENAME', 'gestioncdr');
 define ('DB_TELEFONIA_USER', 'testerp');
 define ('DB_TELEFONIA_PASSWORD', 'erpDirect18');
 
-
-// comandos SNMP
-
-define('ROOT','.1.3.6.1');
-define('HUAWEI','1.3.6.1.4.1.2011');
-define('SYS_DESCRYPT','.1.3.6.1.2.1');
-define('VLANS','.1.3.6.1.4.1.2011.5.6.1.1.1.2');
-define('HARDWARE','.1.3.6.1.4.1.2011.6');
-define('HARDWARE_CFG','.1.3.6.1.4.1.2011.6.10');
-define('TEMP','.1.3.6.1.4.1.2011.6.1.1.2.1.2.1');
-define('SYS_UP','.1.3.6.1.2.1.1.3');
-define('ONTS','1.3.6.1.4.1.2011.6.128.1.1.2.43.1');
-
-//profiles
-define('PROFILES','.1.3.6.1.4.1.2011.6.128.1.1.2.142.1.2.4194307840.1');
-define('PROFILES_GENERIC','.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.7');
-define('HG8546M','.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.8');
-
-
-define('hwHdsl','.1.3.6.1.4.1.2011.6');
-
-
-define('INTERFACE_NAME','.1.3.6.1.2.1.31.1.1.1.1');
-define('VOLTAGE','1.3.6.1.4.1.2011.6.128.1.1.2.51.1.5');
-define('INTERFACES','.1.3.6.1.2.1.17.1.4.1.2');
-define('TEST','.1.3.6.1.2.1.65');
+//
+//// comandos SNMP
+//
+//define('ROOT','.1.3.6.1');
+//define('HUAWEI','1.3.6.1.4.1.2011');
+//define('SYS_DESCRYPT','.1.3.6.1.2.1');
+//define('VLANS','.1.3.6.1.4.1.2011.5.6.1.1.1.2');
+//define('HARDWARE','.1.3.6.1.4.1.2011.6');
+//define('HARDWARE_CFG','.1.3.6.1.4.1.2011.6.10');
+//define('TEMP','.1.3.6.1.4.1.2011.6.1.1.2.1.2.1');
+//define('SYS_UP','.1.3.6.1.2.1.1.3');
+//define('ONTS','1.3.6.1.4.1.2011.6.128.1.1.2.43.1');
+//
+////profiles
+//define('PROFILES','.1.3.6.1.4.1.2011.6.128.1.1.2.142.1.2.4194307840.1');
+//define('PROFILES_GENERIC','.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.7');
+//define('HG8546M','.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.8');
+//
+//
+//define('hwHdsl','.1.3.6.1.4.1.2011.6');
+//
+//
+//define('INTERFACE_NAME','.1.3.6.1.2.1.31.1.1.1.1');
+//define('VOLTAGE','1.3.6.1.4.1.2011.6.128.1.1.2.51.1.5');
+//define('INTERFACES','.1.3.6.1.2.1.17.1.4.1.2');
+//define('TEST','.1.3.6.1.2.1.65');
 
 
 define("ESPACIO","\040");
 
+
+// interconexion Nueva plataforma -> antigua plataforma
+
+define('RUTA_ANTIGUA','http://localhost/');
+define("CLAVE_API","2a10c77db1d6d0bedc7eafe582041830");

@@ -5,7 +5,6 @@
 // todo: -------------------------------------------------------------
 
 
-
 if (!isset($_SESSION)) {
     @session_start();
 }
@@ -51,7 +50,13 @@ $root="../../";
 
 <!-- WRAPPER -->
 <div id="wrapper">
-
+    <?php require_once ($root.'menu-superior.php');
+        if(isset($_GET['estado']))
+            $estado = $_GET['estado'];
+        else
+            $estado = 2;
+    ?>
+    <br><br><br>
 
     <section id="">
 
@@ -76,7 +81,7 @@ $root="../../";
                         <div class="panel-body" id="listado">
                             <div id="panel-1" class="panel panel-default">
                                 <div class="panel-heading">
-							    <span class="title elipsis">
+							    <span class="title">
 								    <strong>LISTADO DE <?php echo DEF_ORDENES; ?></strong>
 							    </span>
 
@@ -87,7 +92,7 @@ $root="../../";
                                             class="form-control pointer ">
                                         <option value="">--- Seleccionar una ---</option>
                                         <?php
-                                        $util->carga_select('ordenes_estados', 'id', 'nombre', 'id'); ?>
+                                        $util->carga_select('ordenes_estados', 'id', 'nombre', 'id',null,null,null,$estado); ?>
                                     </select>
                                 </div>
 
@@ -108,15 +113,19 @@ $root="../../";
             </div>
             <div class="row">
             <?php
-            $listado= $orden->obtenerOrdenesAsignadas($_SESSION['REVENDEDOR'], $_SESSION['USER_ID'], 2);
+
+
+            $listado= $orden->obtenerOrdenesAsignadas($_SESSION['REVENDEDOR'], $_SESSION['USER_ID'], $estado);
+
             foreach ($listado as $linea){
+
             ?>
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-body" id="listado">
                         <div id="panel-1" class="panel panel-default">
                             <div class="panel-heading">
-                            <span class="title elipsis">
+                            <span class="title">
                                 <strong><?php echo $linea['NOMBRE']." ".$linea['APELLIDOS']; ?></strong>
                             </span>
                                 <ul class="options pull-right list-inline">
@@ -186,39 +195,9 @@ $root="../../";
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.js"></script>
 <script>
 
-    $(function () {
-        $('#example1').DataTable()
-        $('#example2').DataTable({
-            'paging'      : true,
-            'lengthChange': false,
-            'searching'   : true,
-            'ordering'    : true,
-            'info'        : true,
-            'autoWidth'   : true,
-            language: {
-                "decimal": "",
-                "emptyTable": "No hay información",
-                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-                "infoPostFix": "",
-                "thousands": ",",
-                "lengthMenu": "Mostrar _MENU_ Entradas",
-                "loadingRecords": "Cargando...",
-                "processing": "Procesando...",
-                "search": "Buscar : ",
-                "zeroRecords": "Sin resultados encontrados",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Ultimo",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
-                }
-            },
-        })
-    });
-function filtrar(id)
-{
+
+function filtrar(id) {
+    location.href="instalador.php?estado="+id;
 
 }
 

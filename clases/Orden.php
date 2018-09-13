@@ -67,11 +67,15 @@ WHERE ordenes.id=ordenes_lineas.ID_ORDEN AND ordenes_lineas.ID_LINEA_DETALLE_CON
     public static function crearLineaOrden($idOrden,$idTipoOrden,$idProducto,$idLineaDetalle)
     {
         $util=new util();
+
+        if($idProducto==null || $idProducto=='' || intval($idProducto)<=0)
+            $idProducto=null;
+
         $t_ordenes=array("ID_ORDEN","ID_TIPO_ORDEN","ID_PRODUCTO","ID_LINEA_DETALLE_CONTRATO");
 
         $values=array($idOrden, $idTipoOrden, $idProducto, $idLineaDetalle);//TIPO DE ESTADO ES 1 DE APERTURA
 
-        $resOrden= $util->insertInto('ordenes_lineas', $t_ordenes, $values);
+        $resOrden= $util->insertInto2('ordenes_lineas', $t_ordenes, $values);
 
         return $resOrden;
     }
@@ -130,12 +134,23 @@ WHERE ordenes.id=ordenes_lineas.ID_ORDEN AND ordenes_lineas.ID_LINEA_DETALLE_CON
 
         $util=new util();
         return $util->selectWhere3('ordenes,ordenes_estados,contratos,clientes',
-            array("ordenes.id,ordenes.fecha_alta,ordenes_estados.nombre,ordenes_estados.id,clientes.nombre,clientes.id,clientes.apellidos,clientes.direccion, clientes.movil"),
-            "ordenes.id_contrato=contratos.id 
-                    AND ordenes_estados.id=ordenes.id_tipo_estado 
-                    AND contratos.id_cliente=clientes.id
+            array("ordenes.id as id,ordenes.fecha_alta,ordenes_estados.nombre,ordenes_estados.id,clientes.nombre,clientes.id as idcliente, clientes.apellidos,clientes.direccion, clientes.movil"),
+            "ordenes.id_contrato = contratos.id 
+                    AND ordenes_estados.id = ordenes.id_tipo_estado 
+                    AND contratos.id_cliente = clientes.id
                     AND ordenes.id = $id
-                    AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes.fecha_alta<=DATE(now()) AND ordenes.id_tipo_estado=1");
+                    AND contratos.id_empresa = ".$_SESSION['REVENDEDOR']);
+    }
+
+
+
+    public static function getOlts()
+    {
+
+        $util=new util();
+        return $util->selectWhere3('tec_olt_x_empresa',
+            array("ID_OLT"),
+            "ID_EMPRESA = ".$_SESSION['REVENDEDOR']);
     }
 
 
@@ -146,29 +161,36 @@ WHERE ordenes.id=ordenes_lineas.ID_ORDEN AND ordenes_lineas.ID_LINEA_DETALLE_CON
         $util=new util();
         $campos=array('ordenes_lineas.ID_LINEA_DETALLE_CONTRATO','ordenes_lineas.ID_PRODUCTO',
                         'productos.NUMERO_SERIE as serial','productos_modelos.NOMBRE as modelo',
-                        'productos_tipos.NOMBRE as tipo','contratos_lineas_detalles.ID_TIPO_SERVICIO as servicio','ordenes_lineas.ID');
+                        'productos_tipos.NOMBRE as tipo','contratos_lineas_detalles.ID_TIPO_SERVICIO as servicio',
+                        'ordenes_lineas.ID');
 
         $where='ordenes_lineas.id_orden='.$id.' AND ordenes.id_empresa='.$_SESSION['REVENDEDOR'];
 
         $join=' JOIN contratos_lineas_detalles ON contratos_lineas_detalles.ID = ordenes_lineas.ID_LINEA_DETALLE_CONTRATO  
-                JOIN productos ON productos.ID =ordenes_lineas.ID_PRODUCTO 
-                JOIN servicios_tipos ON servicios_tipos.ID = contratos_lineas_detalles.ID_TIPO_SERVICIO
-                JOIN productos_modelos ON productos_modelos.ID = productos.ID_MODELO_PRODUCTO
-                JOIN productos_tipos ON productos_tipos.ID = productos_modelos.ID_TIPO
-                JOIN ordenes ON ordenes.ID = ordenes_lineas.id_orden';
+                LEFT JOIN productos ON productos.ID =ordenes_lineas.ID_PRODUCTO 
+                LEFT JOIN servicios_tipos ON servicios_tipos.ID = contratos_lineas_detalles.ID_TIPO_SERVICIO
+                LEFT JOIN productos_modelos ON productos_modelos.ID = productos.ID_MODELO_PRODUCTO
+                LEFT JOIN productos_tipos ON productos_tipos.ID = productos_modelos.ID_TIPO
+                LEFT JOIN ordenes ON ordenes.ID = ordenes_lineas.id_orden';
 
-        return $util->selectJoin('ordenes_lineas',$campos, $join,'',$where);
+        return $util->selectJoin('ordenes_lineas',$campos, $join,' servicios_tipos.ID ',$where);
 
     }
 
     public static function getLineasOrdenDetalles($id=null)
     {
+
+
         $util=new util();
-        $campos=array('contratos_lineas_detalles.VALOR','contratos_lineas_detalles.ID_ATRIBUTO_SERVICIO');
 
-        $where='contratos_lineas_detalles.ESTADO = 3 AND ordenes_lineas.id_orden='.$id.' AND ordenes.id_empresa='.$_SESSION['REVENDEDOR'];
+        $campos=array('contratos_lineas_detalles.VALOR','contratos_lineas_detalles.ID_ATRIBUTO_SERVICIO',
+            'servicios_tipos_atributos.NOMBRE','contratos_lineas_detalles.ESTADO');
 
-        $join=' JOIN ordenes_lineas ON ordenes_lineas.ID_LINEA_DETALLE_CONTRATO =  contratos_lineas_detalles.ID_LINEA';
+        $join=' JOIN servicios_tipos_atributos on servicios_tipos_atributos.ID = contratos_lineas_detalles.ID_ATRIBUTO_SERVICIO ';
+
+        $where=' contratos_lineas_detalles.id_servicio = 
+                (select id_servicio from contratos_lineas_detalles where id = '.$id.') 
+                and id_linea = (select id_linea from contratos_lineas_detalles where id = '.$id.')';
 
         return $util->selectJoin('contratos_lineas_detalles',$campos, $join,'',$where);
 

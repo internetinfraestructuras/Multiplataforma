@@ -1,19 +1,23 @@
 <?php
 
-error_reporting('0');
-ini_set('display_errors', '0');
-
-include_once('../../pdf/utilPDF.php');
-
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+require_once('../../pdf/utilPDF.php');
 require_once('../../pdf/tcpdf/tcpdf.php');
+
+$descripcionPaquete="";
+
 if (!isset($_SESSION)) {@session_start();}
 $util=new utilPDF();
 
 
     $listado= $util->selectWhere3('contratos,empresas,clientes,municipios,provincias,comunidades,pais',
-        array("contratos.id,empresas.nombre,clientes.nombre,clientes.apellidos,clientes.dni,clientes.direccion,municipios.municipio,provincias.provincia,comunidades.comunidad,clientes.cp,clientes.fijo,clientes.movil,pais.paisnombre,contratos.fecha_inicio,contratos.fecha_fin"),
-        "contratos.id_empresa=empresas.id AND contratos.id_cliente=clientes.id  AND municipios.id=clientes.localidad AND provincias.id=clientes.provincia AND clientes.comunidad=comunidades.id AND clientes.nacionalidad=pais.id AND contratos.id=".$_GET['idContrato']."
-                                            AND contratos.id_empresa=".$_SESSION['REVENDEDOR']);
+        array("contratos.id,empresas.nombre,clientes.nombre,clientes.apellidos,clientes.dni,clientes.direccion,municipios.municipio,
+        provincias.provincia,comunidades.comunidad,clientes.cp,clientes.fijo,clientes.movil,pais.paisnombre,contratos.fecha_inicio,
+        contratos.fecha_fin"),
+        "contratos.id_empresa=empresas.id AND contratos.id_cliente=clientes.id  AND municipios.id=clientes.localidad 
+        AND provincias.id=clientes.provincia AND clientes.comunidad=comunidades.id AND clientes.nacionalidad=pais.id 
+        AND contratos.id=".trim($util->cleanstring($_GET['idContrato']))."AND contratos.id_empresa=".$_SESSION['REVENDEDOR']);
 
 
 
@@ -41,6 +45,7 @@ $textoFijo="";
 $textoMovil="";
 $textoTV="";
 
+
 /*
  * BUSCAMOS TODAS LAS LINEAS DE UN CONTRATO PARA SABER QUE TIENE EL CLIENTE CONTRATADO
  * SELECT *
@@ -51,7 +56,7 @@ where contratos.ID=contratos_lineas.ID_CONTRATO AND contratos.id=1 AND contratos
 
 $lineasContrato=$util->selectWhere3("contratos,contratos_lineas",array("contratos_lineas.id_tipo,contratos_lineas.id_asociado,contratos_lineas.id"),
     "contratos.id=contratos_lineas.id_contrato and contratos_lineas.estado!=2
-             AND contratos.id=".$_GET['idContrato']."
+             AND contratos.id=".trim($util->cleanstring($_GET['idContrato']))."
              AND contratos.id_empresa=".$_SESSION['REVENDEDOR']."");
 
 //Flags que controlan la impresión de las condiciones particulares del servicio.
@@ -76,7 +81,7 @@ for($i=0;$i<count($lineasContrato);$i++)
              AND contratos_lineas.id=".$lineasContrato[$i][2]."
              AND paquetes.id=contratos_lineas.id_asociado
              AND contratos_lineas.estado!=2
-             AND contratos.id=".$_GET['idContrato']."
+             AND contratos.id=".trim($util->cleanstring($_GET['idContrato']))."
              AND contratos.id_empresa=".$_SESSION['REVENDEDOR']."");
             $nombrePaq=$paquete[0][0];
             $pvp=$paquete[0][1];
@@ -132,7 +137,7 @@ for($i=0;$i<count($lineasContrato);$i++)
             "contratos.id=contratos_lineas.id_contrato 
              AND contratos_lineas.id=".$lineasContrato[$i][2]."
              AND servicios.id=contratos_lineas.id_asociado
-             AND contratos.id=".$_GET['idContrato']."
+             AND contratos.id=".trim($util->cleanstring($_GET['idContrato']))."
              AND contratos.id_empresa=".$_SESSION['REVENDEDOR']."");
         $nombreSer=$servicio[0][0];
         $pvp=$servicio[0][1];
@@ -164,8 +169,10 @@ $contentServiciosContratados.=$descripcionPaquete;
 SELECT campanas.NOMBRE,campanas.DURACION
 from campanas,contratos_campanas
 where campanas.id=contratos_campanas.ID_CONTRATO-*/
+
+
 $campanas=$util->selectWhere3("campanas,contratos_campanas",array("campanas.nombre,contratos_campanas.dto,contratos_campanas.dto_hasta"),
-    "campanas.id=contratos_campanas.id_campana AND contratos_campanas.id_contrato=".$_GET['idContrato']." 
+    "campanas.id=contratos_campanas.id_campana AND contratos_campanas.id_contrato=".trim($util->cleanstring($_GET['idContrato']))." 
       AND campanas.id_empresa=".$_SESSION['REVENDEDOR']." ");
 $contentCampanas="";
 if($campanas!="null")
@@ -224,7 +231,7 @@ $pdf->MultiCell(0, 0, $datosCliente, 0, 'J', false, 1, 10, 11, true, 0, true, tr
 
 
 $datosCliente = '<B>DATOS CLIENTE:</B><br>
-                <b>Nombre:</b>'.$cliente." ".$apellidos."<br/>
+                <b>Nombre:</b>'.$nombre." ".$apellidos."<br/>
                 <b>Dirección:</b>".$direccion."<br/>"
 ."<b>Localidad:</b>$localidad<br/>
                 <b>Provincia:</b>$provincia<br/>
@@ -260,4 +267,5 @@ $pdf->writeHTML($contentCampanas);
 
 
 $pdf->output('Reporte.pdf', 'I');
+
 ?>

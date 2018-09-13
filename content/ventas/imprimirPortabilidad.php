@@ -1,7 +1,7 @@
 <?php
 
 error_reporting('0');
-ini_set('display_errors', '0');
+ini_set('display_errors', 1);
 
 include_once('../../pdf/utilPDF.php');
 require_once ('./../../clases/Portabilidad.php');
@@ -10,17 +10,75 @@ require_once('../../pdf/tcpdf/tcpdf.php');
 if (!isset($_SESSION)) {@session_start();}
 $util=new utilPDF();
 
-$portabilidad=Portabilidad::getDatosPortabilidadPDF(1);
+$portabilidad=Portabilidad::getDatosPortabilidadPDF($_REQUEST['idContrato'],$_REQUEST['tipo']);
 
-$titular=$portabilidad[0][0];
-$cif=$portabilidad[0][1];
-$direccion=$portabilidad[0][2];
-$localidad=$portabilidad[0][3];
-$provincia=$portabilidad[0][4];
-$comunidad=$portabilidad[0][5];
-$cp=$portabilidad[0][6];
-$numero=$portabilidad[0][7];
-$operador=$portabilidad[0][8];
+/*
+ *
+0 FECHA_SOLICITUD
+1 NOMBRE_TITULAR
+2 CIF_TITULAR
+3 CP_TITULAR
+4 DIR_TITULAR
+5 NUMERO_PORTAR
+6 FIRMA
+7 ICC
+8 MOVIL_PORTAR
+9 MODALIDAD_ORIGEN
+10 municipio
+11 provincia
+12 comunidad
+13 NOMBRE
+14 APELLIDOS
+15 DNI
+16 DIRECCION
+17 IBAN
+18 SWIFT
+19 FIJO
+20 MOVIL
+21 EMAIL
+22 BANCO
+23 FECHA_NACIMIENTO
+24 OPERADOR
+25 TIPO CLIENTE
+26 TIPO DOCUMENTO
+27 MOD. DONANTE (tipo linea fijo)
+28 TARIFA
+ */
+$fecha=$portabilidad[0][0];
+$titular=$portabilidad[0][1];
+$cif=$portabilidad[0][2];
+$cp=$portabilidad[0][3];
+$direccion=$portabilidad[0][4];
+$numportar=$portabilidad[0][5];
+$firma=$portabilidad[0][6];
+$icc=$portabilidad[0][7];
+$movilporta=$portabilidad[0][8];
+$modalidad=$portabilidad[0][9];
+
+$localidad=$portabilidad[0][10];
+$provincia=$portabilidad[0][11];
+$comunidad=$portabilidad[0][12];
+
+$nomcli=$portabilidad[0][13];
+$apecli=$portabilidad[0][14];
+$dnicli=$portabilidad[0][15];
+$dircli=$portabilidad[0][16];
+$iban=$portabilidad[0][17];
+$swift=$portabilidad[0][18];
+$clifijo=$portabilidad[0][19];
+$climovil=$portabilidad[0][20];
+$email=$portabilidad[0][21];
+$banco=$portabilidad[0][22];
+$f_nacimiento=$portabilidad[0][23];
+$opedonante=$portabilidad[0][24];
+$tipocli=$portabilidad[0][25];
+$tipodoc=$portabilidad[0][26];
+$moddonante=$portabilidad[0][27];
+$tarifa=$portabilidad[0][28];
+$dc=$portabilidad[0][29];
+
+
+
 
 $listado=$util->selectWhere3("textos_legales",array("texto,id_servicio"),"ubicacion='portaForm' AND id_empresa=".$_SESSION['REVENDEDOR']."");
 
@@ -28,7 +86,9 @@ $texto=$listado[0][0];
 
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
+
 $pdf->SetCreator(PDF_CREATOR);
+$pdf->SetMargins(10, 30, 10);
 
 $pdf->SetAuthor('PORTABILIDAD');
 
@@ -48,18 +108,45 @@ $direccion.=" ".$localidad.", ";
 $direccion.=$provincia.", ";
 $direccion.=$comunidad." ";
 $direccion.=" CP:".$cp." ";
-$logo="<img src='".$_SESSION['LOGO']."' style='width:150px';/>";
+$logo=$_SESSION['LOGO'];
 
-$texto=str_replace("{logo}",$logo,$texto);
+$pdf->Image($file=$logo, 1, 1, 210, 30, '', '', '', 0, 200, '', false, false, 0, false, false, false);
+
 $texto=str_replace("{nombreTitular}",$titular,$texto);
-$texto=str_replace("{direccionTitular}",$direccion,$texto);
 $texto=str_replace("{dniTitular}",$cif,$texto);
-$texto=str_replace("{numeroPortar}",$numero,$texto);
+$texto=str_replace("{direccionTitular}",$direccion,$texto);
+$texto=str_replace("{loctitular}",$localidad,$texto);
+$texto=str_replace("{provtitular}",$provincia,$texto);
+$texto=str_replace("{comunidadtitular}",$comunidad,$texto);
+$texto=str_replace("{tipocliente}",$tipocli,$texto);
+$texto=str_replace("{nombrecliente}",$nomcli,$texto);
+$texto=str_replace("{tipodocumento}",$tipodoc,$texto);
+$texto=str_replace("{dnicliente}",$dnicli,$texto);
+$texto=str_replace("{direccioncliente}",$dircli,$texto);
+$texto=str_replace("{loccliente}",$localidad,$texto);
+$texto=str_replace("{provcliente}",$provincia,$texto);
+$texto=str_replace("{email}",$email,$texto);
+$texto=str_replace("{fechanacimiento}",$f_nacimiento,$texto);
+$texto=str_replace("{icc}",$icc . " ". $dc,$texto);
+$texto=str_replace("{numportar}",$numportar,$texto);
+$texto=str_replace("{donante}",$opedonante,$texto);
+$texto=str_replace("{modoacceso}",$moddonante,$texto);
+$texto=str_replace("{tarifa}",$tarifa,$texto);
+$texto=str_replace("{banco}",$banco,$texto);
+$texto=str_replace("{iban}",$iban,$texto);
+$texto=str_replace("{swift}",$swift,$texto);
+$texto=str_replace("{localidadempresa}",$_SESSION['LOCALIDADEMPRESA'],$texto);
+
+$dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
+$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+$fecha = $dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y') ;
+
 $texto=str_replace("{operadorDonante}",$operador,$texto);
-$texto=str_replace("{fecha}",date("d/m/y"),$texto);
-$nombreCompleto=$nombre." ".$apellidos;
+$texto=str_replace("{fecha}",$fecha,$texto);
+
 $pdf->writeHTML($texto);
-$pdf->Image('images/image_demo.jpg', 15, 140, 75, 113, 'JPG', 'http://www.tcpdf.org', '', true, 150, '', false, false, 1, false, false, false);
+
+$pdf->ImageSVG($file=$firma, 5, 215, 100, 50);
 
 //echo $texto;
 
