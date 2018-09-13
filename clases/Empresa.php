@@ -12,7 +12,7 @@ class Empresa
     public static function getListadoEmpresas()
     {
         $util = new util();
-        return $util->selectWhere2('empresas', array('ID'));
+        return $util->selectWhere3('empresas', array('ID'),'',"ID");
     }
 
     public static function getConfiguracionEmpresaFacturacion($idEmpresa)

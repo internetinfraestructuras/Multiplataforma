@@ -17,6 +17,21 @@ class Contrato
         return $util->insertInto('contratos', $t_contratos, $values);
     }
 
+    public static function getContratosAltaEmpresa($idEmpresa)
+    {
+        $util = new util();
+
+        return $util->selectWhere3("contratos", array("ID", "NUMERO", "ID_CLIENTE", "FECHA_INICIO", "FECHA_FIN", "ESTADO"),
+            "contratos.id_empresa=$idEmpresa AND contratos.estado=1");
+    }
+    public static function getContratosBajaHoy($idEmpresa)
+    {
+        $util = new util();
+
+        return $util->selectWhere3("contratos", array("ID", "NUMERO", "ID_CLIENTE", "FECHA_INICIO", "FECHA_FIN", "ESTADO"),
+            "contratos.id_empresa=$idEmpresa AND contratos.fecha_fin=date(now()) AND contratos.estado!=5");
+    }
+
     //Devuelve la linea contratos_lineas de un contrato de una dicha linea con un idServicio especifico.
     public static function getLineaContratoServicio($idContrato, $idLinea, $idServicio)
     {
@@ -25,6 +40,15 @@ class Contrato
 
         return $util->selectWhere3("contratos_lineas", array("ID_TIPO", "ID_ASOCIADO", "ID_CONTRATO", "PRECIO_PROVEEDOR", "BENEFICIO", "IMPUESTO", "PVP", "PERMANENCIA"),
             "contratos_lineas.id_asociado=" . $idServicio . " AND contratos_lineas.id_contrato=" . $idContrato . " AND id=" . $idLinea);
+    }
+
+    //Nos da la campaña activa para un contrato actualmente
+    public static function getCampanasContrato($idContrato)
+    {
+        $util = new util();
+
+        return $util->selectWhere3("contratos_campanas", array("ID_CAMPANA","DTO","DTO_HASTA"),
+            "contratos_campanas.id_contrato=$idContrato AND contratos_campanas.dto_hasta>=date(now())");
     }
 
     // Agrega documentos tipo firma y escaneados al contrato (Rubén)
@@ -66,7 +90,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         $util = new util();
 
         return $util->selectWhere3("contratos_lineas,contratos_lineas_detalles",
-            array("ID_TIPO", "ID_ASOCIADO", "ID_CONTRATO", "PRECIO_PROVEEDOR", "BENEFICIO", "IMPUESTO", "PVP", "PERMANENCIA"),
+            array("ID_TIPO", "ID_ASOCIADO", "ID_CONTRATO", "PRECIO_PROVEEDOR", "BENEFICIO", "IMPUESTO", "PVP", "PERMANENCIA","FECHA_ALTA"),
             "contratos_lineas.id=contratos_lineas_detalles.id_linea AND contratos_lineas_detalles.id_servicio=" . $idServicio . " 
             AND contratos_lineas.id_contrato=" . $idContrato . " AND contratos_lineas.id=" . $idLinea);
     }
@@ -80,12 +104,21 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
             "contratos_lineas.id_contrato=" . $idContrato . " AND id=" . $idLinea);
     }
 
+    public static function getLineasContratoAlta($idContrato)
+    {
+
+        $util = new util();
+
+        return $util->selectWhere3("contratos_lineas", array("ID_TIPO", "ID_ASOCIADO", "ID_CONTRATO", "PRECIO_PROVEEDOR", "BENEFICIO", "IMPUESTO", "PVP", "PERMANENCIA","ID"),
+            "contratos_lineas.id_contrato=$idContrato AND contratos_lineas.estado=1");
+    }
+
     //obtiene las linea de detalle de un contrato
     public static function getLineaDetalles($idLinea)
     {
         $util = new util();
-        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR", "ID"),
-            "contratos_lineas_detalles.id_linea=" . $_POST['idLinea']);
+        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR", "ID","ID_SERVICIO","ID"),
+            "contratos_lineas_detalles.estado=1 AND contratos_lineas_detalles.id_linea=$idLinea");
     }
 
     //obtiene las linea de detalle de un contrato
@@ -117,7 +150,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     public static function getLineaDetallesServicioActivas($idLinea, $idServicio)
     {
         $util = new util();
-        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR"),
+        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR","ID_SERVICIO","contratos_lineas_detalles.ID"),
             "contratos_lineas_detalles.id_linea=" . $idLinea . " AND contratos_lineas_detalles.id_servicio=" . $idServicio . " AND contratos_lineas_detalles.estado=1");
     }
 
@@ -131,7 +164,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     }
 
     //Establece una línea de un contrato de baja
-    public static function setLineaContratoBaja($idContrato, $idLinea, $idServicio, $fecha = null)
+    public static function setLineaContratoBaja($idContrato, $idLinea, $idAsociado, $fecha = null)
     {
         $util = new util();
 
@@ -151,7 +184,17 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         else
             $values = array($estado, $fecha);
 
-        $result = $util->update('contratos_lineas', $campos, $values, "id_asociado=" . $idServicio . " AND id_contrato=" . $idContrato . " AND id=" . $idLinea);
+
+        $result = $util->update('contratos_lineas', $campos, $values,"id_asociado=$idAsociado AND id_contrato=$idContrato AND id=$idLinea");
+    }
+
+
+    public static function setContratoBaja($idContrato,$idEmpresa)
+    {
+        $util = new util();
+        $campos = array('ESTADO');
+        $values = array("6");
+        $result = $util->update('contratos', $campos, $values,"id=$idContrato AND id_empresa=$idEmpresa");
     }
 
     //Establece una línea de un contrato de baja
@@ -200,7 +243,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     }
 
     //Establece una línea detalle a baja
-    public static function setLineaDetallesBaja($idLineaContrato, $fechaBaja)
+    public static function setLineaDetallesBaja($idLineaContrato, $fechaBaja=null)
     {
         $util = new util();
         $campos = array('ESTADO', 'FECHA_BAJA');
@@ -324,7 +367,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
                 $values = array($idLinea, $tipo, $atributo, $valor, $fecha, '', $estado, $idServicio);
         }
 
-        $util->insertInto('contratos_lineas_detalles', $t_contratos_lineas_detalles, $values);
+        return $util->insertInto('contratos_lineas_detalles', $t_contratos_lineas_detalles, $values);
     }
 
     //obtener productos asociados a una línea de contrato
@@ -347,9 +390,11 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     //Generar un anexo de contrato
     public static function generarAnexo($idContrato, $idServicio, $tipoAnexo)
     {
+
         $util = new util();
         $t_contratos_anexos = array("ID_CONTRATO", "ID_SERVICIO", "ID_TIPO_TRAMITE");
         $values = array($idContrato, $idServicio, $tipoAnexo);
+
         $resAnexo = $util->insertInto('contratos_anexos', $t_contratos_anexos, $values);
     }
 
