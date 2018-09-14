@@ -83,7 +83,9 @@ check_session(2);
             box-sizing: border-box;
             font-family: montserrat;
             color: #2C3E50;
-            font-size: 20px;
+            font-size: 14px;
+            font-family: 'Open Sans', Arial, sans-serif;
+            font-weight: 300;
         }
 
         #msform input:focus, #msform textarea:focus {

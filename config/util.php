@@ -430,7 +430,7 @@ class util {
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
             $lastid = mysqli_insert_id($link);
-            //echo $query;
+//            echo $query;
             $link->close();
             if($log){
                 $consulta= str_replace("'"," ",$query);
@@ -443,6 +443,48 @@ class util {
 
         } catch (Exception $e) {
             if($log==true)  $this->log('Error Insert: ' . $query);
+        }
+    }
+
+    public function insertInto2($tabla, $campos, $valor, $log=true)
+    {
+
+        try {
+
+            // esta funcion difiere de la anterior en que reemplaza los campos vacios por valores null
+
+            $link = $this->conectar();
+
+            $columnas = limpiar(implode($campos, ", "));
+
+            $aItems = array();
+
+            $valores = implode($valor, "', '");
+
+            $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
+
+            $query = str_replace("''",'null',$query);
+
+            $query = str_replace("º","",$query);
+
+            if (!($result = $link->query($query)))
+                throw new Exception('Error en insertInto2.');
+
+            $lastid = mysqli_insert_id($link);
+
+            $link->close();
+
+            if($log){
+                $consulta= str_replace("'"," ",$query);
+                $consulta.= str_replace(","," ",$query);
+                $consulta.= "','".$lastid . "')";
+                $this->loginsert($this->cleanstring($consulta),$lastid);
+            }
+
+            return $lastid;
+
+        } catch (Exception $e) {
+            if($log==true)  $this->log('Error InsertInto2: ' .$e ." - ". $query);
         }
     }
 
@@ -473,7 +515,7 @@ class util {
         }catch (Exception $e){
             $this->log('eror update: ' . $e->getFile());
         }
-        echo $query."<br/>";
+//        echo $query."<br/>";
 //        if (!($result = $link->query($query))) {
 //
 //            throw new Exception('Error en selectWhere.');
@@ -1078,5 +1120,4 @@ class PHPTelnet {
         }
     }
 }
-
 ?>

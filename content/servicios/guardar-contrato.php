@@ -12,9 +12,10 @@ require_once('../../config/util.php');
 require_once('../../clases/Contrato.php');
 require_once('../../clases/Orden.php');
 require_once('../../clases/Servicio.php');
-
 require_once('../../clases/AltaTecnica.php');
 $tel = new AltaTecnica();
+
+
 $cifSuperUsuario = 'B45782687';
 
 $util = new util();
@@ -99,7 +100,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
 
             // damos el producto de alta
             if ($linea[8] != $productoyaagregado) {
-                $contrato->setNuevoProductoContrato($idLinea2, $linea[8], 3);
+                $contrato->setNuevoProductoContrato($idLinea2, $linea[8], 2);
                 $productoyaagregado = $linea[8];
             }
 
@@ -152,4 +153,3 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
 }
 
 ?>
-

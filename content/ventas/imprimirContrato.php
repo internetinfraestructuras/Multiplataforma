@@ -17,7 +17,7 @@ $util=new utilPDF();
         contratos.fecha_fin"),
         "contratos.id_empresa=empresas.id AND contratos.id_cliente=clientes.id  AND municipios.id=clientes.localidad 
         AND provincias.id=clientes.provincia AND clientes.comunidad=comunidades.id AND clientes.nacionalidad=pais.id 
-        AND contratos.id=".trim($util->cleanstring($_GET['idContrato']))."AND contratos.id_empresa=".$_SESSION['REVENDEDOR']);
+        AND contratos.id=".trim($util->cleanstring($_GET['idContrato']))." AND contratos.id_empresa=".$_SESSION['REVENDEDOR']);
 
 
 
@@ -265,11 +265,6 @@ $content.="<div><h1>Condiciones Particulares Televisión:</h1>$textoTV";
 
 $pdf->writeHTML($content);
 $pdf->writeHTML($contentServiciosContratados);
-
 $pdf->writeHTML($contentCampanas);
-
-
-
 $pdf->output('Reporte.pdf', 'I');
-
 ?>

@@ -136,7 +136,7 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                                             echo '
                                                                 <tr >
                                                                     <td><span class="'.$estadosColores[intval($row[6])-1].'">'.$estados[intval($row[6])-1].'</span></td >
-                                                                    <td >'.$row[0].'</td >
+                                                                    <td >'.$util->fecha_eur($row[0]).'</td >
                                                                     <td >'.$row[3].' '.$row[4].'</td >
                                                                     <td >'.$row[2].'</td >
                                                                     <td ><span class="btn btn-default btn-xs btn-block" onclick="ver_mas('.$row[7].');" > Más</span ></td >
@@ -257,7 +257,13 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                                     <?php
                                                         require_once ('clases/Orden.php');
                                                         $ordenes = new Orden();
-                                                        print_r($ordenes->getOrdenesEstados());
+                                                        $listado = $ordenes->getOrdenesEstados();
+
+                                                        foreach ($listado as $linea){
+                                                            echo $linea[0];
+                                                            echo $linea[1];
+                                                            echo $linea[2];
+                                                        }
                                                     ?>
 
 
@@ -319,7 +325,7 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                             <div id="panel-2" class="panel panel-default">
                                 <div class="panel-heading" >
 									<span class="title elipsis">
-										<strong>Portabilidades</strong> <!-- panel title -->
+										<strong>Contratos</strong> <!-- panel title -->
 									</span>
 
                                     <!-- tabs nav -->

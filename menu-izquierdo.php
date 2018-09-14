@@ -6,7 +6,7 @@
  * Time: 8:07
  */
 require_once('config/define.php');
-$root="/atTotal/";
+$root="/";
 ?>
 <nav id="sideNav"><!-- MAIN MENU -->
 <ul class="nav nav-list">

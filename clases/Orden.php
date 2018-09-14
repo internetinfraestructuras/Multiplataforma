@@ -29,10 +29,6 @@ class Orden
 
     }
 
-    /*SELECT ordenes.ID
-FROM ordenes,ordenes_lineas,contratos
-WHERE ordenes.id=ordenes_lineas.ID_ORDEN AND ordenes_lineas.ID_LINEA_DETALLE_CONTRATO=972 AND ordenes.ID_CONTRATO=contratos.id AND contratos.ID_EMPRESA=2*/
-
     public static function obtenerIdOrden($idLineaDetalle)
     {
         $util=new util();
@@ -129,12 +125,9 @@ WHERE ordenes.id=ordenes_lineas.ID_ORDEN AND ordenes_lineas.ID_LINEA_DETALLE_CON
                     AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes.fecha_alta<=DATE(now()) AND ordenes.id_tipo_estado=1");
     }
 
-    public static function getOrdenesEstados($id=null)
+    public static function getOrdenesEstados()
     {
-        if($id!=null)
-            $idBuscado=" AND ordenes.id = " .$id;
-        else
-            $idBuscado="";
+
 
         $util=new util();
         return $util->selectWhere3('ordenes,ordenes_estados,contratos,clientes',
@@ -142,7 +135,6 @@ WHERE ordenes.id=ordenes_lineas.ID_ORDEN AND ordenes_lineas.ID_LINEA_DETALLE_CON
             "ordenes.id_contrato=contratos.id 
                     AND ordenes_estados.id=ordenes.id_tipo_estado 
                     AND contratos.id_cliente=clientes.id
-                    $idBuscado
                     AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes.fecha_alta<=DATE(now()) AND ordenes.id_tipo_estado=1");
     }
 
@@ -213,8 +205,4 @@ WHERE ordenes.id=ordenes_lineas.ID_ORDEN AND ordenes_lineas.ID_LINEA_DETALLE_CON
         return $util->selectJoin('contratos_lineas_detalles',$campos, $join,'',$where);
 
     }
-
-
-
-
 }
