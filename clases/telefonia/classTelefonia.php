@@ -5,7 +5,7 @@
  * Date: 23/07/2018
  * Time: 9:25
  */
-require_once($_SERVER['DOCUMENT_ROOT'].'clases/telefonia/utilTelefonia.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/atTotal/clases/telefonia/utilTelefonia.php');
 
 class Telefonia
 {
@@ -14,7 +14,9 @@ class Telefonia
     public $SERVER_TELEFONIA='t1.voipreq.com';
 
     function __construct() {
-        $this->util= new UtilT();
+        echo;
+       $this->util= new UtilT();
+
     }
 
 

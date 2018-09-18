@@ -205,7 +205,7 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
                             ?>
 
                                 <button type="button" rel="tooltip" >
-                                    <i class="fa fa-pencil"></i>
+                                    <i class="fas fa-edit"></i>
                                 </button>
                             </a>
                             <button type="button" rel="tooltip" class="">

@@ -101,8 +101,8 @@ check_session(2);
                                 <!-- right options -->
                                 <ul class="options pull-right list-inline">
                                     <li><a href="#" class="opt panel_colapse" data-toggle="tooltip" title="Colapse" data-placement="bottom"></a></li>
-                                    <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen" data-placement="bottom"><i class="fa fa-expand"></i></a></li>
-                                    <li><a href="#" class="opt panel_close" data-confirm-title="Confirm" data-confirm-message="¿Deseas eleminar este panel?" data-toggle="tooltip" title="Close" data-placement="bottom"><i class="fa fa-times"></i></a></li>
+                                    <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen" data-placement="bottom"><i class="fas fa-expand"></i></a></li>
+                                    <li><a href="#" class="opt panel_close" data-confirm-title="Confirm" data-confirm-message="¿Deseas eleminar este panel?" data-toggle="tooltip" title="Close" data-placement="bottom"><i class="fas fa-times"></i></a></li>
                                 </ul>
                                 <!-- /right options -->
 
@@ -199,9 +199,9 @@ check_session(2);
 </div>
 
 <!-- JAVASCRIPT FILES -->
-<script type="text/javascript">var plugin_path = 'assets/plugins/';</script>
-<script type="text/javascript" src="assets/plugins/jquery/jquery-2.2.3.min.js"></script>
-<script type="text/javascript" src="assets/js/app.js"></script>
+<script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
+<script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="../../assets/js/app.js"></script>
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.js"></script>

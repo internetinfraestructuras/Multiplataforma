@@ -157,14 +157,12 @@ $root="../../";
 
                                             ?>
                                             <td class="td-actions text-right">
-                                                <a href="../ventas/ficha-contrato.php?idContrato=<?php echo $id; ?>">
+
+                                                <a target="_blank" href="imprimirContrato.php?idContrato=<?php echo $id;?>">
                                                     <button type="button" rel="tooltip" >
-                                                        <i class="fa fa-pencil"></i>
+                                                        <i class="fas fa-print"></i>
                                                     </button>
                                                 </a>
-                                                <button type="button" rel="tooltip" class="">
-                                                    <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>');"></i>
-                                                </button>
 
                                             </td>
                                             </tr>
