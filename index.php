@@ -1,5 +1,5 @@
 <?php
-ini_set('display_errors',0);
+ini_set('display_errors',1);
 error_reporting('E_ALL');
 
 if (!isset($_SESSION)) {@session_start();}
@@ -127,7 +127,9 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                                     <tbody>
                                                     <?php
                                                         $estados = array("SOLICITADA","TRAMITADA","PROCESANDO","RECHAZADA","ACEPTADA","CONTRATADA");
+                                                        $estadosOrdenes = array("PENDIENTE","EN TRAMITE","CERRADA","CANCELADA");
                                                         $estadosColores = array("label label-primary","label label-info","label label-warning","label label-danger","label label-success","label label-default");
+                                                        $estadosColoresOrdenes = array("","label label-default","label label-info","label label-success","label label-danger");
                                                         $portas = $util->selectJoin("portabilidades",
                                                         array('FECHA_SOLICITUD', 'NOMBRE_TITULAR',  'NUMERO_PORTAR','clientes.NOMBRE', 'clientes.APELLIDOS','clientes.EMAIL','portabilidades.ESTADO','portabilidades.ID'),
                                                         " left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE", 'FECHA_SOLICITUD','ESTADO != 6 AND portabilidades.ID_EMPRESA='.$_SESSION['USER_ID']);
@@ -174,8 +176,7 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                                     </thead>
                                                    <tbody>
                                                    <?php
-                                                   $estados = array("SOLICITADA","TRAMITADA","PROCESANDO","RECHAZADA","ACEPTADA","CONTRATADA");
-                                                   $estadosColores = array("label label-primary","label label-info","label label-warning","label label-danger","label label-success","label label-default");
+
                                                    $portas = $util->selectJoin("portabilidades",
                                                        array('FECHA_SOLICITUD', 'NOMBRE_TITULAR',  'NUMERO_PORTAR','clientes.NOMBRE', 'clientes.APELLIDOS','clientes.EMAIL','portabilidades.ESTADO','portabilidades.ID'),
                                                        " left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE", 'FECHA_SOLICITUD','ESTADO = 6 AND portabilidades.ID_EMPRESA='.$_SESSION['USER_ID']);
@@ -184,7 +185,7 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                                        echo '
                                                                 <tr >
                                                                     <td><span class="'.$estadosColores[intval($row[6])-1].'">'.$estados[intval($row[6])-1].'</span></td >
-                                                                    <td >'.$row[0].'</td >
+                                                                    <td >'.$util->fecha_eur($row[0]).'</td >
                                                                     <td >'.$row[3].' '.$row[4].'</td >
                                                                     <td >'.$row[2].'</td >
                                                                     <td ><span class="btn btn-default btn-xs btn-block" onclick="ver_mas('.$row[7].');" > Más</span ></td >
@@ -223,10 +224,13 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                     <!-- tabs nav -->
                                     <ul class="nav nav-tabs pull-right">
                                         <li class="active"><!-- TAB 1 -->
-                                            <a href="#orden_curso" data-toggle="tab">En Curso</a>
+                                            <a href="#orden_curso" data-toggle="tab">Asignadas</a>
                                         </li>
                                         <li class=""><!-- TAB 2 -->
-                                            <a href="#orden_completa" data-toggle="tab">completados</a>
+                                            <a href="#orden_sinasignar" data-toggle="tab">Sin Asignar</a>
+                                        </li>
+                                        <li class=""><!-- TAB 3 -->
+                                            <a href="#orden_completa" data-toggle="tab">Cerradas</a>
                                         </li>
                                     </ul>
                                     <!-- /tabs nav -->
@@ -249,20 +253,24 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                                         <th>Estado</th>
                                                         <th>Fecha</th>
                                                         <th>Cliente</th>
-                                                        <th>Número</th>
-                                                        <th></th>
+                                                        <th>Técnico</th>
+                                                        <th>Opciones</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     <?php
                                                         require_once ('clases/Orden.php');
                                                         $ordenes = new Orden();
-                                                        $listado = $ordenes->getOrdenesEstados();
+                                                        $listado = $ordenes->obtenerOrdenesAsignadas2();
 
-                                                        foreach ($listado as $linea){
-                                                            echo $linea[0];
-                                                            echo $linea[1];
-                                                            echo $linea[2];
+                                                        while ($linea = mysqli_fetch_array($listado)){
+                                                            echo "<tr>";
+                                                            echo "<td><span class='".$estadosColoresOrdenes[intval($linea[6])]."'>".$estadosOrdenes[intval($linea[6])-1]. "</span></td>";
+                                                            echo "<td>".$util->fecha_eur($linea[5])."</td>";
+                                                            echo "<td>".$linea[1]." ".$linea[2]."</td>";
+                                                            echo "<td>".$linea[3]." ".$linea[4]."</td>";
+                                                            echo "<td ><span class=\"btn btn-default btn-xs btn-block\" onclick=\"ver_mas_ordenes_1('.$row[0].');\" > Más</span ></td></td>";
+                                                            echo "</tr>";
                                                         }
                                                     ?>
 
@@ -280,30 +288,64 @@ if ($_SESSION['USER_LEVEL'] == 0) {
 
                                         </div><!-- /TAB 1 CONTENT -->
 
-                                        <div id="orden_completa" class="tab-pane"><!-- TAB 2 CONTENT -->
+                                        <div id="orden_sinasignar" class="tab-pane"><!-- TAB 2 CONTENT -->
 
-                                            <div class="table-responsive">
+                                            <div class="table-responsive" style="height:380px; overflow-y: scroll; overflow-x: hidden">
                                                 <table class="table table-striped table-hover table-bordered">
                                                     <thead>
                                                     <tr>
-                                                        <th>Product Name</th>
-                                                        <th>Price</th>
-                                                        <th>Sold</th>
-                                                        <th></th>
+                                                        <th>Fecha</th>
+                                                        <th>Cliente</th>
+                                                        <th>Asignar</th>
                                                     </tr>
                                                     </thead>
-                                                   <tbody>
-                                                    aqui los completados
-                                                   </tbody>
+                                                    <tbody>
+                                                    <?php
+                                                    $listado = $ordenes->getOrdenesSinAsignar();
+
+                                                    while ($linea = mysqli_fetch_array($listado)){
+                                                        echo "<tr>";
+                                                        echo "<td>".$util->fecha_eur($linea[3])."</td>";
+                                                        echo "<td>".$linea[1]." ".$linea[2]."</td>";
+                                                        echo "<td ><span class=\"btn btn-default btn-xs btn-block\" onclick=\"asignar('.$row[0].');\" > Asignar</span ></td></td>";
+                                                        echo "</tr>";
+                                                    }
+                                                    ?>
+                                                    </tbody>
                                                 </table>
-
-                                                <a class="size-12" href="#">
-                                                    <i class="fa fa-arrow-right text-muted"></i>
-                                                    More Most Visited
-                                                </a>
-
                                             </div>
+                                        </div><!-- /TAB 1 CONTENT -->
 
+                                        <div id="orden_completa" class="tab-pane"><!-- TAB 2 CONTENT -->
+
+                                            <div class="table-responsive" style="height:380px; overflow-y: scroll; overflow-x: hidden">
+                                                <table class="table table-striped table-hover table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Fecha Abre</th>
+                                                        <th>Fecha Cierra</th>
+                                                        <th>Cliente</th>
+                                                        <th>Técnico</th>
+                                                        <th>Opciones</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <?php
+                                                    $listado2 = $ordenes->obtenerOrdenesCerradas();
+
+                                                    while ($linea = mysqli_fetch_array($listado2)){
+                                                        echo "<tr>";
+                                                        echo "<td>".$util->fecha_eur($linea[5])."</td>";
+                                                        echo "<td>".$util->fecha_eur($linea[5])."</td>";
+                                                        echo "<td>".$linea[1]." ".$linea[2]."</td>";
+                                                        echo "<td>".$linea[3]." ".$linea[4]."</td>";
+                                                        echo "<td ><span class=\"btn btn-default btn-xs btn-block\" onclick=\"ver_mas_ordenes_1('.$row[0].');\" > Más</span ></td></td>";
+                                                        echo "</tr>";
+                                                    }
+                                                    ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div><!-- /TAB 1 CONTENT -->
 
                                     </div>
@@ -325,16 +367,16 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                             <div id="panel-2" class="panel panel-default">
                                 <div class="panel-heading" >
 									<span class="title elipsis">
-										<strong>Contratos</strong> <!-- panel title -->
+										<strong>varios</strong> <!-- panel title -->
 									</span>
 
                                     <!-- tabs nav -->
                                     <ul class="nav nav-tabs pull-right">
                                         <li class="active"><!-- TAB 1 -->
-                                            <a href="#ttab1_nobg" data-toggle="tab">En Curso</a>
+                                            <a href="#ttab1_nobg" data-toggle="tab">Contratos</a>
                                         </li>
                                         <li class=""><!-- TAB 2 -->
-                                            <a href="#ttab2_nobg" data-toggle="tab">Completadas</a>
+                                            <a href="#ttab2_nobg" data-toggle="tab">Facturación</a>
                                         </li>
                                     </ul>
                                     <!-- /tabs nav -->
@@ -537,21 +579,35 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                 </div>
 			</section>
 			<!-- /MIDDLE -->
-
+            <div class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">Modal title</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>One fine body…</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
 		</div>
 
 		<!-- JAVASCRIPT FILES -->
 		<script type="text/javascript">var plugin_path = 'assets/plugins/';</script>
         <!-- jQuery library -->
-       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script
-                src="https://code.jquery.com/jquery-2.2.4.min.js"
-                integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-                crossorigin="anonymous"></script>
-        <!-- Latest compiled JavaScript -->
-<!--        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
         <script type="text/javascript" src="assets/js/app.js"></script>
 		<script type="text/javascript" src="js/utiles.js"></script>
+
 
 		<!-- PAGE LEVEL SCRIPT -->
 		<script type="text/javascript">
@@ -564,6 +620,8 @@ if ($_SESSION['USER_LEVEL'] == 0) {
             $(document).ready(function () {
                 // $('#desde').val(new Date().toDateInputValue());
                 // $('#hasta').val(new Date().toDateInputValue());
+
+
 
                 var olt = '<?php echo $olt;?>';
 

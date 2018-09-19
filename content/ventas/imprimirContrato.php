@@ -210,6 +210,7 @@ for($i=0;$i<count($listado);$i++)
 
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 $pdf->SetCreator(PDF_CREATOR);
+$pdf->SetMargins(10, 30, 10);
 
 $pdf->SetAuthor('REVENDEDOR');
 
@@ -219,8 +220,9 @@ $pdf->SetKeywords('CONTRATO DE CLIENTE');
 
 
 
-$pdf->SetHeaderData($file="../../img/antena.png","10px", " CONTRATO#".$idContrato, array(0,64,255), array(0,64,128));
-
+$pdf->SetHeaderData($file="../../img/antena.png","10px", " CONTRATO#".$idContrato, array(50,64,255), array(50,64,128));
+$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
 $pdf->setFooterData(array(0,64,0), array(0,64,128));
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -229,20 +231,18 @@ $pdf->AddPage();
 
 
 
-$datosCliente = 'DATOS DE LA EMPRESA<BR>
-C/ Pruebas 123<br>
+$datosCliente = '<br><br><h3>DATOS DE LA EMPRESA</h3><br><br>C/ Pruebas 123<br>
 11400 Jerez de la Frontera<br>
 España<br>
 CIF<br>';
 $pdf->MultiCell(0, 0, $datosCliente, 0, 'J', false, 1, 10, 11, true, 0, true, true, 0, 'T', false);
 
 
-$datosCliente = '<B>DATOS CLIENTE:</B><br>
-                <b>Nombre:</b>'.$nombre." ".$apellidos."<br/>
-                <b>Dirección:</b>".$direccion."<br/>"
-."<b>Localidad:</b>$localidad<br/>
-                <b>Provincia:</b>$provincia<br/>
-                <b>Teléfono:</b>$fijo<br/>";
+$datosCliente = '<br><br><h3><b>DATOS CLIENTE: </b></h3><br><br><b>Nombre: </b>'.$nombre." ".$apellidos."<br/>
+                <b>Dirección: </b>".$direccion."<br/>"
+."<b>Localidad: </b>$localidad<br/>
+                <b>Provincia: </b>$provincia<br/>
+                <b>Teléfono: </b>$fijo<br/>";
 $pdf->MultiCell(70, 50, $datosCliente, 0, 'J', false, 1, 100, 11, true, 0, true, FALSE, 0, 'T', false);
 
 $textosGenerales=str_replace("{nombreEmpresa}",$empresa,$textosGenerales);

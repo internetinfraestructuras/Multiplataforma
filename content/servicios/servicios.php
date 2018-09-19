@@ -359,11 +359,11 @@ check_session(3);
                 {
                     if(id==2)
                     {
-                        div.append('<div class="col-md-2 col-sm-2"> <label>'+data[i].NOMBRE+'</label><select type="text" name="servicio[atributo][]"  id="select-'+i+'" /><input type="text" value="'+data[i].ID+'" hidden name="servicio[atributo][]"/></div>');
+                        div.append('<div class="col-md-4 col-sm-4 col-xs-12"> <label>'+data[i].NOMBRE+'</label><br><select type="text" name="servicio[atributo][]"  id="select-'+i+'" /><input type="text" value="'+data[i].ID+'" hidden name="servicio[atributo][]"/></div>');
                     }
                     else
                     {
-                        div.append('<div class="col-md-2 col-sm-2"> <label>'+data[i].NOMBRE+'</label><input type="text" name="servicio[atributo][]"  class="form-control " /><input type="text" value="'+data[i].ID+'" hidden name="servicio[atributo][]"/></div>');
+                        div.append('<div class="col-md-4 col-sm-4 col-xs-12"> <label>'+data[i].NOMBRE+'</label><br><input type="text" name="servicio[atributo][]"  class="form-control " /><input type="text" value="'+data[i].ID+'" hidden name="servicio[atributo][]"/></div>');
                     }
 
                 });

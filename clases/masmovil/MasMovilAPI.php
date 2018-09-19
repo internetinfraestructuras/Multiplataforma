@@ -749,11 +749,11 @@ class MasMovilAPI
         $nombreFichero=$fecha.".txt";
 
         $arrayLineas=array();
-        if(file_exists("C://xampp/htdocs/atTotal/cdr/".$nombreFichero))
+        if(file_exists("C://xampp/htdocs/cdr/".$nombreFichero))
         {
             try
             {
-            $fp = fopen("C://xampp/htdocs/atTotal/cdr/".$nombreFichero, "r");
+            $fp = fopen("C://xampp/htdocs/cdr/".$nombreFichero, "r");
 
             while (!feof($fp))
             {

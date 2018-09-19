@@ -14,7 +14,6 @@ require_once($_SERVER['DOCUMENT_ROOT'].'config/def_tablas.php');
 
 date_default_timezone_set('Europe/Madrid');
 
-
 class UtilT {
 
     function generateRandomString($length = 20) {

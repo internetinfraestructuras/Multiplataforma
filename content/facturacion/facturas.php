@@ -11,7 +11,6 @@ if (!isset($_SESSION)) {
 }
 require_once('../../config/util.php');
 require_once ('../../clases/Factura.php');
-require_once ('../../clases/Contrato.php');
 $util = new util();
 
 // solo los usuarios de nivel 3 a 0 pueden agregar clientes
@@ -101,12 +100,11 @@ check_session(3);
 								<strong>LISTADO DE <?php echo DEF_FACTURACION; ?> MES ACTUAL</strong> <!-- panel title -->
 							</span>
 
-
                             <!-- right options -->
                             <ul class="options pull-right list-inline">
                                 <li><a href="#" class="opt panel_colapse" data-toggle="tooltip" title="Colapse" data-placement="bottom"></a></li>
-                                <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen" data-placement="bottom"><i class="fa fa-expand"></i></a></li>
-                                <li><a href="#" class="opt panel_close" data-confirm-title="Confirm" data-confirm-message="¿Deseas eleminar este panel?" data-toggle="tooltip" title="Close" data-placement="bottom"><i class="fa fa-times"></i></a></li>
+                                <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen" data-placement="bottom"><i class="fas fa-expand"></i></a></li>
+                                <li><a href="#" class="opt panel_close" data-confirm-title="Confirm" data-confirm-message="¿Deseas eleminar este panel?" data-toggle="tooltip" title="Close" data-placement="bottom"><i class="fas fa-times"></i></a></li>
                             </ul>
                             <!-- /right options -->
 
@@ -155,14 +153,16 @@ check_session(3);
                                 for($i=0;$i<count($listado);$i++)
                                 {
 
-                                    $id=$listado[$i][0];
+                                    $numero=$listado[$i][0];
                                     $fecha=$listado[$i][1];
                                     $impuesto=$listado[$i][2];
                                     $dto=$listado[$i][3];
                                     $total=$listado[$i][4];
+                                    $id=$listado[$i][6];
+
 
                                     echo "<tr>";
-                                    echo "<td >$id</td><td>$fecha </td><td>$impuesto %</td><td>$dto %</td><td>$total €</td>";
+                                    echo "<td >$numero</td><td>$fecha </td><td>$impuesto %</td><td>$dto %</td><td>$total €</td>";
 
                                     ?>
                                     <td class="td-actions text-right">
@@ -171,7 +171,7 @@ check_session(3);
                                                 <i class="fa fa-eye"></i>
                                             </button>
                                         </a>
-                                        <a href="imprimirFactura.php?idFactura=<?php echo $id; ?>">
+                                        <a href="imprimirFactura.php?idFactura=<?php echo $id; ?>" target="_blank       ">
                                             <button type="button" rel="tooltip" >
                                                 <i class="fa fa-print"></i>
                                             </button>
@@ -215,118 +215,7 @@ check_session(3);
 
 
                 </div>
-                <div class="panel-body" id="listado">
-                    <div id="panel-1" class="panel panel-default">
-                        <div class="panel-heading">
-							<span class="title elipsis">
-								<strong>LISTADO DE <?php echo DEF_FACTURACION; ?> PENDIENTES DE GENERAR FACTURAS ESTE MES</strong> <!-- panel title -->
-							</span>
 
-
-                            <!-- right options -->
-                            <ul class="options pull-right list-inline">
-                                <li><a href="#" class="opt panel_colapse" data-toggle="tooltip" title="Colapse" data-placement="bottom"></a></li>
-                                <li><a href="#" class="opt panel_fullscreen hidden-xs" data-toggle="tooltip" title="Fullscreen" data-placement="bottom"><i class="fa fa-expand"></i></a></li>
-                                <li><a href="#" class="opt panel_close" data-confirm-title="Confirm" data-confirm-message="¿Deseas eleminar este panel?" data-toggle="tooltip" title="Close" data-placement="bottom"><i class="fa fa-times"></i></a></li>
-                            </ul>
-                            <!-- /right options -->
-
-                        </div>
-
-                        <!-- panel content -->
-                        <div class="panel-body">
-
-                            <table id="example2" class="table table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th>#CONTRATO</th>
-                                    <th>CLIENTE</th>
-                                    <th>FECHA_INICIO</th>
-
-                                    <th>FECHA FIN</th>
-                                    <th>ESTADO</th>
-                                    <th>OPCIONES</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <?php
-
-                                $listaContratos=Contrato::getContratosAltaEmpresa($_SESSION['REVENDEDOR']);
-
-                                for($i=0;$i<count($listaContratos);$i++)
-                                {
-
-                                    $id=$listaContratos[$i][0];
-                                    $numero=$listaContratos[$i][1];
-                                    $idCliente=$listaContratos[$i][2];
-                                    $inicio=$listaContratos[$i][3];
-                                    $fin=$listaContratos[$i][4];
-                                    $estado=$listaContratos[$i][5];
-
-
-                                    if(!empty($campanas))
-                                    {
-                                        for($l=0;$l<count($campanas);$l++)
-                                            $dto=$campanas[$l][1];
-
-                                    }
-                                    //OBTENEMOS LAS FACTURAS DEL MES EN CURSO DE DICHA EMPRESA,SI LA FACTURA YA ESTUVIESE GENERADA NO SE VUELVE A GENERAR!!!
-
-                                      $facturasMes=Factura::getFacturasMesCurso($_SESSION['REVENDEDOR']);
-
-
-
-
-
-                                         if($facturasMes[$o][5]!=$listaContratos[$i][0])
-                                         {
-                                             echo "<tr>";
-                                             echo "<td >$numero</td>
-                                                    <td>$idCliente<a target='_blank' href=\"../../ficha-cliente.php?idCliente=$idCliente\"><button type=\"button\" rel=\"tooltip\" ><i class=\"fa fa-eye\"></i></button></a>
-                                                    </td><td>$inicio</td><td>$fin</td><td>$estado</td>";
-
-                                         }
-
-
-
-
-
-                                    ?>
-                                    <td class="td-actions text-right">
-                                        <a href="generar-factura.php?idFactura=<?php echo $id; ?>">
-                                            <button type="button" rel="tooltip" >
-                                                <i class="fa fa-eye"></i>
-                                            </button>
-                                        </a>
-
-                                        <button type="button" rel="tooltip" class="">
-                                            <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>');"></i>
-                                        </button>
-
-                                    </td>
-                                    </tr>
-
-                                    <?php
-                                }
-                                ?>
-                                </tbody>
-
-                            </table>
-
-                        </div>
-                        <!-- /panel content -->
-
-                        <!-- panel footer -->
-                        <div class="panel-footer">
-
-
-                        </div>
-                        <!-- /panel footer -->
-
-                    </div>
-
-
-                </div>
             </div>
         </div>
 

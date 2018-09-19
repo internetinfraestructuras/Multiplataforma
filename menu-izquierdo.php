@@ -6,10 +6,104 @@
  * Time: 8:07
  */
 require_once('config/define.php');
-$root="/atTotal/";
+$root="/";
 
 ?>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+<!--<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>-->
+
+<script src="assets/sweetalert/sweetalert2.all.min.js"></script>
+<script src="assets/sweetalert/sweetalert2.min.js"></script>
+
+<link rel="stylesheet" href="assets/sweetalert/sweetalert2.min.css">
+
+<script>
+    function alerta(titulo, texto, icono, botonSi, botonNo,funcionAceptar, funcionCancelar){
+
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false,
+        });
+
+        swalWithBootstrapButtons({
+            title: titulo,
+            text: texto,
+            type: icono,
+            showCancelButton: true,
+            confirmButtonText: botonSi,
+            cancelButtonText: botonNo,
+            reverseButtons: true,
+            width:500
+        }).then((result) => {
+            if (result.value) {
+                return self[funcionAceptar]();
+            } else if (result.dismiss === swal.DismissReason.cancel) {
+                return self[funcionCancelar]();
+            }
+        })
+    }
+
+    function alerta2(titulo, texto, icono, botonSi){
+
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false,
+        });
+
+        swalWithBootstrapButtons({
+            title: titulo,
+            text: texto,
+            type: icono,
+            showCancelButton: true,
+            confirmButtonText: botonSi,
+            cancelButtonText: botonNo,
+            reverseButtons: true,
+            width:500
+        }).then((result) => {
+            alert(result.dismiss);
+        });
+    }
+
+    function confirmacion(texto){
+        swal({
+            position: 'top-end',
+            type: 'success',
+            title: texto,
+            showConfirmButton: false,
+            timer: 2000
+        })
+
+        function alertaTiempo(tiempo, titulo, texto){
+            let timerInterval;
+            swal({
+                title: titulo,
+                html: texto,
+                timer: tiempo,
+                onOpen: () => {
+                    swal.showLoading();
+                    timerInterval = setInterval(() => {
+                        swal.getContent().querySelector('strong')
+                            .textContent = swal.getTimerLeft()
+                    }, 100)
+                },
+                onClose: () => {
+                    clearInterval(timerInterval)
+                }
+            }).then((result) => {
+                if (
+                    // Read more about handling dismissals
+                    result.dismiss === swal.DismissReason.timer
+                ) {
+                    console.log('I was closed by the timer')
+                }
+            })
+        }
+    }
+
+</script>
 <nav id="sideNav"><!-- MAIN MENU -->
 <ul class="nav nav-list">
     <li class="active"><!-- dashboard -->
@@ -23,7 +117,7 @@ $root="/atTotal/";
 
     <li>
         <a href="#">
-            <i class="fa fa-menu-arrow pull-right"></i>
+            <i class="fas fa-angle-down pull-right"></i>
             <i class="main-icon fa fa-users"></i><span><?php echo MNU_ITEM_3; ?> </span>
         </a>
         <ul><!-- submenus -->
@@ -37,7 +131,7 @@ $root="/atTotal/";
 
     <li>
         <a href="#">
-            <i class="fa fa-menu-arrow pull-right"></i>
+            <i class="fas fa-angle-down pull-right"></i>
             <i class="main-icon fa fa-shopping-cart"></i><span><?php echo MNU_ITEM_8; ?> </span>
         </a>
         <ul><!-- submenus -->
@@ -53,7 +147,7 @@ $root="/atTotal/";
 
     <li>
         <a href="#">
-            <i class="fa fa-menu-arrow pull-right"></i>
+            <i class="fas fa-angle-down pull-right"></i>
             <i class="main-icon fas fa-server"></i><span><?php echo MNU_ITEM_10; ?> </span>
         </a>
         <ul><!-- submenus -->
@@ -69,7 +163,7 @@ $root="/atTotal/";
 
     <li>
         <a href="#">
-            <i class="fa fa-menu-arrow pull-right"></i>
+            <i class="fas fa-angle-down pull-right"></i>
             <i class="main-icon fas fa-file-contract"></i><span><?php echo MNU_ITEM_9; ?> </span>
         </a>
         <ul><!-- submenus -->
@@ -90,7 +184,7 @@ $root="/atTotal/";
 
     <li>
         <a href="#">
-            <i class="fa fa-menu-arrow pull-right"></i>
+            <i class="fas fa-angle-down pull-right"></i>
             <i class="main-icon fas fa-people-carry"></i><span><?php echo MNU_ITEM_11; ?> </span>
         </a>
         <ul><!-- submenus -->
@@ -102,7 +196,7 @@ $root="/atTotal/";
     </li>
     <li>
         <a href="#">
-            <i class="fa fa-menu-arrow pull-right"></i>
+            <i class="fas fa-angle-down pull-right"></i>
             <i class="main-icon fas fa-file-invoice"></i><?php echo MNU_ITEM_13; ?> </span>
         </a>
         <ul><!-- submenus -->
@@ -113,7 +207,7 @@ $root="/atTotal/";
     </li>
     <li>
         <a href="#">
-            <i class="fa fa-menu-arrow pull-right"></i>
+            <i class="fas fa-angle-down pull-right"></i>
             <i class="main-icon fas fa-folder"></i><span><?php echo MNU_ITEM_12; ?> </span>
         </a>
         <ul><!-- submenus -->
@@ -132,7 +226,7 @@ $root="/atTotal/";
 
         <li>
             <a href="#">
-                <i class="fa fa-menu-arrow pull-right"></i>
+                <i class="fas fa-angle-down pull-right"></i>
                 <i class="main-icon fa fa-usd"></i> <span><?php echo MNU_ITEM_2; ?></span>
             </a>
             <ul><!-- submenus -->
@@ -147,7 +241,7 @@ $root="/atTotal/";
     <?php if (intval($_SESSION['USER_LEVEL'])==0 || intval($_SESSION['USER_LEVEL'])==1) { ?>
         <li>
             <a href="#">
-                <i class="fa fa-menu-arrow pull-right"></i>
+                <i class="fas fa-angle-down pull-right"></i>
                 <i class="main-icon fa fa-user"></i> <span><?php echo MNU_ITEM_1; ?></span>
             </a>
             <ul><!-- submenus -->

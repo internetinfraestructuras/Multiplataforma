@@ -6,7 +6,8 @@
  * Time: 16:39
  */
 
-
+error_reporting(E_ALL);
+ini_set("display_errors", 0);
 if (!isset($_SESSION)) {@session_start();}
 
 require_once('define.php');
@@ -777,7 +778,7 @@ class util {
     function fecha_eur($source){
         $date = date_create($source);
 
-        return date_format($date, 'yyyy-mm-dd');
+        return date_format($date, 'd/m/Y');
     }
 
     function fecha_usa($source){

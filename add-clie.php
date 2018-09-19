@@ -40,6 +40,12 @@ check_session(3);
     <link href="assets/css/layout.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/color_scheme/green.css" rel="stylesheet" type="text/css" id="color_scheme"/>
 
+    <style>
+        .alerta{
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <!--
     .boxed = boxed version
@@ -264,7 +270,7 @@ check_session(3);
                                     <div class="col-md-8">
                                         <br>
                                         <label>IBAN</label>
-                                        <input type="tel" name="clientes[iban]" id="iban" placeholder="ES46 2100 1111 2222 3333 4444"
+                                        <input type="tel" name="clientes[iban]" id="iban" placeholder="ES4621001111222233334444"
                                                class="form-control">
                                     </div>
                                     <div class="col-md-4">
@@ -334,6 +340,7 @@ check_session(3);
 <script type="text/javascript">var plugin_path = 'assets/plugins/';</script>
 <script type="text/javascript" src="assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 <script type="text/javascript" src="assets/js/app.js"></script>
+<script type="text/javascript" src="assets/js/validar.js"></script>
 
 
 <script>
@@ -441,146 +448,150 @@ check_session(3);
         var provincia = $("#provincias").val();
         var localidad = $("#localidades").val();
 
-
-
+        var texto ='';
+        var volver=false;
+        
         if (tcli == -1) {
-            alert('Debe seleccionar el tipo de cliente');
-            $("#tipocli").focus();
-            return;
+            texto  = texto +'<span class="alerta"> Debe seleccionar el tipo de cliente</span><br>';
+            volver=true;
         }
 
         if (tdoc == -1) {
-            alert('Debe seleccionar el tipo de documento que aporta el cliente');
-            $("#tipodoc").focus();
-            return;
+            texto = texto +'<span class="alerta"> Debe seleccionar el tipo de documento del cliente</span><br>';
+            volver=true;
         }
         if (dni == '') {
-            alert('Debe teclear el documento del cliente');
-            $("#dni").focus();
-            return;
+            texto = texto +'<span class="alerta"> Debe teclear el documento del cliente</span><br>';
+            volver=true;
         }
-
+        if(tdoc==1 || tdoc==2) {
+            if (!validadDNI(dni)) {
+                texto = texto + '- El documento de identidad no es correcto</span><br>';
+                volver = true;
+            }
+        } else if(tdoc==3) {
+            if (!validarCIF(dni)) {
+                texto = texto + '- El CIF no es correcto</span><br>';
+                volver = true;
+            }
+        }
         if (nom == '') {
-            alert('Debe teclear el nombre del cliente');
-            $("#nombre").focus();
-            return;
-        }
-        if (ape == '') {
-            alert('Debe teclear los apellidos del cliente');
-            $("#apellidos").focus();
-            return;
-        }
-        if (mail == '' || !validateEmail(mail)) {
-            alert('Debe teclear el email válido');
-            $("#email").focus();
-            return;
+            texto = texto +'<span class="alerta"> Debe teclear el nombre del cliente</span><br>';
+            volver=true;
         }
 
+        if (ape == '') {
+            texto = texto +'<span class="alerta"> Debe teclear los apellidos del cliente</span><br>';
+            volver=true;
+        }
+        
+        if (mail == '' || !validateEmail(mail)) {
+            texto = texto +'<span class="alerta"> Debe teclear el email válido</span><br>';
+            volver=true;
+        }
 
         if (tl1 == '' && tl2 == '') {
-            alert('Debe teclear al menos un número de teléfono');
-            $("#tel1").focus();
-            return;
+            texto = texto +'<span class="alerta"> Debe teclear al menos un número de teléfono</span><br>';
+            volver=true;
         }
-
 
         if (fnac == '') {
-            alert('Debe seleccionar la fecha de nacimiento del cliente');
-            $("#nacim").focus();
-            return;
-        }
-
-        if (nacion == '' || region == ''|| provincia == ''|| localidad == '') {
-            alert('Por favor, complete los datos demográficos del lciente');
-            $("#regiones").focus();
-            return;
+            texto = texto +'<span class="alerta"> Debe teclear la fecha de nacimiento del cliente</span><br>';
         }
 
         if (dir == '') {
-            alert('Debe teclear la dirección del cliente');
-            $("#direccion").focus();
-            return;
+            texto = texto +'<span class="alerta"> Debe teclear la dirección del cliente</span><br>';
+            volver=true;
         }
-        if (reg == -1) {
-            alert('Debe seleccionar la región del cliente');
-            $("#regiones").focus();
-            return;
+        
+        if (region == -'') {
+            texto = texto +'<span class="alerta"> Debe seleccionar la región del cliente</span><br>';
+            volver=true;
         }
-        if (pro == -1) {
-            alert('Debe seleccionar la provincia del cliente');
-            $("#provincias").focus();
-            return;
+        
+        if (provincia == -'') {
+            texto = texto +'<span class="alerta"> Debe seleccionar la provincia del cliente</span><br>';
+            volver=true;
         }
-        if (loc == -1) {
-            alert('Debe seleccionar la localidad del cliente');
-            $("#localidades").focus();
-            return;
+        
+        if (localidad == -'') {
+            texto = texto +'<span class="alerta"> Debe seleccionar la localidad del cliente</span><br>';
+            volver=true;
         }
+        
         if (cp == '') {
-            alert('Debe teclear el código postal del cliente');
-            $("#cp").focus();
-            return;
+            texto = texto +'<span class="alerta"> Debe teclear el código postal del cliente</span><br>';
+            volver=true;
         }
 
 
-        if (iban == '') {
-            alert('Debe especificar el IBAN para la facturacion');
-            $("#iban").focus();
-            return;
+        if (iban != '') {
+            if(!validarIBAN(iban))
+                texto = texto +'<span class="alerta"> El número IBAN no es correcto</span><br>';
         }
-
 
         // si la diferencia entre la fecha de hoy y la de nacimiento no es superior a dias es que es menor de edad
 
         if (difference = dateDiffInDays(new Date(fnac), new Date(hoy()))<6570) {
-            alert('El Cliente no parece ser mayor de edad');
-            $("#nacim").focus();
+            texto = texto +'<span class="alerta"> El Cliente no parece ser mayor de edad</span><br>';
             // return;
         }
-
-
-
-
+        
         if (lopd == -1) {
-            alert('Debe seleccionar un tipo de consentimiento para la LOPD');
-            $("#consentimiento").focus();
-            return;
+            texto = texto +'<span class="alerta"> Debe seleccionar un tipo de consentimiento para la LOPD</span><br>';
+            volver=true;
         }
 
-        var clientes = {
-            nombre: nom, apellidos: ape, dni: dni, dir: dir, cp: cp, region: reg, provincia: pro,
-            localidad: loc, email: mail, tel1: tl1, tel2: tl2, notas: notas, tipodoc:tdoc,
-            tipocli:tcli, nacimiento: fnac, lopd:lopd, banco:banco, iban:iban, swift:swift, dirbanco:dirbanco, nacion:nacion
-        };
-
-        var ok = false;
-        $.ajax({
-            url: 'php/guardar-cli.php',
-            type: 'POST',
-            cache: false,
-            async: false,
-            data: {
-                action: 'clientes',
-                clientes: clientes,
-                is_ajax: true
-            },
-            success: function (data) {
-                if (parseInt(data) > 0) {
-                    alert("Cliente guardado correctamente");
-                    location.reload();
-                }
-                else {
-                    alert("ERROR: Posible datos duplicados, revise los clientes actuales.");
-                    $("#next1").css('display', 'block');
-                    animating = false;
-                }
-            }
-        });
-        return ok;
 
 
+        if(texto!=''){
+            alerta("Atención", texto, 'warning','Continuar','Volver','','','confirmarGuardar','cancelarguardar');
+
+            if(volver)
+                return;
+        }
+
+   }
+
+
+    function cancelarguardar() {
+
+        alert("no");
     }
+   function confirmarGuardar(){
 
+        alert("si");
+       var clientes = {
+           nombre: nom, apellidos: ape, dni: dni, dir: dir, cp: cp, region: reg, provincia: pro,
+           localidad: loc, email: mail, tel1: tl1, tel2: tl2, notas: notas, tipodoc:tdoc,
+           tipocli:tcli, nacimiento: fnac, lopd:lopd, banco:banco, iban:iban, swift:swift, dirbanco:dirbanco, nacion:nacion
+       };
+
+       var ok = false;
+       $.ajax({
+           url: 'php/guardar-cli.php',
+           type: 'POST',
+           cache: false,
+           async: false,
+           data: {
+               action: 'clientes',
+               clientes: clientes,
+               is_ajax: true
+           },
+           success: function (data) {
+               if (parseInt(data) > 0) {
+                   alert("Cliente guardado correctamente");
+                   location.reload();
+               }
+               else {
+                   alert("ERROR: Posible datos duplicados, revise los clientes actuales.");
+                   $("#next1").css('display', 'block');
+                   animating = false;
+               }
+           }
+       });
+       return ok;
+   }
 
     function validateEmail(email) {
         var re = /^(?:[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;

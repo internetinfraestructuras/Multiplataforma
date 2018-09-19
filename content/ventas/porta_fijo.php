@@ -5,14 +5,17 @@
 // todo: -------------------------------------------------------------
 
 
+error_reporting(E_ALL);
+ini_set("display_errors", 0);
+
 
 if (!isset($_SESSION)) {
     @session_start();
 }
 require_once('../../config/util.php');
 $util = new util();
-require_once('../../clases/telefonia/classTelefonia.php');
 
+require_once('../../clases/telefonia/classTelefonia.php');
 $telef = new Telefonia();
 
 // solo los usuarios de nivel 3 a 0 pueden agregar clientes*/
@@ -46,6 +49,7 @@ check_session(3);
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="../../assets/css/portabilidades.css" rel="stylesheet" type="text/css"/>
 
 </head>
 
@@ -65,7 +69,7 @@ check_session(3);
 
 
     <!-- HEADER -->
-    <header id="header">
+    <header id="header" style="position:fixed;left:0; top:0;">
 
         <?php require_once ('../../menu-superior.php'); ?>
 
@@ -79,7 +83,7 @@ check_session(3);
     <section id="middle">
 
         <!-- page title -->
-        <header id="page-header">
+        <header id="page-header" style="margin-top:40px">
             <h1>Usted esta en</h1>
             <ol class="breadcrumb">
                 <li><a href="#"><?php echo DEF_T_FIJO; ?></a></li>
@@ -99,12 +103,12 @@ check_session(3);
                     <li>Líneas</li>
                     <li>Activar</li>
                 </ul>
-<!--                <div class="spinner" id="animacion1">-->
-<!--                    <div></div>-->
-<!--                    <div></div>-->
-<!--                    <div></div>-->
-<!--                    <div></div>-->
-<!--                </div>-->
+                <div class="spinner" id="animacion1">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
                 <!-- fieldsets -->
                 <fieldset class="caja">
 
@@ -442,7 +446,8 @@ check_session(3);
                             <label>Seleccione la tarifa deseada</label>
                             <select id="tarifa" class="form-control">
                                 <?php
-                                    $tarifas = $telef->getPaquetesDestino($_SESSION['CIF']);
+//                                    $tarifas = $telef->getPaquetesDestino($_SESSION['CIF']);
+                                    $tarifas = $telef->getPaquetesDestino('B45782687');
                                     while ($tarifa = mysqli_fetch_array($tarifas)){
                                         echo "<option value='$tarifa[0]'>".$tarifa[1]."</option>";
                                     }
@@ -1004,10 +1009,6 @@ check_session(3);
         });
     });
 
-
-
 </script>
-
-
 </body>
 </html>

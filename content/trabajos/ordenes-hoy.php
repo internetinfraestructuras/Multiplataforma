@@ -149,7 +149,7 @@ $root="../../";
                                             $apellidos=$listado[$i][6];
 
                                             echo "<tr>";
-                                            echo "<td><input name='ordenes[ordenId][]' value='$id' ></td><td>$fechaAlta</td><td>$estado</td><td>$cliente $apellidos<a href='/mul/ficha-cliente.php?idCliente=$idCliente' >&nbsp;<button type=\"button\" rel=\"tooltip\" ><i class=\"fa fa-eye\"></i></button></a></td>";
+                                            echo "<td><input name='ordenes[ordenId][]' value='$id' ></td><td>$fechaAlta</td><td>$estado</td><td>$cliente $apellidos<a href='/ficha-cliente.php?idCliente=$idCliente' >&nbsp;<button type=\"button\" rel=\"tooltip\" ><i class=\"fa fa-eye\"></i></button></a></td>";
                                             echo'<td><select id="empleados"  name="ordenes[orden][]" class="form-control">';
 
 
@@ -175,7 +175,7 @@ $root="../../";
                                                 </a>
                                                 <a href="ficha-orden.php?idOrden=<?php echo $id; ?>">
                                                     <button type="button" rel="tooltip" >
-                                                        <i class="fa fa-pencil"></i>
+                                                        <i class="fas fa-edit"></i>
                                                     </button>
                                                 </a>
                                                     </button>

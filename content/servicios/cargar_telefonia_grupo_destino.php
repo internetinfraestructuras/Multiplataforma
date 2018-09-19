@@ -19,8 +19,8 @@ require_once ('../../clases/telefonia/classTelefonia.php');
 
 
 
-$util = new util();
-check_session(3);
+//$util = new util();
+//check_session(3);
 
 $cifSuperUsuario='B45782687';
 

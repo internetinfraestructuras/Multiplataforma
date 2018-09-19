@@ -106,6 +106,41 @@
 
      }
 
+     public function selectJoin($tabla, $campos, $join, $order, $where=null, $group=null){
+         try {
+
+             $link = $this->conectar();
+             $columnas = implode($campos, ", ");
+
+             $query = 'SELECT '. $columnas. ' FROM ' . $tabla;
+
+             if($join != null)
+                 $query = $query  . " ". $join;
+
+             if($where != null)
+                 $query = $query  . " WHERE " . $where;
+
+             if ($group != null)
+                 $query = $query . " GROUP BY ".$group ;
+
+             if ($order != null)
+                 $query = $query . " ORDER BY ".$order ;
+
+//            echo $query;
+             if (!($result = $link->query($query)))
+                 throw new Exception('Error en selectJoin.');
+
+             $link->close();
+
+             return $result;
+
+         } catch (Exception $e) {
+             $this->log('Error selectJoin: ' . $query);
+         }
+
+
+     }
+
      function log($action){
 
          $ip=$this->ip();
@@ -128,7 +163,5 @@
          else { $ip = $_SERVER['REMOTE_ADDR'];        }
          return $ip;
      }
-
  }
-
  ?>

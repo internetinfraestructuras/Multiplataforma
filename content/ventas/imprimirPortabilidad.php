@@ -3,15 +3,19 @@
 error_reporting('0');
 ini_set('display_errors', 1);*/
 
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+
 include_once('../../pdf/utilPDF.php');
 require_once ('./../../clases/Portabilidad.php');
 require_once('../../pdf/tcpdf/tcpdf.php');
 
 if (!isset($_SESSION)) {@session_start();}
 $util=new utilPDF();
+$portas=new Portabilidad();
 
-$portabilidad=Portabilidad::getDatosPortabilidadPDF($_REQUEST['idContrato'],$_REQUEST['tipo']);
-
+$portabilidad = $portas->getDatosPortabilidadPDF($_REQUEST['idContrato'],$_REQUEST['tipo']);
+$portabilidad=mysqli_fetch_array($portabilidad);
 /*
  *
 0 FECHA_SOLICITUD
@@ -44,40 +48,38 @@ $portabilidad=Portabilidad::getDatosPortabilidadPDF($_REQUEST['idContrato'],$_RE
 27 MOD. DONANTE (tipo linea fijo)
 28 TARIFA
  */
-$fecha=$portabilidad[0][0];
-$titular=$portabilidad[0][1];
-$cif=$portabilidad[0][2];
-$cp=$portabilidad[0][3];
-$direccion=$portabilidad[0][4];
-$numportar=$portabilidad[0][5];
-$firma=$portabilidad[0][6];
-$icc=$portabilidad[0][7];
-$movilporta=$portabilidad[0][8];
-$modalidad=$portabilidad[0][9];
+$fecha=$portabilidad;
+$titular=$portabilidad[1];
+$cif=$portabilidad[2];
+$cp=$portabilidad[3];
+$direccion=$portabilidad[4];
+$numportar=$portabilidad[5];
+$firma=$portabilidad[6];
+$icc=$portabilidad[7];
+$movilporta=$portabilidad[8];
+$modalidad=$portabilidad[9];
 
-$localidad=$portabilidad[0][10];
-$provincia=$portabilidad[0][11];
-$comunidad=$portabilidad[0][12];
+$localidad=$portabilidad[10];
+$provincia=$portabilidad[11];
+$comunidad=$portabilidad[12];
 
-$nomcli=$portabilidad[0][13];
-$apecli=$portabilidad[0][14];
-$dnicli=$portabilidad[0][15];
-$dircli=$portabilidad[0][16];
-$iban=$portabilidad[0][17];
-$swift=$portabilidad[0][18];
-$clifijo=$portabilidad[0][19];
-$climovil=$portabilidad[0][20];
-$email=$portabilidad[0][21];
-$banco=$portabilidad[0][22];
-$f_nacimiento=$portabilidad[0][23];
-$opedonante=$portabilidad[0][24];
-$tipocli=$portabilidad[0][25];
-$tipodoc=$portabilidad[0][26];
-$moddonante=$portabilidad[0][27];
-$tarifa=$portabilidad[0][28];
-$dc=$portabilidad[0][29];
-
-
+$nomcli=$portabilidad[13];
+$apecli=$portabilidad[14];
+$dnicli=$portabilidad[15];
+$dircli=$portabilidad[16];
+$iban=$portabilidad[17];
+$swift=$portabilidad[18];
+$clifijo=$portabilidad[19];
+$climovil=$portabilidad[20];
+$email=$portabilidad[21];
+$banco=$portabilidad[22];
+$f_nacimiento=$portabilidad[23];
+$opedonante=$portabilidad[24];
+$tipocli=$portabilidad[25];
+$tipodoc=$portabilidad[26];
+$moddonante=$portabilidad[27];
+$tarifa=$portabilidad[28];
+$dc=$portabilidad[29];
 
 
 $listado=$util->selectWhere3("textos_legales",array("texto,id_servicio"),"ubicacion='portaForm' AND id_empresa=".$_SESSION['REVENDEDOR']."");
@@ -95,7 +97,7 @@ $pdf->SetAuthor('PORTABILIDAD');
 $pdf->SetTitle('FORMULARIO DE PORTABILIDAD');
 $pdf->SetSubject('FORMULARIO DE PORTABILIDAD');
 $pdf->SetKeywords('FORMULARIO DE PORTABILIDAD');
-$pdf->SetHeaderData("","","", " FORMULARIO DE PORTABILIDAD", array(0,64,255), array(0,64,128));
+//$pdf->SetHeaderData("","","", " FORMULARIO DE PORTABILIDAD", array(0,64,255), array(0,64,128));
 
 $pdf->setFooterData(array(0,64,0), array(0,64,128));
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -110,7 +112,11 @@ $direccion.=$comunidad." ";
 $direccion.=" CP:".$cp." ";
 $logo=$_SESSION['LOGO'];
 
-$pdf->Image($file=$logo, 1, 1, 210, 30, '', '', '', 0, 200, '', false, false, 0, false, false, false);
+//$pdf->Image($file=$logo, 1, 1, 210, 30, '', '', '', 0, 200, '', false, false, 0, false, false, false);
+$pdf->SetHeaderData($file="../../img/antena.png","10px", "", array(0,64,255), array(0,64,128));
+$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
 
 $texto=str_replace("{nombreTitular}",$titular,$texto);
 $texto=str_replace("{dniTitular}",$cif,$texto);
@@ -148,12 +154,6 @@ $pdf->writeHTML($texto);
 
 $pdf->ImageSVG($file=$firma, 5, 215, 100, 50);
 
-//echo $texto;
-
 $pdf->output('Reporte.pdf', 'I');
-
-
-
-
 ?>
 

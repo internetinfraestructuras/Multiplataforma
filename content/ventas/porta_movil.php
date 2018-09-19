@@ -43,7 +43,7 @@ check_session(3);
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
+    <link href="../../assets/css/portabilidades.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <body>
@@ -96,14 +96,12 @@ check_session(3);
                     <li>Líneas</li>
                     <li>Activar</li>
                 </ul>
-<!--                <div class="spinner" id="animacion1">-->
-<!--                    <div></div>-->
-<!--                    <div></div>-->
-<!--                    <div></div>-->
-<!--                    <div></div>-->
-<!--                </div>-->
-                <!-- fieldsets -->
-
+                <div class="spinner" id="animacion1">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
 
                 <fieldset class="caja">
 

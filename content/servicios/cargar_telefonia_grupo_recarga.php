@@ -15,11 +15,10 @@ if (!isset($_SESSION))
 {
     @session_start();
 }
-require_once ('../../clases/telefonia/classTelefonia.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'clases/telefonia/classTelefonia.php');
 
-
-$util = new util();
-check_session(3);
+//$util = new util();
+//check_session(3);
 
 $cifSuperUsuario='B45782687';
 

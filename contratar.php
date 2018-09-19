@@ -820,7 +820,7 @@ check_session(2);
     }
 
     $('#imprimir').on('hidden.bs.modal', function () {
-        alert('Para salir, utilice el boton correspondiente');
+        alerta('Atención','Para salir, utilice el boton correspondiente');
         clickEvent.preventDefault();
         clickEvent.stopPropagation();
         return false;

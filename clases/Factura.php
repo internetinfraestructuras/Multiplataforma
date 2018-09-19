@@ -86,7 +86,7 @@ class Factura
 
 
 
-        return $util->selectWhere3('facturas', array('NUMERO','FECHA','IMPUESTO','DESCUENTO','TOTAL','ID_CONTRATO'),'ID_EMPRESA ='.$idEmpresa." AND facturas.fecha>='$fechaInicio' AND facturas.fecha<='$fechaFin'");
+        return $util->selectWhere3('facturas', array('NUMERO','FECHA','IMPUESTO','DESCUENTO','TOTAL','ID_CONTRATO','ID'),'ID_EMPRESA ='.$idEmpresa." AND facturas.fecha>='$fechaInicio' AND facturas.fecha<='$fechaFin'");
     }
 
     public static function getFacturasMes($idEmpresa,$mesActual)
@@ -111,6 +111,6 @@ class Factura
 
         $fechaInicio=$anio."-".$mesAnterior."-".$diaFacturacion;
 
-        return $util->selectWhere3('facturas', array('NUMERO','FECHA','IMPUESTO','DESCUENTO','TOTAL'),'ID_EMPRESA ='.$idEmpresa." AND facturas.fecha>='$fechaInicio' AND facturas.fecha<='$fechaFin'");
+        return $util->selectWhere3('facturas', array('NUMERO','FECHA','IMPUESTO','DESCUENTO','TOTAL','ID'),'ID_EMPRESA ='.$idEmpresa." AND facturas.fecha>='$fechaInicio' AND facturas.fecha<='$fechaFin'");
     }
 }

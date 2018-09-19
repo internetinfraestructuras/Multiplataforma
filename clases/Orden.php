@@ -58,6 +58,36 @@ class Orden
 
     }
 
+// ruben
+    public static function obtenerOrdenesAsignadas2()
+    {
+        $util=new util();
+        $campos=array('ordenes.ID, clientes.NOMBRE','clientes.APELLIDOS','usuarios.NOMBRE','usuarios.APELLIDOS',
+           'ordenes_usuario.FECHA_ASIGNACION','ordenes.ID_TIPO_ESTADO');
+        $join=' JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO ';
+        $where='ordenes.ID_TIPO_ESTADO != 3 AND contratos.ID_EMPRESA = '.$_SESSION['USER_ID'];
+
+        return $util->selectJoin('ordenes_usuario', $campos,  $join, 'ordenes_usuario.FECHA_ASIGNACION', $where);
+    }
+
+
+// ruben
+    public static function obtenerOrdenesCerradas()
+    {
+        $util=new util();
+        $campos=array('ordenes.ID, clientes.NOMBRE','clientes.APELLIDOS','usuarios.NOMBRE','usuarios.APELLIDOS',
+            'ordenes_usuario.FECHA_ASIGNACION','ordenes.ID_TIPO_ESTADO');
+        $join=' JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO ';
+        $where='ordenes.ID_TIPO_ESTADO = 3 AND contratos.ID_EMPRESA = '.$_SESSION['USER_ID'];
+
+        return $util->selectJoin('ordenes_usuario', $campos,  $join, 'ordenes_usuario.FECHA_ASIGNACION', $where);
+    }
 
 
     public static function crearLineaOrden($idOrden,$idTipoOrden,$idProducto,$idLineaDetalle)
@@ -125,17 +155,17 @@ class Orden
                     AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes.fecha_alta<=DATE(now()) AND ordenes.id_tipo_estado=1");
     }
 
-    public static function getOrdenesEstados()
+    public static function getOrdenesSinAsignar()
     {
-
-
         $util=new util();
-        return $util->selectWhere3('ordenes,ordenes_estados,contratos,clientes',
-            array("ordenes.id,ordenes.fecha_alta,ordenes_estados.nombre,ordenes_estados.id,clientes.nombre,clientes.id,clientes.apellidos,clientes.direccion, clientes.movil"),
-            "ordenes.id_contrato=contratos.id 
-                    AND ordenes_estados.id=ordenes.id_tipo_estado 
-                    AND contratos.id_cliente=clientes.id
-                    AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes.fecha_alta<=DATE(now()) AND ordenes.id_tipo_estado=1");
+        $campos=array('ordenes.ID, clientes.NOMBRE','clientes.APELLIDOS', 'ordenes.FECHA_ALTA');
+        $join='JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE ';
+        $where='ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA = '.$_SESSION['USER_ID'];
+
+
+        return $util->selectJoin('ordenes', $campos,  $join, 'ordenes.FECHA_ALTA', $where);
+
     }
 
 
