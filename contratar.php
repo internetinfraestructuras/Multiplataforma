@@ -2033,7 +2033,6 @@ check_session(2);
     }
 
 
-
     function verifProds(s,b){
         var texto = $(s).find('option:selected').text();
 

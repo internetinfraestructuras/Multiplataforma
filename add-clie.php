@@ -43,7 +43,7 @@ check_session(3);
     <style>
         .alerta{
             font-size: 1.3em;
-            font-weight: 600;
+            font-weight: 400;
         }
     </style>
 </head>
@@ -344,6 +344,7 @@ check_session(3);
 
 
 <script>
+    var volver=false;
 
     // carga las provincias en el combo correspondiente
     // se llama cada vez que selecciona una comunidad autonoma
@@ -423,6 +424,8 @@ check_session(3);
 
     function verificaryGuardar(){
 
+        volver = false;
+
         var nom = $("#nombre").val();
         var ape = $("#apellidos").val();
         var dni = $("#dni").val();
@@ -449,7 +452,7 @@ check_session(3);
         var localidad = $("#localidades").val();
 
         var texto ='';
-        var volver=false;
+
         
         if (tcli == -1) {
             texto  = texto +'<span class="alerta"> Debe seleccionar el tipo de cliente</span><br>';
@@ -466,12 +469,12 @@ check_session(3);
         }
         if(tdoc==1 || tdoc==2) {
             if (!validadDNI(dni)) {
-                texto = texto + '- El documento de identidad no es correcto</span><br>';
+                texto = texto + '<span class="alerta"> El documento de identidad no es correcto</span><br>';
                 volver = true;
             }
         } else if(tdoc==3) {
             if (!validarCIF(dni)) {
-                texto = texto + '- El CIF no es correcto</span><br>';
+                texto = texto + '<span class="alerta"> El CIF no es correcto</span><br>';
                 volver = true;
             }
         }
@@ -542,25 +545,51 @@ check_session(3);
             volver=true;
         }
 
-
-
         if(texto!=''){
-            alerta("Atención", texto, 'warning','Continuar','Volver','','','confirmarGuardar','cancelarguardar');
 
-            if(volver)
-                return;
-        }
+            alerta("Atención", texto, 'warning','Continuar','Volver','confirmarGuardar','cancelarguardar');
+
+        } else confirmarGuardar();
 
    }
 
 
     function cancelarguardar() {
 
-        alert("no");
+
     }
+
    function confirmarGuardar(){
 
-        alert("si");
+       if(volver)
+           return;
+
+       var nom = $("#nombre").val();
+       var ape = $("#apellidos").val();
+       var dni = $("#dni").val();
+       var dir = $("#direccion").val();
+       var reg = $("#regiones").val();
+       var pro = $("#provincias").val();
+       var loc = $("#localidades").val();
+       var cp = $("#cp").val();
+       var mail = $("#mail").val();
+       var tl1 = $("#tel1").val();
+       var tl2 = $("#tel2").val();
+       var notas = $("#notas").val();
+       var tdoc = $("#tipodoc").val();
+       var tcli = $("#tipocli").val();
+       var fnac = $("#nacim").val();
+       var lopd = $("#consentimiento").val();
+       var banco = $("#banco").val();
+       var dirbanco = $("#dirbanco").val();
+       var iban = $("#iban").val();
+       var swift = $("#swift").val();
+       var nacion = $("#nacion").val();
+       var region = $("#regiones").val();
+       var provincia = $("#provincias").val();
+       var localidad = $("#localidades").val();
+
+
        var clientes = {
            nombre: nom, apellidos: ape, dni: dni, dir: dir, cp: cp, region: reg, provincia: pro,
            localidad: loc, email: mail, tel1: tl1, tel2: tl2, notas: notas, tipodoc:tdoc,
