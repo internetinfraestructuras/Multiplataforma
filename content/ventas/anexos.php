@@ -9,7 +9,11 @@
 if (!isset($_SESSION)) {
     @session_start();
 }
+
 require_once('../../config/util.php');
+require_once ('../../clases/Contrato.php');
+require_once ('../../clases/Paquete.php');
+require_once ('../../clases/Servicio.php');
 $util = new util();
 
 // solo los usuarios de nivel 3 a 0 pueden agregar clientes
@@ -128,32 +132,33 @@ $root="../../";
                                         </thead>
                                         <tbody>
                                         <?php
-                                        $listado= $util->selectWhere3('contratos,contratos_anexos,servicios,contratos_tipos_anexos',
-                                            array("contratos_anexos.ID","servicios.nombre","contratos_tipos_anexos.nombre","contratos_anexos.fecha"),
-                                            "contratos.id_empresa=".$_SESSION['REVENDEDOR']. " 
-                                            AND contratos_anexos.id_servicio=servicios.id
-                                            AND contratos_anexos.id_tipo_tramite=contratos_tipos_anexos.id
-                                            AND contratos.id=contratos_anexos.id_contrato 
-                                            AND contratos_anexos.id_contrato=".$_GET['idContrato']);
+                                        $listado=Contrato::getAnexosContratos($_SESSION['REVENDEDOR'],$_GET['idContrato']);
 
 
                                         for($i=0;$i<count($listado);$i++)
                                         {
 
                                             $id=$listado[$i][0];
-                                            $servicio=$listado[$i][1];
-                                            $tipo=$listado[$i][2];
-                                            $fecha=$listado[$i][3];
+                                            $nombreTipo=$listado[$i][1];
+                                            $fecha=$listado[$i][2];
+                                            $tipo=$listado[$i][3];
+                                            $asociado=$listado[$i][4];
 
+                                            if($tipo==1)
+                                                $nombre=Paquete::getNombrePaquete($asociado);
+                                            else if($tipo==2)
+                                                $nombre=Servicio::getNombreServicio($asociado);
+
+                                            $nombre=$nombre[0][0];
 
                                             echo "<tr>";
-                                            echo "<td>$id</td><td>$servicio</td><td>$tipo</td><td>$fecha</td>";
+                                            echo "<td>$id</td><td>$nombre</td><td>$nombreTipo</td><td>$fecha</td>";
 
                                             ?>
                                             <td class="td-actions text-right">
-                                                <a href="ficha-paquete.php?idPaquete=<?php echo $id; ?>">
+                                                <a href="ficha-anexo.php?idAnexo=<?php echo $id; ?>">
                                                     <button type="button" rel="tooltip" >
-                                                        <i class="fa fa-pencil"></i>
+                                                        <i class="fa fa-edit"></i>
                                                     </button>
                                                 </a>
                                                 <button type="button" rel="tooltip" class="">

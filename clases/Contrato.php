@@ -32,6 +32,19 @@ class Contrato
             "contratos.id_empresa=$idEmpresa AND contratos.fecha_fin=date(now()) AND contratos.estado!=5");
     }
 
+    public static function getAnexosContratos($idEmpresa,$idContrato)
+    {
+        $util = new util();
+
+        return $util->selectWhere3('contratos,contratos_anexos,contratos_tipos_anexos',
+            array("contratos_anexos.ID","contratos_tipos_anexos.nombre","contratos_anexos.fecha","contratos_anexos.id_tipo_linea","contratos_anexos.id_asociado"),
+            "contratos.id_empresa=$idEmpresa 
+                              
+                                            AND contratos_anexos.id_tipo_tramite=contratos_tipos_anexos.id
+                                            AND contratos.id=contratos_anexos.id_contrato 
+                                            AND contratos_anexos.id_contrato=$idContrato");
+    }
+
     //Devuelve la linea contratos_lineas de un contrato de una dicha linea con un idServicio especifico.
     public static function getLineaContratoServicio($idContrato, $idLinea, $idServicio)
     {
@@ -47,8 +60,8 @@ class Contrato
     {
         $util = new util();
 
-        return $util->selectWhere3("contratos_campanas", array("ID_CAMPANA","DTO","DTO_HASTA"),
-            "contratos_campanas.id_contrato=$idContrato AND contratos_campanas.dto_hasta>=date(now())");
+        return $util->selectWhere3("contratos_campanas,campanas", array("ID_CAMPANA","DTO","DTO_HASTA","campanas.NOMBRE"),
+            "contratos_campanas.id_contrato=$idContrato AND contratos_campanas.dto_hasta>=date(now()) AND campanas.id=contratos_campanas.id_campana");
     }
 
     // Agrega documentos tipo firma y escaneados al contrato (Rubén)
@@ -394,13 +407,13 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
             "contratos.id_cliente=clientes.id AND contratos.id=$idContrato AND contratos.id_empresa=$idEmpresa");
     }
     //Generar un anexo de contrato
-    public static function generarAnexo($idContrato, $idServicio, $tipoAnexo,$idLinea)
+    public static function generarAnexo($idContrato,$idTipoLinea,$idAsociado,$idLinea,$idTipoAnexo)
     {
 
         $util = new util();
         echo "Entramos en geenrear anexo";
-        $t_contratos_anexos = array("ID_CONTRATO", "ID_SERVICIO", "ID_TIPO_TRAMITE","ID_LINEA_CONTRATO");
-        $values = array($idContrato, $idServicio, $tipoAnexo,$idLinea);
+            $t_contratos_anexos = array("ID_CONTRATO", "ID_TIPO_LINEA","ID_ASOCIADO","ID_LINEA_CONTRATO","ID_TIPO_TRAMITE");
+            $values = array($idContrato,$idTipoLinea,$idAsociado,$idLinea,$idTipoAnexo);
 
         $resAnexo = $util->insertInto('contratos_anexos', $t_contratos_anexos, $values);
     }

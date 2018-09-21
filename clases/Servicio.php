@@ -544,6 +544,12 @@ public static function cancelarBajaServicio($idContrato,$idLineaContrato,$idServ
         return $util->selectWhere3("servicios", array("ID_PROVEEDOR"),
             "servicios.id=".$idServicio);
     }
+    public static function getNombreServicio($idServicio)
+    {
+        $util=new util();
+        return $util->selectWhere3("servicios", array("NOMBRE"),
+            "servicios.id=".$idServicio);
+    }
     //Nos devuelve los datos del servicio del cliente
     public static function getDetallesServicio($idServicio)
     {

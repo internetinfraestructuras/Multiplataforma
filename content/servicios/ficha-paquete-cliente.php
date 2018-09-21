@@ -109,7 +109,7 @@ $pvp=$listado[0][5];
 
                         <div class="panel-body">
 
-                            <form class="validate" action="guardar-paquete.php" method="post"
+                            <form class="validate" action="guardar-paquete-cliente.php" method="post"
                                   enctype="multipart/form-data">
                                 <fieldset>
                                     <!-- required [php action request] -->
