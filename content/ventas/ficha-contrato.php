@@ -177,8 +177,9 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
 
                         $tipo=strtolower($tipo);
 
+
                         if($idTipo!=3)
-                            $listado= $util->selectWhere3($tipo, array("ID","nombre"),  $tipo.".id_empresa=".$_SESSION['REVENDEDOR']." AND ".$tipo.".id=".$idAsociado);
+                            $listado= $util->selectWhere3($tipo, array("ID","nombre","ID_SERVICIO_TIPO"),  $tipo.".id_empresa=".$_SESSION['REVENDEDOR']." AND ".$tipo.".id=".$idAsociado);
                         else
                             $listado= $util->selectWhere3($tipo.",almacenes", array("productos.ID","numero_serie"),  "almacenes.id=productos.id_almacen AND almacenes.id_empresa=".$_SESSION['REVENDEDOR']." AND ".$tipo.".id=".$idAsociado);
 
@@ -197,11 +198,11 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
                         <td class="td-actions text-right">
                             <?php
                             if($idTipo==1)
-                                echo "<a href='/atTotal/content/servicios/ficha-paquete-cliente.php?idPaquete=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."''>";
+                                echo "<a href='/ml/content/servicios/ficha-paquete-cliente.php?idPaquete=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."''>";
                             else if($idTipo==2)
-                                echo "<a href='/atTotal/content/servicios/ficha-servicio-contrato.php?idServicio=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."&tipo=$idTipo''>";
+                                echo "<a href='/ml/content/servicios/ficha-servicio-contrato.php?idServicio=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."&tipo=$idServicioTipo''>";
                             if($idTipo==3)
-                                echo '<a href="/atTotal/content/almacen/ficha-producto.php?idProducto='.$idAsociado.'">';
+                                echo '<a href="/ml/content/almacen/ficha-producto.php?idProducto='.$idAsociado.'">';
                             ?>
 
                                 <button type="button" rel="tooltip" >

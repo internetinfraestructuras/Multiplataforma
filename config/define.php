@@ -13,7 +13,9 @@ define('DDBB','pruebas.');
 // cabeceras de los ficheros html
 define('AUTOR','Internet Infraestructuras S.L.');
 define('OWNER','AT Control');
-
+define('ID_NUMERO_MOVIL',48);
+define('ID_PROVEEDOR_MASMOVIL',14);
+define('ID_PROVEEDOR_AIRENETWORKS',15);
 define('DEF_REVENDEDORES','Revendedores');
 define('DEF_FACTURACION','Facturación');
 define('DEF_REVENDEDOR','Revendedor');

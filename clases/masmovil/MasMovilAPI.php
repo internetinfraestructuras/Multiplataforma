@@ -22,10 +22,11 @@ class MasMovilAPI
     /**
      * MasMovilAPI constructor.
      */
+
     public function __construct()
     {
-        $this->servicio="http://dev-wsr.xtratelecom.es/cableoperador/wsdl/";
-
+        $this->servicio="http://dev-wsr.xtratelecom.es/cableoperador/wsdl/"; //url depuración o test.
+        $this->servicio="http://wsr.xtratelecom.es/cableoperador/wsdl/";
         $this->parametrosCliente= array(
             'soap_version' => SOAP_1_1,
             'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP,
@@ -58,7 +59,7 @@ class MasMovilAPI
 
         $parametros=array();
         $parametros['soap_request']=array("Operation"=>array("instruction"=>array("message"=>$mensajePruebas)));
-        $client = new SoapClient($this->servicio."cablePing-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cablePing.wsdl", $this->parametrosCliente);
         $resultado=$client->ping($parametros);
         // var_dump($client->__getFunctions());
         return json_encode($resultado->return);
@@ -101,10 +102,14 @@ class MasMovilAPI
 
 
         $parametros['soap_request']=array("Operation"=>array("instruction"=>$paramsInstruction,"find"=>$arrayFind));
-        $client = new SoapClient($this->servicio."cableCustomersFind-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableCustomersFind.wsdl", $this->parametrosCliente);
 
         $resultado=$client->cableCustomerMaintenance($parametros);
-        return json_encode($resultado->return->clientsList);
+
+        if(@$resultado->return->clientsList)
+            return $resultado->return->clientsList;
+        else
+            return json_encode($resultado->return);
     }
 
 
@@ -119,6 +124,7 @@ class MasMovilAPI
                                       $titularCuenta,$nombreBanco,$codigoBanco,$oficina,$digitoControl,$numeroCuenta)
     {
         $ts=$this->getTimeStamp();
+
         $parametros=array();
         $instructions= array("timeStamp"=>$ts,
             "resellerId"=>$this->resellerId,
@@ -137,7 +143,7 @@ class MasMovilAPI
                 array("instruction"=>$instructions,"activate"=>array("individualDetails"=>$individual,"contact"=>$contact,"address"=>$address,"bankDetails"=>$bankDetails,"services"=>$services)));
 
 
-        $client = new SoapClient($this->servicio."cableCustomersNew-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableCustomersNew.wsdl", $this->parametrosCliente);
         $resultado=$client->cableCustomerMaintenance($parametros);
         return json_encode($resultado->return);
     }
@@ -147,6 +153,7 @@ class MasMovilAPI
                                      $titularCuenta,$nombreBanco,$codigoBanco,$oficina,$digitoControl,$numeroCuenta)
     {
         $ts=$this->getTimeStamp();
+
         $parametros=array();
         $instructions= array("timeStamp"=>$ts,
             "resellerId"=>$this->resellerId,
@@ -167,7 +174,7 @@ class MasMovilAPI
                 array("instruction"=>$instructions,"activate"=>array("individualDetails"=>$individual,"contact"=>$contact,"address"=>$address,"bankDetails"=>$bankDetails,"services"=>$services)));
 
 
-        $client = new SoapClient($this->servicio."cableCustomersUpdate-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableCustomersUpdate.wsdl", $this->parametrosCliente);
         $resultado=$client->cableCustomerMaintenance($parametros);
         return json_encode($resultado->return);
     }
@@ -190,7 +197,7 @@ class MasMovilAPI
                 array("instruction"=>$instructions));
 
 
-        $client = new SoapClient($this->servicio."cableCustomersDelete-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableCustomersDelete.wsdl", $this->parametrosCliente);
         $resultado=$client->cableCustomerMaintenance($parametros);
         return json_encode($resultado->return);
     }
@@ -206,35 +213,60 @@ class MasMovilAPI
 
     public function altaLineaMovil($refCliente,$icc,$perfilProducto,$bonos)
     {
-
         $ts=$this->getTimeStamp();
-        $parametros=array();
-        $instructions= array("timeStamp"=>$ts,
-            "resellerId"=>$this->resellerId,
-            "resellerPin"=>$this->pass,
-            "branchId"=>"",
-            "posId"=>"",
-            "transactionId"=>$ts,
-            "refCustomerId"=>$refCliente,
-            "operationType"=>"NEWLINE");
+        $opts = array('location' => 'http://wsr.xtratelecom.es/cableoperador/cableMsisdns',
 
-        $lineDetails=array("iccid"=>$icc);
-        $lineProducts=array("productProfile"=>$perfilProducto,"bonosAlta"=>$bonos);
+            'uri'=> 'msisdnsMaintenance');
+        $client = new SOAPClient(null, $opts);
 
-        $parametros['soap_request']=
-            array("Operation"=>
-                array("instruction"=>$instructions,"activate"=>array("lineDetails"=>$lineDetails,"lineProductDetails"=>$lineProducts)));
+        $params = array('Operation'=>
+            array('instruction'=>
+                array( 'timeStamp' => '28/05/2018 17:11:00', 'resellerId' => $this->resellerId,'resellerPin' => $this->pass,'branchId' => '','posId' => '', 'transactionId' =>$ts, 'refCustomerId' => $refCliente, 'operationType' => 'NEWLINE'),
+                'activate'=>array(
+                    'lineDetails' =>
+                        array( 'iccid' => $icc),
+                    'lineProductDetails'=>array(
+                        'productProfile' => $perfilProducto, 'bonosAlta'  => $bonos))));
 
-
-        $client = new SoapClient($this->servicio."cableMsisdnsNewline-test.wsdl", $this->parametrosCliente);
-        $resultado=$client->msisdnsMaintenance($parametros);
-        return json_encode($resultado->return);
+        $response = $client->msisdnsMaintenanceRequest(  $params  );
+        var_dump($response);
     }
+    /*
+        public function altaLineaMovil($refCliente,$icc,$perfilProducto,$bonos)
+        {
 
+            $ts=$this->getTimeStamp();
+            $parametros=array();
+
+            $instructions= array("timeStamp"=>$ts,
+                "resellerId"=>$this->resellerId,
+                "resellerPin"=>$this->pass,
+                "branchId"=>"",
+                "posId"=>"",
+                "transactionId"=>$ts,
+                "refCustomerId"=>$refCliente,
+                "operationType"=>"NEWLINE");
+
+            $lineDetails=array("iccid"=>$icc);
+            $lineProducts=array("productProfile"=>$perfilProducto,"bonosAlta"=>$bonos);
+
+            $parametros['soap_request']=
+                array("Operation"=>
+                    array("instruction"=>$instructions,"activate"=>array("lineDetails"=>$lineDetails,"lineProductDetails"=>$lineProducts)));
+
+
+            $client = new SoapClient($this->servicio."cableMsisdnsNewline.wsdl", $this->parametrosCliente);
+
+            $resultado=$client->msisdnsMaintenance($parametros);
+            var_dump($resultado);
+            return json_encode($resultado->return);
+        }
+    */
     public function suspensionLineaMovil($refCliente,$msid)
     {
 
         $ts=$this->getTimeStamp();
+
         $parametros=array();
         $instructions= array("timeStamp"=>$ts,
             "resellerId"=>$this->resellerId,
@@ -253,7 +285,7 @@ class MasMovilAPI
                 array("instruction"=>$instructions,"activate"=>array("lineDetails"=>$lineDetails,"lineServices"=>$lineServices)));
 
 
-        $client = new SoapClient($this->servicio."cableMsisdnsErased-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableMsisdnsErased.wsdl", $this->parametrosCliente);
         $resultado=$client->msisdnsMaintenance($parametros);
         return json_encode($resultado->return);
     }
@@ -336,18 +368,19 @@ class MasMovilAPI
             "operationType"=>"SERVICE");
 
         $lineDetails=array("msisdn"=>$msid);
-        $lineServices=array("serviceAction"=>$msid);
+        $lineServices=array("serviceAction"=>$serviceAction);
 
         $parametros['soap_request']=
             array("Operation"=>
                 array("instruction"=>$instructions,"activate"=>array("lineDetails"=>$lineDetails,"lineServices"=>$lineServices)));
 
 
-        $client = new SoapClient($this->servicio."cableMsisdnsServices-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableMsisdnsServices.wsdl", $this->parametrosCliente);
         $resultado=$client->msisdnsMaintenance($parametros);
         return json_encode($resultado->return);
     }
 
+    /*MIENTRAS NOS DEVUELVA EL MSIDNS NO ESTA ASOCIADO NO ESTA EL NÚMERO ASOCIADO AL TELEFONO*/
     public function buscarLineaIcc($refCliente,$iccid)
     {
         $ts=$this->getTimeStamp();
@@ -369,12 +402,12 @@ class MasMovilAPI
                 array("instruction"=>$instructions,"find"=>$find));
 
 
-        $client = new SoapClient($this->servicio."cableMsisdnsFind-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableMsisdnsFind.wsdl", $this->parametrosCliente);
         $resultado=$client->msisdnsMaintenance($parametros);
         return json_encode($resultado->return);
     }
 
-    public function cambioProducto($refCliente,$fecha,$msid,$bonos)
+    public function cambioProducto($refCliente,$fecha,$msid,$product,$bonos=null)
     {
         $ts=$this->getTimeStamp();
         $parametros=array();
@@ -389,14 +422,14 @@ class MasMovilAPI
             "operationType"=>"CHANGE_PRODUCT");
 
         $lineDetails=array("msisdn"=>$msid);
-        $lineServices=array("productProfile"=>$msid,"bonosAlta"=>$bonos);
+        $lineServices=array("productProfile"=>$product,"bonosAlta"=>$bonos);
 
         $parametros['soap_request']=
             array("Operation"=>
                 array("instruction"=>$instructions,"activate"=>array("lineDetails"=>$lineDetails,"lineProductDetails"=>$lineServices)));
 
 
-        $client = new SoapClient($this->servicio."cableMsisdnsChangeProduct-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableMsisdnsChangeProduct.wsdl", $this->parametrosCliente);
         $resultado=$client->msisdnsMaintenance($parametros);
         return json_encode($resultado->return);
     }
@@ -432,9 +465,9 @@ class MasMovilAPI
                 array("instruction"=>$instructions,"find"=>$find));
 
 
-        $client = new SoapClient($this->servicio."cableMsisdnsFind-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableMsisdnsFind.wsdl", $this->parametrosCliente);
         $resultado=$client->msisdnsMaintenance($parametros);
-        return json_encode($resultado->return);
+        return $resultado->return;
     }
 
     /*
@@ -464,8 +497,9 @@ class MasMovilAPI
                 array("instruction"=>$instructions,"activate"=>$details));
 
 
-        $client = new SoapClient($this->servicio."cableMsisdnsRoaming-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableMsisdnsRoaming.wsdl", $this->parametrosCliente);
         $resultado=$client->msisdnsMaintenance($parametros);
+
         return json_encode($resultado->return);
     }
 
@@ -500,7 +534,7 @@ class MasMovilAPI
                 array("instruction"=>$instructions,"activate"=>array("auxData"=>$porta)));
 
 
-        $client = new SoapClient($this->servicio."cableMsisdnsUtilsGetPro-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableMsisdnsUtilsGetPro.wsdl", $this->parametrosCliente);
 
         $resultado=$client->msisdnUtilsMaintenance($parametros);
         // var_dump($resultado);
@@ -534,7 +568,7 @@ class MasMovilAPI
                 array("instruction"=>$instructions));
 
 
-        $client = new SoapClient($this->servicio."cableMsisdnsPortingGetOpe-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableMsisdnsPortingGetOpe.wsdl", $this->parametrosCliente);
 
         $resultado=$client->msisdnsPortingMaintenance($parametros);
 
@@ -562,13 +596,19 @@ class MasMovilAPI
                 array("instruction"=>$instructions,"activate"=>array("portDetails"=>$portDetails)));
 
 
-        $client = new SoapClient($this->servicio."cableMsisdnsPortingListPor-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableMsisdnsPortingListPor.wsdl", $this->parametrosCliente);
 
         $resultado=$client->msisdnsPortingMaintenance($parametros);
 
         return json_encode($resultado->return);
     }
-    public function altaPortabilidad($refCliente,$numero)
+    /*
+     * $tipoAbono=prepago/postpago 1/0
+     *$bonos=B01;B02...separados por ;
+     *$tipoCliente Empresa;PArticular 0/1
+     */
+    public function altaPortabilidad($refCliente,$numero,$newIccid,$donante,$msisdn,$tipoAbono,$fechaPortabilidad,$idPerfilProducto,$bonos,$tipoCliente,$nombre,$apellido1,$apellido2,$tipoDocumento,
+                                     $dni,$nombreEmpresa,$emailContacto,$telefonoContacto,$nombreCalle,$numeroCalle,$piso,$localidad,$codProvincia,$pais,$cp)
     {
 
         $ts=$this->getTimeStamp();
@@ -587,7 +627,33 @@ class MasMovilAPI
 
         $parametros['soap_request']=
             array("Operation"=>
-                array("instruction"=>$instructions,"activate"=>array("portDetails"=>$portDetails)));
+                array("instruction"=>$instructions,
+                    "activate"=>array("portDetails"=>
+                        array("newIccid"=>$newIccid,
+                            "fromServiceProvider"=>$donante,
+                            "fromPhoneNumber"=>$msisdn,
+                            "fromContractType"=>$tipoAbono,
+                            "portingDate"=>$fechaPortabilidad,),
+                        array("productDetails"=>
+                            array("productProfile"=>$idPerfilProducto,
+                                "bonosAlta"=>$bonos)),
+                        array("clientDetails"=>
+                            array("clientType"=>$tipoCliente,
+                                "firstName"=>$nombre,
+                                "lastName"=>$apellido1,
+                                "secondLastName"=>$apellido2,
+                                "identityType"=>$tipoDocumento,
+                                "identityValue"=>$dni,
+                                "companyName"=>$nombreEmpresa,
+                                "contactMail"=>$emailContacto,
+                                "contactPhone"=>$telefonoContacto)),
+                        array("address"=>array("streetName"=>$nombreCalle,
+                            "propertyNumber"=>$numeroCalle,
+                            "flatName"=>$piso,
+                            "locality"=>$localidad,
+                            "postalTown"=>$codProvincia,
+                            "country"=>$pais,
+                            "postcode"=>$cp)))));
 
 
         $client = new SoapClient($this->servicio."cableMsisdnsPortingDetPor-test.wsdl", $this->parametrosCliente);
@@ -675,7 +741,7 @@ class MasMovilAPI
                 array("instruction"=>$instructions,"changeIccid"=>$changeIccd));
 
 
-        $client = new SoapClient($this->servicio."cableIccidChange-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableIccidChange.wsdl", $this->parametrosCliente);
 
         $resultado=$client->iccidMaintenance($parametros);
 
@@ -704,7 +770,7 @@ class MasMovilAPI
                 array("instruction"=>$instructions,"find"=>$changeIccd));
 
 
-        $client = new SoapClient($this->servicio."cableIccidFind-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableIccidFind.wsdl", $this->parametrosCliente);
 
         $resultado=$client->iccidMaintenance($parametros);
 
@@ -737,45 +803,34 @@ class MasMovilAPI
         for($i=$primerDia;$i<$hoy;$i++)
             $cdr->setLineas($this->getCDRLineaDia($msidn,$this->getFechaMesActual($i)));
 
-
         return $cdr;
 
     }
 
-    /* RECORRE EL FICHERO Y NOS DEVUELVE LAS LÍNEAS DE ESE FICHERO*/
-    private function getCDRLineaDia($msidn,$fecha)
+    public function getCDRLineaDia($msidn,$fecha)
     {
 
-        $nombreFichero=$fecha.".txt";
 
         $arrayLineas=array();
-        if(file_exists("C://xampp/htdocs/atTotal/cdr/".$nombreFichero))
-        {
-            try
-            {
-            $fp = fopen("C://xampp/htdocs/atTotal/cdr/".$nombreFichero, "r");
 
-            while (!feof($fp))
-            {
+        if(file_exists($fecha.".txt"))
+        {
+
+
+            $fp = fopen($fecha . ".txt", "r");
+
+            while (!feof($fp)) {
                 $linea = fgets($fp);
                 $array = explode(';', $linea);
 
-                if ($array[1] == $msidn)
-                {
-                    //$tipo, $origen, $destino, $tarifa, $fecha, $hora, $tiempo, $trafico, $velocidad, $detalle
-
-                    $linea=new CDRLinea($array[0], $array[1], $array[2], $array[3], $array[5], $array[6], $array[7], $array[8], $array[9], $array[10]);
+                if ($array[1] == $msidn) {
+                    $linea=new CDRLinea($array[0], $array[1], $array[2], $array[3], $array[4], $array[5], $array[6], $array[7], $array[8], $array[9]);
                     array_push($arrayLineas, $linea);
                 }
             }
 
             fclose($fp);
-            }catch (Exception $ex)
-            {
-                echo "No se puede abrir";
-            }
         }
-
 
         return $arrayLineas;
 
@@ -806,6 +861,21 @@ class MasMovilAPI
         $year = date('Y');
         //return date('Ymd', mktime(0,0,0, $month, 1, $year));
         return date('Ymd', mktime(0,0,0, $month, $dia, $year));
+    }
+
+    public  function setLogApi($numero,$mensaje,$empresa,$idTransaccion)
+    {
+        $util=new util();
+
+        $t_ordenes=array("ID_API","DEVOLUCION","NUMERO","ID_EMPRESA","ID_TRANSACCION");
+
+
+
+        $values=array(1,$mensaje,$numero,$empresa,$idTransaccion);//TIPO DE ESTADO ES 1 DE APERTURA
+
+        $resOrden= $util->insertInto('log_api_moviles', $t_ordenes, $values);
+
+        return $resOrden;
     }
 
 

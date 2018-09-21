@@ -162,6 +162,16 @@ check_session(2);
                                                     <i class="fa fa-list"></i>
                                                 </button>
                                             </a>
+                                            <a href=cambio-icc.php?msidn=<?php echo $msidn;?> target="_blank">
+                                                <button type="button" rel="tooltip" >
+                                                    <i class="fa fa-credit-card"></i>
+                                                </button>
+                                            </a>
+                                            <a href=set-roaming.php?msidn=<?php echo $msidn;?> target="_blank">
+                                                <button type="button" rel="tooltip" >
+                                                    <i class="fa fa-globe"></i>
+                                                </button>
+                                            </a>
 
                                         </td>
                                         </tr>

@@ -387,13 +387,20 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         $result = $util->update('contratos_lineas_productos', $campos, $values, "id_linea=" . $idLinea);
     }
 
+    public static function getClienteDatos($idContrato,$idEmpresa)
+    {
+        $util = new util();
+        return $util->selectWhere3("contratos,clientes", array("clientes.ID", "NOMBRE","APELLIDOS","DNI"),
+            "contratos.id_cliente=clientes.id AND contratos.id=$idContrato AND contratos.id_empresa=$idEmpresa");
+    }
     //Generar un anexo de contrato
-    public static function generarAnexo($idContrato, $idServicio, $tipoAnexo)
+    public static function generarAnexo($idContrato, $idServicio, $tipoAnexo,$idLinea)
     {
 
         $util = new util();
-        $t_contratos_anexos = array("ID_CONTRATO", "ID_SERVICIO", "ID_TIPO_TRAMITE");
-        $values = array($idContrato, $idServicio, $tipoAnexo);
+        echo "Entramos en geenrear anexo";
+        $t_contratos_anexos = array("ID_CONTRATO", "ID_SERVICIO", "ID_TIPO_TRAMITE","ID_LINEA_CONTRATO");
+        $values = array($idContrato, $idServicio, $tipoAnexo,$idLinea);
 
         $resAnexo = $util->insertInto('contratos_anexos', $t_contratos_anexos, $values);
     }

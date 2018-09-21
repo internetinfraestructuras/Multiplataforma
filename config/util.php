@@ -310,7 +310,7 @@ class util {
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
 
-//           echo "<br>".$query."<br>";
+        echo "<br>".$query."<br>";
 
             if (!($result = $link->query($query)))
                 throw new Exception();
@@ -427,10 +427,11 @@ class util {
             $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
 
             $query = str_replace("º","",$query);
+            echo $query;
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
             $lastid = mysqli_insert_id($link);
-//            echo $query;
+
             $link->close();
             if($log){
                 $consulta= str_replace("'"," ",$query);
@@ -515,7 +516,7 @@ class util {
         }catch (Exception $e){
             $this->log('eror update: ' . $e->getFile());
         }
-//        echo $query."<br/>";
+     echo $query."<br/>";
 //        if (!($result = $link->query($query))) {
 //
 //            throw new Exception('Error en selectWhere.');
