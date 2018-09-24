@@ -227,7 +227,7 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
                                     $refClienteAPI=$resultado->Client[0]->refCustomerId;
                                     echo "Es el numero".$valor;
                                    $res= $apiMasMovil->cambioProducto($refClienteAPI,"",$valor,$idExterno);
-                                    Contrato::generarAnexo($idContrato,$ser,3,$idLineaDetalleNueva);
+
                                    $apiMasMovil->setLogApi($valor,$res,$_SESSION['REVENDEDOR'],1);
                                 }
                                 else if($idProveedor==ID_PROVEEDOR_AIRENETWORKS)
@@ -275,6 +275,7 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
             }
 
         }
+        Contrato::generarAnexo($idContrato,1,$idPaquete,$idLinea,10);
 
 
 
@@ -469,7 +470,8 @@ public static function cancelarBajaServicio($idContrato,$idLineaContrato,$idServ
                         $refClienteAPI=$resultado->Client[0]->refCustomerId;
 
                         $res= $apiMasMovil->cambioProducto($refClienteAPI,"",$valor,$idExterno);
-                        Contrato::generarAnexo($idContrato,$idServicio,3,$idLineaDetalle);
+
+
                         $apiMasMovil->setLogApi($valor,$res,$_SESSION['REVENDEDOR'],1);
                     }
                     else if($idProveedor==ID_PROVEEDOR_AIRENETWORKS)
@@ -526,6 +528,8 @@ public static function cancelarBajaServicio($idContrato,$idLineaContrato,$idServ
             }
 
         }
+
+        Contrato::generarAnexo($idContrato,1,$idPaquete,$idLinea,8);
 
 
 

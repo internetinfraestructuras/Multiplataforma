@@ -52,7 +52,7 @@ class Producto
 
     }
 
-    public static function getProductosMovil($idEmpresa)
+    public static function getProductosServicio($idEmpresa,$idTipoServicio)
     {
         $util = new util();
         return $util->selectWhere3('productos,productos_tipos,productos_modelos,almacenes',
@@ -63,7 +63,7 @@ class Producto
             "productos.id_tipo_producto=productos_tipos.id
                                                     AND productos.id_modelo_producto=productos_modelos.id 
                                                     AND almacenes.id=productos.id_almacen 
-                                                    AND almacenes.id_empresa=$idEmpresa AND productos.estado=1 AND productos_tipos.id_tipo_servicio=3 AND productos_modelos.id=34");
+                                                    AND almacenes.id_empresa=$idEmpresa AND productos.estado=1 AND productos_tipos.id_tipo_servicio=$idTipoServicio");
 
     }
 

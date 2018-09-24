@@ -441,7 +441,7 @@ and contratos_lineas_detalles.ID_LINEA=277 AND contratos_lineas_detalles.ID_TIPO
                                                 <i class="fa fa-eye"></i>
                                             </button>
                                         </a>
-                                        <a onclick="abrirModal()">
+                                        <a onclick="abrirModal(<?php echo $id;?>)">
                                             <button type="button" rel="tooltip" >
                                                 <i class="fa fa-recycle"></i>
                                             </button>
@@ -502,15 +502,19 @@ and contratos_lineas_detalles.ID_LINEA=277 AND contratos_lineas_detalles.ID_TIPO
                 <br><br>
             </div>
             <?php
-                    $prodcs=Producto::getProductosMovil($_SESSION['REVENDEDOR']);
+
+                    $prodcs=Producto::getProductosServicio($_SESSION['REVENDEDOR'],$_GET['tipo']);
+
                     if($prodcs!=NULL)
                     {
 
 
                     ?>
             <div class="row">
-                <div class="col-lg-4 col-xs-5" id="text_cliente"><b>Nueva Tarjeta:</b></div>
-                <select name="servicio" id="servicio"
+                <form action="" method="post">
+                    <input  value='' id="producto-original" class='form-control' disabled />
+                <div class="col-lg-4 col-xs-5" id="text_cliente"><b>Número de Serie:</b></div>
+                <select name="servicio" id="producto-cambio"
                         class="form-control pointer " name="nombre"  onchange="carga_detalles_servicio(this.value)">
                 <?php
 
@@ -519,7 +523,7 @@ and contratos_lineas_detalles.ID_LINEA=277 AND contratos_lineas_detalles.ID_TIPO
                     {
                         $id=$prodcs[$i][0];
                         $nombre=$prodcs[$i][1];
-                        echo "<option value='$id'>$nombre</option>";
+                        echo "<option value='$id' id='producto'>$nombre</option>";
                     }
                  ?>
                 </select>
@@ -527,8 +531,8 @@ and contratos_lineas_detalles.ID_LINEA=277 AND contratos_lineas_detalles.ID_TIPO
 
             <div class="row">
                 <div class="col-lg-4 col-xs-5"><b>Motivo cambio:</b></div>
-                <select name="servicio" id="servicio"
-                        class="form-control pointer " name="nombre"  onchange="carga_detalles_servicio(this.value)">
+                <select name="servicio" id="motivo-cambio"
+                        class="form-control pointer " name="nombre" id="motivo" onchange="carga_detalles_servicio(this.value)">
                     <option value="PER">Perdida de tarjeta</option>
                     <option value="ROT">Rotura o deterioro</option>
                     <option value="ROB">Robo</option>
@@ -565,6 +569,7 @@ and contratos_lineas_detalles.ID_LINEA=277 AND contratos_lineas_detalles.ID_TIPO
                 }
                 ?>
             </div>
+
             <div id="trabajando" style="display:none">
                 <span id="texto_trabajando">Realizando operaciones en los servidores, esto puede tardar.<br>Por
                 favor espera.<br><br></span>
@@ -596,13 +601,34 @@ and contratos_lineas_detalles.ID_LINEA=277 AND contratos_lineas_detalles.ID_TIPO
 <script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 
-<!--<script type="text/javascript" src="../../assets/js/app.js"></script>-->
+<script type="text/javascript" src="../../assets/js/app.js"></script>
 
 
 <script>
-    function abrirModal()
+    function abrirModal(id)
     {
+       $("#producto-original").val(id);
         $("#modal").modal();
+    }
+    function enviar()
+    {
+        var idProducto=$("#producto-cambio").val();
+        var motivo=$("#motivo-cambio").val();
+        var idProductoOriginal=$("#producto-original").val();
+
+        jQuery.ajax({
+            url: 'guardar-cambio-producto.php',
+            type: 'POST',
+            cache: false,
+            async:true,
+            data:{idProducto:idProducto,motivo:motivo,idProductoOriginal:idProductoOriginal,servicio:<?php echo $_GET['idServicio'];?>,tipo:<?php echo $_GET['tipo'];?>,contrato:<?php echo $_GET['idContrato'];?>},
+            success: function(data)
+            {
+                alert(data);
+            }
+        });
+
+
     }
     function carga_detalles_servicio(id)
     {

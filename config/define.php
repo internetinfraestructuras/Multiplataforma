@@ -14,6 +14,27 @@ define('DDBB','pruebas.');
 define('AUTOR','Internet Infraestructuras S.L.');
 define('OWNER','AT Control');
 define('ID_NUMERO_MOVIL',48);
+
+define('ID_PRODUCTO_STOCK',1);
+define('ID_PRODUCTO_ASIGNADO',2);
+define('ID_PRODUCTO_INSTALADO',3);
+define('ID_PRODUCTO_RMA',4);
+define('ID_PRODUCTO_RMA_BAJA',5);
+define('ID_PRODUCTO_BAJA',6);
+
+define('ID_ORDEN_PENDIENTE',1);
+define('ID_ORDEN_TRAMITE',2);
+define('ID_CERRADA',3);
+define('ID_CANCELADA',4);
+
+define('ID_ORDEN_INSTALACION',1);
+define('ID_ORDEN_REPARACION',2);
+define('ID_ORDEN_RMA',3);
+define('ID_ORDEN_RMA_BAJA',4);
+define('ID_ORDEN_BAJA',5);
+define('ID_ORDEN_CANCELADA',6);
+
+
 define('ID_PROVEEDOR_MASMOVIL',14);
 define('ID_PROVEEDOR_AIRENETWORKS',15);
 define('DEF_REVENDEDORES','Revendedores');

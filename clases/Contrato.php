@@ -438,6 +438,17 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
 
     }
+    public static function setProductoEstado($idEmpresa,$idProducto,$idEstado)
+    {
+        $util = new util();
+
+        $campos = array("ESTADO");
+        $values = array($idEstado);
+
+        $result = $util->update('productos,almacenes', $campos, $values, "productos.id_almacen=almacenes.id AND productos.id=" . $idProducto . " AND almacenes.id_empresa=" .$idEmpresa);
+
+
+    }
 
     //Establece un producto en instalado.
     public static function setProductoInstalado($productos, $idLineaContrato)
@@ -513,6 +524,16 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         $values = array($estado);
 
         $result = $util->update('productos,almacenes', $campos, $values, "productos.id_almacen=almacenes.id AND productos.id=" . $idProducto . " AND almacenes.id_empresa=" . $_SESSION['REVENDEDOR']);
+    }
+
+    /*
+     * nos devuelve la línea de detalles a la cual pertenece un producto
+     */
+    public static function getLineaProducto($idProducto)
+    {
+        $util = new util();
+        return $util->selectWhere3("contratos_lineas_productos", array("ID_LINEA"),
+            "contratos_lineas_productos.id_producto=$idProducto AND contratos_lineas_productos.estado!=6");
     }
 
 }
