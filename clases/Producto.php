@@ -67,4 +67,16 @@ class Producto
 
     }
 
+    public static function getNumeroSerieProducto($idEmpresa,$idProducto)
+    {
+        $util = new util();
+        return $util->selectWhere3('productos,productos_tipos,productos_modelos,almacenes',
+            array("productos.numero_serie"),
+            "productos.id_tipo_producto=productos_tipos.id
+                                                    AND productos.id_modelo_producto=productos_modelos.id 
+                                                    AND almacenes.id=productos.id_almacen 
+                                                    AND almacenes.id_empresa=$idEmpresa AND productos.id=$idProducto ");
+
+    }
+
 }

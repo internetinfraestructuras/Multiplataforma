@@ -76,7 +76,7 @@ class Cliente
         return json_encode($result);
     }
 
-    public function crearCliente($rs)
+    public function crearCliente($tipoCliente,$consentimiento,$tipoDocumento,$numeroDocumento,$nombre,$apellido1,$apellido2,$fechaNacimiento,$email,$telefono,$region,$provincia,$ciudad,$cp,$direccion,$numero,$docNombre,$documento)
     {
 
         $cliente = new nusoap_client($this->url,true);
@@ -85,27 +85,27 @@ class Cliente
         (
             "user" => $this->user,
             "pass" => $this->pass,
-            "subscriberType" => $rs[0]['tipoCliente'],
-            "marketingConsent" => $rs[0]['consentimiento'],
-            "documentType" => $rs[0]['tipoDocumento'],
-            "fiscalId" => $rs[0]['fiscal'],
-            "name" => $rs[0]['nombre'],
-            "contactName" => $rs[0]['nombre'],
-            "contactFamilyName1" => $rs[0]['apellido1'],
-            "contactFamilyName2" =>  $rs[0]['apellido2'],
-            "birthday" => $rs[0]['fechaNac'],
-            "contactDocumentType" => $rs[0]['tipoDocumento'],
-            "contactFiscalId" => $rs[0]['fiscal'],
-            "emailAddress" => $rs[0]['email'],
-            "contactPhone" => $rs[0]['telefono'],
-            "addressRegion" => $rs[0]['region'],
-            "addressProvince"=> $rs[0]['provincia'],
-            "addressCity" => $rs[0]['ciudad'],
-            "addressPostalCode" => $rs[0]['cp'],
-            "addressStreet" => $rs[0]['direccion'],
-            "addressNumber" => $rs[0]['numero'],
-            "documento_name"=>$rs[0]['docNombre'],
-            "documento"=>$rs[0]['documento']);
+            "subscriberType" => $tipoCliente,
+            "marketingConsent" => $consentimiento,
+            "documentType" => $tipoDocumento,
+            "fiscalId" => $numeroDocumento,
+            "name" => $nombre,
+            "contactName" => $nombre,
+            "contactFamilyName1" => $apellido1,
+            "contactFamilyName2" =>  $apellido2,
+            "birthday" => $fechaNacimiento,
+            "contactDocumentType" => $tipoDocumento,
+            "contactFiscalId" => $numeroDocumento,
+            "emailAddress" => $email,
+            "contactPhone" => $telefono,
+            "addressRegion" => $region,
+            "addressProvince"=> $provincia,
+            "addressCity" => $ciudad,
+            "addressPostalCode" => $cp,
+            "addressStreet" => $direccion,
+            "addressNumber" => $numero,
+            "documento_name"=>$docNombre,
+            "documento"=>$documento);
 
        $return = $cliente->call("setAltaClienteFinal",array($datos));
         $error = $cliente->getError();

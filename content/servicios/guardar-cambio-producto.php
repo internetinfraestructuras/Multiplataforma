@@ -7,8 +7,10 @@ require_once('../../config/util.php');
 require_once('../../config/def_tablas.php');
 require_once ('../../clases/Contrato.php');
 require_once ('../../clases/Servicio.php');
+require_once ('../../clases/Producto.php');
 require_once ('../../clases/Orden.php');
 require_once ('../../clases/masmovil/MasMovilAPI.php');
+require_once ('../../clases/airenetwork/sim.php');
 $util = new util();
 
 check_session(3);
@@ -16,7 +18,7 @@ check_session(3);
 $idServicio=$util->cleanstring($_POST['servicio']);
 $idProductoNuevo=$util->cleanstring($_POST['idProducto']);
 $idProductoOriginal=$util->cleanstring($_POST['idProductoOriginal']);
-$motivo=$util->cleanstring($_POST['motivo']);
+
 $tipo=$util->cleanstring($_POST['tipo']);
 $contrato=$util->cleanstring($_POST['contrato']);
 
@@ -51,56 +53,97 @@ if($tipo==1)
 }
 else if($tipo==2)
 {
-echo "CAmbio de producto de telefonía fija";
+    echo "El cambio es de FIJO";
+
+    $idLinea=Contrato::getLineaProducto($idProductoOriginal);
+    $idLinea=$idLinea[0][0];
+
+    Contrato::setProductoBaja($idProductoOriginal,ID_PRODUCTO_RMA);
+    Contrato::setNuevoProductoContrato($idLinea,$idProductoNuevo,ID_PRODUCTO_ASIGNADO);
+
+    $idOrden=Orden::crearOrdenTrabajo($contrato,"");
+
+    //linea de retirada de producto
+    Orden::crearLineaOrden($idOrden,ID_ORDEN_RMA,$idProductoOriginal,$idLinea);
+
+    //linea de instalación de producto
+    Orden::crearLineaOrden($idOrden,ID_ORDEN_INSTALACION,$idProductoNuevo,$idLinea);
+
+    Contrato::setProductoEstado($_SESSION['REVENDEDOR'],$idProductoOriginal,ID_PRODUCTO_RMA);
+
+    Contrato::setProductoEstado($_SESSION['REVENDEDOR'],$idProductoNuevo,ID_PRODUCTO_ASIGNADO);
 }
 else if($tipo==3)
 {
+    $numeroMovil=$util->cleanstring($_POST['numeroMovil']);
+    $motivo=$util->cleanstring($_POST['motivo']);
+
     if($idProveedor[0][0]==ID_PROVEEDOR_MASMOVIL)
     {
-        echo "El cambio es de INTERNET";
 
-        $idLinea=Contrato::getLineaProducto($idProductoOriginal);
-        $idLinea=$idLinea[0][0];
+        $rsP=Producto::getNumeroSerieProducto($_SESSION['REVENDEDOR'],$idProductoNuevo);
+        $numeroSerie=$rsP[0][0];
 
-        Contrato::setProductoBaja($idProductoOriginal,ID_PRODUCTO_RMA);
-        Contrato::setNuevoProductoContrato($idLinea,$idProductoNuevo,ID_PRODUCTO_ASIGNADO);
-
-        $idOrden=Orden::crearOrdenTrabajo($contrato,"");
-
-        //linea de retirada de producto
-        Orden::crearLineaOrden($idOrden,ID_ORDEN_RMA,$idProductoOriginal,$idLinea);
-
-        //linea de instalación de producto
-        Orden::crearLineaOrden($idOrden,ID_ORDEN_INSTALACION,$idProductoNuevo,$idLinea);
-
-        Contrato::setProductoEstado($_SESSION['REVENDEDOR'],$idProductoOriginal,ID_PRODUCTO_BAJA);
-
-        Contrato::setProductoEstado($_SESSION['REVENDEDOR'],$idProductoNuevo,ID_PRODUCTO_INSTALADO);
 
         $apiMasMovil=new MasMovilAPI();
-
-    $numero="691934413";
-        $resultado=$apiMasMovil->getListadoClientes("",$numero);
+        $resultado=$apiMasMovil->getListadoClientes("",$numeroMovil);
         $refClienteAPI=$resultado->Client[0]->refCustomerId;
 
-       $resTrans= $apiMasMovil->getEstadoCambioIccid($refClienteAPI,$numero,"1231231","");
-       var_dump($resTrans);
-       $apiMasMovil->setLogApi($numero,$resTrans,$_SESSION['REVENDEDOR'],1);
+
+        $resTrans= $apiMasMovil->peticionCambioIccparaMsisdn($refClienteAPI,$numeroMovil,$numeroSerie,$motivo);
+
+        $apiMasMovil->setLogApi($numeroMovil,$resTrans,$_SESSION['REVENDEDOR'],1);
 
     }
     else if($idProveedor[0][0]==ID_PROVEEDOR_AIRENETWORKS)
     {
-        $idLinea=Contrato::getLineaProducto($idProductoOriginal);
-        $idLinea=$idLinea[0][0];
-        Contrato::setProductoBaja($idProductoOriginal,6);
-        Contrato::setNuevoProductoContrato($idLinea,$idProductoNuevo,"2");
-      //  Contrato::setProductoInstalado($idProductoOriginal,$idLinea);
+        //CAMBIO TECNICO EN LA API DE AIRE
+
+
+
 
     }
+
+
+    $idLinea=Contrato::getLineaProducto($idProductoOriginal);
+    $idLinea=$idLinea[0][0];
+
+    Contrato::setProductoBaja($idProductoOriginal,ID_PRODUCTO_RMA);
+    Contrato::setNuevoProductoContrato($idLinea,$idProductoNuevo,ID_PRODUCTO_ASIGNADO);
+
+    $idOrden=Orden::crearOrdenTrabajo($contrato,"");
+
+    //linea de retirada de producto
+    Orden::crearLineaOrden($idOrden,ID_ORDEN_RMA,$idProductoOriginal,$idLinea);
+
+    //linea de instalación de producto
+    Orden::crearLineaOrden($idOrden,ID_ORDEN_INSTALACION,$idProductoNuevo,$idLinea);
+
+    Contrato::setProductoEstado($_SESSION['REVENDEDOR'],$idProductoOriginal,ID_PRODUCTO_BAJA);
+
+    Contrato::setProductoEstado($_SESSION['REVENDEDOR'],$idProductoNuevo,ID_PRODUCTO_INSTALADO);
 }
 else if($tipo==4)
 {
-echo "Cambios de producto de TV";
+    echo "El cambio es de TELEVISION";
+
+    $idLinea=Contrato::getLineaProducto($idProductoOriginal);
+    $idLinea=$idLinea[0][0];
+
+    Contrato::setProductoBaja($idProductoOriginal,ID_PRODUCTO_RMA);
+    Contrato::setNuevoProductoContrato($idLinea,$idProductoNuevo,ID_PRODUCTO_ASIGNADO);
+
+    $idOrden=Orden::crearOrdenTrabajo($contrato,"");
+
+    //linea de retirada de producto
+    Orden::crearLineaOrden($idOrden,ID_ORDEN_RMA,$idProductoOriginal,$idLinea);
+
+    //linea de instalación de producto
+    Orden::crearLineaOrden($idOrden,ID_ORDEN_INSTALACION,$idProductoNuevo,$idLinea);
+
+    Contrato::setProductoEstado($_SESSION['REVENDEDOR'],$idProductoOriginal,ID_PRODUCTO_RMA);
+
+    Contrato::setProductoEstado($_SESSION['REVENDEDOR'],$idProductoNuevo,ID_PRODUCTO_ASIGNADO);
 }
 
 

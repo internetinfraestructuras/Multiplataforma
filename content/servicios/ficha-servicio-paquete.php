@@ -428,6 +428,7 @@ and contratos_lineas_detalles.ID_LINEA=277 AND contratos_lineas_detalles.ID_TIPO
                                     echo "<tr>";
 
                                     echo "<tr>";
+
                                     echo "<td><input name='atributo[id][]' value='$id' class='form-control'  type='hidden' />
                                             <input name='atributo[id][]' value='$id' class='form-control'  disabled/></td>
                                             <td><input  value='$ssid' class='form-control' disabled />
@@ -608,6 +609,9 @@ and contratos_lineas_detalles.ID_LINEA=277 AND contratos_lineas_detalles.ID_TIPO
     function abrirModal(id)
     {
        $("#producto-original").val(id);
+
+
+
         $("#modal").modal();
     }
     function enviar()
@@ -621,7 +625,7 @@ and contratos_lineas_detalles.ID_LINEA=277 AND contratos_lineas_detalles.ID_TIPO
             type: 'POST',
             cache: false,
             async:true,
-            data:{idProducto:idProducto,motivo:motivo,idProductoOriginal:idProductoOriginal,servicio:<?php echo $_GET['idServicio'];?>,tipo:<?php echo $_GET['tipo'];?>,contrato:<?php echo $_GET['idContrato'];?>},
+            data:{idProducto:idProducto,motivo:motivo,idProductoOriginal:idProductoOriginal,servicio:<?php echo $_GET['idServicio'];?>,tipo:<?php echo $_GET['tipo'];?>,contrato:<?php echo $_GET['idContrato'];?>,numeroMovil:$("#atributo-<?php echo ID_NUMERO_MOVIL;?>").val()},
             success: function(data)
             {
                 alert(data);
