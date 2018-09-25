@@ -337,14 +337,38 @@ check_session(3);
 </div>
 
 <!-- JAVASCRIPT FILES -->
+<script type="text/javascript" src="assets/js/validar.js"></script>
 <script type="text/javascript">var plugin_path = 'assets/plugins/';</script>
 <script type="text/javascript" src="assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 <script type="text/javascript" src="assets/js/app.js"></script>
-<script type="text/javascript" src="assets/js/validar.js"></script>
+
 
 
 <script>
     var volver=false;
+
+    $(document).ready(function(){
+
+        $("#dni").bind( "blur", function(e) {
+            var valor = this.value;
+
+            $.ajax({
+                url: 'php/clienteduplicado.php',
+                type: 'POST',
+                cache: false,
+                async: true,
+                data: {verificar: 'dni', valor: valor},
+                success: function (data) {
+                    $.each(data, function (i) {
+                        if (data > 0)
+                            alert('duplicado');
+                    });
+                }
+            });
+        });
+    });
+
+
 
     // carga las provincias en el combo correspondiente
     // se llama cada vez que selecciona una comunidad autonoma
@@ -367,7 +391,6 @@ check_session(3);
                         select.append('<option value="' + data[i].id + '" selected>' + data[i].region + '</option>');
                     else
                         select.append('<option value="' + data[i].id + '">' + data[i].region + '</option>');
-
                 });
             }
         });
@@ -609,11 +632,11 @@ check_session(3);
            },
            success: function (data) {
                if (parseInt(data) > 0) {
-                   alert("Cliente guardado correctamente");
+                   confirmacion("Cliente guardado correctamente",2000);
                    location.reload();
                }
                else {
-                   alert("ERROR: Posible datos duplicados, revise los clientes actuales.");
+                   error("ERROR: Posible datos duplicados, revise los clientes actuales.",3000);
                    $("#next1").css('display', 'block');
                    animating = false;
                }

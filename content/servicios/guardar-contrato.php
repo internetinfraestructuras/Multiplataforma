@@ -80,15 +80,17 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
 
         // agregamos la linea de detalle al contrato
         if (intval($linea[1]) == 2) {
-            $idLinea2 = $contrato->setNuevaLineaDetalles($idLinea, $linea[1], $linea[0], 45, $linea[7], 3, null);
+            $idLinea2 = $contrato->setNuevaLineaDetalles($idLinea, $linea[1], $linea[0], ATRIBUTO_TELEFONO_FIJO, $linea[7], 3, null);
             // damos el producto de alta
-            $contrato->setNuevoProductoContrato($idLinea2, $linea[8], 3);
+            if(intval($linea[8])>0)
+                $contrato->setNuevoProductoContrato($idLinea2, $linea[8], 3);
         }
 
         if (intval($linea[1]) == 3) {
-            $idLinea2 = $contrato->setNuevaLineaDetalles($idLinea, $linea[1], $linea[0], 48, $linea[7], 3, null);
+            $idLinea2 = $contrato->setNuevaLineaDetalles($idLinea, $linea[1], $linea[0], ATRIBUTO_TELEFONO_MOVIL, $linea[7], 3, null);
             // damos el producto de alta
-            $contrato->setNuevoProductoContrato($idLinea2, $linea[8], 3);
+            if(intval($linea[8])>0)
+                $contrato->setNuevoProductoContrato($idLinea2, $linea[8], 3);
         }
 
 
@@ -114,11 +116,13 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
 
                 try {
 
-                    echo $tel->addNuevoFijo($cifSuperUsuario, $cifCliente, $nombreCliente,
+                    $troncal = $tel->addNuevoFijo($cifSuperUsuario, $cifCliente, $nombreCliente,
                         $direccion, $email, $nombreGrupoRecarga, $paqueteDestino, $linea[7]);
 
+                    $idLinea2 = $contrato->setNuevaLineaDetalles($idLinea, $linea[1], $linea[0], ID_ATRIBUTO_TRONCAL, $troncal, 3, null);
+
                 } catch (Exception $e) {
-                    echo 'Excepción capturada: ', $e->getMessage(), "<br>";
+                    $util->write_log($e->getMessage());
                 }
             }
 
@@ -140,9 +144,9 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
         // fin orden de trabajo ----------------------------------------------------
 
     }
-
-    $util->insertInto('contratos_campanas', array('ID_CONTRATO', 'ID_CAMPANA', 'DTO', 'DTO_DIAS', 'DTO_HASTA'),
-        array($idContrato, $id_campana, $dto, $dias, $hasta));
+        if(intval($id_campana)>0)
+            $util->insertInto('contratos_campanas', array('ID_CONTRATO', 'ID_CAMPANA', 'DTO', 'DTO_DIAS', 'DTO_HASTA'),
+            array($idContrato, $id_campana, $dto, $dias, $hasta));
 
 
     echo $idContrato;

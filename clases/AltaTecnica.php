@@ -64,7 +64,7 @@ class AltaTecnica
                 echo $ex."<br/>";
             }
         }
-
+        return $troncal;
     }
 
 }

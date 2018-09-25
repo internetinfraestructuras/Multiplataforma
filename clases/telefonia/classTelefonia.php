@@ -5,9 +5,19 @@
  * Date: 23/07/2018
  * Time: 9:25
  */
-//require_once('utilTelefonia.php');
 
-require_once($_SERVER['DOCUMENT_ROOT'].'clases/telefonia/utilTelefonia.php');
+
+/*
+ *
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);*/
+
+require_once('utilTelefonia.php');
+
+//require_once($_SERVER['DOCUMENT_ROOT'].'clases/telefonia/utilTelefonia.php');
+
+
 
 class Telefonia
 {
@@ -17,7 +27,7 @@ class Telefonia
 
     function __construct() {
 
-       $this->util= new UtilT();
+        $this->util= new UtilT();
 
     }
 
@@ -411,6 +421,8 @@ class Telefonia
      */
     public function setTarifasTroncalFromPaqueteDestinos($troncal,$idPaqueteDestino,$porcentajeBeneficio=0){
 
+        //echo " ala tronk $troncal poner el pak $idPaqueteDestino<br>";
+
         if($idPaqueteDestino==""){
             throw new Exception('ID paquete destino vacio');
         }
@@ -437,6 +449,7 @@ class Telefonia
             $campos=array('usuario_troncal','grupo','descripcion','prefijo','coste','nbrscript');
             $values = array($troncal,$grupo,$descripcion,$prefijo,$coste,"");
             //Insertamos
+            //echo "user :$troncal,grupo:$grupo,descripcion:$descripcion,perfijo:$prefijo,coste:$coste,nbrscrip $nbrscript<br>";
             $result = $this->util->insertInto('tarifas_prueba', $campos, $values);
 
             $resulTotal = $resulTotal*$result;
@@ -444,8 +457,64 @@ class Telefonia
 
         return $resulTotal;
 
+    }
+
+    /**
+     * Elimina todos los destinos o paquetes de destinos de una troncal
+     * @param $troncal
+     * @param $idPaqueteDestino
+     * @param int $porcentajeBeneficio
+     * @return int
+     * @throws Exception
+     */
+    public function deleteTarifasTroncal($troncal){
+
+        if($troncal==""){
+            throw new Exception('Troncal vacio');
+        }
+
+        //borramos todos los destinos de dicha troncal
+        //tarifas_prueba
+        $troncal= "'".$troncal."'";
+        $result = $this->util->deleteWhere('tarifas_prueba', '', 'usuario_troncal='.$troncal);
+
+        return $result;
 
     }
+
+
+    //update tarifas o paquete destino de una troncal
+
+    /**
+     * Actualiza los destinos de una troncal con este nuevo paquete destino
+     * @param $troncal
+     * @param $idPaqueteDestino
+     * @param int $porcentajeBeneficio
+     * @return int
+     * @throws Exception
+     */
+    public function updateTarifasTroncalFromPaqueteDestinos($troncal,$idPaqueteDestino,$porcentajeBeneficio=0){
+
+        if($idPaqueteDestino==""){
+            throw new Exception('ID paquete destino vacio');
+        }
+        if($troncal==""){
+            throw new Exception('Troncal vacio');
+        }
+
+        //1 Eliminamos
+        $this->deleteTarifasTroncal($troncal);
+
+        //2 recorremos las tarifas que existen en dicho paquete destino
+
+        $result=$this->setTarifasTroncalFromPaqueteDestinos($troncal,$idPaqueteDestino,$porcentajeBeneficio);
+
+        return $result;
+
+    }
+
+
+
 
     /** metodos para interactuar con las tablas de numericos disponibles */
 
@@ -563,13 +632,45 @@ class Telefonia
      */
     public function getGruposRecarga($cifSuperUsuario){
 
-        $campos=array('nombregrupo');
+    $campos=array('nombregrupo');
+    $cifSuperUsuario="'".$cifSuperUsuario."'";
+    $gruposderecarga=$this->util->selectWhere('gruposderecarga', $campos,'cif_super='.$cifSuperUsuario, $order=null, $group=null);
+
+    return $gruposderecarga;
+
+    }
+
+
+    /**
+     * Devuevle un grupo de recarga
+     * @param $cifSuperUsuario
+     * @param $nbrGrupo
+     * @return bool|mysqli_result
+     */
+    public function getGrupodeRecarga($cifSuperUsuario,$nbrGrupo){
+
+        $campos=array('nombregrupo','importerecarga','acumulable','color');
+        $cifSuperUsuario="'".$cifSuperUsuario."'";
+        $gruposderecarga=$this->util->selectWhere('gruposderecarga', $campos,'cif_super='.$cifSuperUsuario.' and nombregrupo='.$nbrGrupo, $order=null, $group=null);
+
+        return $gruposderecarga;
+
+    }
+
+    /**
+     * @param $cifSuperUsuario cif del revendedor o super usuario
+     * @return bool|mysqli_result Devuelve los grupos de recarga con todos los atributos creados por dicho usuario
+     */
+    public function getGruposRecargaFull($cifSuperUsuario){
+
+        $campos=array('nombregrupo','importerecarga','acumulable','color');
         $cifSuperUsuario="'".$cifSuperUsuario."'";
         $gruposderecarga=$this->util->selectWhere('gruposderecarga', $campos,'cif_super='.$cifSuperUsuario, $order=null, $group=null);
 
         return $gruposderecarga;
 
     }
+
 
     /** Crea un grupo de recarga para un superUsuario o Reventa dados unos parametros,
      * lanza una excepcion si ya existe un grupo de recarga con dicho nombre para el reventa indicado
@@ -630,6 +731,113 @@ class Telefonia
     }
 
     /**FALTA edit, update, delete*/
+
+    public function deleteGrupoRecarga($cifSuperUsuario,$nombreGrupo){
+
+        //echo "delte grupo recarga $cifSuperUsuario y $nombreGrupo";
+
+        if($cifSuperUsuario==""){
+            throw new Exception('Cif superuser vacio');
+        }
+        if($nombreGrupo==""){
+            throw new Exception('Nombre Grupo de recarga vacio');
+        }
+
+
+        //Controlamos que  existe un grupo de recarga con dicho nombre para dicho reventa
+
+        $cif="'".$cifSuperUsuario."'";
+        $grupo="'".$nombreGrupo."'";
+        $existegrupo="";
+        $existegrupo=$this->util->selectLast('gruposderecarga', 'nombregrupo','cif_super='.$cif.' and nombregrupo='.$grupo);
+
+
+        if($existegrupo=="")
+            throw new Exception('No existe un grupo de recarga con dicho nombre');
+
+
+        //si todo ok, procedemos a eliminar
+
+        //los usuarios que tuviesen dicho grupo se quedan sin el
+
+        $campos=array('grupoderecarga');
+        $values = array('NULL');
+
+        //Update
+        $result = $this->util->update('usuarios',$campos,$values,'cif_super='.$cif.' and grupoderecarga='.$grupo,true);
+
+
+        //Delete
+        //$result = $this->util->delete('gruposrecarga', 'id_paquetedestino', $idPaqueteDestino);
+        $result = $this->util->deleteWhere('gruposderecarga', '', 'cif_super='.$cif.' and nombregrupo='.$grupo);
+
+        return $result;
+
+    }
+
+    /**
+     * Actualiza un grupo de recarga dados sus parametros, ha de existir para ese cif,nombre
+     * @param $cifSuperUsuario
+     * @param $nombreGrupo
+     * @param $importeRecarga
+     * @param $acumulable
+     * @param string $colorHexadecimal
+     * @return int
+     * @throws Exception
+     */
+
+
+    function updateGrupoRecarga($cifSuperUsuario,$nombreGrupo,$importeRecarga,$acumulable,$colorHexadecimal=""){
+
+        if($cifSuperUsuario==""){
+            throw new Exception('Cif superuser vacio');
+        }
+        if($nombreGrupo==""){
+            throw new Exception('Nombre Grupo de recarga vacio');
+        }
+        if($importeRecarga==""){
+            throw new Exception('Importe del grupo de recarga vacio');
+        }
+        if(!is_numeric($importeRecarga)){
+            throw new Exception('El Importe ha de ser un numero');
+        }
+        if($acumulable!="SI" && $acumulable!="NO"){
+            throw new Exception('Se debe especificar acumulable SI/NO');
+        }
+        if($colorHexadecimal==""){
+            //ponemos un color por defecto
+            $colorHexadecimal="#ff8000";
+        }
+
+
+        //ANTI SAMUELES
+        $cifSuperUsuario = $this->util->cleanstring($cifSuperUsuario);
+        $nombreGrupo = $this->util->cleanstring($nombreGrupo);
+        $importeRecarga = $this->util->cleanstring($importeRecarga);
+        $acumulable = $this->util->cleanstring($acumulable);
+        $colorHexadecimal = $this->util->cleanstring($colorHexadecimal);
+
+        //Controlamos que  existe un grupo de recarga con dicho nombre para dicho reventa
+
+        $cif="'".$cifSuperUsuario."'";
+        $grupo="'".$nombreGrupo."'";
+        $existegrupo=$this->util->selectLast('gruposderecarga', 'nombregrupo','cif_super='.$cif.' and nombregrupo='.$grupo);
+
+        if($existegrupo=="")
+            throw new Exception('Error no existe un grupo de recarga con dicho nombre');
+
+        //si todo ok, procedemos a update
+
+        $campos=array('importerecarga','acumulable','color');
+        $values = array($importeRecarga, $acumulable, $colorHexadecimal);
+        //update
+        $result = $this->util->update('gruposderecarga', $campos, $values,'cif_super='.$cif.' and nombregrupo='.$grupo,true);
+
+        return $result;
+
+    }
+
+
 
 
     /**
@@ -744,6 +952,48 @@ class Telefonia
     }
 
     /**FALTA edit, update, delete*/
+
+
+    public function updateGrupoRecargaCliente($cifSuperUsuario,$cifCliente,$nombreGrupoRecarga){
+
+        if($cifSuperUsuario==""){
+            throw new Exception('Cif superuser vacio');
+        }
+        if($cifCliente==""){
+            throw new Exception('Cif cliente vacio');
+        }
+        if($nombreGrupoRecarga==""){
+            throw new Exception(' Grupo de recarga vacio');
+        }
+
+        //supongo que los campos ya vienen clean al venir de otra BD y estar seleccionados desde selects
+
+        //verificamos que exista ya un cliente con dicho CIF para este reventa:
+
+        $cif="'".$cifCliente."'";
+
+        $existeCliente="";
+        $existeCliente=$this->util->selectLast('usuarios', 'cif','cif='.$cif);
+
+        if($existeCliente=="")
+            throw new Exception('Imposible actualizar,No existe un cliente con dicho CIF en la plataforma');
+        else {
+
+            //procedemos a updatear
+            $cifSuper="'".$cifSuperUsuario."'";
+            $campos=array('grupoderecarga');
+            $values = array($nombreGrupoRecarga);
+
+            //Update
+            $result = $this->util->update('usuarios',$campos,$values,'cif_super='.$cifSuper.' and cif='.$cif,true);
+
+
+            return $result;
+        }
+
+    }
+
+
 
 
     /**

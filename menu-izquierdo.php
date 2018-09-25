@@ -14,10 +14,10 @@ $root = "/";
 
 <!--<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>-->
 
-<script src="assets/sweetalert/sweetalert2.all.min.js"></script>
-<script src="assets/sweetalert/sweetalert2.min.js"></script>
+<script src="/assets/sweetalert/sweetalert2.all.min.js"></script>
+<script src="/assets/sweetalert/sweetalert2.min.js"></script>
 
-<link rel="stylesheet" href="assets/sweetalert/sweetalert2.min.css">
+<link rel="stylesheet" href="/assets/sweetalert/sweetalert2.min.css">
 
 <script>
     function alerta(titulo, texto, icono, botonSi, botonNo, funcionAceptar, funcionCancelar) {
@@ -25,7 +25,7 @@ $root = "/";
         const swalWithBootstrapButtons = swal.mixin({
             confirmButtonClass: 'btn btn-success',
             cancelButtonClass: 'btn btn-danger',
-            buttonsStyling: true,
+            buttonsStyling: true
         });
 
         swalWithBootstrapButtons({
@@ -46,6 +46,28 @@ $root = "/";
         })
     }
 
+    function alertaOk(titulo, texto, icono, botonSi, funcion) {
+
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success',
+            buttonsStyling: true
+        });
+
+        swalWithBootstrapButtons({
+            title: titulo,
+            html: texto,
+            type: icono,
+            confirmButtonText: botonSi,
+            reverseButtons: true,
+            width: 500
+        }).then((result) => {
+            if (result.value) {
+                self[funcion]();
+            }
+        })
+    }
+
+
     function alerta2(titulo, texto, icono, pie) {
 
         swal({
@@ -65,6 +87,18 @@ $root = "/";
             timer: tiempo
         });
     }
+
+    function error(texto, tiempo) {
+        swal({
+            position: 'top-end',
+            type: 'error',
+            title: texto,
+            showConfirmButton: false,
+            timer: tiempo
+        });
+    }
+
+
 
 
     function alertaTiempo(titulo, texto, tiempo) {

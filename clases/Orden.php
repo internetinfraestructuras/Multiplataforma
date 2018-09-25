@@ -183,6 +183,7 @@ class Orden
     }
 
 
+    // nota: obtengo las cabeceras del cablero
 
     public static function getOlts()
     {
@@ -194,7 +195,6 @@ class Orden
     }
 
 
-
     public static function getLineasOrden($id=null)
     {
 
@@ -202,7 +202,7 @@ class Orden
         $campos=array('ordenes_lineas.ID_LINEA_DETALLE_CONTRATO','ordenes_lineas.ID_PRODUCTO',
                         'productos.NUMERO_SERIE as serial','productos_modelos.NOMBRE as modelo',
                         'productos_tipos.NOMBRE as tipo','contratos_lineas_detalles.ID_TIPO_SERVICIO as servicio',
-                        'ordenes_lineas.ID');
+                        'ordenes_lineas.ID','etiquetas.series.pon');
 
         $where='ordenes_lineas.id_orden='.$id.' AND ordenes.id_empresa='.$_SESSION['REVENDEDOR'];
 
@@ -211,7 +211,8 @@ class Orden
                 LEFT JOIN servicios_tipos ON servicios_tipos.ID = contratos_lineas_detalles.ID_TIPO_SERVICIO
                 LEFT JOIN productos_modelos ON productos_modelos.ID = productos.ID_MODELO_PRODUCTO
                 LEFT JOIN productos_tipos ON productos_tipos.ID = productos_modelos.ID_TIPO
-                LEFT JOIN ordenes ON ordenes.ID = ordenes_lineas.id_orden';
+                LEFT JOIN ordenes ON ordenes.ID = ordenes_lineas.id_orden 
+                LEFT JOIN etiquetas.series ON etiquetas.series.pathnumber = productos.NUMERO_SERIE ';
 
         return $util->selectJoin('ordenes_lineas',$campos, $join,' servicios_tipos.ID ',$where);
 

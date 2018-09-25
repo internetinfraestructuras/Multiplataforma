@@ -6,12 +6,15 @@
  * Time: 10:07
  */
 
-require_once('config/classTelefonia.php');
+require_once('classTelefonia.php');
 //echo "test\n";
 $tel = new Telefonia();
 
 $cifSuperUsuario='B45782687';
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 
 //PRUEBAS SUPERUSUARIOS
@@ -127,8 +130,10 @@ catch (Exception $e) {
 
 
 //asignar todas las tarifas de un paquete de destinos a la troncal de un cliente
+
 /*
 try {
+    //$troncal='zzxBiope19QWb';
     $res = $tel->setTarifasTroncalFromPaqueteDestinos('bSWTtgtS9EUioEZTowPL',2,50);
     if ($res == 1)
         echo "tarifas añadidas a la troncal";
@@ -137,8 +142,8 @@ try {
 }
 catch (Exception $e) {
     echo 'Excepción capturada: ',  $e->getMessage(), "<br>";
-}*/
-
+}
+*/
 
 
 ///TEST NUMEROS DISPONIBLES PARA SELECCIONAR
@@ -253,6 +258,19 @@ catch (Exception $e) {
     echo 'Excepción capturada: ',  $e->getMessage(), "<br>";
 }*/
 
+//TEST BORRAR GRUPO RECARGA
+/*
+try {
+    $res = $tel->deleteGrupoRecarga($cifSuperUsuario,'Mi nuevo grupo');
+    if ($res == 1)
+        echo "ok eliminado";
+    else
+        echo "error";
+}
+catch (Exception $e) {
+    echo 'Excepción capturada: ',  $e->getMessage(), "<br>";
+}
+*/
 
 //TEST INSERTAR UN USUARIO
 /*
@@ -286,3 +304,32 @@ try {
 }catch (Exception $e) {
         echo 'Excepción capturada: ',  $e->getMessage(), "<br>";
 }*/
+
+//eliminar las tarifas de una troncal
+//deleteTarifasTroncal($troncal)
+/*try {
+    $troncal='zzxBiope19QWb';
+    $res=$tel->deleteTarifasTroncal($troncal);
+    if($res!="")
+        echo "BORRADO OK OK";
+    else
+        echo "ERROR BORRANDO la linea";
+
+}catch (Exception $e) {
+    echo 'Excepción capturada: ',  $e->getMessage(), "<br>";
+}*/
+
+//actualizar las tarifas de una troncal
+
+
+try {
+    $troncal='zzxBiope19QWb';
+    $res=$tel->updateTarifasTroncalFromPaqueteDestinos($troncal,2,50);
+    if($res!="")
+        echo "ACTUALIZADO OK";
+    else
+        echo "ERROR ACTUALIZANDO DESTINOS";
+
+}catch (Exception $e) {
+    echo 'Excepción capturada: ',  $e->getMessage(), "<br>";
+}

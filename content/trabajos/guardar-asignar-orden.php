@@ -70,7 +70,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'ordenes')
 
     for($i=0;$i<count($asignacionOrdenes);$i++)
     {
-        echo "<hr>La orden es".$ordenesId[$i];
+//        echo "<hr>La orden es".$ordenesId[$i];
         if($asignacionOrdenes[$i]!=0)
         {
 

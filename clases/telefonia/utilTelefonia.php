@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Created by PhpStorm.
  * User: rcc
@@ -9,8 +9,8 @@
 
 if (!isset($_SESSION)) {@session_start();}
 
-require_once($_SERVER['DOCUMENT_ROOT'].'config/define.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'config/def_tablas.php');
+require_once('../../config/define.php');
+require_once('../../config/def_tablas.php');
 
 date_default_timezone_set('Europe/Madrid');
 
@@ -93,7 +93,7 @@ class UtilT {
     }
     public function selectSome($tabla, $campos, $order){
         $link = $this->conectar();
-        
+
         $columnas = limpiar(implode($campos, ", "));
 
         $query = 'SELECT '.$columnas.' FROM ' . $tabla ;
@@ -422,22 +422,40 @@ class UtilT {
     }
 
 
+    public function limpiar($c)
+    {
+        $c = str_replace("\"", "", $c);
+        $c = str_replace("'", "", $c);
+        $c = str_replace("=", "", $c);
+        $c = str_replace("\\", "", $c);
+        return $c;
+
+    }
+
     public function insertInto($tabla, $campos, $valor, $log=true){
+
+        //echo "insert intooo";
 
         try {
 
 
             $link = $this->conectar();
 
-            $columnas = limpiar(implode($campos, ", "));
+            //echo "hola-2";
+            //var_dump($campos);
+            $columnas = $this->limpiar(implode($campos, ", "));
 
+            //echo "hola-1";
             $aItems = array();
 
+            //echo "hola0";
             $valores = implode($valor, "', '");
+
+            //echo "hola";
 
             $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
             //echo "<br/>";
-//            echo $query."<br><br><br><br>";
+            //echo $query."<br><br><br><br>";
             $query = str_replace("º","",$query);
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
@@ -468,7 +486,7 @@ class UtilT {
 //        echo "here";
         $link = $this->conectar();
 
-        $columnas = limpiar(implode($campos, ", "));
+        $columnas = $this->limpiar(implode($campos, ", "));
         $valores = implode($valor, "', '");
 
         $query="UPDATE ".$tabla." SET ";
@@ -552,7 +570,7 @@ class UtilT {
             else
                 $query = "DELETE FROM ". $tabla . " WHERE " . $where;
 
-//            echo $query;
+          //  echo $query;
 
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
@@ -614,6 +632,8 @@ class UtilT {
         $string = strip_tags($string);
         return  $string;
     }
+
+
 
     function crear_sql($tabla = null, $campos = null, $valor = null) {
 

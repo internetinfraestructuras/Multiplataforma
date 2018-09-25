@@ -58,7 +58,9 @@ error_reporting('E_ALL');
             $pass = md5($util->cleanstring($_POST['password']));
 
             $where = ' (usuarios.email="' . $email . '" and usuarios.clave="' . $pass . '") OR (usuarios.usuario="' . $email . '" and usuarios.clave="' . $pass . '") ';
-            $result = $util->selectJoin("usuarios",array("usuarios.id", "usuarios.nombre", "usuarios.apellidos", "nivel", " usuarios.id_empresa", "empresas.logo as logo", "municipios.municipio as localidad"), "join empresas on usuarios.id_empresa = empresas.id join municipios on municipios.id = empresas.MUNICIPIO","",$where);
+            $result = $util->selectJoin("usuarios",array("usuarios.id", "usuarios.nombre", "usuarios.apellidos", "nivel",
+                " usuarios.id_empresa", "empresas.logo as logo", "municipios.municipio as localidad",'empresas.CIF'),
+                "join empresas on usuarios.id_empresa = empresas.id join municipios on municipios.id = empresas.MUNICIPIO","",$where);
 
             $row = mysqli_fetch_array($result);
 
@@ -70,7 +72,7 @@ error_reporting('E_ALL');
                 $_SESSION['USER_LEVEL'] = $row['nivel'];
                 $_SESSION['REVENDEDOR'] = $row['id_empresa'];
                 $_SESSION['LOCALIDADEMPRESA'] = $row['localidad'];
-                $_SESSION['CIF'] = $row['cif'];
+                $_SESSION['CIF'] = $row['CIF'];
                 $_SESSION['LOGO'] = $row['logo'];
                 $_SESSION['start'] = time();
                 $_SESSION['expire'] = $_SESSION['start'] + (30 * 60);

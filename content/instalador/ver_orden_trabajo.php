@@ -44,10 +44,12 @@ $root = "../../";
     <link href="../../assets/css/essentials.css" rel="stylesheet" type="text/css"/>
     <link href="../../assets/css/layout.css" rel="stylesheet" type="text/css"/>
     <link href="../../assets/css/color_scheme/green.css" rel="stylesheet" type="text/css" id="color_scheme"/>
+    <script src="../../assets/sweetalert/sweetalert2.all.min.js"></script>
+    <script src="../../assets/sweetalert/funciones.js"></script>
 
-    <style>
+    <link rel="stylesheet" href="../../assets/sweetalert/sweetalert2.min.css">
 
-    </style>
+
 </head>
 <!--
     .boxed = boxed version
@@ -86,6 +88,7 @@ $root = "../../";
                     $listado = $orden->getOrden($_GET['id']);
 
                     $olt = $orden->getOlts();
+                    $olts='';
                     foreach ($olt as $item) {
                         $olts = $olts . $item[0] . ",";
                     }
@@ -168,17 +171,29 @@ $root = "../../";
                                                     if ($valor['NOMBRE'] == 'DATOS') {
                                                         echo " Mb ";
                                                     }
-
                                                     echo "</span><br>";
+
+                                                    // si el servicio es telefonia fija, tomo el numero de telefono
+                                                    if (intval($valor['ID_ATRIBUTO_SERVICIO']) == ATRIBUTO_TELEFONO_FIJO) {
+                                                        echo '<input type = "hidden" name= "fijo" value ="' . $valor['VALOR'].'">';
+                                                    }
+
+                                                    // si el servicio es telefonia MOVIL, tomo el numero de telefono
+                                                    if (intval($valor['ID_ATRIBUTO_SERVICIO']) == ATRIBUTO_TELEFONO_MOVIL) {
+                                                        $numMovil = $valor['VALOR'];
+                                                    }
+
+
                                                 }
                                                 echo "</div>";
                                                 echo "<div class='col-xs-12 col-md-3 col-lg-2'>";
                                                 if (intval($lineaD['servicio']) == 1) {
-                                                    echo '<input type = "hidden" name= "serial" value ="' . $linea['serial'] . '">';
+                                                    echo '<input type = "hidden" name= "pon" value ="' . $lineaD['pon'] . '">';
+                                                    echo '<input type = "hidden" name= "serial" value ="' . $lineaD['serial'] . '">';
                                                     echo '
                                                 <br class=\'visible-xs\'>
                                                 <div class="btn-group">
-                                                    <button type="button" onclick="aprovisionar(this,' . $lineaD['ID'] . ')" class="btn btn-warning">Aprovisionar</button>
+                                                    <button type="button" onclick="revisar(this,' . $lineaD['ID'] . ')" class="btn btn-warning">Aprovisionar</button>
                                                     <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
                                                         <span class="caret"></span>
                                                         <span class="sr-only">Opciones Disponibles</span>
@@ -193,24 +208,43 @@ $root = "../../";
                                             ';
 
 
-                                                } else if (intval($lineaD['servicio']) != 3)
+                                                } else if (intval($lineaD['servicio']) != 3) {
                                                     echo '
-                                                <br class=\'visible-xs\'>
-                                                <div class="btn-group" >
-                                                    <button type="button" onclick="aprovisionar(' . $lineaD['ID'] . ')" class="btn btn-primary">Herramientas</button>
-                                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                                        <span class="caret"></span>
-                                                        <span class="sr-only">Opciones Disponibles</span>
-                                                    </button>
-                                                    <ul class="dropdown-menu" role="menu">
-                                                        <li><a href="#"><i class="fa fa-edit"></i> Verificar Estado</a></li>
-                                                        <li><a href="#"><i class="fa fa-recycle"></i> Reaprovisionar</a></li>
-                                                        <li><a href="#"><i class="fa fa-question-circle"></i> Abrir Incidencia</a></li>
-                                                    </ul>
-                                                </div>
-                                                <br class=\'visible-xs\'><br class=\'visible-xs\'>
-                                            ';
+                                                        <br class=\'visible-xs\'>
+                                                        <div class="btn-group" >
+                                                            <button type="button" onclick="herramientas(' . $lineaD['ID'] . ')" class="btn btn-primary">Herramientas</button>
+                                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                                <span class="caret"></span>
+                                                                <span class="sr-only">Opciones Disponibles</span>
+                                                            </button>
+                                                            <ul class="dropdown-menu" role="menu">
+                                                                <li><a href="#"><i class="fa fa-edit"></i> Verificar Estado</a></li>
+                                                                <li><a href="#"><i class="fa fa-recycle"></i> Reaprovisionar</a></li>
+                                                                <li><a href="#"><i class="fa fa-question-circle"></i> Abrir Incidencia</a></li>
+                                                            </ul>
+                                                        </div>
+                                                        <br class=\'visible-xs\'><br class=\'visible-xs\'>
+                                                    ';
+                                                } else if (intval($lineaD['servicio']) != 4) {
+                                                    $llamadaTest = $telefonia->verificarInstalacionLineaMovil($numMovil);
 
+                                                    if($llamadaTest=='')
+                                                        echo '
+                                                            <br class=\'visible-xs\'>
+                                                            <div class="btn-group" >
+                                                                <button type="button" class="btn btn-primary">Llamar '.NUMERO_LLAMAR_VERIFICAR_MOVIL.'</button>
+                                                            </div>
+                                                            <br class=\'visible-xs\'><br class=\'visible-xs\'>
+                                                        ';
+                                                    else
+                                                        echo '
+                                                            <br class=\'visible-xs\'>
+                                                            <div class="btn-group" >
+                                                                <button type="button" class="btn btn-success">Activado '.$util->fecha_eur($llamadaTest).'</button>
+                                                            </div>
+                                                            <br class=\'visible-xs\'><br class=\'visible-xs\'>
+                                                        ';
+                                                }
 
                                                 echo "</div>";
 
@@ -253,13 +287,24 @@ $root = "../../";
 
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.js"></script>
 <script>
+    var boton;
 
-    function aprovisionar(boton, id) {
-
+    function revisar(b, id) {
+        boton=b;
         $(boton).attr("disabled", true);
         boton.textContent = "Espere...";
+        alerta("Aprovisionar","Asegurese de que la ONT esta conectada y encendida","info","Continuar","Cancelar", "aprovisionar","cancelar")
+    }
+    function aprovisionar() {
 
         $("#ordenar").submit();
+
+    }
+
+    function cancelar() {
+
+        $(boton).attr("disabled", false);
+        boton.textContent = "Aprovisionar";
 
     }
 

@@ -144,7 +144,7 @@ $root="../../";
                                             <b><?php echo $linea['DIRECCION']?></b><br><br>
                                             <b>Télefono:</b> <?php echo $linea['MOVIL']; ?>
                                             <br>
-                                            <b>Fecha:</b> <span style='color:red'><?php echo $util->fecha_eur($linea['FECHA_ALTA']);?></span><br>
+                                            <b>Fecha:</b> <span style='color:red'><?php echo $util->fecha_eur($linea['FECHA_ASIGNACION']);?></span><br>
                                             <b>Distancia:</b>
                                         </div>
                                     </div>
