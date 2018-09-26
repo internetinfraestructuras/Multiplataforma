@@ -109,7 +109,7 @@ class MasMovilAPI
         if(@$resultado->return->clientsList)
             return $resultado->return->clientsList;
         else
-            return json_encode($resultado->return);
+            return $resultado->return;
     }
 
 
@@ -278,7 +278,7 @@ class MasMovilAPI
             "operationType"=>"SERVICE");
 
         $lineDetails=array("msisdn"=>$msid);
-        $lineServices=array("serviceAction"=>"J");
+        $lineServices=array("serviceAction"=>"L");
 
         $parametros['soap_request']=
             array("Operation"=>
@@ -656,7 +656,7 @@ class MasMovilAPI
                             "postcode"=>$cp)))));
 
 
-        $client = new SoapClient($this->servicio."cableMsisdnsPortingDetPor-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableMsisdnsPortingDetPor.wsdl", $this->parametrosCliente);
 
         $resultado=$client->msisdnsPortingMaintenance($parametros);
 

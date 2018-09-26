@@ -5,9 +5,14 @@
  * Date: 22/08/2018
  * Time: 13:39
  */
+ini_set('display_errors', 1);
 
-//ini_set('display_errors', '1');
+error_reporting(E_ALL);
 
+require_once '../config/define.php';
+require_once ('./masmovil/MasMovilAPI.php');
+require_once ('./../config/util.php');
+require_once ('Servicio.php');
 class AltaTecnica
 {
     public static function addNuevoFijo($cifEmpresa,$cifCliente,$nombreCliente,$direccion,$email,$nombreGrupoRecarga,
@@ -67,4 +72,47 @@ class AltaTecnica
 
     }
 
+    public static function addNuevaLineaMasMovil($nombre,$nombreEmpresa,$tipoDocumento,$dni,
+                                                 $nombreContacto,$telContacto,$movilContacto,$faxContacto,$emailContacto,
+                                                 $calle,$localidad,$codigoProvincia,$codigoPais,$codigoPostal,
+                                                 $titularCuenta,$nombreBanco,$codigoBanco,$oficina,$digitoControl,$numeroCuenta,$iccTarjeta,$idServicio)
+    {
+
+
+        $apiMasMovil=new MasMovilAPI();
+        $rs=$apiMasMovil->getListadoClientes($dni);
+
+        if(@$rs->activationCode==NO_EXISTE_CLIENTE_MASMOVIL)
+        {
+            sleep(1);
+            $rs=$apiMasMovil->crearNuevoCliente($nombre,$nombreEmpresa,$tipoDocumento,$dni,
+                $nombreContacto,$telContacto,$movilContacto,$faxContacto,$emailContacto,
+                $calle,$localidad,$codigoProvincia,$codigoPais,$codigoPostal,
+                $titularCuenta,$nombreBanco,$codigoBanco,$oficina,$digitoControl,$numeroCuenta);
+
+            if($rs->activationCode==OPERACION_OK_MASMOVIL)
+            {
+
+                $refCliente=$rs->customerId;
+                $rs=$apiMasMovil->altaLineaMovil($refCliente,$iccTarjeta,"","");
+            }
+        }
+        else
+        {
+
+            $refCliente=$rs->Client[0]->refCustomerId;
+            $ser=new Servicio();
+            $idExterno=Servicio::getIdExternoApi($idServicio);
+            if($idExterno!=NULL)
+            {
+                $idExterno=$idExterno[0][0];
+                $rs=$apiMasMovil->altaLineaMovil($refCliente,$iccTarjeta,$idExterno,"");
+
+            }
+
+
+        }
+
+    }
+    
 }

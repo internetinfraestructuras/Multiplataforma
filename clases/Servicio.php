@@ -5,10 +5,11 @@
  * Date: 02/08/2018
  * Time: 13:15
  */
-//error_reporting(E_ALL);
-//ini_set('display_errors', 1);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 require_once ('Contrato.php');
 require_once ('masmovil/MasMovilAPI.php');
+
 /*
 
 require_once('../config/def_tablas.php');
@@ -138,8 +139,6 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
 }
     public static function actualizarServicioPaqueteContrato($idContrato,$idLinea,$id,$tipo,$idServicio,$atributos,$fechaCambio,$idServicioOriginal,$idLineaDetalle)
     {
-
-
 
         $lineaContrato=Contrato::getLineaContrato($idContrato,$idLinea);
 

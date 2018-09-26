@@ -32,7 +32,7 @@ if(
 )
 {
 
-    $romperPaquete=($_POST['romper-paquete']);
+    @$romperPaquete=($_POST['romper-paquete']);
     $idServicioOriginal=$_POST['id'];
     $idContrato=$util->cleanstring($_POST['idContrato']);
     $idLinea=$util->cleanstring($_POST['idLinea']);

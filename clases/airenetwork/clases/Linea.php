@@ -99,7 +99,7 @@ class Linea
         $result = $client->call("getLineas", array($datos));
 
 
-        return json_encode($result);
+        return $result;
     }
     public function getLineaTipoCliente($tipoCliente)
     {
