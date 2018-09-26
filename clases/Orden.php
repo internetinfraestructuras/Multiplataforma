@@ -224,7 +224,7 @@ class Orden
 
         $util=new util();
 
-        $campos=array('contratos_lineas_detalles.VALOR','contratos_lineas_detalles.ID_ATRIBUTO_SERVICIO',
+        $campos=array('distinct(contratos_lineas_detalles.VALOR)','contratos_lineas_detalles.ID_ATRIBUTO_SERVICIO',
             'servicios_tipos_atributos.NOMBRE','contratos_lineas_detalles.ESTADO');
 
         $join=' JOIN servicios_tipos_atributos on servicios_tipos_atributos.ID = contratos_lineas_detalles.ID_ATRIBUTO_SERVICIO ';

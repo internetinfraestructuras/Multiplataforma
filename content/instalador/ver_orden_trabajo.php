@@ -95,6 +95,7 @@ $root = "../../";
 
                     $parametros = array();
 
+
                     foreach ($listado as $linea){
                     ?>
                     <div class="col-xs-12">
@@ -128,6 +129,8 @@ $root = "../../";
                                             <?php
 
                                             $lineas = $orden->getLineasOrden($linea[0]);
+
+
                                             foreach ($lineas as $lineaD) {
                                                 echo "<div class='row' style='border-bottom:1px solid #c9c9c9'>";
                                                 echo "<div class='col-xs-2 col-md-1'>";
@@ -185,9 +188,10 @@ $root = "../../";
 
 
                                                 }
+
                                                 echo "</div>";
                                                 echo "<div class='col-xs-12 col-md-3 col-lg-2'>";
-                                                if (intval($lineaD['servicio']) == 1) {
+                                                if (intval($lineaD['servicio']) == ID_SERVICIO_INTERNET) {
                                                     echo '<input type = "hidden" name= "pon" value ="' . $lineaD['pon'] . '">';
                                                     echo '<input type = "hidden" name= "serial" value ="' . $lineaD['serial'] . '">';
                                                     echo '
@@ -208,7 +212,7 @@ $root = "../../";
                                             ';
 
 
-                                                } else if (intval($lineaD['servicio']) != 3) {
+                                                } if (intval($lineaD['servicio']) == ID_SERVICIO_IPTV) {
                                                     echo '
                                                         <br class=\'visible-xs\'>
                                                         <div class="btn-group" >
@@ -225,25 +229,36 @@ $root = "../../";
                                                         </div>
                                                         <br class=\'visible-xs\'><br class=\'visible-xs\'>
                                                     ';
-                                                } else if (intval($lineaD['servicio']) != 4) {
-                                                    $llamadaTest = $telefonia->verificarInstalacionLineaMovil($numMovil);
+                                                }  if (intval($lineaD['servicio']) == ID_SERVICIO_MOVIL) {
+                                                    if(intval($numMovil)>0) {
+                                                        $llamadaTest = $telefonia->verificarInstalacionLineaMovil($numMovil);
+                                                        if ($llamadaTest == '')
+                                                            echo '
+                                                            <br class=\'visible-xs\'>
+                                                            <div class="btn-group" >
+                                                                <button type="button" class="btn btn-primary">Llamar ' . NUMERO_LLAMAR_VERIFICAR_MOVIL . '</button>
+                                                            </div>
+                                                            <br class=\'visible-xs\'><br class=\'visible-xs\'>
+                                                        ';
+                                                        else
+                                                            echo '
+                                                            <br class=\'visible-xs\'>
+                                                            <div class="btn-group" >
+                                                                <button type="button" class="btn btn-success">Activado ' . $util->fecha_eur($llamadaTest) . '</button>
+                                                            </div>
+                                                            <br class=\'visible-xs\'><br class=\'visible-xs\'>
+                                                        ';
+                                                    } else {
+                                                        $textoBoton = "Esperando Número";
+                                                        echo '
+                                                            <br class=\'visible-xs\'>
+                                                            <div class="btn-group" >
+                                                                <button type="button" class="btn btn-info">' . $textoBoton . '</button>
+                                                            </div>
+                                                            <br class=\'visible-xs\'><br class=\'visible-xs\'>
+                                                        ';
+                                                    }
 
-                                                    if($llamadaTest=='')
-                                                        echo '
-                                                            <br class=\'visible-xs\'>
-                                                            <div class="btn-group" >
-                                                                <button type="button" class="btn btn-primary">Llamar '.NUMERO_LLAMAR_VERIFICAR_MOVIL.'</button>
-                                                            </div>
-                                                            <br class=\'visible-xs\'><br class=\'visible-xs\'>
-                                                        ';
-                                                    else
-                                                        echo '
-                                                            <br class=\'visible-xs\'>
-                                                            <div class="btn-group" >
-                                                                <button type="button" class="btn btn-success">Activado '.$util->fecha_eur($llamadaTest).'</button>
-                                                            </div>
-                                                            <br class=\'visible-xs\'><br class=\'visible-xs\'>
-                                                        ';
                                                 }
 
                                                 echo "</div>";
@@ -295,6 +310,7 @@ $root = "../../";
         boton.textContent = "Espere...";
         alerta("Aprovisionar","Asegurese de que la ONT esta conectada y encendida","info","Continuar","Cancelar", "aprovisionar","cancelar")
     }
+
     function aprovisionar() {
 
         $("#ordenar").submit();
