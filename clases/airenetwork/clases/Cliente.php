@@ -1,4 +1,7 @@
 <?php
+
+require_once "lib/nusoap.php";
+
 class Cliente
 {
     var $url;
@@ -13,9 +16,9 @@ class Cliente
      */
     public function __construct($url, $user, $pass)
     {
-        $this->url = $url;
-        $this->user = $user;
-        $this->pass = $pass;
+        $this->url="https://wscliente.airenetworks.es/ws_desarrollo/mv/gestMOVIL_2.php?wsdl";
+        $this->user="B10452795";
+        $this->pass="aSo2Onc03H";
     }
 
     /**
@@ -49,7 +52,7 @@ class Cliente
         if ($error)
             echo "<pre>".$error."</pre>";
 
-        return json_encode($result);
+        return $result;
     }
 
     public function getClientByName($name)
@@ -147,9 +150,12 @@ class Cliente
 
         $return = $cliente->call("editCliente",array($datos));
         $error = $cliente->getError();
-        if ($error)  echo "<pre>".$error."</pre>";
 
-        echo json_encode($return);
+        if ($error)
+            return $error;
+        else
+            return $return;
+
     }
 
 

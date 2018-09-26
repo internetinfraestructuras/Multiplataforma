@@ -53,7 +53,7 @@ class Linea
         $result = $client->call("getPoolMsisdn", array($datos));
 
 
-        return json_encode($result);
+        return $result;
     }
 
     public function getLineasPorDni($dni)
@@ -232,27 +232,29 @@ class Linea
         return json_encode($result);
     }
 
-    public function setAltaNueva($requestBody)
+    public function setAltaNueva($tarifa,$tipoCliente,$nif,$icc,$dc,$telefono,$codigoReserva)
     {
         $cliente = new nusoap_client($this->url,true);
 
         $datos=array(
             "user"=>$this->user,
             "pass"=>$this->pass,
-            "tarifa"=>$requestBody[0]["tarifa"],
-            "subscriberType"=>$requestBody[0]["tipoCliente"],
-            "nif"=>$requestBody[0]["nif"],
-            "icc"=>$requestBody[0]["icc"],
-            "digito_control"=>$requestBody[0]["digito_control"],
-            "telefono"=>$requestBody[0]["telefono"],
-            "codigo_reserva"=>$requestBody[0]["codigo_reserva"],
+            "tarifa"=>$tarifa,
+            "subscriberType"=>$tipoCliente,
+            "nif"=>$nif,
+            "icc"=>$icc,
+            "digito_control"=>$dc,
+            "telefono"=>$telefono,
+            "codigo_reserva"=>$codigoReserva,
         );
-        var_dump($datos);
+
         $return = $cliente->call("setAltaLineaNueva",array($datos));
         $error = $cliente->getError();
-        if ($error)  echo "<pre>".$error."</pre>";
+        if ($error)
+            return $error;
+        else
+            return $return;
 
-        echo json_encode($return);
     }
     public function setAltaPortabilidad($requestBody)
     {

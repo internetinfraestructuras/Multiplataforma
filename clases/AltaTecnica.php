@@ -10,11 +10,15 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 require_once '../config/define.php';
-require_once ('./masmovil/MasMovilAPI.php');
+
 require_once ('./../config/util.php');
 require_once ('Servicio.php');
 class AltaTecnica
 {
+    /*
+     * FUNCION PARA AÑADIR UNA LÍNEA FIJA, SI EL CLIENTE PASADO NO EXISTE SE CREA EN LA APLICACIÓN Y A POSTERIOR SE LE AÑADE LA LINEA NUEVA
+     *
+     */
     public static function addNuevoFijo($cifEmpresa,$cifCliente,$nombreCliente,$direccion,$email,$nombreGrupoRecarga,
                                         $paqueteDestino,$numero)
     {
@@ -72,13 +76,18 @@ class AltaTecnica
 
     }
 
+    /*
+     * FUNCION PARA AÑADIR UNA LÍNEA EN MASMOVIL, SI EL CLIENTE PASADO NO EXISTE SE CREA EN LA APLICACIÓN Y A POSTERIOR SE LE AÑADE LA LINEA NUEVA
+     *
+     */
+
     public static function addNuevaLineaMasMovil($nombre,$nombreEmpresa,$tipoDocumento,$dni,
                                                  $nombreContacto,$telContacto,$movilContacto,$faxContacto,$emailContacto,
                                                  $calle,$localidad,$codigoProvincia,$codigoPais,$codigoPostal,
                                                  $titularCuenta,$nombreBanco,$codigoBanco,$oficina,$digitoControl,$numeroCuenta,$iccTarjeta,$idServicio)
     {
 
-
+        require_once ('./masmovil/MasMovilAPI.php');
         $apiMasMovil=new MasMovilAPI();
         $rs=$apiMasMovil->getListadoClientes($dni);
 
@@ -114,5 +123,43 @@ class AltaTecnica
         }
 
     }
-    
+
+    /*
+     * FUNCION PARA AÑADIR UNA LÍNEA EN AIRENETWORK, SI EL CLIENTE PASADO NO EXISTE SE CREA EN LA APLICACIÓN Y A POSTERIOR SE LE AÑADE LA LINEA NUEVA
+     *
+     */
+    public static function addNuevaLineaAire($tipoCliente,$consentimiento,$tipoDocumento,$numeroDocumento,$nombre,
+                                             $apellido1,$apellido2,$fechaNacimiento,$email,$telefono,$region,
+                                             $provincia,$ciudad,$cp,$direccion,$numero,$docNombre,$documento,$icc,$dc,$idServicio)
+    {
+        require_once ('./airenetwork/clases/Cliente.php');
+        require_once ('./airenetwork/clases/Linea.php');
+
+       $clienteAire=new Cliente("","","");
+       $lineaAire=new Linea("","","");
+
+        $rs=$clienteAire->getClientByDNI($numeroDocumento);
+        if($rs==NULL)
+        {
+            $rs=$clienteAire->crearCliente($tipoCliente,$consentimiento,$tipoDocumento,$numeroDocumento,$nombre,$apellido1,$apellido2,$fechaNacimiento,$email,$telefono,$region,$provincia,$ciudad,$cp,$direccion,$numero,$docNombre,$documento);
+        }
+
+        $pool=$lineaAire->getNumerosLibres();
+        $codigoReserva=$pool['codigo_reserva'];
+        $numeroTelefono=$pool['n1'];
+        $idExterno=Servicio::getIdExternoApi($idServicio);
+
+        if($idExterno!=NULL)
+        {
+            $idExterno=$idExterno[0][0];
+            $rs=$lineaAire->setAltaNueva($idExterno,$tipoCliente,$numeroDocumento,$icc,$dc,$numeroTelefono,$codigoReserva);
+
+
+        }
+
+        return $rs;
+
+
+
+    }
 }
