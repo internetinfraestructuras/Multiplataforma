@@ -14,8 +14,21 @@ $msidn=$_GET['numero'];
 
 $apiAire=new CDRAire();
 
-$rs=$apiAire->getDatosCDR($msidn,"2018","08","MOVIL");
-var_dump($rs);
+$lsLlamadas=$apiAire->getDatosCDR($msidn,"2018","08","MOVIL");
+
+$lsSMS=$apiAire->getDatosCDR($msidn,"2018","08","SMS");
+var_dump($lsLlamadas);
+for($i=0;$i<count($lsLlamadas);$i++)
+{
+    $fecha=$lsLlamadas[$i]['fecha'];
+    $origen=$lsLlamadas[$i]['origen'];
+    $destino=$lsLlamadas[$i]['destino'];
+    $descripcion=$lsLlamadas[$i]['descripcion'];
+    $tiempo=$lsLlamadas[$i]['segundos'];
+    $importe=$lsLlamadas[$i]['importe'];
+
+}
+
 
 
 

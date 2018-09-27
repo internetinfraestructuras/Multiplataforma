@@ -5,15 +5,11 @@
  * Date: 02/08/2018
  * Time: 13:15
  */
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+
 require_once ('Contrato.php');
 require_once ('masmovil/MasMovilAPI.php');
+require_once ('telefonia/classTelefonia.php');
 
-/*
-
-require_once('../config/def_tablas.php');
-*/
 
 
 class Servicio
@@ -174,6 +170,9 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
         $numeroMax=$idLineaDetalle+($numero-1);
 
 
+        $usuarioTroncal="";
+        $paqueteDestino="";
+        $grupoRecarga="";
 
         for($k=0;$k<count($lineaDetallesAll);$k++)
         {
@@ -191,7 +190,7 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
                         if($atributos['id'][$i]==$lineaDetallesAll[$k]['ID_ATRIBUTO_SERVICIO'] )
                         {
 
-                          $idAtrib=$atributos['id'][$i];
+                            $idAtrib=$atributos['id'][$i];
                             $valor=$atributos['valor'][$i];
 
                             $tipo=$lineaDetallesAll[$k]['ID_TIPO_SERVICIO'];
@@ -207,7 +206,27 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
                             }
                             else if($tipo==2)
                             {
-                                echo "Es un telefono fijo aquie va el cambio tecnico";
+
+
+                                if($idAtrib==ID_ATRIBUTO_TRONCAL)
+                                    $usuarioTroncal=$valor;
+                                if($idAtrib==ID_ATRIBUTO_PAQUETE_DESTINO)
+                                    $paqueteDestino=$valor;
+                                if($idAtrib==ID_ATRIBUTO_GRUPO_RECARGA)
+                                    $grupoRecarga=$valor;
+
+                                $dni=Contrato::getDNIClienteContrato($_SESSION['REVENDEDOR'],$idContrato);
+
+
+                                if($usuarioTroncal!="" && $paqueteDestino!="" && $grupoRecarga!="")
+                                {
+
+                                    $telefoniaClass=new Telefonia();
+                                    $telefoniaClass->updateTarifasTroncalFromPaqueteDestinos($usuarioTroncal,$paqueteDestino);
+
+                                    $telefoniaClass->updateGrupoRecargaCliente($_SESSION['REVENDEDOR'],$dni[0][0],$grupoRecarga);
+                                }
+
                             }
 
                             else if($tipo==3 && $idAtrib==ID_NUMERO_MOVIL)
@@ -265,7 +284,7 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
             Contrato::setLineaDetallesBajaServicio($idLinea,$ser,$fechaCambio);//Seteamos la linea actual a baja
 
 
-            $productosLinea=Contrato::getProductosLinea($lineaDetallesAll[$k]['ID']);
+           $productosLinea=Contrato::getProductosLinea($lineaDetallesAll[$k]['ID']);
 
             for($j=0;$j<count($productosLinea);$j++)
             {
@@ -420,7 +439,7 @@ public static function cancelarBajaServicio($idContrato,$idLineaContrato,$idServ
         return $tipoEstado;
     }
 
-    public static function  romperPaquete($idContrato,$idLinea,$servicio,$fechaCambio,$idLineaDetalleActual)
+    public static function  romperPaquete($idContrato,$idLinea,$servicio,$fechaCambio,$idLineaDetalleActual,$atributos)
     {
 
 
@@ -428,7 +447,7 @@ public static function cancelarBajaServicio($idContrato,$idLineaContrato,$idServ
 
         $idPaquete=Contrato::getIdPaqueteLinea($idContrato,$idLinea);
         $idPaquete=$idPaquete[0][0];
-        Contrato::setLineaContratoBaja($idContrato,$idLinea,$idPaquete);
+        //Contrato::setLineaContratoBaja($idContrato,$idLinea,$idPaquete);
 
         $numeroMax=0;
         $util=new util();
@@ -436,6 +455,9 @@ public static function cancelarBajaServicio($idContrato,$idLineaContrato,$idServ
         $idLineaContratoNueva=0;
         $idServicio=0;
 
+        $usuarioTroncal="";
+        $paqueteDestino="";
+        $grupoRecarga="";
 
         for($i=0;$i<count($lineaDetalles);$i++)
         {
@@ -445,40 +467,68 @@ public static function cancelarBajaServicio($idContrato,$idLineaContrato,$idServ
             $idAtributo=$lineaDetalles[$i]['ID_ATRIBUTO_SERVICIO'];
             $valor=$lineaDetalles[$i]['VALOR'];
 
-
-
-            if($idAtributo==ID_NUMERO_MOVIL && $lineaDetalles[$i]['ID_SERVICIO']==$servicio)
+            if($tipoServicio==ID_SER_INTERNET)
             {
+                echo "cambios internet";
+            }
+            if($tipoServicio==ID_SER_FIJO)
+            {
+                echo "REcorremos los atributos para volvar los pasados nuevos primo<br>";
+
+                for($j=0;$j<count($atributos['id']);$j++)
+                {
+                        if($atributos['id'][$j]==ID_ATRIBUTO_GRUPO_RECARGA)
+                            $grupoRecarga=$atributos['valor'][$j];
+                        if($atributos['id'][$j]==ID_ATRIBUTO_PAQUETE_DESTINO)
+                             $paqueteDestino=$atributos['valor'][$j];
+                        if($atributos['id'][$j]==ID_ATRIBUTO_TRONCAL)
+                             $usuarioTroncal=$atributos['valor'][$j];
+                }
+
+                $dni=Contrato::getDNIClienteContrato($_SESSION['REVENDEDOR'],$idContrato);
+
+
+                if($usuarioTroncal!="" && $paqueteDestino!="" && $grupoRecarga!="")
+                {
+                    $telefoniaClass=new Telefonia();
+                    $telefoniaClass->updateTarifasTroncalFromPaqueteDestinos($usuarioTroncal,$paqueteDestino);
+                    $telefoniaClass->updateGrupoRecargaCliente($_SESSION['REVENDEDOR'],$dni[0][0],$grupoRecarga);
+                }
+            }
+            if($tipoServicio==ID_SER_MOVIL) {
+
+                if ($idAtributo == ID_NUMERO_MOVIL && $lineaDetalles[$i]['ID_SERVICIO'] == $servicio) {
 
                     echo "<hr>Entramos en el servicio";
 
 
-                    $externo=self::getIdExternoApi($servicio);
+                    $externo = self::getIdExternoApi($servicio);
 
-                    $idExterno=$externo[0][0];
-                    $idProveedor=self::getProveedor($servicio);
-                    $idProveedor=$idProveedor[0][0];
+                    $idExterno = $externo[0][0];
+                    $idProveedor = self::getProveedor($servicio);
+                    $idProveedor = $idProveedor[0][0];
 
 
-                    if($idProveedor==ID_PROVEEDOR_MASMOVIL)
-                    {
+                    if ($idProveedor == ID_PROVEEDOR_MASMOVIL) {
                         echo "<br>El proveedor es MASMOVIL<HR>";
-                        $apiMasMovil=new MasMovilAPI();
-                        $resultado=$apiMasMovil->getListadoClientes("",$valor);
+                        $apiMasMovil = new MasMovilAPI();
+                        $resultado = $apiMasMovil->getListadoClientes("", $valor);
 
-                        $refClienteAPI=$resultado->Client[0]->refCustomerId;
+                        $refClienteAPI = $resultado->Client[0]->refCustomerId;
 
-                        $res= $apiMasMovil->cambioProducto($refClienteAPI,"",$valor,$idExterno);
+                        $res = $apiMasMovil->cambioProducto($refClienteAPI, "", $valor, $idExterno);
 
 
-                        $apiMasMovil->setLogApi($valor,$res,$_SESSION['REVENDEDOR'],1);
-                    }
-                    else if($idProveedor==ID_PROVEEDOR_AIRENETWORKS)
-                    {
+                        $apiMasMovil->setLogApi($valor, $res, $_SESSION['REVENDEDOR'], 1);
+                    } else if ($idProveedor == ID_PROVEEDOR_AIRENETWORKS) {
                         echo "El proveedor es AIRENETWORK<HR>";
                     }
+                }
             }
-
+            if($tipoServicio==ID_SER_TV)
+            {
+                echo "TELEVISION";
+            }
 
 
 
@@ -498,7 +548,7 @@ public static function cancelarBajaServicio($idContrato,$idLineaContrato,$idServ
                 $numero = $numero[0][0];
                 $numeroMax = $idLineaDetalle + ($numero);
 
-                $detallesServicio=Servicio::getDetallesServicio($idServicio);
+               $detallesServicio=Servicio::getDetallesServicio($idServicio);
 
                 $precioProveedor=$detallesServicio[0]['PRECIO_PROVEEDOR'];
                 $impuesto=$detallesServicio[0]['IMPUESTO'];
@@ -518,12 +568,12 @@ public static function cancelarBajaServicio($idContrato,$idLineaContrato,$idServ
 
 
             Contrato::setLineaDetallesBaja($idLineaDetalle);
-            $productos=Contrato::getProductosLinea($idLineaDetalle);
+           $productos=Contrato::getProductosLinea($idLineaDetalle);
 
 
             for($k=0;$k<count($productos);$k++)
             {
-                Contrato::cambiarLineaProducto($idLineaDetalle,$nuevaLineaDetalles);
+               Contrato::cambiarLineaProducto($idLineaDetalle,$nuevaLineaDetalles);
             }
 
         }
@@ -581,6 +631,17 @@ public static function cancelarBajaServicio($idContrato,$idLineaContrato,$idServ
         }
 
         return $fieldNames;
+    }
+
+    /*
+     * DEVUELVE LOS SERVICIOS DEL RESELLER CON AIRENETWORKS
+     */
+    public static function getServiciosAireNetworks($idEmpresa)
+    {
+        $util=new util();
+
+        return $util->selectWhere3("servicios left join servicios_externos on servicios.id=servicios_externos.id_servicio", array("servicios.id,servicios.nombre,servicios_externos.id_externo"),
+            "servicios.id_proveedor=15 AND servicios.id_empresa=$idEmpresa");
     }
 
 }

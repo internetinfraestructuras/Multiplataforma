@@ -47,6 +47,8 @@ $readonly="";
 
 
 
+
+
 $actual = date ("Y-m-d");
 
 
@@ -131,7 +133,7 @@ $actual = date ("Y-m-d");
                     <!-- ------ -->
                     <div class="panel panel-default">
                         <div class="panel-heading panel-heading-transparent">
-                            <strong>EDITAR <?php echo strtoupper(DEF_SERVICIOS); ?></strong>
+                            <strong>EDITAR<?php echo strtoupper(DEF_SERVICIOS);?></strong>
                         </div>
 
                         <div class="panel-body">
@@ -175,7 +177,7 @@ $actual = date ("Y-m-d");
                                             <div class="col-md-4 col-sm-5">
                                                 <label>Nombre:</label>
                                                 <select name="servicio" id="servicio"
-                                                        class="form-control pointer " name="nombre"  onchange="carga_detalles_servicio(this.value)">
+                                                        class="form-control pointer " name="nombre"  onchange="carga_detalles_servicio(this.value);">
                                                     <option>--- Seleccionar una ---</option>
                                                     <?php $util->carga_select('servicios', 'id', 'nombre', 'nombre','servicios.id_servicio_tipo='.$idTipoServicio,'','',$id); ?>
                                                 </select>
@@ -236,7 +238,7 @@ $actual = date ("Y-m-d");
                                     else
                                         $valor=$atributos[$i][3];
 
-                                    if($id==48)
+                                    if($id==ID_NUMERO_MOVIL)
                                         $msidn=$valor;
 
 
@@ -334,6 +336,9 @@ $actual = date ("Y-m-d");
                             </div>
 
                         </div>
+                    <?php if($estado==CONTRATO_ALTA)
+                    {?>
+
 
                         <div class="row">
                             <div class="col-md-12">
@@ -344,7 +349,8 @@ $actual = date ("Y-m-d");
                                 </button>
                             </div>
                         </div>
-                <?php
+                    <?php
+                        }
                         if($estado==4 || $estado==6 || $estado==7 || $estado==8)
                         {?>
                         <div class="row">
@@ -584,7 +590,11 @@ $actual = date ("Y-m-d");
                         <select name="servicio" id="producto-cambio"
                                 class="form-control pointer " name="nombre"  onchange="carga_detalles_servicio(this.value)">
                         <?php
-
+                        if($_GET['tipo']!=3)
+                        {
+                            $refClienteAPI="NULL";
+                            $msidn="NULL";
+                        }
 
                             for($i=0;$i<count($prodcs);$i++)
                             {
@@ -615,6 +625,7 @@ $actual = date ("Y-m-d");
             }
             else
                 echo "AIRENETWORKS sólo puede efectuar cambios de SIMS desde su plataforma GECKOS.";
+
             ?>
 
 
@@ -671,7 +682,7 @@ $actual = date ("Y-m-d");
 <script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 
-<script type="text/javascript" src="../../assets/js/app.js"></script>
+<!--<script type="text/javascript" src="../../assets/js/app.js"></script>-->
 
 
 <script>

@@ -536,4 +536,27 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
             "contratos_lineas_productos.id_producto=$idProducto AND contratos_lineas_productos.estado!=6");
     }
 
+    public static function getLineasMovilesActivas($idEmpresa)
+    {
+        $util = new util();
+        return $util->selectWhere3('contratos,contratos_lineas,contratos_lineas_detalles,clientes,servicios',
+            array("contratos_lineas_detalles.valor","clientes.nombre","clientes.apellidos","clientes.id","servicios.id_proveedor"),
+            " contratos_lineas.id_contrato=contratos.id 
+                                            AND clientes.id=contratos.id_cliente
+                                            AND contratos_lineas.id=contratos_lineas_detalles.id_linea 
+                                            AND contratos_lineas.estado=1 
+                                            AND servicios.id=contratos_lineas_detalles.id_servicio
+                                            AND contratos_lineas_detalles.id_atributo_servicio=48 AND contratos_lineas_detalles.valor!=''
+                                            AND contratos.id_empresa=$idEmpresa");
+    }
+
+
+    public static function getDNIClienteContrato($idEmpresa,$idContrato)
+    {
+        $util = new util();
+        return $util->selectWhere3("contratos,clientes", array("clientes.dni"),
+            "contratos.id_cliente=clientes.id AND contratos.id=$idContrato AND contratos.id_empresa=$idEmpresa");
+    }
+
+
 }

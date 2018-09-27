@@ -14,6 +14,16 @@ define('DDBB','pruebas.');
 define('AUTOR','Internet Infraestructuras S.L.');
 define('OWNER','AT Control');
 define('ID_NUMERO_MOVIL',48);
+define('ID_ATRIBUTO_TRONCAL',56);
+define('ID_ATRIBUTO_GRUPO_RECARGA',43);
+define('ID_ATRIBUTO_PAQUETE_DESTINO',44);
+
+
+/*tipos de servicios*/
+define('ID_SER_INTERNET',1);
+define('ID_SER_FIJO',2);
+define('ID_SER_MOVIL',3);
+define('ID_SER_TV',4);
 
 define('ID_PRODUCTO_STOCK',1);
 define('ID_PRODUCTO_ASIGNADO',2);
@@ -52,6 +62,19 @@ define('ID_ORDEN_RMA_BAJA',4);
 define('ID_ORDEN_BAJA',5);
 define('ID_ORDEN_CANCELADA',6);
 
+/*ESTADOS DE CONTRATOS*/
+
+define('CONTRATO_ALTA',1);
+define('CONTRATO_BAJA',2);
+define('CONTRATO_PROCESO_ALTA',3);
+define('CONTRATO_PROCESO_BAJA',4);
+define('CONTRATO_BAJA',5);
+define('CONTRATO_PTE_CAMBIO',6);
+define('CONTRATO_PROCESO_BAJA_CAMBIO',7);
+define('CONTRATO_PROCESO_ALTA_CAMBIO',8);
+define('CONTRATO_CANCELACION_CAMBIOS',9);
+
+
 
 define('ID_PROVEEDOR_MASMOVIL',14);
 define('ID_PROVEEDOR_AIRENETWORKS',15);
@@ -69,6 +92,7 @@ define('DEF_ALMACEN','Almacén');
 define('DEF_ORDENES','Ordenes de trabajo');
 define('DEF_CONTRATOS','Contratos');
 define('DEF_SERVICIOS','Servicios');
+define('DEF_MODULO_AIRE','Módulo AireNetworks');
 define('DEF_PAQUETES','Paquete');
 define('DEF_PRODUCTO','Producto');
 define('DEF_TIPOS','Tipos de productos');

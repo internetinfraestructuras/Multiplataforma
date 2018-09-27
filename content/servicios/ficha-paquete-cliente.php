@@ -235,9 +235,9 @@ $pvp=$listado[0][5];
 
 
                                                 $numero=$numero[0][0];
-                                                echo "El numero de atributos es $numero<br>";
+
                                             }
-                                            echo $i;
+
 
                                             if($idEstadoId==1)
                                             {
@@ -262,11 +262,11 @@ $pvp=$listado[0][5];
 
 
 
-                                            echo "El numero es $numero y $contador<br>";
+
 
                                             if($contador==$numero)
                                             {
-                                                echo "ENTRAAA";  echo "El numero es $numero y $contador<br>";
+
                                                 $contador=1;
                                             echo "<tr>";
                                             echo "<td>$id</td>
@@ -280,7 +280,7 @@ $pvp=$listado[0][5];
                                                     <button type="button" rel="tooltip" >
                                                         <?php
                                                         echo "<a href='/ml/content/servicios/ficha-servicio-paquete.php?idServicio=".$id."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$_GET['idLineaContrato']."&idLineaDetalle=".$idLineaDetalle."&tipo=$servicioId''>";
-                                                        echo ' <i class="fa fa-pencil"></i>';
+                                                        echo ' <i class="fas fa-edit"></i>';
                                                         echo "</a>";
                                                         ?>
 
@@ -305,7 +305,7 @@ $pvp=$listado[0][5];
 
                                         }
 
-                                        ?>*/
+                                        ?>
                                         </tbody>
 
                                     </table>
@@ -358,7 +358,7 @@ $pvp=$listado[0][5];
                                             <td class="td-actions text-right">
                                                 <a href="ficha-servicio.php?idServicio=<?php echo $idServicio;?>">
                                                     <button type="button" rel="tooltip" >
-                                                        <i class="fa fa-pencil"></i>
+                                                        <i class="fas fa-edit"></i>
                                                     </button>
                                                 </a>
                                                 <button type="button" rel="tooltip" class="">

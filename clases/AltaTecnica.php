@@ -5,9 +5,7 @@
  * Date: 22/08/2018
  * Time: 13:39
  */
-ini_set('display_errors', 1);
 
-error_reporting(E_ALL);
 
 require_once '../config/define.php';
 
@@ -103,7 +101,15 @@ class AltaTecnica
             {
 
                 $refCliente=$rs->customerId;
-                $rs=$apiMasMovil->altaLineaMovil($refCliente,$iccTarjeta,"","");
+                $ser=new Servicio();
+                $idExterno=Servicio::getIdExternoApi($idServicio);
+                if($idExterno!=NULL)
+                {
+                    $idExterno=$idExterno[0][0];
+                    $rs=$apiMasMovil->altaLineaMovil($refCliente,$iccTarjeta,$idExterno,"");
+
+                }
+           
             }
         }
         else

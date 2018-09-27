@@ -9,8 +9,8 @@
 
 if (!isset($_SESSION)) {@session_start();}
 
-require_once($_SERVER['DOCUMENT_ROOT'].'config/define.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'config/def_tablas.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/ml/config/define.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/ml/config/def_tablas.php');
 
 date_default_timezone_set('Europe/Madrid');
 

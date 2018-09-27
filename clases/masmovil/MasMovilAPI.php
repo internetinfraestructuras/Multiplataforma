@@ -221,7 +221,7 @@ class MasMovilAPI
 
         $params = array('Operation'=>
             array('instruction'=>
-                array( 'timeStamp' => '28/05/2018 17:11:00', 'resellerId' => $this->resellerId,'resellerPin' => $this->pass,'branchId' => '','posId' => '', 'transactionId' =>$ts, 'refCustomerId' => $refCliente, 'operationType' => 'NEWLINE'),
+                array( 'timeStamp' => $ts, 'resellerId' => $this->resellerId,'resellerPin' => $this->pass,'branchId' => '','posId' => '', 'transactionId' =>$ts, 'refCustomerId' => $refCliente, 'operationType' => 'NEWLINE'),
                 'activate'=>array(
                     'lineDetails' =>
                         array( 'iccid' => $icc),
@@ -229,39 +229,9 @@ class MasMovilAPI
                         'productProfile' => $perfilProducto, 'bonosAlta'  => $bonos))));
 
         $response = $client->msisdnsMaintenanceRequest(  $params  );
-        var_dump($response);
+       return $response;
     }
-    /*
-        public function altaLineaMovil($refCliente,$icc,$perfilProducto,$bonos)
-        {
 
-            $ts=$this->getTimeStamp();
-            $parametros=array();
-
-            $instructions= array("timeStamp"=>$ts,
-                "resellerId"=>$this->resellerId,
-                "resellerPin"=>$this->pass,
-                "branchId"=>"",
-                "posId"=>"",
-                "transactionId"=>$ts,
-                "refCustomerId"=>$refCliente,
-                "operationType"=>"NEWLINE");
-
-            $lineDetails=array("iccid"=>$icc);
-            $lineProducts=array("productProfile"=>$perfilProducto,"bonosAlta"=>$bonos);
-
-            $parametros['soap_request']=
-                array("Operation"=>
-                    array("instruction"=>$instructions,"activate"=>array("lineDetails"=>$lineDetails,"lineProductDetails"=>$lineProducts)));
-
-
-            $client = new SoapClient($this->servicio."cableMsisdnsNewline.wsdl", $this->parametrosCliente);
-
-            $resultado=$client->msisdnsMaintenance($parametros);
-            var_dump($resultado);
-            return json_encode($resultado->return);
-        }
-    */
     public function suspensionLineaMovil($refCliente,$msid)
     {
 
