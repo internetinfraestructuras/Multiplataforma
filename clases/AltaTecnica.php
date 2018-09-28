@@ -142,15 +142,19 @@ class AltaTecnica
     {
         require_once ('./airenetwork/clases/Cliente.php');
         require_once ('./airenetwork/clases/Linea.php');
+        require_once ('./Empresa.php');
 
-       $clienteAire=new Cliente("","","");
-       $lineaAire=new Linea("","","");
+        $configuracion=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
+
+
+
+       $clienteAire=new Cliente($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
+       $lineaAire=new Linea($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
 
         $rs=$clienteAire->getClientByDNI($numeroDocumento);
+
         if($rs==NULL)
-        {
-            $rs=$clienteAire->crearCliente($tipoCliente,$consentimiento,$tipoDocumento,$numeroDocumento,$nombre,$apellido1,$apellido2,$fechaNacimiento,$email,$telefono,$region,$provincia,$ciudad,$cp,$direccion,$numero,$docNombre,$documento);
-        }
+           $rs=$clienteAire->crearCliente($tipoCliente,$consentimiento,$tipoDocumento,$numeroDocumento,$nombre,$apellido1,$apellido2,$fechaNacimiento,$email,$telefono,$region,$provincia,$ciudad,$cp,$direccion,$numero,$docNombre,$documento);
 
         $pool=$lineaAire->getNumerosLibres();
         $codigoReserva=$pool['codigo_reserva'];
@@ -168,6 +172,11 @@ class AltaTecnica
         return $rs;
 
 
+
+    }
+
+    public static function addNuevaPortabilidadMasMovil()
+    {
 
     }
 }
