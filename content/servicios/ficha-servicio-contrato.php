@@ -397,7 +397,7 @@ $actual = date ("Y-m-d");
                                                 <i class="fa fa-eye"></i>
                                             </button>
                                         </a>
-                                        <a href="../almacen/ficha-producto.php?idProducto=<?php echo $id; ?>">
+                                        <a onclick="abrirModal()">
                                             <button type="button" rel="tooltip" >
                                                 <i class="fa fa-recycle"></i>
                                             </button>
@@ -509,9 +509,6 @@ $actual = date ("Y-m-d");
                                     else
                                         $valor=$atributos[$i][3];
 
-
-
-
                                     echo "<tr>";
 
                                     echo "<tr>";
@@ -528,6 +525,7 @@ $actual = date ("Y-m-d");
                                                 <i class="fa fa-eye"></i>
                                             </button>
                                         </a>
+
 
                                     </td>
                                     </tr>
@@ -582,6 +580,107 @@ $actual = date ("Y-m-d");
 
 
     </section>
+    <!----------------------------------------------------------------------
+------------------------------------------------------------------------
+-------------------------- VENTANA MODAL -------------------------------
+------------------------------------------------------------------------
+----------------------------------------------------------------------->
+    <div class="modal fade" id="modal" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="padding:5%">
+                <div class="text-center">
+                    <h3 class="text-aqua ">Cambio de producto asociado</h3>
+                    <i class="fas fa-recycle"></i>
+                    <img class="img-responsive" id="img-provision2">
+                    <br><br>
+                </div>
+                <?php
+                $prodcs=Producto::getProductosMovil($_SESSION['REVENDEDOR']);
+                if($prodcs!=NULL)
+                {
+
+
+                    ?>
+                    <form action="guardar-cambio-producto.php" method="post">
+                    <div class="row">
+                        <div class="col-lg-4 col-xs-5" id="text_cliente"><b>Nueva Tarjeta:</b></div>
+                        <select name="servicio" id="servicio"
+                                class="form-control pointer " name="nombre"  onchange="carga_detalles_servicio(this.value)">
+                            <?php
+
+
+                            for($i=0;$i<count($prodcs);$i++)
+                            {
+                                $id=$prodcs[$i][0];
+                                $nombre=$prodcs[$i][1];
+                                echo "<option value='$id'>$nombre</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4 col-xs-5"><b>Motivo cambio:</b></div>
+                        <select name="servicio" id="servicio"
+                                class="form-control pointer " name="nombre"  onchange="carga_detalles_servicio(this.value)">
+                            <option value="PER">Perdida de tarjeta</option>
+                            <option value="ROT">Rotura o deterioro</option>
+                            <option value="ROB">Robo</option>
+                            <option value="R4G">Remplazo tarjeta a 4G</option>
+                            <option value="OTH">Otros motivos</option>
+                        </select>
+
+                    </div>
+                    <?php
+                }
+                else
+                    echo "No se puede hacer el cambio de SIM a este terminal, porque no hay tarjetas SIM en Stock";
+                ?>
+
+
+                <div class="row">
+                    <br><br>
+                    <div class="col-lg-6 col-xs-12"></div>
+                    <div class="col-lg-3 col-xs-6 text-right">
+                        <a href="#" id="" data-dismiss="modal" style="margin-top:25px" class="btn btn-danger">
+                            <span>Cancelar</span>
+
+                        </a>
+                    </div>
+                    <?php
+                    if($prodcs!=NULL) {
+                        ?>
+                        <div class="col-lg-3 col-xs-6 text-right">
+                            <input type="submit" href="#" id="btn-enviar" onclick="enviar();" style="margin-top:25px" class="btn btn-success">
+                                <span>Activar</span>
+                            </input>
+                        </div>
+                        <?php
+                    }
+                    ?>
+                    </form>
+                </div>
+                <div id="trabajando" style="display:none">
+                <span id="texto_trabajando">Realizando operaciones en los servidores, esto puede tardar.<br>Por
+                favor espera.<br><br></span>
+                    <div class="progress skill-bar ">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="99"
+                             aria-valuemin="0"
+                             aria-valuemax="100">
+                            <span class="skill">Progreso: <i class="val"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <br>
+                    <center>
+                        <span style="font-size:1em; color:red" id="msg_error"></span>
+                    </center>
+                </div>
+            </div>
+        </div>
+
+    </div>
     <!-- /MIDDLE -->
 
 </div>
@@ -591,12 +690,19 @@ $actual = date ("Y-m-d");
 <script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 
-<!--<script type="text/javascript" src="../../assets/js/app.js"></script>-->
+<script type="text/javascript" src="../../assets/js/app.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.css">
 
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.js"></script>
 <script>
-
+    function abrirModal()
+    {
+        $("#modal").modal();
+    }
+    function enviar()
+    {
+        alert("WOO");
+    }
     $(function () {
         $('#example1').DataTable()
         $('#example2').DataTable({

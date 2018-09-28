@@ -109,7 +109,7 @@ $pvp=$listado[0][5];
 
                         <div class="panel-body">
 
-                            <form class="validate" action="guardar-paquete.php" method="post"
+                            <form class="validate" action="guardar-paquete-cliente.php" method="post"
                                   enctype="multipart/form-data">
                                 <fieldset>
                                     <!-- required [php action request] -->
@@ -188,14 +188,6 @@ $pvp=$listado[0][5];
 
                                         if(!isset($_GET['idContrato']))
                                         {
-                                            /*
-                                             * SELECT servicios.NOMBRE,servicios_tipos.NOMBRE
-FROM contratos_lineas,contratos_lineas_detalles,servicios,servicios_tipos
-WHERE contratos_lineas.ID=contratos_lineas_detalles.ID_LINEA
-AND contratos_lineas_detalles.ID_SERVICIO=servicios.id
-AND servicios.ID_SERVICIO_TIPO=servicios_tipos.ID
-AND contratos_lineas_detalles.ID_LINEA=250
-                                             */
                                             $atributos= $util->selectWhere3('servicios,paquetes_servicios,paquetes,servicios_tipos',
                                                 array("paquetes_servicios.id,servicios.nombre,servicios.precio_proveedor,servicios.beneficio,servicios.impuesto,servicios.pvp,servicios.id,servicios_tipos.nombre,servicios.id"),
                                                 "paquetes.id=paquetes_servicios.id_paquete 
@@ -221,27 +213,31 @@ AND contratos_lineas_detalles.ID_LINEA=250
 
                                         //Se utiliza un contador para agrupar las líneas de los servicios
                                         $contador=1;
+                                        $contTotal=0;
+                                        $j=0;
                                         for($i=0;$i<count($atributos);$i++)
                                         {
+
                                             if($contador==1)
-                                                $idLineaDetalle=$atributos[$i][6];
+                                            {
+                                                $id=$atributos[$i][0];
+
+                                                $nombre=$atributos[$i][1];
+
+                                                $servicioId=$atributos[$i][3];
+                                                $estado=$atributos[$i][4];
+                                                $idEstadoId=$atributos[$i][5];
+                                                $tipo=$atributos[$i][2];
+                                                $idLineaDetalle = $atributos[$i][6];
+                                                $numero= $util->selectWhere3('servicios_tipos_atributos',
+                                                    array("count(id)"),
+                                                    "servicios_tipos_atributos.id_servicio=$servicioId AND servicios_tipos_atributos.id_tipo=2");
 
 
-                                            $id=$atributos[$i][0];
-
-                                            $nombre=$atributos[$i][1];
-                                            $tipo=$atributos[$i][2];
-                                            $servicioId=$atributos[$i][3];
-                                            $estado=$atributos[$i][4];
-                                            $idEstadoId=$atributos[$i][5];
-
-
-                                            $numero= $util->selectWhere3('servicios_tipos_atributos',
-                                                array("count(id)"),
-                                                "servicios_tipos_atributos.id_servicio=$servicioId AND servicios_tipos_atributos.id_tipo=2");
-
-                                            $numero=$numero[0][0];
-
+                                                $numero=$numero[0][0];
+                                                echo "El numero de atributos es $numero<br>";
+                                            }
+                                            echo $i;
 
                                             if($idEstadoId==1)
                                             {
@@ -266,11 +262,11 @@ AND contratos_lineas_detalles.ID_LINEA=250
 
 
 
-
+                                            echo "El numero es $numero y $contador<br>";
 
                                             if($contador==$numero)
                                             {
-
+                                                echo "ENTRAAA";  echo "El numero es $numero y $contador<br>";
                                                 $contador=1;
                                             echo "<tr>";
                                             echo "<td>$id</td>
@@ -283,8 +279,8 @@ AND contratos_lineas_detalles.ID_LINEA=250
                                                 <a href="ficha-servicio.php?idServicio=<?php echo $idServicio;?>">
                                                     <button type="button" rel="tooltip" >
                                                         <?php
-                                                        echo "<a href='ficha-servicio-paquete.php?idServicio=".$id."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$_GET['idLineaContrato']."&idLineaDetalle=".$idLineaDetalle."&tipo=$servicioId''>";
-                                                        echo '  <i class="fas fa-edit"></i>';
+                                                        echo "<a href='/ml/content/servicios/ficha-servicio-paquete.php?idServicio=".$id."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$_GET['idLineaContrato']."&idLineaDetalle=".$idLineaDetalle."&tipo=$servicioId''>";
+                                                        echo ' <i class="fa fa-pencil"></i>';
                                                         echo "</a>";
                                                         ?>
 
@@ -302,12 +298,14 @@ AND contratos_lineas_detalles.ID_LINEA=250
                                                 else
                                                 {
                                                     $contador++;
+                                                    $contTotal++;
 
                                                 }
 
 
                                         }
-                                        ?>
+
+                                        ?>*/
                                         </tbody>
 
                                     </table>

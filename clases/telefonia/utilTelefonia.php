@@ -9,10 +9,11 @@
 
 if (!isset($_SESSION)) {@session_start();}
 
-require_once('../../config/define.php');
-require_once('../../config/def_tablas.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'config/define.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'config/def_tablas.php');
 
 date_default_timezone_set('Europe/Madrid');
+
 
 class UtilT {
 
@@ -69,15 +70,15 @@ class UtilT {
         );
 
 
-    return $string;
-}
+        return $string;
+    }
     public function conectar(){
         $link = new mysqli(DB_TELEFONIA_SERVER, DB_TELEFONIA_USER, DB_TELEFONIA_PASSWORD,DB_TELEFONIA_DATABASENAME);
 
         if (mysqli_connect_errno()) {
-           printf("Falló la conexión: %s\n", mysqli_connect_error());
-           exit();
-       }
+            printf("Falló la conexión: %s\n", mysqli_connect_error());
+            exit();
+        }
 //        mysqli_select_db($link, DB_DATABASENAME)
 //        or die ("Error al seleccionar base datos.");
 
@@ -107,7 +108,7 @@ class UtilT {
             $fieldNames[] = mysqli_fetch_field_direct($result, $i);
         }
 
-       $link->close();
+        $link->close();
 
         return $fieldNames;
     }
@@ -248,7 +249,7 @@ class UtilT {
             if (!($result = $link->query($query)))
                 throw new Exception();
 //            $this->log($query);
-           $link->close();
+            $link->close();
 
             return $result;
         } catch (Exception $e) {
@@ -276,7 +277,7 @@ class UtilT {
 
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
-           // echo $query;
+            // echo $query;
             if (!($result = $link->query($query)))
                 throw new Exception();
 
@@ -286,7 +287,7 @@ class UtilT {
             {
                 array_push($fieldNames, $row[0]);
             }
-           // var_dump($fieldNames);
+            // var_dump($fieldNames);
             $link->close();
 
             return $fieldNames;
@@ -319,7 +320,7 @@ class UtilT {
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
 
-             //echo $query;
+            //echo $query;
 
             if (!($result = $link->query($query)))
                 throw new Exception();
@@ -365,7 +366,7 @@ class UtilT {
             }
 
 
-           $link->close();
+            $link->close();
 
             return $fieldNames;
 
@@ -390,7 +391,7 @@ class UtilT {
 
         $row = mysqli_fetch_array($result);
 
-       $link->close();
+        $link->close();
 
         return $row[0];
 
@@ -409,13 +410,13 @@ class UtilT {
         //mod by paco
         $query.= " order by $campo desc limit 1 ";
 
-       // echo $query;
+        // echo $query;
         if (!($result = $link->query($query)))
             throw new Exception('Error en selectLast.');
 
         $row = mysqli_fetch_array($result);
 
-       $link->close();
+        $link->close();
 
         return $row[0];
 
@@ -519,9 +520,9 @@ class UtilT {
             $consulta .= str_replace(",", " ", $query);
             $consulta .= "','" . $lastid . "')";
 
-           $result = $link->query($query);
+            $result = $link->query($query);
 
-           $link->close();
+            $link->close();
         }
         return $lastid;
 
@@ -547,7 +548,7 @@ class UtilT {
             $lastid = mysqli_affected_rows($link);
 
 
-           $link->close();
+            $link->close();
 
             return $lastid;
         } catch (Exception $e) {
@@ -570,7 +571,7 @@ class UtilT {
             else
                 $query = "DELETE FROM ". $tabla . " WHERE " . $where;
 
-          //  echo $query;
+            //  echo $query;
 
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
@@ -662,7 +663,7 @@ class UtilT {
 
         $link->query($this->cleanstring($consulta));
 
-       $link->close();
+        $link->close();
 
         return $lastid;
     }
@@ -693,7 +694,7 @@ class UtilT {
                 $valores='';
             }
 
-           $link->close();
+            $link->close();
 
         } catch (Exception $e) {
             $this->log('Excepción capturada: ' . $e->getMessage());
@@ -741,7 +742,7 @@ class UtilT {
         $link = $this->conectar();
         $query="INSERT INTO logs (log, ip) VALUES ('".$this->cleanstring($action)."','$ip')";
         $link->query($query);
-       $link->close();
+        $link->close();
 
     }
 
@@ -751,7 +752,7 @@ class UtilT {
         $link = $this->conectar();
         $query="INSERT INTO log_inserts (id_usuario, consulta, last_id, ip) VALUES ('".$_SESSION['USER_ID']."', '$action', '$lastid', '$ip');";
         $link->query($query);
-       $link->close();
+        $link->close();
 
     }
     /** **********************************
@@ -767,4 +768,6 @@ class UtilT {
         return $ip;
     }
 }
+?>
+
 ?>

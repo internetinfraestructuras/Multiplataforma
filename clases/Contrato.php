@@ -32,6 +32,19 @@ class Contrato
             "contratos.id_empresa=$idEmpresa AND contratos.fecha_fin=date(now()) AND contratos.estado!=5");
     }
 
+    public static function getAnexosContratos($idEmpresa,$idContrato)
+    {
+        $util = new util();
+
+        return $util->selectWhere3('contratos,contratos_anexos,contratos_tipos_anexos',
+            array("contratos_anexos.ID","contratos_tipos_anexos.nombre","contratos_anexos.fecha","contratos_anexos.id_tipo_linea","contratos_anexos.id_asociado"),
+            "contratos.id_empresa=$idEmpresa 
+                              
+                                            AND contratos_anexos.id_tipo_tramite=contratos_tipos_anexos.id
+                                            AND contratos.id=contratos_anexos.id_contrato 
+                                            AND contratos_anexos.id_contrato=$idContrato");
+    }
+
     //Devuelve la linea contratos_lineas de un contrato de una dicha linea con un idServicio especifico.
     public static function getLineaContratoServicio($idContrato, $idLinea, $idServicio)
     {
@@ -47,8 +60,8 @@ class Contrato
     {
         $util = new util();
 
-        return $util->selectWhere3("contratos_campanas", array("ID_CAMPANA","DTO","DTO_HASTA"),
-            "contratos_campanas.id_contrato=$idContrato AND contratos_campanas.dto_hasta>=date(now())");
+        return $util->selectWhere3("contratos_campanas,campanas", array("ID_CAMPANA","DTO","DTO_HASTA","campanas.NOMBRE"),
+            "contratos_campanas.id_contrato=$idContrato AND contratos_campanas.dto_hasta>=date(now()) AND campanas.id=contratos_campanas.id_campana");
     }
 
     // Agrega documentos tipo firma y escaneados al contrato (Rubén)
@@ -387,13 +400,20 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         $result = $util->update('contratos_lineas_productos', $campos, $values, "id_linea=" . $idLinea);
     }
 
+    public static function getClienteDatos($idContrato,$idEmpresa)
+    {
+        $util = new util();
+        return $util->selectWhere3("contratos,clientes", array("clientes.ID", "NOMBRE","APELLIDOS","DNI"),
+            "contratos.id_cliente=clientes.id AND contratos.id=$idContrato AND contratos.id_empresa=$idEmpresa");
+    }
     //Generar un anexo de contrato
-    public static function generarAnexo($idContrato, $idServicio, $tipoAnexo)
+    public static function generarAnexo($idContrato,$idTipoLinea,$idAsociado,$idLinea,$idTipoAnexo)
     {
 
         $util = new util();
-        $t_contratos_anexos = array("ID_CONTRATO", "ID_SERVICIO", "ID_TIPO_TRAMITE");
-        $values = array($idContrato, $idServicio, $tipoAnexo);
+        echo "Entramos en geenrear anexo";
+            $t_contratos_anexos = array("ID_CONTRATO", "ID_TIPO_LINEA","ID_ASOCIADO","ID_LINEA_CONTRATO","ID_TIPO_TRAMITE");
+            $values = array($idContrato,$idTipoLinea,$idAsociado,$idLinea,$idTipoAnexo);
 
         $resAnexo = $util->insertInto('contratos_anexos', $t_contratos_anexos, $values);
     }
@@ -415,6 +435,17 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
             }
 
         }
+
+
+    }
+    public static function setProductoEstado($idEmpresa,$idProducto,$idEstado)
+    {
+        $util = new util();
+
+        $campos = array("ESTADO");
+        $values = array($idEstado);
+
+        $result = $util->update('productos,almacenes', $campos, $values, "productos.id_almacen=almacenes.id AND productos.id=" . $idProducto . " AND almacenes.id_empresa=" .$idEmpresa);
 
 
     }
@@ -493,6 +524,16 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         $values = array($estado);
 
         $result = $util->update('productos,almacenes', $campos, $values, "productos.id_almacen=almacenes.id AND productos.id=" . $idProducto . " AND almacenes.id_empresa=" . $_SESSION['REVENDEDOR']);
+    }
+
+    /*
+     * nos devuelve la línea de detalles a la cual pertenece un producto
+     */
+    public static function getLineaProducto($idProducto)
+    {
+        $util = new util();
+        return $util->selectWhere3("contratos_lineas_productos", array("ID_LINEA"),
+            "contratos_lineas_productos.id_producto=$idProducto AND contratos_lineas_productos.estado!=6");
     }
 
 }

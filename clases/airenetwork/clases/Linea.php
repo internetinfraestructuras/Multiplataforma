@@ -1,4 +1,6 @@
 <?php
+require_once "lib/nusoap.php";
+
 
 class Linea
 {
@@ -14,21 +16,26 @@ class Linea
      */
     public function __construct($url, $user, $pass)
     {
-        $this->url = $url;
-        $this->user = $user;
-        $this->pass = $pass;
+        $this->url="https://wscliente.airenetworks.es/ws_desarrollo/mv/gestMOVIL_2.php?wsdl";
+        $this->user="B10452795";
+        $this->pass="aSo2Onc03H";
     }
     public function getAllLineas()
     {
+
         $client = new nusoap_client($this->url,$proxyhost=false,$proxyport=false,$proxyusername=false,$proxupassword=false,$timeout=0,$response_timeout=160);
+
         $err=$client->getError();
+
         if($err)
         {
             echo "ERROR";
         }
-
+        echo "ERROR";
         $datos = array("user" => $this->user, "pass" => $this->pass);
         $result = $client->call("getLineas", array($datos));
+
+        var_dump($result);
 
 
         return json_encode($result);
@@ -46,7 +53,7 @@ class Linea
         $result = $client->call("getPoolMsisdn", array($datos));
 
 
-        return json_encode($result);
+        return $result;
     }
 
     public function getLineasPorDni($dni)
@@ -92,7 +99,7 @@ class Linea
         $result = $client->call("getLineas", array($datos));
 
 
-        return json_encode($result);
+        return $result;
     }
     public function getLineaTipoCliente($tipoCliente)
     {
@@ -225,27 +232,29 @@ class Linea
         return json_encode($result);
     }
 
-    public function setAltaNueva($requestBody)
+    public function setAltaNueva($tarifa,$tipoCliente,$nif,$icc,$dc,$telefono,$codigoReserva)
     {
         $cliente = new nusoap_client($this->url,true);
 
         $datos=array(
             "user"=>$this->user,
             "pass"=>$this->pass,
-            "tarifa"=>$requestBody[0]["tarifa"],
-            "subscriberType"=>$requestBody[0]["tipoCliente"],
-            "nif"=>$requestBody[0]["nif"],
-            "icc"=>$requestBody[0]["icc"],
-            "digito_control"=>$requestBody[0]["digito_control"],
-            "telefono"=>$requestBody[0]["telefono"],
-            "codigo_reserva"=>$requestBody[0]["codigo_reserva"],
+            "tarifa"=>$tarifa,
+            "subscriberType"=>$tipoCliente,
+            "nif"=>$nif,
+            "icc"=>$icc,
+            "digito_control"=>$dc,
+            "telefono"=>$telefono,
+            "codigo_reserva"=>$codigoReserva,
         );
-        var_dump($datos);
+
         $return = $cliente->call("setAltaLineaNueva",array($datos));
         $error = $cliente->getError();
-        if ($error)  echo "<pre>".$error."</pre>";
+        if ($error)
+            return $error;
+        else
+            return $return;
 
-        echo json_encode($return);
     }
     public function setAltaPortabilidad($requestBody)
     {

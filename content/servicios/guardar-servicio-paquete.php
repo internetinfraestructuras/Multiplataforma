@@ -32,7 +32,7 @@ if(
 )
 {
 
-    $romperPaquete=($_POST['romper-paquete']);
+    @$romperPaquete=($_POST['romper-paquete']);
     $idServicioOriginal=$_POST['id'];
     $idContrato=$util->cleanstring($_POST['idContrato']);
     $idLinea=$util->cleanstring($_POST['idLinea']);
@@ -56,7 +56,7 @@ if(
         if($romperPaquete!='on')
          Servicio::actualizarServicioPaqueteContrato($idContrato,$idLinea,$id,$tipo,$servicio,$atributos,$fechaCambio,$idServicioOriginal,$idLineaDetalle);
         else
-            Servicio::romperPaquete($idContrato,$idLinea,$servicio,$fechaCambio);
+            Servicio::romperPaquete($idContrato,$idLinea,$servicio,$fechaCambio,$idLineaDetalle);
 
     }
 

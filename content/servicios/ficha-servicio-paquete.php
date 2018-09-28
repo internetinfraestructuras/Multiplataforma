@@ -8,7 +8,12 @@ if (!isset($_SESSION)) {
     @session_start();
 }
 require_once('../../config/util.php');
+require_once ('../../clases/Producto.php');
+require_once ('../../clases/Contrato.php');
+
 $util = new util();
+
+
 check_session(2);
 
 if(!isset($_GET['idContrato']))
@@ -21,7 +26,7 @@ if(!isset($_GET['idContrato']))
 else
 {
     $listado= $util->selectWhere3('servicios,servicios_tipos,contratos,contratos_lineas',
-        array("servicios.id","servicios.nombre","contratos_lineas.pvp","contratos_lineas.precio_proveedor","contratos_lineas.impuesto","contratos_lineas.beneficio","servicios.id_servicio_tipo","contratos_lineas.permanencia","contratos_lineas.estado"),
+        array("servicios.id","servicios.nombre","contratos_lineas.pvp","contratos_lineas.precio_proveedor","contratos_lineas.impuesto","contratos_lineas.beneficio","servicios.id_servicio_tipo","contratos_lineas.permanencia","contratos_lineas.estado","servicios.id_proveedor"),
         "servicios.id_empresa=".$_SESSION['REVENDEDOR']."
                                                      AND servicios.id_servicio_tipo=servicios_tipos.id AND contratos.id=".$_GET['idContrato']."
                                                       AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." 
@@ -37,10 +42,12 @@ $beneficio=$listado[0][5];
 $idTipoServicio=$listado[0][6];
 $permanencia=$listado[0][7];
 $estado=$listado[0][8];
+$idProveedor=$listado[0][9];
 $readonly="";
 
-$actual = date ("Y-m-d");
 
+
+$actual = date ("Y-m-d");
 
 
 
@@ -68,7 +75,7 @@ $actual = date ("Y-m-d");
     <link href="../../assets/css/essentials.css" rel="stylesheet" type="text/css"/>
     <link href="../../assets/css/layout.css" rel="stylesheet" type="text/css"/>
     <link href="../../assets/css/color_scheme/green.css" rel="stylesheet" type="text/css" id="color_scheme"/>
-    <script type="text/javascript" src="js/utiles.js"></script>
+    <script type="text/javascript" src="../../js/utiles.js"></script>
 
 </head>
 <!--
@@ -193,7 +200,7 @@ $actual = date ("Y-m-d");
                                 </thead>
                                 <tbody>
                                 <?php
-
+                                $msidn="";
 
                                $numero= $util->selectWhere3('servicios_tipos_atributos',
                                     array("count(id)"),
@@ -218,12 +225,6 @@ $actual = date ("Y-m-d");
                                         ." AND contratos_lineas.id=contratos_lineas_detalles.id_linea AND contratos_lineas_detalles.id_servicio=".$_GET['idServicio']."
                                         AND contratos_lineas_detalles.estado!=5 AND contratos_lineas_detalles.id>=$idLineaDetalle AND contratos_lineas_detalles.id<=$numeroMax");
 
-
-
-
-
-
-
                                 for($i=0;$i<$numero;$i++)
                                 {
 
@@ -235,6 +236,8 @@ $actual = date ("Y-m-d");
                                     else
                                         $valor=$atributos[$i][3];
 
+                                    if($id==48)
+                                        $msidn=$valor;
 
 
 
@@ -244,7 +247,7 @@ $actual = date ("Y-m-d");
                                     echo "<td><input name='atributo[id][]' value='$id' class='form-control' type='hidden' />
                                             <input name='atributo[id][]' value='$id' class='form-control'  disabled/></td>
                                             <td><input  value='$attr' class='form-control' disabled />
-                                            </td><td><input name='atributo[valor][]' value='$valor' class='form-control' id='atributo-$id'/></td>";
+                                            </td><td><input name='atributo[valor][]' value='$valor' class='form-control' id='atributo-$id' /></td>";
 
                                     ?>
 
@@ -256,10 +259,65 @@ $actual = date ("Y-m-d");
 
                                     <?php
                                 }
-                                ?>
+
+                                $estadoLinea="";
+                                if($idProveedor==ID_PROVEEDOR_MASMOVIL )
+                                {
+                                    require_once ('../../clases/masmovil/MasMovilAPI.php');
+
+                                    $res=Contrato::getClienteDatos($_GET['idContrato'],$_SESSION['REVENDEDOR']);
+
+                                    $apiMasMovil=new MasMovilAPI();
+
+                                    $resultado=$apiMasMovil->getListadoClientes($res[0][3],$msidn);
+
+
+                                    $refClienteAPI=$resultado->Client[0]->refCustomerId;
+                                    $resultado=$apiMasMovil->getLineasMsisdnsIccids($refClienteAPI,$msidn,"8934011411704178217","");
+                                    $iccid=$resultado->msisdnList->Msisdn->Iccid;
+                                    $tipoSim=$resultado->msisdnList->Msisdn->typeIccid;
+
+                                    $puk=$resultado->msisdnList->Msisdn->Puk;
+
+                                    $estadoLinea=$resultado->msisdnList->Msisdn->status;
+
+
+                                }
+                                else if($idProveedor==ID_PROVEEDOR_AIRENETWORKS)
+                                {
+
+                                    require_once ('../../clases/airenetwork/clases/Linea.php');
+
+                                    $lineaAire=new Linea("","","");
+                                    $r=$lineaAire->getLineaNumero($msidn);
+
+                                    if($r!=NULL)
+                                      $estadoLinea=$r[0]['activo'];
+
+                                }
+                                //SI ES DE TIPO MOVIL Y DE MASMOVIL SE PUEDEN MOSTRAR DATOS DE LA TARJETA COMO PUK Y DEMAS
+                                if($_GET['tipo']==3 && $idProveedor==ID_PROVEEDOR_MASMOVIL )
+                                {
+                                echo "<tr>";
+                                echo "<td colspan='2'><input  value='CODIGO PUK' class='form-control' disabled />";
+                                echo "<td><input  value='$puk' class='form-control' disabled />";
+                                echo "</tr>";
+                                echo "<tr>";
+                                echo "<td colspan='2'><input  value='ICC' class='form-control' disabled />";
+                                echo "<td><input  value='$iccid' class='form-control' disabled />";
+                                echo "</tr>";
+                                echo "<tr>";
+                                echo "<td colspan='2'><input  value='Tipo Tarjeta' class='form-control' disabled />";
+                                echo "<td><input  value='$tipoSim' class='form-control' disabled />";
+                                echo "</tr>";
+
+                                }?>
+
+
                                 </tbody>
 
                             </table>
+
                             <label>¿Qué día será efectivo el cambio?: </label>
                             <input type="date" name="fecha-baja" id="fecha-cambio" value="<?php echo date('Y-m-d'); ?>"><br>
                             <input type="checkbox" name="romper-paquete"  placeholder="0" > Deseo romper el paquete y cobrar al cliente por los servicios independientes.
@@ -335,16 +393,7 @@ $actual = date ("Y-m-d");
                                 }
                                 else
                                 {
-                                    /*
-                                     * SELECT productos.ID,productos.NUMERO_SERIE
-FROM contratos,contratos_lineas,contratos_lineas_detalles,contratos_lineas_productos,productos
-where
-contratos.id=contratos_lineas.ID_CONTRATO
-AND contratos_lineas.id=contratos_lineas_detalles.ID_LINEA
-AND contratos_lineas_detalles.id=contratos_lineas_productos.ID_LINEA
-and contratos_lineas_productos.ID_PRODUCTO=productos.ID
-and contratos_lineas_detalles.ID_LINEA=277 AND contratos_lineas_detalles.ID_TIPO_SERVICIO=3
-                                     */
+
                                     $atributos= $util->selectWhere3('contratos,contratos_lineas,contratos_lineas_detalles,contratos_lineas_productos,productos,productos_estados',
                                         array("productos.id,productos.numero_serie,productos_estados.nombre"),
                                         "contratos.id=contratos_lineas.id_contrato AND productos.estado=productos_estados.id 
@@ -373,6 +422,7 @@ and contratos_lineas_detalles.ID_LINEA=277 AND contratos_lineas_detalles.ID_TIPO
                                     echo "<tr>";
 
                                     echo "<tr>";
+
                                     echo "<td><input name='atributo[id][]' value='$id' class='form-control'  type='hidden' />
                                             <input name='atributo[id][]' value='$id' class='form-control'  disabled/></td>
                                             <td><input  value='$ssid' class='form-control' disabled />
@@ -386,7 +436,7 @@ and contratos_lineas_detalles.ID_LINEA=277 AND contratos_lineas_detalles.ID_TIPO
                                                 <i class="fa fa-eye"></i>
                                             </button>
                                         </a>
-                                        <a href="../almacen/ficha-producto.php?idProducto=<?php echo $id; ?>">
+                                        <a onclick="abrirModal(<?php echo $id;?>)">
                                             <button type="button" rel="tooltip" >
                                                 <i class="fa fa-recycle"></i>
                                             </button>
@@ -412,15 +462,84 @@ and contratos_lineas_detalles.ID_LINEA=277 AND contratos_lineas_detalles.ID_TIPO
 
                         </div>
                     </div>
+                <?php
+
+                if($idTipoServicio==3 && $idProveedor==ID_PROVEEDOR_MASMOVIL)
+                {
+                    ?>
+
 
                     <div class="panel panel-default">
                         <div class="panel-body">
+                            <h2>Operaciones sobre la línea</h2>
+                            <hr>
 
-                            <a href="javascript:;" onclick=""
-                               class="btn btn-info btn-xs">Ayuda</a>
+                            <?php if($estadoLinea==LINEA_ACTIVA_MASMOVIL)
+                            {?>
 
+
+
+                                <a href="javascript:;" onclick="establecerRoaming('A')"
+                                   class="btn btn-info btn-xs">ACTIVAR ROAMING <i class="fas fa-globe-asia"></i></a></br>
+                                <br/>
+                                <a href="javascript:;" onclick="establecerRoaming('D')"
+                                   class="btn btn-info btn-xs">DESACTIVAR ROAMING <i class="fas fa-globe-asia"></i></a></br>
+                                <br/>
+                            <a href="javascript:;" onclick="estadosLineas('S')"
+                               class="btn btn-danger btn-xs">SUSPENSION TEMPORAL LINEA <i
+                                        class="fas fa-phone"></i></a></br><br/>
+                            <?php
+                            }?>
+                            <?php if($estadoLinea==LINEA_SUSPENDIDA_MASMOVIL)
+                            {?>
+                            <a href="javascript:;" onclick="estadosLineas('A')"
+                               class="btn btn-danger btn-xs">REACTIVACIÓN DE LÍNEA <i class="fas fa-phone"></i></a></br>
+                            <br/>
+                                <?php
+                            }?>
+
+                            <a href="javascript:;" onclick="estadosLineas('A')"
+                               class="btn btn-blue btn-xs">CONSULTAR CDR   <i class="fas fa-phone"></i></a></br>
+                            <br/>
                         </div>
                     </div>
+                    <?php
+                    }
+
+                    if($idTipoServicio==3 && $idProveedor==ID_PROVEEDOR_AIRENETWORKS)
+                    {
+                    ?>
+
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h2>Operaciones sobre la línea</h2>
+                            <hr>
+
+                            <?php
+                            if($estadoLinea=="SI")
+                            {
+                            ?>
+                            <a href="javascript:;" onclick="estadosLineas('A')"
+                               class="btn btn-danger btn-xs">SOLICITAR CORTE IMPAGO  <i class="fas fa-phone"></i></a></br>
+                            <br/>
+                            <?php
+                            }
+                            ?>
+                            <a href="javascript:;" onclick="estadosLineas('A')"
+                               class="btn btn-warning btn-xs">CANCELAR SOLICITUD DE CORTE  <i class="fas fa-phone"></i></a></br>
+                            <br/>
+                            <a href="javascript:;" onclick="estadosLineas('A')"
+                               class="btn btn-warning btn-xs">REESTABLECER CORTE POR IMPAGO  <i class="fas fa-phone"></i></a></br>
+                            <br/>
+                            <a href="../servicios/cdr-actual-aire.php?numero=<?php echo $msidn;?>"
+                               class="btn btn-blue btn-xs">CONSULTAR CDR   <i class="fas fa-phone"></i></a></br>
+                            <br/>
+                        </div>
+                    </div>
+                    <?php
+                    }
+                    ?>
 
                 </div>
             </div>
@@ -430,7 +549,120 @@ and contratos_lineas_detalles.ID_LINEA=277 AND contratos_lineas_detalles.ID_TIPO
         </div>
 
 </div>
+
 </section>
+<!----------------------------------------------------------------------
+------------------------------------------------------------------------
+-------------------------- VENTANA MODAL -------------------------------
+------------------------------------------------------------------------
+----------------------------------------------------------------------->
+<div class="modal fade" id="modal" role="basic" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="padding:5%">
+            <div class="text-center">
+                <h3 class="text-aqua ">Cambio de producto asociado</h3>
+                <i class="fas fa-recycle"></i>
+                <img class="img-responsive" id="img-provision2">
+                <br><br>
+            </div>
+            <?php
+
+                    $prodcs=Producto::getProductosServicio($_SESSION['REVENDEDOR'],$_GET['tipo']);
+            if($idProveedor!=ID_PROVEEDOR_AIRENETWORKS)
+            {
+
+
+                    if($prodcs!=NULL )
+                    {
+
+
+                            ?>
+                    <div class="row">
+                        <form action="" method="post">
+                            <input  value='' id="producto-original" class='form-control' disabled />
+                        <div class="col-lg-4 col-xs-5" id="text_cliente"><b>Número de Serie:</b></div>
+                        <select name="servicio" id="producto-cambio"
+                                class="form-control pointer " name="nombre"  onchange="carga_detalles_servicio(this.value)">
+                        <?php
+
+
+                            for($i=0;$i<count($prodcs);$i++)
+                            {
+                                $id=$prodcs[$i][0];
+                                $nombre=$prodcs[$i][1];
+                                echo "<option value='$id' id='producto'>$nombre</option>";
+                            }
+                         ?>
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4 col-xs-5"><b>Motivo cambio:</b></div>
+                        <select name="servicio" id="motivo-cambio"
+                                class="form-control pointer " name="nombre" id="motivo" onchange="carga_detalles_servicio(this.value)">
+                            <option value="PER">Perdida de tarjeta</option>
+                            <option value="ROT">Rotura o deterioro</option>
+                            <option value="ROB">Robo</option>
+                            <option value="R4G">Remplazo tarjeta a 4G</option>
+                            <option value="OTH">Otros motivos</option>
+                        </select>
+
+                    </div>
+                    <?php
+                    }
+                    else
+                        echo "No se puede hacer el cambio de SIM a este terminal, porque no hay tarjetas SIM en Stock";
+            }
+            else
+                echo "AIRENETWORKS sólo puede efectuar cambios de SIMS desde su plataforma GECKOS.";
+            ?>
+
+
+            <div class="row">
+                <br><br>
+                <div class="col-lg-6 col-xs-12"></div>
+                <div class="col-lg-3 col-xs-6 text-right">
+                    <a href="#" id="" data-dismiss="modal" style="margin-top:25px" class="btn btn-danger">
+                        <span>Cancelar</span>
+
+                    </a>
+                </div>
+                <?php
+                if($prodcs!=NULL && $idProveedor!=ID_PROVEEDOR_AIRENETWORKS) {
+                    ?>
+                    <div class="col-lg-3 col-xs-6 text-right">
+                        <a href="#" id="btn-enviar" onclick="enviar();" style="margin-top:25px" class="btn btn-success">
+                            <span>Activar</span>
+                        </a>
+                    </div>
+                    <?php
+                }
+                ?>
+            </div>
+
+            <div id="trabajando" style="display:none">
+                <span id="texto_trabajando">Realizando operaciones en los servidores, esto puede tardar.<br>Por
+                favor espera.<br><br></span>
+                <div class="progress skill-bar ">
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="99"
+                         aria-valuemin="0"
+                         aria-valuemax="100">
+                        <span class="skill">Progreso: <i class="val"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <br>
+                <center>
+                    <span style="font-size:1em; color:red" id="msg_error"></span>
+                </center>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
 <!-- /MIDDLE -->
 
 </div>
@@ -439,10 +671,69 @@ and contratos_lineas_detalles.ID_LINEA=277 AND contratos_lineas_detalles.ID_TIPO
 <script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 
-<!--<script type="text/javascript" src="../../assets/js/app.js"></script>-->
+<script type="text/javascript" src="../../assets/js/app.js"></script>
 
 
 <script>
+    function abrirModal(id)
+    {
+       $("#producto-original").val(id);
+
+
+
+        $("#modal").modal();
+    }
+    function enviar()
+    {
+        var idProducto=$("#producto-cambio").val();
+        var motivo=$("#motivo-cambio").val();
+        var idProductoOriginal=$("#producto-original").val();
+
+        jQuery.ajax({
+            url: 'guardar-cambio-producto.php',
+            type: 'POST',
+            cache: false,
+            async:true,
+            data:{idProducto:idProducto,motivo:motivo,idProductoOriginal:idProductoOriginal,servicio:<?php echo $_GET['idServicio'];?>,tipo:<?php echo $_GET['tipo'];?>,contrato:<?php echo $_GET['idContrato'];?>,numeroMovil:$("#atributo-<?php echo ID_NUMERO_MOVIL;?>").val()},
+            success: function(data)
+            {
+                alert(data);
+            }
+        });
+
+
+    }
+    function establecerRoaming(valor)
+    {
+
+
+        jQuery.ajax({
+            url: 'establecer-roaming.php',
+            type: 'POST',
+            cache: false,
+            async:true,
+            data:{refCliente:<?php echo $refClienteAPI?>,numero:<?php echo $msidn;?>,valor:valor},
+            success: function(data)
+            {
+                alert(data);
+            }
+        });
+    }
+    function estadosLineas (valor)
+    {
+
+        jQuery.ajax({
+            url: 'bloqueo-lineas.php',
+            type: 'POST',
+            cache: false,
+            async:true,
+            data:{refCliente:<?php echo $refClienteAPI?>,numero:<?php echo $msidn;?>,valor:valor},
+            success: function(data)
+            {
+                alert(data);
+            }
+        });
+    }
 
     function carga_detalles_servicio(id)
     {

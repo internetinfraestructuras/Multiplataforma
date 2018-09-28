@@ -5,9 +5,11 @@
  * Date: 02/08/2018
  * Time: 13:15
  */
-//error_reporting(E_ALL);
-//ini_set('display_errors', 1);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 require_once ('Contrato.php');
+require_once ('masmovil/MasMovilAPI.php');
+
 /*
 
 require_once('../config/def_tablas.php');
@@ -83,7 +85,45 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
         echo "La linea a buscar es".$idLineaDetalle;
         echo "<br>";
 
+        if($tipo==1)
+        {
+            echo "Aqui va cambio técnico ONT";
+        }
+        else if($tipo==2)
+        {
+            echo "Aqui va el cambio de telefonia";
+        }
+        else if($tipo==3 && $idAtrib==ID_NUMERO_MOVIL)
+        {
+            $externo=self::getIdExternoApi($idServicio);
+
+            $idExterno=$externo[0][0];
+            $idProveedor=self::getProveedor($idServicio);
+            $idProveedor=$idProveedor[0][0];
+
+            if($idProveedor==ID_PROVEEDOR_MASMOVIL)
+            {
+                echo "El proveedor es MASMOVIL<HR>";
+                $apiMasMovil=new MasMovilAPI();
+                $resultado=$apiMasMovil->getListadoClientes("",$valor);
+                $refClienteAPI=$resultado->Client[0]->refCustomerId;
+                echo "Es el numero".$valor;
+                $res= $apiMasMovil->cambioProducto($refClienteAPI,"",$valor,$idExterno);
+                Contrato::generarAnexo($idContrato,$idServicio,3,$idLineaDetalle);
+                $apiMasMovil->setLogApi($valor,$res,$_SESSION['REVENDEDOR'],1);
+            }
+            else if($idProveedor==ID_PROVEEDOR_AIRENETWORKS)
+            {
+                echo "El proveedor es AIRENETWORK<HR>";
+            }
+        }
+        else if($tipo==4)
+        {
+            echo "aqui va el cambio de TV";
+        }
+
         $idLineaDetalleNueva=Contrato::setNuevaLineaDetalles($idLineaNueva,$tipo,$idAsoc,$idAtrib,$valor,1);
+
 
 
         $productosLinea=Contrato::getProductosLinea($idLineaDetalle);
@@ -96,25 +136,9 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
 
     }
 
-/*
-    $values=array($precioProveedor,$impuesto,$beneficio,$pvp,$permanencia,1,);
-    $campos=array("precio_proveedor","impuesto","beneficio","pvp");
-    $result = $util->update('contratos_lineas', $campos, $values, "id_asociado=".$idServicio. " AND id_contrato=".$_POST['idContrato']." AND id=".$_POST['idLinea']);
-*/
-    Contrato::generarAnexo($idContrato,$idServicio,3);
-
-
-
-
-
-
-
-
 }
     public static function actualizarServicioPaqueteContrato($idContrato,$idLinea,$id,$tipo,$idServicio,$atributos,$fechaCambio,$idServicioOriginal,$idLineaDetalle)
     {
-
-
 
         $lineaContrato=Contrato::getLineaContrato($idContrato,$idLinea);
 
@@ -153,9 +177,6 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
 
         for($k=0;$k<count($lineaDetallesAll);$k++)
         {
-
-
-
             if($lineaDetallesAll[$k]['ID_SERVICIO']==$idServicioOriginal && $lineaDetallesAll[$k]['ID']<=$numeroMax )
             {
 
@@ -178,7 +199,49 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
 
                             $idLineaDetalleNueva=Contrato::setNuevaLineaDetallesPaquete($nuevaLinea,$tipo,$idAtrib,$valor,1,$idServicio,$fechaCambio);
 
-                           Contrato::generarAnexo($idContrato,$ser,3);
+
+
+                            if($tipo==1)
+                            {
+                                echo "es un servicio de internet aqui va el cambio técnico";
+                            }
+                            else if($tipo==2)
+                            {
+                                echo "Es un telefono fijo aquie va el cambio tecnico";
+                            }
+
+                            else if($tipo==3 && $idAtrib==ID_NUMERO_MOVIL)
+                            {
+                                $externo=self::getIdExternoApi($idServicio);
+
+                                $idExterno=$externo[0][0];
+                                $idProveedor=self::getProveedor($idServicio);
+                                $idProveedor=$idProveedor[0][0];
+
+                                if($idProveedor==ID_PROVEEDOR_MASMOVIL)
+                                {
+                                    echo "El proveedor es MASMOVIL<HR>";
+                                    $apiMasMovil=new MasMovilAPI();
+                                    $resultado=$apiMasMovil->getListadoClientes("",$valor);
+                                    $refClienteAPI=$resultado->Client[0]->refCustomerId;
+                                    echo "Es el numero".$valor;
+                                   $res= $apiMasMovil->cambioProducto($refClienteAPI,"",$valor,$idExterno);
+
+                                   $apiMasMovil->setLogApi($valor,$res,$_SESSION['REVENDEDOR'],1);
+                                }
+                                else if($idProveedor==ID_PROVEEDOR_AIRENETWORKS)
+                                {
+                                    echo "El proveedor es AIRENETWORK<HR>";
+                                }
+
+                            }
+                            else if($tipo==4)
+                            {
+                                echo "Es una televisión aqui va el cambio técnico";
+                            }
+
+
+
                         }
 
                     }
@@ -202,7 +265,7 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
             Contrato::setLineaDetallesBajaServicio($idLinea,$ser,$fechaCambio);//Seteamos la linea actual a baja
 
 
-       $productosLinea=Contrato::getProductosLinea($lineaDetallesAll[$k]['ID']);
+            $productosLinea=Contrato::getProductosLinea($lineaDetallesAll[$k]['ID']);
 
             for($j=0;$j<count($productosLinea);$j++)
             {
@@ -211,6 +274,7 @@ public static function actualizarServicioContrato($idContrato,$idLinea,$idServic
             }
 
         }
+        Contrato::generarAnexo($idContrato,1,$idPaquete,$idLinea,10);
 
 
 
@@ -356,10 +420,10 @@ public static function cancelarBajaServicio($idContrato,$idLineaContrato,$idServ
         return $tipoEstado;
     }
 
-    public static function  romperPaquete($idContrato,$idLinea,$servicio,$fechaCambio)
+    public static function  romperPaquete($idContrato,$idLinea,$servicio,$fechaCambio,$idLineaDetalleActual)
     {
 
-        echo "La linea es $idLinea";
+
         $lineaDetalles=Contrato::getLineaDetalles($idLinea);
 
         $idPaquete=Contrato::getIdPaqueteLinea($idContrato,$idLinea);
@@ -371,6 +435,8 @@ public static function cancelarBajaServicio($idContrato,$idLineaContrato,$idServ
         $flag=false;
         $idLineaContratoNueva=0;
         $idServicio=0;
+
+
         for($i=0;$i<count($lineaDetalles);$i++)
         {
 
@@ -381,12 +447,49 @@ public static function cancelarBajaServicio($idContrato,$idLineaContrato,$idServ
 
 
 
-            echo "La linea de detalle es $idLineaDetalle y su maximo $numeroMax<br>";
+            if($idAtributo==ID_NUMERO_MOVIL && $lineaDetalles[$i]['ID_SERVICIO']==$servicio)
+            {
+
+                    echo "<hr>Entramos en el servicio";
+
+
+                    $externo=self::getIdExternoApi($servicio);
+
+                    $idExterno=$externo[0][0];
+                    $idProveedor=self::getProveedor($servicio);
+                    $idProveedor=$idProveedor[0][0];
+
+
+                    if($idProveedor==ID_PROVEEDOR_MASMOVIL)
+                    {
+                        echo "<br>El proveedor es MASMOVIL<HR>";
+                        $apiMasMovil=new MasMovilAPI();
+                        $resultado=$apiMasMovil->getListadoClientes("",$valor);
+
+                        $refClienteAPI=$resultado->Client[0]->refCustomerId;
+
+                        $res= $apiMasMovil->cambioProducto($refClienteAPI,"",$valor,$idExterno);
+
+
+                        $apiMasMovil->setLogApi($valor,$res,$_SESSION['REVENDEDOR'],1);
+                    }
+                    else if($idProveedor==ID_PROVEEDOR_AIRENETWORKS)
+                    {
+                        echo "El proveedor es AIRENETWORK<HR>";
+                    }
+            }
+
+
+
+
+
+            if($idLineaDetalle==$idLineaDetalleActual)
+                $idServicio=$servicio;
+            else
+                $idServicio=$lineaDetalles[$i]['ID_SERVICIO'];
 
             if($numeroMax==$idLineaDetalle || $flag==false)
             {
-                echo "<hr>";
-                $idServicio=$lineaDetalles[$i]['ID_SERVICIO'];
 
                 $numero = $util->selectWhere3('servicios_tipos_atributos',
                     array("count(id)"),
@@ -410,25 +513,46 @@ public static function cancelarBajaServicio($idContrato,$idLineaContrato,$idServ
 
             }
 
+            $nuevaLineaDetalles=Contrato::setNuevaLineaDetalles($idLineaContratoNueva,$tipoServicio,$idServicio,$idAtributo,$valor,1);
 
 
-            Contrato::setNuevaLineaDetalles($idLineaContratoNueva,$tipoServicio,$idServicio,$idAtributo,$valor,1);
+
             Contrato::setLineaDetallesBaja($idLineaDetalle);
             $productos=Contrato::getProductosLinea($idLineaDetalle);
 
+
             for($k=0;$k<count($productos);$k++)
             {
-                echo "El producto es:$productos[$k]<br>";
-
-
+                Contrato::cambiarLineaProducto($idLineaDetalle,$nuevaLineaDetalles);
             }
 
         }
+
+        Contrato::generarAnexo($idContrato,1,$idPaquete,$idLinea,8);
 
 
 
     }
 
+    public static function getIdExternoApi($idServicio)
+    {
+        $util=new util();
+        return $util->selectWhere3("servicios,servicios_externos", array("ID_EXTERNO"),
+            "servicios.id=".$idServicio." AND servicios.id=servicios_externos.id_servicio");
+    }
+
+    public static function getProveedor($idServicio)
+    {
+        $util=new util();
+        return $util->selectWhere3("servicios", array("ID_PROVEEDOR"),
+            "servicios.id=".$idServicio);
+    }
+    public static function getNombreServicio($idServicio)
+    {
+        $util=new util();
+        return $util->selectWhere3("servicios", array("NOMBRE"),
+            "servicios.id=".$idServicio);
+    }
     //Nos devuelve los datos del servicio del cliente
     public static function getDetallesServicio($idServicio)
     {

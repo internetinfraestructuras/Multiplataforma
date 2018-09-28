@@ -1,5 +1,5 @@
 <?php
-
+require_once "lib/nusoap.php";
 class Tarifa
 {
     var $url;
@@ -14,9 +14,9 @@ class Tarifa
      */
     public function __construct($url, $user, $pass)
     {
-        $this->url = $url;
-        $this->user = $user;
-        $this->pass = $pass;
+        $this->url="https://wscliente.airenetworks.es/ws_desarrollo/mv/gestMOVIL_2.php?wsdl";
+        $this->user="B10452795";
+        $this->pass="aSo2Onc03H";
     }
 
     public function getAllTarifas()

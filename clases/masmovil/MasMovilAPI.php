@@ -107,9 +107,9 @@ class MasMovilAPI
         $resultado=$client->cableCustomerMaintenance($parametros);
 
         if(@$resultado->return->clientsList)
-            return json_encode($resultado->return->clientsList);
+            return $resultado->return->clientsList;
         else
-            return json_encode($resultado->return);
+            return $resultado->return;
     }
 
 
@@ -278,7 +278,7 @@ class MasMovilAPI
             "operationType"=>"SERVICE");
 
         $lineDetails=array("msisdn"=>$msid);
-        $lineServices=array("serviceAction"=>"J");
+        $lineServices=array("serviceAction"=>"L");
 
         $parametros['soap_request']=
             array("Operation"=>
@@ -467,7 +467,7 @@ class MasMovilAPI
 
         $client = new SoapClient($this->servicio."cableMsisdnsFind.wsdl", $this->parametrosCliente);
         $resultado=$client->msisdnsMaintenance($parametros);
-        return json_encode($resultado->return);
+        return $resultado->return;
     }
 
     /*
@@ -656,7 +656,7 @@ class MasMovilAPI
                             "postcode"=>$cp)))));
 
 
-        $client = new SoapClient($this->servicio."cableMsisdnsPortingDetPor-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableMsisdnsPortingDetPor.wsdl", $this->parametrosCliente);
 
         $resultado=$client->msisdnsPortingMaintenance($parametros);
 
@@ -861,6 +861,21 @@ class MasMovilAPI
         $year = date('Y');
         //return date('Ymd', mktime(0,0,0, $month, 1, $year));
         return date('Ymd', mktime(0,0,0, $month, $dia, $year));
+    }
+
+    public  function setLogApi($numero,$mensaje,$empresa,$idTransaccion)
+    {
+        $util=new util();
+
+        $t_ordenes=array("ID_API","DEVOLUCION","NUMERO","ID_EMPRESA","ID_TRANSACCION");
+
+
+
+        $values=array(1,$mensaje,$numero,$empresa,$idTransaccion);//TIPO DE ESTADO ES 1 DE APERTURA
+
+        $resOrden= $util->insertInto('log_api_moviles', $t_ordenes, $values);
+
+        return $resOrden;
     }
 
 
