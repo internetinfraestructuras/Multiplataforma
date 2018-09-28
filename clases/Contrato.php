@@ -134,6 +134,16 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
             "contratos_lineas_detalles.estado=1 AND contratos_lineas_detalles.id_linea=$idLinea");
     }
 
+    /*
+     * Le pasamos la primera línea de detalles de dicho servicio y el segundo parámetro es la última línea de dicho servicio
+     */
+    public static function getLineasDetallesServicio($idLineaDetalles,$idLineaMax)
+    {
+        $util = new util();
+        return $util->selectWhere3("contratos_lineas_detalles", array("ID"),
+            "contratos_lineas_detalles.id>=$idLineaDetalles AND contratos_lineas_detalles.id<=$idLineaMax");
+    }
+
     //obtiene las linea de detalle de un contrato
     public static function getLineaDetallesActivas($idLinea)
     {
@@ -276,6 +286,16 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         return $util->update('contratos_lineas_detalles', $campos, $values, "id_linea=" . $idLineaContrato);
     }
 
+    public static function setLineaDetallesImpago($idLineaDetalles)
+    {
+        $util = new util();
+        $campos = array('ESTADO', 'FECHA_BAJA');
+        $values = array(CONTRATO_IMPAGO, date('Y-m-d'));
+
+
+        return $util->update('contratos_lineas_detalles', $campos, $values, "id=" . $idLineaDetalles);
+    }
+
     //Establece una línea detalle a baja
     public static function setLineaDetallesAlta($idLineaContrato)
     {
@@ -286,6 +306,17 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
 
         $result = $util->update('contratos_lineas_detalles', $campos, $values, "id_linea=" . $idLineaContrato);
+    }
+
+    public static function setLineaDetalleAlta($idLineaDetalle)
+    {
+        $util = new util();
+        $campos = array('ESTADO', 'FECHA_BAJA');
+
+        $values = array(1, null);
+
+
+        $result = $util->update('contratos_lineas_detalles', $campos, $values, "id=" . $idLineaDetalle);
     }
 
 

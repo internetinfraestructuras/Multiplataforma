@@ -239,27 +239,31 @@ $pvp=$listado[0][5];
                                             }
 
 
-                                            if($idEstadoId==1)
+                                            if($idEstadoId==CONTRATO_ALTA)
                                             {
                                                 $bColor="green";
                                                 $color="white";
                                             }
-                                            if($idEstadoId==3)
+                                            if($idEstadoId==CONTRATO_PROCESO_ALTA)
                                             {
                                                 $bColor="blue";
                                                 $color="white";
                                             }
-                                            if($idEstadoId==4)
+                                            if($idEstadoId==CONTRATO_PROCESO_BAJA)
                                             {
                                                 $bColor="red";
                                                 $color="white";
                                             }
-                                            if($idEstadoId==6 || $idEstadoId==7 || $idEstadoId==8)
+                                            if($idEstadoId==CONTRATO_PTE_CAMBIO || $idEstadoId==CONTRATO_PROCESO_BAJA_CAMBIO || $idEstadoId==CONTRATO_PROCESO_ALTA_CAMBIO)
                                             {
                                                 $bColor="orange";
                                                 $color="white";
                                             }
-
+                                            if($idEstadoId==CONTRATO_IMPAGO)
+                                            {
+                                                $bColor="red";
+                                                $color="white";
+                                            }
 
 
 

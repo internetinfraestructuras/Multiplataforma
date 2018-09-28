@@ -8,17 +8,28 @@ if (!isset($_SESSION))
 {
     @session_start();
 }
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+
 
 require_once('../../config/util.php');
 require_once ('../../clases/Servicio.php');
+require_once ('../../clases/Empresa.php');
 require_once ('../../clases/airenetwork/clases/Tarifa.php');
+
 $util = new util();
 check_session(1);
 
+$conf=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
 $listado=Servicio::getServiciosAireNetworks($_SESSION['REVENDEDOR']);
 
+
+$usuario=$conf[0][1];
+$pass=$conf[0][2];
+$url=$conf[0][3];
+
 $apiAire=new Tarifa("","","");
-$tarifas=$apiAire->getTarifasStatus('ON')
+$tarifas=$apiAire->getTarifasStatus('ON');
 
 
 
@@ -103,7 +114,7 @@ $tarifas=$apiAire->getTarifasStatus('ON')
                     <!-- ------ -->
                     <div class="panel panel-default">
 
-                        <form class="validate" action="guardar-configuracion.php" method="post"
+                        <form class="validate" action="guardar-configuracion-aire.php" method="post"
                               enctype="multipart/form-data">
                             <input type="hidden" name="action" value="configuracion"/>
                         <div class="panel-body" id="listado">
@@ -127,17 +138,31 @@ $tarifas=$apiAire->getTarifasStatus('ON')
                                 <div class="panel-body">
                                     <div class="col-md-12">
                                         <div class="form-group">
-
+                                            <p><strong>Nota:</strong> Para obtener la configuración de su módulo de AireNetwork´s </p>
                                             <div class="col-md-6 col-sm-6">
                                                 <label>Nombre de Usuario: </label>
-                                                <input type="text" name="producto[numero-serie]" value=""
+                                                <input type="text" name="configuracion[usuario]" value="<?php echo $usuario;?>" id="usuario"
                                                        class="form-control ">
                                             </div>
                                             <div class="col-md-6 col-sm-6">
                                                 <label>Password:</label>
-                                                <input type="number" name="producto[precio-proveedor]" value="" id="precio-prov" step=".01"
+                                                <input type="text" name="configuracion[pass]" value="<?php echo $pass;?>" id="pass"
                                                        class="form-control " onchange="calcularPVP(this.value)">
                                             </div>
+                                            <div class="col-md-9 col-sm-6">
+                                                <label>URL:</label>
+                                                <input type="text" name="configuracion[url]" value="<?php echo $url;?>" id="url"
+                                                       class="form-control " onchange="calcularPVP(this.value)">
+
+                                            </div>
+
+                                            <div class="col-md-3 col-sm-6" style="margin-top: 15px;">
+                                                <a onclick="pingAire()" class="btn btn-warning btn-xlg">TEST CONEXIÓN CON AIRENETWORK´S <i class="fas fa-phone-square"></i></a>
+
+                                            </div>
+
+
+
 
                                         </div>
                                     </div>
@@ -153,6 +178,7 @@ $tarifas=$apiAire->getTarifasStatus('ON')
                                                 </span>
                                              </div>
                                         </div>
+                                        <p><u>Los cambios de vinculación de tarifas creadas con las de AireNetwork´s sólo se aplicarán a las nuevas altas una vez aplicados los cambios.</u></p>
                                         <table id="example1" class="table table-bordered table-hover">
                                             <thead>
                                             <tr>
@@ -175,10 +201,9 @@ $tarifas=$apiAire->getTarifasStatus('ON')
 
 
                                                 echo "<tr>";
-                                                echo "<td><div class=\"col-md-4 col-sm-6\"><input type=\"text\" name=\"ordenes[ordenId][]\" value=\"$idServicio\" class=\"form-control \" disabled></div></td>
-                                                      <td>$nombre</td>";
+                                                echo '<td><div class="col-md-4 col-sm-6"><input readonly type="text" name="tarifas[internas][]" value='.$idServicio.' class="form-control" ></div></td><td>'.$nombre.'</td>';
 
-                                                echo'<td><select id="tarifas"  name="tarifas[tarifa-aire][]" class="form-control">';
+                                                echo'<td><select id="tarifas"  name="tarifas[aire][]" class="form-control">';
 
 
                                                 echo "<option data-id='".$id."' value='0'>Sin Asignar</option>";
@@ -249,26 +274,29 @@ $tarifas=$apiAire->getTarifasStatus('ON')
 <script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 <script type="text/javascript" src="../../assets/js/app.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.css">
-<link href='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
-<link href='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/css/froala_style.min.css' rel='stylesheet' type='text/css' />
-<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/js/froala_editor.min.js'></script>
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.js"></script>
+
+
 <script>
 
-    $(function()
+
+    function pingAire()
     {
-        $('textarea#froala-editor').froalaEditor(
+
+        jQuery.ajax({
+            url: 'aire/ping.php',
+            type: 'POST',
+            cache: false,
+            async:true,
+            data:{usuario:$("#usuario").val(),pass:$("#pass").val(),url:$("#url").val()},
+            success: function(data)
             {
-
+                alert(data);
             }
-        );
-    });
-
+        });
+    }
 
 
 </script>
-
 
 
 </body>

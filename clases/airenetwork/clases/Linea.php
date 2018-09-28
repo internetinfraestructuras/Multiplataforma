@@ -16,9 +16,9 @@ class Linea
      */
     public function __construct($url, $user, $pass)
     {
-        $this->url="https://wscliente.airenetworks.es/ws_desarrollo/mv/gestMOVIL_2.php?wsdl";
-        $this->user="B10452795";
-        $this->pass="aSo2Onc03H";
+        $this->url=$url;
+        $this->user=$user;
+        $this->pass=$pass;
     }
     public function getAllLineas()
     {
@@ -89,17 +89,19 @@ class Linea
 
     public function getLineaNumero($telefono)
     {
+
         $client = new nusoap_client($this->url,$proxyhost=false,$proxyport=false,$proxyusername=false,$proxupassword=false,$timeout=0,$response_timeout=160);
+
         $err=$client->getError();
-        if($err)
-        {
-            echo "ERROR";
-        }
+
+
         $datos = array("user" => $this->user, "pass" => $this->pass,"telefono"=>array($telefono));
         $result = $client->call("getLineas", array($datos));
 
-
-        return $result;
+        if($err)
+            return $err;
+        else
+            return $result;
     }
     public function getLineaTipoCliente($tipoCliente)
     {
@@ -227,9 +229,55 @@ class Linea
             echo "ERROR";
         }
         $datos = array("user" => $this->user, "pass" => $this->pass,"telefono"=>$telefono,"consumo_maximo"=>$consumoMaximo);
-        $result = $client->call("getServicios", array($datos));
+        $result = $client->call("setConsumoMaximo", array($datos));
 
-        return json_encode($result);
+        return $result;
+    }
+
+    public function setCorteImpago($telefono)
+    {
+
+        $client = new nusoap_client($this->url,$proxyhost=false,$proxyport=false,$proxyusername=false,$proxupassword=false,$timeout=0,$response_timeout=160);
+        $err=$client->getError();
+        if($err)
+        {
+            echo "ERROR";
+        }
+        $datos = array("user" => $this->user, "pass" => $this->pass,"telefono"=>$telefono);
+        $result = $client->call("solicitud_corte_impago", array($datos));
+
+        return $result;
+    }
+
+    public function setCancelarCorteImpago($telefono)
+    {
+
+        $client = new nusoap_client($this->url,$proxyhost=false,$proxyport=false,$proxyusername=false,$proxupassword=false,$timeout=0,$response_timeout=160);
+        $err=$client->getError();
+        if($err)
+        {
+            echo "ERROR";
+        }
+        $datos = array("user" => $this->user, "pass" => $this->pass,"telefono"=>$telefono);
+        $result = $client->call("cancelar_solicitud_impago", array($datos));
+
+        return $result;
+    }
+
+    public function setRestablecerCorteImpago($telefono)
+    {
+
+        $client = new nusoap_client($this->url,$proxyhost=false,$proxyport=false,$proxyusername=false,$proxupassword=false,$timeout=0,$response_timeout=160);
+        $err=$client->getError();
+
+        if($err)
+        {
+            echo "ERROR";
+        }
+        $datos = array("user" => $this->user, "pass" => $this->pass,"telefono"=>$telefono);
+        $result = $client->call("restablecer_corte_impago", array($datos));
+
+        return $result;
     }
 
     public function setAltaNueva($tarifa,$tipoCliente,$nif,$icc,$dc,$telefono,$codigoReserva)

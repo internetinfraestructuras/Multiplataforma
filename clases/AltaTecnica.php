@@ -11,6 +11,7 @@ require_once '../config/define.php';
 
 require_once ('./../config/util.php');
 require_once ('Servicio.php');
+
 class AltaTecnica
 {
     /*
@@ -86,6 +87,7 @@ class AltaTecnica
     {
 
         require_once ('./masmovil/MasMovilAPI.php');
+
         $apiMasMovil=new MasMovilAPI();
         $rs=$apiMasMovil->getListadoClientes($dni);
 
@@ -109,7 +111,7 @@ class AltaTecnica
                     $rs=$apiMasMovil->altaLineaMovil($refCliente,$iccTarjeta,$idExterno,"");
 
                 }
-           
+
             }
         }
         else
@@ -122,12 +124,12 @@ class AltaTecnica
             {
                 $idExterno=$idExterno[0][0];
                 $rs=$apiMasMovil->altaLineaMovil($refCliente,$iccTarjeta,$idExterno,"");
-
             }
 
 
         }
 
+        return $rs;
     }
 
     /*
@@ -169,3 +171,4 @@ class AltaTecnica
 
     }
 }
+?>

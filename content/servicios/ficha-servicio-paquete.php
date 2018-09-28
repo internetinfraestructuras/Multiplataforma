@@ -289,12 +289,41 @@ $actual = date ("Y-m-d");
                                 {
 
                                     require_once ('../../clases/airenetwork/clases/Linea.php');
+                                    require_once('../../clases/Empresa.php');
 
-                                    $lineaAire=new Linea("","","");
+                                    $confAire=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
+
+                                    $lineaAire=new Linea($confAire[0][3],$confAire[0][1],$confAire[0][2]);
+
+
                                     $r=$lineaAire->getLineaNumero($msidn);
+
+
+
+                                    $impagosArray=$r[0]['historico_estado_impago'];
+
+                                        if($impagosArray!=NULL)
+                                        {
+                                            $estadoImpago=$r[0]['historico_estado_impago'][0]['estado_impago'];
+                                        }
+
+
+
 
                                     if($r!=NULL)
                                       $estadoLinea=$r[0]['activo'];
+
+                                    if($r[0]['consumo_maximo'])
+                                    {
+                                        $consumoMaximo=$r[0]['consumo_maximo'];
+                                    }
+
+                                    $alertaFacturacion=$r[0]['alerta_facturacion'];
+
+
+                                    $puk1=$r[0]['sims'][0]['puk'];
+                                    $puk2=$r[0]['sims'][0]['puk2'];
+                                    $pin2=$r[0]['sims'][0]['pin2'];
 
                                 }
                                 //SI ES DE TIPO MOVIL Y DE MASMOVIL SE PUEDEN MOSTRAR DATOS DE LA TARJETA COMO PUK Y DEMAS
@@ -313,7 +342,24 @@ $actual = date ("Y-m-d");
                                 echo "<td><input  value='$tipoSim' class='form-control' disabled />";
                                 echo "</tr>";
 
+                                }
+                                if($_GET['tipo']==3 && $idProveedor==ID_PROVEEDOR_AIRENETWORKS)
+                                {
+                                    echo "<tr>";
+                                    echo "<td colspan='2'><input  value='CODIGO PUK' class='form-control' disabled />";
+                                    echo "<td><input  value='$puk1' class='form-control' disabled />";
+                                    echo "</tr>";
+                                    echo "<tr>";
+                                    echo "<td colspan='2'><input  value='CODIGO PUK 2' class='form-control' disabled />";
+                                    echo "<td><input  value='$puk2' class='form-control' disabled />";
+                                    echo "</tr>";
+                                    echo "<tr>";
+                                    echo "<td colspan='2'><input  value='PIN' class='form-control' disabled />";
+                                    echo "<td><input  value='$pin2' class='form-control' disabled />";
+                                    echo "</tr>";
+
                                 }?>
+
 
 
                                 </tbody>
@@ -371,7 +417,12 @@ $actual = date ("Y-m-d");
 
                 </div>
                 <!-- /----- -->
+                <?php
 
+                var_dump($r[0]['consumo_maximo']);
+
+
+                ?>
                 <div class="col-md-4">
 
                     <div class="panel panel-default">
@@ -482,9 +533,6 @@ $actual = date ("Y-m-d");
 
                             <?php if($estadoLinea==LINEA_ACTIVA_MASMOVIL)
                             {?>
-
-
-
                                 <a href="javascript:;" onclick="establecerRoaming('A')"
                                    class="btn btn-info btn-xs">ACTIVAR ROAMING <i class="fas fa-globe-asia"></i></a></br>
                                 <br/>
@@ -504,7 +552,7 @@ $actual = date ("Y-m-d");
                                 <?php
                             }?>
 
-                            <a href="javascript:;" onclick="estadosLineas('A')"
+                            <a href="../servicios/cdr-actual.php?numero=<?php echo $msidn;?>"
                                class="btn btn-blue btn-xs">CONSULTAR CDR   <i class="fas fa-phone"></i></a></br>
                             <br/>
                         </div>
@@ -523,21 +571,61 @@ $actual = date ("Y-m-d");
                             <hr>
 
                             <?php
-                            if($estadoLinea=="SI")
+
+                            if($estadoLinea=="SI" && $estadoImpago=='CAN' ||$estadoImpago==NULL)
                             {
                             ?>
-                            <a href="javascript:;" onclick="estadosLineas('A')"
+                            <a href="javascript:;" onclick="corteImpago('S')"
                                class="btn btn-danger btn-xs">SOLICITAR CORTE IMPAGO  <i class="fas fa-phone"></i></a></br>
                             <br/>
                             <?php
                             }
+                            if($estadoLinea=="SI" && $estadoImpago=='SOL') {
+                                ?>
+                                <a href="javascript:;" onclick="corteImpago('C')"
+                                   class="btn btn-warning btn-xs">CANCELAR SOLICITUD DE CORTE <i
+                                            class="fas fa-phone"></i></a></br>
+                                <br/>
+                                <?php
+                            }
+                            if($estadoImpago=='COR') {
                             ?>
-                            <a href="javascript:;" onclick="estadosLineas('A')"
-                               class="btn btn-warning btn-xs">CANCELAR SOLICITUD DE CORTE  <i class="fas fa-phone"></i></a></br>
-                            <br/>
-                            <a href="javascript:;" onclick="estadosLineas('A')"
+
+                            <a href="javascript:;" onclick="corteImpago('R')"
                                class="btn btn-warning btn-xs">REESTABLECER CORTE POR IMPAGO  <i class="fas fa-phone"></i></a></br>
                             <br/>
+                            <?php
+                            }
+                            if(isset($consumoMaximo))
+                            {?>
+                                <a href="javascript:;" onclick="establecerConsumo('<?php echo $consumoMaximo; ?>')"
+                                   class="btn btn-warning btn-xs">MODIFICAR CONSUMO MÁXIMO: <?php echo $consumoMaximo; ?> &euro; <i class="fas fa-phone"></i></a>
+                                <a href="javascript:;" onclick="establecerConsumo('0')"
+                                   class="btn btn-danger btn-xs">ELIMINAR CONSUMO MAXIMO <i class="fas fa-phone"></i></a></br>
+                                <br/>
+                            <?php }
+                            else
+                            {
+                                ?>
+                                <a href="javascript:;" onclick="establecerConsumo(1)"
+                               class="btn btn-warning btn-xs">ESTABLECER CONSUMO MÁXIMO <i class="fas fa-phone"></i></a></br>
+                            <br/>
+                           <?php }
+
+                           if($alertaFacturacion==0)
+                           {?>
+                            <a href="javascript:;" onclick="establecerAlerta('A')"
+                               class="btn btn-warning btn-xs">ESTABLECER ALERTA FACTURACIÓN <i class="fas fa-phone"></i></a></br>
+                            <br/>
+                            <?php
+                            }
+                            else
+                            {?>
+
+                                <a href="javascript:;" onclick="establecerAlerta('A')" class="btn btn-warning btn-xs">MODIFICAR ALERTA FACTURACIÓN: <?php echo $alertaFacturacion;?> &euro;  <i class="fas fa-phone"></i></a>
+                                <a href="javascript:;" onclick="establecerAlerta('D')" class="btn btn-danger btn-xs">ELIMINAR ALERTA<i class="fas fa-phone"></i></a><br><br>
+                            <?php
+                            }?>
                             <a href="../servicios/cdr-actual-aire.php?numero=<?php echo $msidn;?>"
                                class="btn btn-blue btn-xs">CONSULTAR CDR   <i class="fas fa-phone"></i></a></br>
                             <br/>
@@ -548,6 +636,9 @@ $actual = date ("Y-m-d");
                     ?>
 
                 </div>
+
+
+
             </div>
 
 
@@ -576,8 +667,6 @@ $actual = date ("Y-m-d");
                     $prodcs=Producto::getProductosServicio($_SESSION['REVENDEDOR'],$_GET['tipo']);
             if($idProveedor!=ID_PROVEEDOR_AIRENETWORKS)
             {
-
-
                     if($prodcs!=NULL )
                     {
 
@@ -625,6 +714,7 @@ $actual = date ("Y-m-d");
             }
             else
                 echo "AIRENETWORKS sólo puede efectuar cambios de SIMS desde su plataforma GECKOS.";
+            $refClienteAPI="NULL";
 
             ?>
 
@@ -681,6 +771,8 @@ $actual = date ("Y-m-d");
 <!-- JAVASCRIPT FILES -->
 <script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../assets/js/prompt.js"></script>
 
 <!--<script type="text/javascript" src="../../assets/js/app.js"></script>-->
 
@@ -719,7 +811,7 @@ $actual = date ("Y-m-d");
 
 
         jQuery.ajax({
-            url: 'establecer-roaming.php',
+            url: 'masmovil/establecer-roaming.php',
             type: 'POST',
             cache: false,
             async:true,
@@ -730,11 +822,88 @@ $actual = date ("Y-m-d");
             }
         });
     }
+    function establecerConsumo(maximo)
+    {
+        if(maximo!=0)
+        {
+            bootbox.prompt({
+                title: "INTRODUCIR MÁXIMO EN LA LINEA",
+                inputType: 'number',
+                callback: function (result)
+                {
+                    jQuery.ajax({
+                        url: 'airenetworks/establecer-consumo.php',
+                        type: 'POST',
+                        cache: false,
+                        async:true,
+                        data:{numero:<?php echo $msidn;?>,valor:result},
+                        success: function(data)
+                        {
+                            alert(data);
+                        }
+                    });
+                }
+            });
+        }
+        else
+        {
+            jQuery.ajax({
+                url: 'airenetworks/establecer-consumo.php',
+                type: 'POST',
+                cache: false,
+                async:true,
+                data:{numero:<?php echo $msidn;?>,valor:maximo},
+                success: function(data)
+                {
+                    alert(data);
+                }
+            });
+        }
+    }
+    function establecerAlerta(valor)
+    {
+        if(valor!='D')
+        {
+        bootbox.prompt({
+            title: "INTRODUCIR AVISO DE FACTURACIÓN",
+            inputType: 'number',
+            callback: function (result)
+            {
+                jQuery.ajax({
+                    url: 'airenetworks/establecer-alerta.php',
+                    type: 'POST',
+                    cache: false,
+                    async:true,
+                    data:{numero:<?php echo $msidn;?>,valor:result},
+                    success: function(data)
+                    {
+                        alert(data);
+                    }
+                });
+            }
+        });
+        }
+        else
+        {
+            jQuery.ajax({
+                url: 'airenetworks/establecer-alerta.php',
+                type: 'POST',
+                cache: false,
+                async:true,
+                data:{numero:<?php echo $msidn;?>,valor:0},
+                success: function(data)
+                {
+                    alert(data);
+                }
+            });
+        }
+
+    }
     function estadosLineas (valor)
     {
 
         jQuery.ajax({
-            url: 'bloqueo-lineas.php',
+            url: 'masmovil/bloqueo-lineas.php',
             type: 'POST',
             cache: false,
             async:true,
@@ -766,7 +935,27 @@ $actual = date ("Y-m-d");
                     $('#atributo-'+id).val(data[i].valor);
 
 
+
                 });
+            }
+        });
+    }
+    function corteImpago(valor)
+    {
+
+
+        jQuery.ajax({
+            url: 'airenetworks/corte-impago.php',
+            type: 'POST',
+            cache: false,
+            async:true,
+            data:{valor:valor,numero:<?php echo $msidn;?>,
+                idContrato:<?php echo $_GET['idContrato'];?>,
+                idLineaDetalle:<?php echo $_GET['idLineaDetalle'];?>,
+                tipo:<?php echo $_GET['tipo'];?>},
+            success: function(data) {
+
+                alert("La solicitud de corte ha devuelto:"+data);
             }
         });
     }

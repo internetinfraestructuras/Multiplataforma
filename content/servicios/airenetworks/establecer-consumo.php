@@ -15,29 +15,25 @@
 if (!isset($_SESSION)) {
     @session_start();
 }
-require_once('../../config/util.php');
-require_once ('../../clases/masmovil/MasMovilAPI.php');
+require_once('../../../config/util.php');
+require_once('../../../clases/airenetwork/clases/Linea.php');
+require_once('../../../clases/Empresa.php');
+
+$confAire=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
+$url=$confAire[0][3];
+$usuario=$confAire[0][1];
+$pass=$confAire[0][2];
 $util = new util();
 check_session(1);
 
-$cliente=$util->cleanstring($_POST['refCliente']);
 $numero=$util->cleanstring($_POST['numero']);
 $valor=$util->cleanstring($_POST['valor']);
 
-$apiMasMovil=new MasMovilAPI();
+$apiAire=new Linea($url,$usuario,$pass);
 
-if($valor=="A")//REACTIVACION LINEA
-{
-    $rs=$apiMasMovil->reactivacionLineaMovil($cliente,$numero);
-    $apiMasMovil->setLogApi($numero,$rs,$_SESSION['REVENDEDOR'],ID_BLOQUEO_LINEA_TEMPORAL);
-    var_dump($rs);
-}
+$rs=$apiAire->setConsumoMaximo($numero,$valor);
 
-else if($valor=="S")//SUSPENSION TEMPORAL
-{
-    $rs=$apiMasMovil->suspensionLineaMovil($cliente,$numero);
-    $apiMasMovil->setLogApi($numero,$rs,$_SESSION['REVENDEDOR'],ID_DESBLOQUEO_LINEA);
-var_dump($rs);
-}
+return $rs;
+
 
 
