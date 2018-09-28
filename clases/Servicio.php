@@ -92,7 +92,7 @@ class Servicio
     }
     else if($tipo==3 && $idAtrib==ID_NUMERO_MOVIL)
     {
-    $externo=self::getIdExternoApi($idServicio);
+    $externo=self::getIdExternoApi($idServicio,$_SESSION['REVENDEDOR']);
 
     $idExterno=$externo[0][0];
     $idProveedor=self::getProveedor($idServicio);
@@ -236,7 +236,7 @@ class Servicio
 
                     else if($tipo==3 && $idAtrib==ID_NUMERO_MOVIL)
                     {
-                        $externo=self::getIdExternoApi($idServicio);
+                        $externo=self::getIdExternoApi($idServicio,$_SESSION['REVENDEDOR']);
 
                         $idExterno=$externo[0][0];
                         $idProveedor=self::getProveedor($idServicio);
@@ -522,7 +522,7 @@ class Servicio
             echo "<hr>Entramos en el servicio";
 
 
-            $externo = self::getIdExternoApi($servicio);
+            $externo = self::getIdExternoApi($servicio,$_SESSION['REVENDEDOR']);
 
             $idExterno = $externo[0][0];
             $idProveedor = self::getProveedor($servicio);
@@ -604,11 +604,11 @@ class Servicio
 
     }
 
-    public static function getIdExternoApi($idServicio)
+    public static function getIdExternoApi($idServicio,$idEmpresa)
     {
     $util=new util();
     return $util->selectWhere3("servicios,servicios_externos", array("ID_EXTERNO"),
-    "servicios.id=".$idServicio." AND servicios.id=servicios_externos.id_servicio");
+    "servicios.id=".$idServicio." AND servicios.id=servicios_externos.id_servicio AND servicios_externos.id_empresa=$idEmpresa");
     }
 
     public static function getProveedor($idServicio)

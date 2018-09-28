@@ -50,9 +50,9 @@ class Cliente
         $result = $client->call("getCliente", array($data));
         $error = $client->getError();
         if ($error)
-            echo "<pre>".$error."</pre>";
-
-        return $result;
+            return $error;
+        else
+            return $result;
     }
 
     public function getClientByName($name)

@@ -175,9 +175,55 @@ class AltaTecnica
 
     }
 
-    public static function addNuevaPortabilidadMasMovil()
+    public static function addNuevaPortabilidadAireNetworks($idEmpresa,$idServicio,$tipoCliente,$nif,$icc,$dc,$telefono,$modalidadActual,$iccOrigen,$dcOrigen)
     {
 
+        require_once ('./airenetwork/clases/Cliente.php');
+        require_once ('./airenetwork/clases/Linea.php');
+        require_once ('./Empresa.php');
+        require_once ('./Servicio.php');
+
+
+        $configuracion=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
+
+
+
+        $clienteAire=new Cliente($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
+        $lineaAire=new Linea($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
+
+        $rs=$clienteAire->getClientByDNI($nif);
+
+
+        if($rs==NULL)
+            echo "OOO";
+            //$rs=$clienteAire->crearCliente($tipoCliente,$consentimiento,$tipoDocumento,$numeroDocumento,$nombre,$apellido1,$apellido2,$fechaNacimiento,$email,$telefono,$region,$provincia,$ciudad,$cp,$direccion,$numero,$docNombre,$documento);
+
+
+        $rservicio=Servicio::getIdExternoApi($idServicio,$_SESSION['REVENDEDOR']);
+
+        if($rservicio!=null)
+        {
+
+            $tarifa=$rservicio[0]['ID_EXTERNO'];
+
+            $rsP=$lineaAire->setAltaPortabilidad($tarifa,$tipoCliente,$nif,$icc,$dc,$telefono,$modalidadActual,$iccOrigen,$dcOrigen);
+            echo $rsP;
+        }
+
+    }
+
+    public static function getEstadosPortabilidadesAireNetworks($filtro)
+    {
+        require_once ('./airenetwork/clases/Cliente.php');
+        require_once ('./airenetwork/clases/Linea.php');
+        require_once ('./Empresa.php');
+        require_once ('./Servicio.php');
+
+        $configuracion=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
+        $lineaAire=new Linea($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
+        $rs=$lineaAire->getSolicitudesLineas($filtro);
+
+        var_dump($rs);
     }
 }
 ?>

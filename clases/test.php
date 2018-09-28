@@ -1,12 +1,11 @@
 <?php
 
 require_once 'AltaTecnica.php';
-
+/*
 $rs=AltaTecnica::addNuevaLineaMasMovil("DIEGO","EMPRESA","DNI","32010203P","DIEGO","691934413","691934413","","software@grupoliontelecom.es",
     "C/del comercio","Jerez de la Frontera","11","ESP","11408","DIEGO","","","","",""
-    ,"",54);
+    ,"",54);*/
 
-var_dump($rs);
 
 /*
  * $tipoCliente,$consentimiento,$tipoDocumento,$numeroDocumento,
@@ -18,6 +17,11 @@ var_dump($rs);
 AltaTecnica::addNuevaLineaAire(0,1,0,"31689245Y","diego","demo","demo2",
     "14/02/1991","software@grupoliontelecom.es","956000102","andalucia","cadiz",
 "Jerez de la Frontera","11408","Calle del comercio","18","prueba","pruebasenbase64","8934341700104351157","8",43);*/
+//$tarifa,$tipoCliente,$nif,$icc,$dc,$telefono,$modalidadActual,$iccOrigen,$dcOrigen
+
+AltaTecnica::addNuevaPortabilidadAireNetworks(1,"43","1","B90013699","8934341700104351157","8","691934413","postpago","8934011411704178217","");
+
+//AltaTecnica::getEstadosPortabilidadesAireNetworks("PORTABILIDAD");
 
 
 ?>

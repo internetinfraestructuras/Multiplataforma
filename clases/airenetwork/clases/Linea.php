@@ -162,7 +162,7 @@ class Linea
         return json_encode($result);
     }
 
-    public function getSolicitudesLineas()
+    public function getSolicitudesLineas($filtro=null)
     {
 
         $client = new nusoap_client($this->url,$proxyhost=false,$proxyport=false,$proxyusername=false,$proxupassword=false,$timeout=0,$response_timeout=160);
@@ -171,10 +171,10 @@ class Linea
         {
             echo "ERROR";
         }
-        $datos = array("user" => $this->user, "pass" => $this->pass);
+        $datos = array("user" => $this->user, "pass" => $this->pass,"tipo"=>$filtro,"ordenacion"=>true);
         $result = $client->call("getLineasSolicitud", array($datos));
 
-        return json_encode($result);
+        return $result;
     }
 
     public function getSolicitudesLineaTelefono($telefono)
@@ -264,6 +264,36 @@ class Linea
         return $result;
     }
 
+    public function setCancelarSolicitudLinea($codigoSolicitud)
+    {
+
+        $client = new nusoap_client($this->url,$proxyhost=false,$proxyport=false,$proxyusername=false,$proxupassword=false,$timeout=0,$response_timeout=160);
+        $err=$client->getError();
+        if($err)
+        {
+            echo "ERROR";
+        }
+        $datos = array("user" => $this->user, "pass" => $this->pass,"codigo"=>$codigoSolicitud);
+        $result = $client->call("cancelLineasSolicitud", array($datos));
+
+        return $result;
+    }
+
+    public function getDocumentosSolicitud($codigoSolicitud,$tipoDocumento)
+    {
+
+        $client = new nusoap_client($this->url,$proxyhost=false,$proxyport=false,$proxyusername=false,$proxupassword=false,$timeout=0,$response_timeout=160);
+        $err=$client->getError();
+        if($err)
+        {
+            echo "ERROR";
+        }
+        $datos = array("user" => $this->user, "pass" => $this->pass,"codigo_linea"=>$codigoSolicitud,"tipo_documento"=>$tipoDocumento);
+        $result = $client->call("obtenerDocumento", array($datos));
+
+        return $result;
+    }
+
     public function setRestablecerCorteImpago($telefono)
     {
 
@@ -304,30 +334,33 @@ class Linea
             return $return;
 
     }
-    public function setAltaPortabilidad($requestBody)
+    public function setAltaPortabilidad($tarifa,$tipoCliente,$nif,$icc,$dc,$telefono,$modalidadActual,$iccOrigen,$dcOrigen)
     {
         $cliente = new nusoap_client($this->url,true);
 
         $datos=array(
             "user"=>$this->user,
             "pass"=>$this->pass,
-            "tarifa"=>$requestBody[0]["tarifa"],
-            "subscriberType"=>$requestBody[0]["tipoCliente"],
-            "nif"=>$requestBody[0]["nif"],
-            "icc"=>$requestBody[0]["icc"],
-            "digito_control"=>$requestBody[0]["digito_control"],
-            "telefono"=>$requestBody[0]["telefono"],
-            "modalidad_actual"=>$requestBody[0]["modalidad_actual"],
-            "icc_origen"=>$requestBody[0]["icc_origen"],
-            "dc_origen"=>$requestBody[0]["dc_origen"]
+            "tarifa"=>$tarifa,
+            "subscriberType"=>$tipoCliente,
+            "nif"=>$nif,
+            "icc"=>$icc,
+            "digito_control"=>$dc,
+            "telefono"=>$telefono,
+            "modalidad_actual"=>$modalidadActual,
+            "icc_origen"=>$iccOrigen,
+            "dc_origen"=>$dcOrigen,
+            "responseNsolicitud"=>'S'
 
         );
-        var_dump($datos);
         $return = $cliente->call("setAltaLineaPortabilidad",array($datos));
-        $error = $cliente->getError();
-        if ($error)  echo "<pre>".$error."</pre>";
 
-        echo json_encode($return);
+        $error = $cliente->getError();
+
+        if ($error)
+            return $error;
+        else
+            return $return;
     }
 
     public function setCambioTitular($requestBody)
