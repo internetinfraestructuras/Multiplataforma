@@ -185,7 +185,21 @@ $root = "/";
                 <!--            <li><a href="<?php echo $root; ?>cons-clie.php">Consultar</a></li>-->
             </ul>
         </li>
+        <!-- add pakito-->
+        <li>
+            <a href="#">
+                <i class="fas fa-angle-down pull-right"></i>
+                <i class="main-icon fas fa-phone"></i><span>Telefonia Fija</span>
+            </a>
+            <ul><!-- submenus -->
+                <li><a href="<?php echo $root; ?>content/telefoniafija/gruposderecarga.php">Grupos de Recarga</a></li>
+                <li><a href="<?php echo $root; ?>content/telefoniafija/paquetesdestino.php">Paquetes destinos</a></li>
 
+
+
+                <!--            <li><a href="<?php echo $root; ?>cons-clie.php">Consultar</a></li>-->
+            </ul>
+        </li>
         <li>
             <a href="#">
                 <i class="fas fa-angle-down pull-right"></i>
@@ -282,6 +296,7 @@ $root = "/";
                 </ul>
             </li>
         <?php } ?>
+
     </ul>
 
 

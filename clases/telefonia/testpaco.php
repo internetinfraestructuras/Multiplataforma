@@ -20,15 +20,45 @@ error_reporting(E_ALL);
 //PRUEBAS SUPERUSUARIOS
 
 //get saldo de un reventa
+
 /*
 try {
 
-    $res = $tel->getSaldo($cifSuperUsuario);
+    $res = $tel->getSaldo('X7966192G');
     echo "saldo $res";
 }
 catch (Exception $e) {
     echo 'Excepción capturada: ',  $e->getMessage(), "<br>";
 }*/
+
+//get saldo cliente Y3850151B
+/*
+try {
+
+    $res = $tel->getSaldoCliente('Y3850151B');
+    echo "saldo $res";
+}
+catch (Exception $e) {
+    echo 'Excepción capturada: ',  $e->getMessage(), "<br>";
+}*/
+
+//recargar saldo a un cliente
+//recargarSaldoCliente($cifCliente,$importeRecarga)
+/*
+try {
+
+    $res = $tel->recargarSaldoCliente('Y3850151B',20);
+    if ($res == 1)
+        echo "ok recargado";
+    else
+        echo "error recargando";
+}
+catch (Exception $e) {
+    echo 'Excepción capturada: ',  $e->getMessage(), "<br>";
+}
+*/
+
+
 
 //get tarifas redistribucion de un superusuario
 /*
@@ -321,7 +351,7 @@ try {
 
 //actualizar las tarifas de una troncal
 
-
+/*
 try {
     $troncal='zzxBiope19QWb';
     $res=$tel->updateTarifasTroncalFromPaqueteDestinos($troncal,2,50);
@@ -329,6 +359,65 @@ try {
         echo "ACTUALIZADO OK";
     else
         echo "ERROR ACTUALIZANDO DESTINOS";
+
+}catch (Exception $e) {
+    echo 'Excepción capturada: ',  $e->getMessage(), "<br>";
+}
+*/
+
+//* public function getPaqueteID($cifSuperUsuario,$nombre){*/
+/*
+try {
+    $res=$tel->getPaqueteID('B45782687','Paquete España Fijos y Moviles');
+    if($res!="")
+        echo "ACTUALIZADO OK $res";
+    else
+        echo "ERROR ACTUALIZANDO DESTINOS $res";
+
+}catch (Exception $e) {
+    echo 'Excepción capturada: ',  $e->getMessage(), "<br>";
+}
+*/
+
+//pruebas desactivar una linea
+//desactivarLinea($troncal)
+
+/*
+try {
+    $troncal='zxPgq05bmRc';
+    $res=$tel->desactivarLinea($troncal);
+    if($res!="")
+        echo "desactivada con exito $res";
+    else
+        echo "ERROR desactivando linea $res";
+
+}catch (Exception $e) {
+    echo 'Excepción capturada: ',  $e->getMessage(), "<br>";
+}*/
+
+
+//
+//updateLineaFromONT($numeroPonAntiguo,$numeroPonNuevo){
+
+/*
+try {
+    $res=$tel->updateLineaFromONT("X4420078F","zxPgq05bmRc","48575443CBEC5EXX");
+    if($res!="")
+        echo "pon updateada con exito";
+    else
+        echo "ERROR updateando ont";
+
+}catch (Exception $e) {
+    echo 'Excepción capturada: ',  $e->getMessage(), "<br>";
+}*/
+
+//add linea from ont
+try {
+    $res=$tel->addLineaFromONT("X4420078F","48575443606A9F9A","956444444");
+    if($res!="")
+        echo "añadido con exito";
+    else
+        echo "ERROR añadiendo";
 
 }catch (Exception $e) {
     echo 'Excepción capturada: ',  $e->getMessage(), "<br>";

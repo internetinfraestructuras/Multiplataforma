@@ -221,7 +221,7 @@ class MasMovilAPI
 
         $params = array('Operation'=>
             array('instruction'=>
-                array( 'timeStamp' => '28/05/2018 17:11:00', 'resellerId' => $this->resellerId,'resellerPin' => $this->pass,'branchId' => '','posId' => '', 'transactionId' =>$ts, 'refCustomerId' => $refCliente, 'operationType' => 'NEWLINE'),
+                array( 'timeStamp' => $ts, 'resellerId' => $this->resellerId,'resellerPin' => $this->pass,'branchId' => '','posId' => '', 'transactionId' =>$ts, 'refCustomerId' => $refCliente, 'operationType' => 'NEWLINE'),
                 'activate'=>array(
                     'lineDetails' =>
                         array( 'iccid' => $icc),
@@ -229,7 +229,7 @@ class MasMovilAPI
                         'productProfile' => $perfilProducto, 'bonosAlta'  => $bonos))));
 
         $response = $client->msisdnsMaintenanceRequest(  $params  );
-        var_dump($response);
+        return $response;
     }
     /*
         public function altaLineaMovil($refCliente,$icc,$perfilProducto,$bonos)

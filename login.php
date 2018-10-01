@@ -59,8 +59,10 @@ error_reporting('E_ALL');
 
             $where = ' (usuarios.email="' . $email . '" and usuarios.clave="' . $pass . '") OR (usuarios.usuario="' . $email . '" and usuarios.clave="' . $pass . '") ';
             $result = $util->selectJoin("usuarios",array("usuarios.id", "usuarios.nombre", "usuarios.apellidos", "nivel",
-                " usuarios.id_empresa", "empresas.logo as logo", "municipios.municipio as localidad",'empresas.CIF'),
-                "join empresas on usuarios.id_empresa = empresas.id join municipios on municipios.id = empresas.MUNICIPIO","",$where);
+                " usuarios.id_empresa", "empresas.logo as logo", "municipios.municipio as localidad",'empresas.CIF','empresas_configuracion.AIRENETWORKS as AIRENETWORKS'),
+                "  JOIN empresas on usuarios.id_empresa = empresas.id 
+                        JOIN municipios on municipios.id = empresas.MUNICIPIO
+                        JOIN empresas_configuracion ON empresas_configuracion.ID_EMPRESA = empresas.ID ","",$where);
 
             $row = mysqli_fetch_array($result);
 
@@ -75,6 +77,7 @@ error_reporting('E_ALL');
                 $_SESSION['CIF'] = $row['CIF'];
                 $_SESSION['LOGO'] = $row['logo'];
                 $_SESSION['start'] = time();
+                $_SESSION['APIAIRE'] = $row['AIRENETWORKS'];
                 $_SESSION['expire'] = $_SESSION['start'] + (30 * 60);
                 date_default_timezone_set('Europe/Madrid');
                 $date = date('Y/m/d H:i:s');

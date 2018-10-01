@@ -132,6 +132,7 @@ $root = "../../";
 
 
                                             foreach ($lineas as $lineaD) {
+//                                                var_dump($lineaD);
                                                 echo "<div class='row' style='border-bottom:1px solid #c9c9c9'>";
                                                 echo "<div class='col-xs-2 col-md-1'>";
                                                 echo "<img src='../../img/serv" . $lineaD['servicio'] . ".png'>";
@@ -192,6 +193,7 @@ $root = "../../";
                                                 echo "</div>";
                                                 echo "<div class='col-xs-12 col-md-3 col-lg-2'>";
                                                 if (intval($lineaD['servicio']) == ID_SERVICIO_INTERNET) {
+//                                                    if (intval($lineaD['DETALLE'])==)
                                                     echo '<input type = "hidden" name= "pon" value ="' . $lineaD['pon'] . '">';
                                                     echo '<input type = "hidden" name= "serial" value ="' . $lineaD['serial'] . '">';
                                                     echo '

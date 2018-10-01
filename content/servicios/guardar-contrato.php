@@ -13,21 +13,23 @@ require_once('../../clases/Contrato.php');
 require_once('../../clases/Orden.php');
 require_once('../../clases/Servicio.php');
 require_once('../../clases/AltaTecnica.php');
+require_once('../../clases/Clientes.php');
 $tel = new AltaTecnica();
+$cli = new Clientes();
 
 
 $cifSuperUsuario = 'B45782687';
 
 $util = new util();
 $contrato = new Contrato();
-$orden = new Orden();
 $servicio = new Servicio();
 
 check_session(3);
 date_default_timezone_set('Etc/UTC');
-
+//
 //error_reporting(E_ALL);
 //ini_set("display_errors", 1);
+
 if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
 
     $borrador = $_POST['id_borrador'];
@@ -53,7 +55,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
     $idContrato = $contrato->setNuevoContrato($cliente, $permanencia, 3);
     $idDocumento = $contrato->setNuevoDocumento($idContrato, 1, '', $firma);
 
-    $idOrden = $orden->crearOrdenTrabajo($idContrato, null);
+    $idOrden = Orden::crearOrdenTrabajo($idContrato, null);
 
     $enpack = 0;
     $productoyaagregado = array();
@@ -85,7 +87,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
             $idLinea2 = $contrato->setNuevaLineaDetalles($idLinea, $linea[1], $linea[0], ATRIBUTO_TELEFONO_FIJO, $linea[7], 3, null);
 
             // damos el producto de alta
-            if(intval($linea[8])>0 &&  !in_array(intval($linea[8]),$productoyaagregado)) {
+            if (intval($linea[8]) > 0 && !in_array(intval($linea[8]), $productoyaagregado)) {
                 $contrato->setNuevoProductoContrato($idLinea2, $linea[8], 3);
                 array_push($productoyaagregado, intval($linea[8]));
             }
@@ -93,8 +95,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
 
         if (intval($linea[1]) == 3) {
             $idLinea2 = $contrato->setNuevaLineaDetalles($idLinea, $linea[1], $linea[0], ATRIBUTO_TELEFONO_MOVIL, $linea[7], 3, null);
+            $idLineaAtributoNumeroTelefono=$idLinea2;
+
             // damos el producto de alta
-            if(intval($linea[8])>0 &&  !in_array(intval($linea[8]),$productoyaagregado)){
+            if (intval($linea[8]) > 0 && !in_array(intval($linea[8]), $productoyaagregado)) {
                 array_push($productoyaagregado, intval($linea[8]));
                 $contrato->setNuevoProductoContrato($idLinea2, $linea[8], 3);
             }
@@ -108,22 +112,33 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
 
             $idLinea2 = $contrato->setNuevaLineaDetalles($idLinea, $linea[1], $linea[0], $row2[0], $row2[1], 3, null);
 
+
             // damos el producto de alta
-            if (!in_array(intval($linea[8]),$productoyaagregado)) {
+            if (!in_array(intval($linea[8]), $productoyaagregado)) {
                 $contrato->setNuevoProductoContrato($idLinea2, intval($linea[8]), 2);
                 array_push($productoyaagregado, intval($linea[8]));
             }
 
             /* Alta Tecnica Telefonía Fija */
-            if (intval($linea[1]) == ID_SERVICIO_VOZIP && intval($linea[7]) > 0 ) {
+            if (intval($linea[1]) == ID_SERVICIO_VOZIP && intval($linea[7]) > 0) {
 
                 // busco el paquete destino y el grupo recarga del servicio, me devuelve array 2 tuplas
                 $GrupoyDestino = $servicio->getGrupoRecargayPaqueteDestino($linea[0]);
-                $paqueteDestino = $GrupoyDestino[0];
-                $nombreGrupoRecarga = $GrupoyDestino[1];
+
+                // el nombre de grupo es texto y el paquete destino numerico
+                // como no puedo controlar el orden en el que me lo devuelve
+                // compruebo cual es el paquete destino pasandolo a entero
+
+                if(intval($GrupoyDestino[0])>0) {
+                    $paqueteDestino = $GrupoyDestino[0];
+                    $nombreGrupoRecarga = $GrupoyDestino[1];
+                } else {
+                    $paqueteDestino = $GrupoyDestino[1];
+                    $nombreGrupoRecarga = $GrupoyDestino[0];
+                }
 
                 try {
-                    if(!in_array(intval($linea[7]),$aFijos)) {
+                    if (!in_array(intval($linea[7]), $aFijos)) {
                         $troncal = $tel->addNuevoFijo($cifSuperUsuario, $cifCliente, $nombreCliente,
                             $direccion, $email, $nombreGrupoRecarga, $paqueteDestino, $linea[7]);
                         array_push($aFijos, intval($linea[7]));
@@ -135,26 +150,49 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
                 }
             }
 
-            /* --- Alta tecnica telefonia movil --- */
-            // compruebo que el tipo de servicio es 3 (moviles) y que es numero nuevo ($linea[6]==1)
-            if (intval($linea[1]) == 3 && intval($linea[6]) == 1) {
-
-            }
-
-            /* --- fin alta telefonia movil ---*/
 
         }
 
+        /* --- Alta tecnica telefonia movil --- */
+        // compruebo que el tipo de servicio es 3 (moviles) y que es numero nuevo ($linea[6]==1)
+
+        if (intval($linea[1]) == 3 && intval($linea[6]) == 1) {
+            $datosCliente = $cli->getClienteAltaMasMovil($cliente);
+            $datosCliente = mysqli_fetch_array($datosCliente);
+
+            $codBanco = substr($datosCliente[13], 4, 4);
+            $oficina = substr($datosCliente[13], 8, 4);
+            $dc = substr($datosCliente[13], 12, 2);
+            $ccc = substr($datosCliente[13], 14, 10);
+            $codProv = substr($datosCliente[11], 0, 2);
+            $icc = $linea[10];
+            $idServicio = $linea[0];
+
+            $res = AltaTecnica::addNuevaLineaMasMovil($datosCliente[0] . " " . $datosCliente[1],
+                $datosCliente[0], $datosCliente[2], $datosCliente[3], $datosCliente[0], $datosCliente[4],
+                $datosCliente[5], $datosCliente[4], $datosCliente[6], $datosCliente[7], $datosCliente[8], $codProv,
+                $datosCliente[10], $datosCliente[11], $datosCliente[0] . " " . $datosCliente[1], $datosCliente[12],
+                $codBanco, $oficina, $dc, $ccc, $icc, $idServicio);
+
+            Orden::setresultadoInstalacionLineaOrden($idLineaAtributoNumeroTelefono, $util->hoy('fechahora'), $_SESSION['USER_ID'], '', '', '',
+                $res->activateDescription, '', '');
+
+//                if($res['activationCode']==OPERACION_OK_MASMOVIL){
+//
+//                }
+        }
+        /* --- fin alta telefonia movil ---*/
+
         // creamos las lineas de la orden de trabajo ---------------------------------------
 
-        $orden->crearLineaOrden($idOrden, 1, $linea[8], $idLinea2);
+        Orden::crearLineaOrden($idOrden, 1, $linea[8], $idLinea2);
         $contrato->setProductoAlta($linea[8], 2);
 
         // fin orden de trabajo ----------------------------------------------------
 
     }
-        if(intval($id_campana)>0)
-            $util->insertInto('contratos_campanas', array('ID_CONTRATO', 'ID_CAMPANA', 'DTO', 'DTO_DIAS', 'DTO_HASTA'),
+    if (intval($id_campana) > 0)
+        $util->insertInto('contratos_campanas', array('ID_CONTRATO', 'ID_CAMPANA', 'DTO', 'DTO_DIAS', 'DTO_HASTA'),
             array($idContrato, $id_campana, $dto, $dias, $hasta));
 
 
@@ -166,43 +204,41 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
 }
 
 /*
-lineas[0][]: 40
-lineas[0][]: 4
-lineas[0][]: 36.6
+ * lineas[0][]: 38
 lineas[0][]: 1
-lineas[0][]: BÁSICO+SERIES
+lineas[0][]: 37.81
+lineas[0][]: 1
+lineas[0][]: FIBRA 100/100
 lineas[0][]: p
 lineas[0][]: 0
 lineas[0][]:
-lineas[0][]: 18
+lineas[0][]: 19
 lineas[0][]: 10
-lineas[0][]: IPTVM22000000000000000000
+lineas[0][]: 18092018IPTVM1100000001
 
-lineas[1][]: 41
-lineas[1][]: 2
-lineas[1][]: 7.32
+lineas[1][]: 55
+lineas[1][]: 3
+lineas[1][]: 22.46
 lineas[1][]: 1
-lineas[1][]: ESPAÑA+3
+lineas[1][]: ILIM5
 lineas[1][]: p
 lineas[1][]: 1
-lineas[1][]: 956000000
-lineas[1][]: 16
-lineas[1][]: 6
-lineas[1][]: TEL001
+lineas[1][]:
+lineas[1][]: 17
+lineas[1][]:
+lineas[1][]: SIM001
 
-
-lineas[2][]: 38
+lineas[2][]: 46
+lineas[2][]: 2
+lineas[2][]: 2.66
 lineas[2][]: 1
-lineas[2][]: 37.81
-lineas[2][]: 1
-lineas[2][]: FIBRA 100/100
+lineas[2][]: NACIONALES 5
 lineas[2][]: p
-lineas[2][]: 0
+lineas[2][]: 1
+lineas[2][]: 956000000
+lineas[2][]: 31
 lineas[2][]:
-lineas[2][]: 45
-lineas[2][]: 10
-lineas[2][]: IPTVM110000000000003
-
+lineas[2][]: ASDAS
 
 lineas[3][]: 43
 lineas[3][]: 3
@@ -212,34 +248,8 @@ lineas[3][]: TARIFA AIRE 1
 lineas[3][]: p
 lineas[3][]: 1
 lineas[3][]:
-lineas[3][]: 35
+lineas[3][]: 33
 lineas[3][]: 6
-lineas[3][]: NUM.1231
-
-
-lineas[4][]: 42
-lineas[4][]: 3
-lineas[4][]: 5.32
-lineas[4][]: 1
-lineas[4][]: TARIFA MASMOVIL1
-lineas[4][]: p
-lineas[4][]: 1
-lineas[4][]:
-lineas[4][]: 33
-lineas[4][]: 6
-lineas[4][]: 123456789
-
-
-lineas[5][]: 42
-lineas[5][]: 3
-lineas[5][]: 5.32
-lineas[5][]: 1
-lineas[5][]: TARIFA MASMOVIL1
-lineas[5][]: p
-lineas[5][]: 1
-lineas[5][]:
-lineas[5][]: 63
-lineas[5][]: 6
-lineas[5][]: SIM ALTA SIN ICC
+lineas[3][]: 123456789
  */
 ?>

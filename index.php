@@ -127,9 +127,9 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                                     <tbody>
                                                     <?php
                                                         $estados = array("SOLICITADA","TRAMITADA","PROCESANDO","RECHAZADA","ACEPTADA","CONTRATADA");
-                                                        $estadosOrdenes = array("PENDIENTE","EN TRAMITE","CERRADA","CANCELADA");
+                                                        $estadosOrdenes = array("PENDIENTE","ASIGNADA","EN TRAMITE","CERRADA","INCIDENCIA","CANCELADA");
                                                         $estadosColores = array("label label-primary","label label-info","label label-warning","label label-danger","label label-success","label label-default");
-                                                        $estadosColoresOrdenes = array("","label label-default","label label-info","label label-success","label label-danger");
+                                                        $estadosColoresOrdenes = array("label label-primary","label label-info","label label-warning","label label-success","label label-danger","label label-default");
                                                         $portas = $util->selectJoin("portabilidades",
                                                         array('FECHA_SOLICITUD', 'NOMBRE_TITULAR',  'NUMERO_PORTAR','clientes.NOMBRE', 'clientes.APELLIDOS','clientes.EMAIL','portabilidades.ESTADO','portabilidades.ID'),
                                                         " left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE", 'FECHA_SOLICITUD','ESTADO != 6 AND portabilidades.ID_EMPRESA='.$_SESSION['USER_ID']);
@@ -261,11 +261,11 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                                     <?php
                                                         require_once ('clases/Orden.php');
                                                         $ordenes = new Orden();
-                                                        $listado = $ordenes->obtenerOrdenesAsignadas2();
+                                                        $listado = $ordenes->obtenerOrdenesEnProceso();
 
                                                         while ($linea = mysqli_fetch_array($listado)){
                                                             echo "<tr>";
-                                                            echo "<td><span class='".$estadosColoresOrdenes[intval($linea[6])]."'>".$estadosOrdenes[intval($linea[6])-1]. "</span></td>";
+                                                            echo "<td><span class='".$estadosColoresOrdenes[intval($linea[6])-1]."'>".$estadosOrdenes[intval($linea[6])-1]. "</span></td>";
                                                             echo "<td>".$util->fecha_eur($linea[5])."</td>";
                                                             echo "<td>".$linea[1]." ".$linea[2]."</td>";
                                                             echo "<td>".$linea[3]." ".$linea[4]."</td>";
@@ -339,7 +339,7 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                                         echo "<td>".$util->fecha_eur($linea[5])."</td>";
                                                         echo "<td>".$linea[1]." ".$linea[2]."</td>";
                                                         echo "<td>".$linea[3]." ".$linea[4]."</td>";
-                                                        echo "<td ><span class=\"btn btn-default btn-xs btn-block\" onclick=\"ver_mas_ordenes_1('.$row[0].');\" > Más</span ></td></td>";
+                                                        echo "<td ><span class='btn btn-default btn-xs btn-block' onclick='informe(".$linea[0].");'>Informe</span ></td></td>";
                                                         echo "</tr>";
                                                     }
                                                     ?>
@@ -611,9 +611,7 @@ if ($_SESSION['USER_LEVEL'] == 0) {
 
 		<!-- PAGE LEVEL SCRIPT -->
 		<script type="text/javascript">
-            function ver_mas(id) {
-                alert(id);
-            }
+
 
             var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
@@ -687,6 +685,17 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                 });
 
             }
+
+
+            function ver_mas(id) {
+                alert(id);
+            }
+
+
+            function informe(id) {
+                location.href="content/trabajos/informe-orden.php?id="+id;
+            }
+
         </script>
     </body>
 </html>

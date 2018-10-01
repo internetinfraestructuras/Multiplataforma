@@ -5,7 +5,9 @@
  * Date: 07/08/2018
  * Time: 11:03
  */
-
+//
+//error_reporting(E_ALL);
+//ini_set("display_errors", 1);
 class Orden
 {
     public static function crearOrdenTrabajo($idContrato,$fechaAlta)
@@ -59,7 +61,7 @@ class Orden
     }
 
 // ruben
-    public static function obtenerOrdenesAsignadas2()
+    public static function obtenerOrdenesEnProceso()
     {
         $util=new util();
         $campos=array('ordenes.ID, clientes.NOMBRE','clientes.APELLIDOS','usuarios.NOMBRE','usuarios.APELLIDOS',
@@ -68,7 +70,7 @@ class Orden
                 JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
                 JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
                 JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO ';
-        $where='ordenes.ID_TIPO_ESTADO != 3 AND contratos.ID_EMPRESA = '.$_SESSION['USER_ID'];
+        $where='ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA = '.$_SESSION['USER_ID'];
 
         return $util->selectJoin('ordenes_usuario', $campos,  $join, 'ordenes_usuario.FECHA_ASIGNACION', $where);
     }
@@ -84,7 +86,7 @@ class Orden
                 JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
                 JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
                 JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO ';
-        $where='ordenes.ID_TIPO_ESTADO = 3 AND contratos.ID_EMPRESA = '.$_SESSION['USER_ID'];
+        $where='ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA = '.$_SESSION['USER_ID'];
 
         return $util->selectJoin('ordenes_usuario', $campos,  $join, 'ordenes_usuario.FECHA_ASIGNACION', $where);
     }
@@ -202,7 +204,7 @@ class Orden
         $campos=array('ordenes_lineas.ID_LINEA_DETALLE_CONTRATO','ordenes_lineas.ID_PRODUCTO',
                         'productos.NUMERO_SERIE as serial','productos_modelos.NOMBRE as modelo',
                         'productos_tipos.NOMBRE as tipo','contratos_lineas_detalles.ID_TIPO_SERVICIO as servicio',
-                        'ordenes_lineas.ID','etiquetas.series.pon');
+                        'ordenes_lineas.ID','etiquetas.series.pon','contratos_lineas_detalles.ESTADO');
 
         $where='ordenes_lineas.id_orden='.$id.' AND ordenes.id_empresa='.$_SESSION['REVENDEDOR'];
 
@@ -236,4 +238,35 @@ class Orden
         return $util->selectJoin('contratos_lineas_detalles',$campos, $join,'',$where);
 
     }
+
+    public static function getLineasOrdenCerradasEstados($id=null)
+    {
+
+
+        $util=new util();
+
+        $campos=array('distinct(contratos_lineas_detalles.VALOR)','contratos_lineas_detalles.ID_ATRIBUTO_SERVICIO',
+            'servicios_tipos_atributos.NOMBRE','contratos_lineas_detalles.ESTADO','servicios_tipos.NOMBRE',
+            'clientes.NOMBRE','clientes.APELLIDOS');
+
+        $join=' JOIN servicios_tipos_atributos on servicios_tipos_atributos.ID = contratos_lineas_detalles.ID_ATRIBUTO_SERVICIO 
+                JOIN servicios_tipos ON servicios_tipos.ID = contratos_lineas_detalles.ID_TIPO_SERVICIO 
+                JOIN clientes ON clientes.ID = contratos.ID_CLIENTE ';
+
+        $where=' ID_LINEA = (SELECT contratos_lineas.ID FROM contratos_lineas WHERE ID_CONTRATO = (SELECT ID_CONTRATO FROM ordenes WHERE ID='.$id.'));';
+
+        return $util->selectJoin(NUEVADB.'contratos_lineas_detalles',$campos, $join,'',$where);
+
+    }
+
+    public static function setresultadoInstalacionLineaOrden($id_linea_contrato,$fecha,$tecnico,$rx,$ssid,
+                                                            $clave_wifi,$test_masmovil,$test_aire,$test_fijo){
+        $util=new util();
+
+        $campos=array('id_linea_contrato','fecha','tecnico','rx','ssid','clave_wifi','test_masmovil','test_aire','test_fijo');
+        $valores=array($id_linea_contrato,$fecha,$tecnico,$rx,$ssid,$clave_wifi,$test_masmovil,$test_aire,$test_fijo);
+
+        $util->insertInto(NUEVADB.'ordenes_test_instalacion',$campos, $valores);
+    }
+
 }

@@ -1677,7 +1677,7 @@ check_session(2);
 
             servicios_contratados.push(servicio);
         }
-        // console.log(servicios_contratados);
+        console.log(servicios_contratados);
 
         for (c=0; c<servicios_contratados.length; c++){
             if(servicios_contratados[c][5]=='e')

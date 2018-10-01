@@ -5,10 +5,8 @@
  * Date: 23/08/2018
  * Time: 13:54
  */
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
-require_once "../config/util.php";
+include_once "../config/util.php";
 
 class Clientes
 {
@@ -37,4 +35,15 @@ class Clientes
             "EMAIL = '".$email."' AND id_empresa=".$_SESSION['REVENDEDOR']);
     }
 
+
+    public  function getClienteAltaMasMovil($id)
+    {
+        return $this->util->selectJoin('clientes',
+            array("NOMBRE","APELLIDOS",'TIPO_DOCUMENTO',"DNI",
+                "FIJO","MOVIL","EMAIL","DIRECCION","municipios.municipio","provincias.provincia","pais.iso",
+                "CP","BANCO","IBAN")," JOIN municipios ON municipios.id = clientes.LOCALIDAD 
+                                            JOIN provincias ON provincias.id = clientes.PROVINCIA 
+                                            JOIN pais ON pais.id = clientes.NACIONALIDAD ",
+            "","clientes.ID = '".$id."'");
+    }
 }

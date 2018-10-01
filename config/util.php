@@ -11,11 +11,12 @@ if (!isset($_SESSION)) {
     @session_start();
 }
 
-require_once('define.php');
-require_once('def_tablas.php');
+include_once('define.php');
+include_once('def_tablas.php');
 
 date_default_timezone_set('Europe/Madrid');
 //
+
 //error_reporting(E_ALL);
 //ini_set("display_errors", 1);
 class util
@@ -196,8 +197,10 @@ class util
 
             if ($order != null)
                 $query = $query . " ORDER BY " . $order;
+
             $this->write_log($query, "info");
 
+//            echo $query;
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectJoin.');
 
@@ -229,7 +232,6 @@ class util
             for ($i = 0; $i < $numFields; $i++) {
                 $fieldNames[] = mysqli_fetch_field_direct($result, $i);
             }
-
             $link->close();
 
             return $fieldNames;
@@ -259,6 +261,8 @@ class util
 
             if ($order != null)
                 $query = $query . " ORDER BY " . $order;
+//echo $query;
+
             $this->write_log($query, "info");
             if (!($result = $link->query($query)))
                 throw new Exception();
@@ -293,7 +297,9 @@ class util
 
             if ($order != null)
                 $query = $query . " ORDER BY " . $order;
+
             $this->write_log($query, "info");
+
             if (!($result = $link->query($query)))
                 throw new Exception();
 
@@ -302,7 +308,8 @@ class util
             while ($row = mysqli_fetch_array($result)) {
                 array_push($fieldNames, $row[0]);
             }
-            // var_dump($fieldNames);
+
+//            $this->write_log(var_dump($fieldNames));
             $link->close();
 
             return $fieldNames;
@@ -459,6 +466,7 @@ class util
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
             $lastid = mysqli_insert_id($link);
+
             $this->write_log($query, "info");
             $link->close();
             if ($log) {
