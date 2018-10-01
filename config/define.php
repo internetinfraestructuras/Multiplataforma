@@ -13,10 +13,18 @@ define('DDBB','pruebas.');
 // cabeceras de los ficheros html
 define('AUTOR','Internet Infraestructuras S.L.');
 define('OWNER','AT Control');
+
+/*atributos de SERVICIOS*/
 define('ID_NUMERO_MOVIL',48);
 define('ID_ATRIBUTO_TRONCAL',56);
 define('ID_ATRIBUTO_GRUPO_RECARGA',43);
 define('ID_ATRIBUTO_PAQUETE_DESTINO',44);
+define('ID_ATRIBUTO_BAJADA',40);
+define('ID_ATRIBUTO_SUBIDA',39);
+
+define('FIBRADB','fibra.');
+define('NUEVADB','multiplataforma.');
+define('ETIQUETAS','etiquetas.');
 
 
 /*tipos de servicios*/
@@ -24,6 +32,27 @@ define('ID_SER_INTERNET',1);
 define('ID_SER_FIJO',2);
 define('ID_SER_MOVIL',3);
 define('ID_SER_TV',4);
+
+
+/*TIPOS DE ANEXOS*/
+define('ID_ANEXO_ALTA',1);
+define('ID_ANEXO_BAJA',2);
+define('ID_ANEXO_CAMBIO_SERV',3);
+define('ID_ANEXO_CAMBIO_PAQ',4);
+define('ID_ANEXO_SOLICITUD_BAJA_SERV',5);
+define('ID_ANEXO_CANCELACION_SOL_BAJA',6);
+define('ID_ANEXO_BAJA_SERVICIO',7);
+define('ID_ANEXO_ROTURA_PAQ',8);
+define('ID_ANEXO_CAMBIO_PRECIO_PAQ',9);
+define('ID_ANEXO_CAMBIO_TARIFA_PAQ',10);
+
+//TIPOS DE ORDENES DE TRABAJO
+define('ORDEN_INSTALACION',1);
+define('REPARACIÓN',2);
+define('RMA',3);
+define('RMA_BAJA',4);
+define('BAJA',5);
+define('CANCELADA',6);
 
 define('ID_PRODUCTO_STOCK',1);
 define('ID_PRODUCTO_ASIGNADO',2);

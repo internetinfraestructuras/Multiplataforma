@@ -164,7 +164,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     public static function getLineaDetallesServicio($idLinea, $idServicio)
     {
         $util = new util();
-        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR"),
+        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR","ID"),
             "contratos_lineas_detalles.id_linea=" . $idLinea . " AND contratos_lineas_detalles.id_servicio=" . $idServicio);
     }
 
@@ -418,8 +418,8 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     public static function getProductosLinea($idLinea)
     {
         $util = new util();
-        return $util->selectWhere3("contratos_lineas_productos", array("ID_PRODUCTO", "ESTADO"),
-            "contratos_lineas_productos.id_linea=" . $idLinea);
+        return $util->selectWhere3("contratos_lineas_productos,productos", array("contratos_lineas_productos.ID_PRODUCTO", "contratos_lineas_productos.ESTADO","productos.id_modelo_producto"),
+            "contratos_lineas_productos.id_linea=$idLinea AND productos.id=contratos_lineas_productos.id_producto");
     }
 
     //Cambiar el producto a otra línea

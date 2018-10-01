@@ -421,4 +421,24 @@ class Linea
         echo json_encode($return);
     }
 
+    public function setSolicitarBajaLinea($telefono,$tipoSolicitud)
+    {
+        $cliente = new nusoap_client($this->url,true);
+
+        $datos=array(
+            "user"=>$this->user,
+            "pass"=>$this->pass,
+            "telefono"=>$telefono,
+            "opcion"=>$tipoSolicitud);
+
+        $return = $cliente->call("setBajaLinea",array($datos));
+
+        $error = $cliente->getError();
+        if ($error)
+            return $error;
+        else
+            return $return;
+
+    }
+
 }

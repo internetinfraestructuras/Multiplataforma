@@ -456,27 +456,35 @@ $pvp=$listado[0][5];
         var respuesta = confirmar("¿Estas seguro de eliminar el servicio del paquete? ");
         if(respuesta)
         {
+            var mantenerPaquete = confirmar("¿Desea conservar el precio del paquete y dar de baja el servicio? Si selecciona cancelar el paquete se romperá y se oobrarán los servicios de forma independiente");
 
+            if(mantenerPaquete)
+            {
+                jQuery.ajax({
+                    url: 'baja-servicio-paquete.php',
+                    type: 'POST',
+                    cache: false,
+                    async: true,
+                    data: {
+                        a: 'cancelar-baja',
+                        id:id,
+                        idPaquete:<?php echo $_GET['idPaquete']; ?>,
+                        idContrato:<?php echo $_GET['idContrato']; ?>,
+                        idLineaContrato:<?php echo $_GET['idLineaContrato']; ?>
+                    },
+                    success: function (data)
+                    {
 
-            jQuery.ajax({
-                url: 'baja-servicio-paquete.php',
-                type: 'POST',
-                cache: false,
-                async: true,
-                data: {
-                    a: 'cancelar-baja',
-                    id:id,
-                    idPaquete:<?php echo $_GET['idPaquete']; ?>,
-                    idContrato:<?php echo $_GET['idContrato']; ?>,
-                    idLineaContrato:<?php echo $_GET['idLineaContrato']; ?>
-                },
-                success: function (data)
-                {
+                        console.log(data);
+                        //  location.reload();
+                    }
+                });
+            }
+            else
+            {
+                alert("Romper paquete");
+            }
 
-                    console.log(data);
-                    //  location.reload();
-                }
-            });
 
         }
     }

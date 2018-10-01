@@ -120,7 +120,6 @@ check_session(2);
                                     </div>
 
 
-
                                 </fieldset>
                                 <hr/>
                                 <div class="panel-body">
@@ -203,6 +202,7 @@ check_session(2);
                                     }
                                     else if($_GET['proveedor']==ID_PROVEEDOR_MASMOVIL || empty($_GET['proveedor']))
                                     {?>
+                                    <h2>Listado Portabilidades mes en curso:</h2><hr>
                                     <table id="example1" class="table table-bordered table-hover">
                                         <thead>
                                         <tr>
@@ -223,7 +223,16 @@ check_session(2);
 
                                         $apiMasmovil=new MasMovilAPI();
 
-                                        $rs=$apiMasmovil->getListadoPortabilidades("","","","","","20180101","");
+                                        if(empty($_GET['desde']))
+                                            $desde=date("Ym")."01";
+                                        else
+                                            $desde=$_GET['desde'];
+
+
+
+
+                                        $rs=$apiMasmovil->getListadoPortabilidades("","","","","",$desde,"");
+
                                         $solicitudes=$rs->Portabilidades->SolicitudPortabilidad;
 
 
@@ -316,7 +325,12 @@ function cancelarSolicitud(numeroSolicitud)
 }
 function cambiar()
 {
+    var url = "estados-portabilidades.php?proveedor="+$("#tipo").val(); // get selected value
 
+    if (url) { // require a URL
+        window.location = url; // redirect
+    }
+    return false;
 }
 
     $(function () {

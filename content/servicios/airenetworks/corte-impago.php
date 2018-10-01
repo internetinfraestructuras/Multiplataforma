@@ -57,6 +57,7 @@ if($valor=='R')//C:Cancelar solicitud de corte
 if($rs==OPERACION_OK_MASMOVIL && $valor=='S' )
 {
    for($i=0;$i<count($lineasDetalles);$i++)
+   {
         $idLinea=$lineasDetalles[$i][0];
         Contrato::setLineaDetallesImpago($idLineaDetalle);
    }

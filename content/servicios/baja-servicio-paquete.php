@@ -33,8 +33,6 @@ if(isset($_POST['id']) && $_POST['id']!='')
     $idLinea=$_POST['idLineaContrato'];
     $idPaquete=$_POST['idPaquete'];
 
-    Servicio::darBajaServicioPaquete($idContrato,$idLinea,$idPaquete,$idServicio);
+    Servicio::darBajaServicioPaquete($_SESSION['REVENDEDOR'],$idContrato,$idLinea,$idPaquete,$idServicio);
 
-
-   // Servicio::cancelarBajaServicio($idContrato,$idLinea,$idServicio,$productos);
 }
