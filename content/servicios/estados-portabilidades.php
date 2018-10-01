@@ -11,16 +11,6 @@ require_once('../../config/util.php');
 $util = new util();
 check_session(2);
 
-$listado= $util->selectWhere3('paquetes',
-    array("ID","NOMBRE","PRECIO_COSTE","MARGEN","IMPUESTO","PVP"),
-    "paquetes.id_empresa=".$_SESSION['REVENDEDOR']." and paquetes.id=".$_GET['idPaquete']);
-
-$id=$listado[0][0];
-$nombre=$listado[0][1];
-$coste=$listado[0][2];
-$margen=$listado[0][3];
-$impuestos=$listado[0][4];
-$pvp=$listado[0][5];
 
 
 
@@ -122,7 +112,7 @@ $pvp=$listado[0][5];
                                         <div class="col-md-3 col-sm-4">
                                             <label>Proveedor:</label>
 
-                                            <select name="tipo" id="tipo" class="form-control pointer "  onchange="carga_tipos(this.value)">
+                                            <select name="tipo" id="tipo" class="form-control pointer "  onchange="cambiar()">
                                                 <option value="<?php echo $idTipoServicio;?>">--- Seleccionar una ---</option>
                                                 <?php $util->carga_select('proveedores', 'id', 'nombre', 'nombre','id_tipo_proveedor=2 AND id='.ID_PROVEEDOR_AIRENETWORKS." OR id=".ID_PROVEEDOR_MASMOVIL,'','',$idTipoServicio); ?>
                                             </select>
@@ -135,6 +125,10 @@ $pvp=$listado[0][5];
                                 <hr/>
                                 <div class="panel-body">
 
+
+                                        <?php
+                                    if($_GET['proveedor']==ID_PROVEEDOR_AIRENETWORKS)
+                                    {?>
                                     <table id="example1" class="table table-bordered table-hover">
                                         <thead>
                                         <tr>
@@ -146,11 +140,12 @@ $pvp=$listado[0][5];
                                             <th>FECHA SOLICITUD</th>
                                             <th>CODIGO PORTABILIDAD</th>
                                             <th>ESTADO</th>
+
+
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <?php
-                                    if($_GET['proveedor']==ID_PROVEEDOR_AIRENETWORKS) {
+                                    <?php
                                         require_once("../../clases/airenetwork/clases/Linea.php");
                                         require_once('../../clases/Empresa.php');
 
@@ -161,7 +156,9 @@ $pvp=$listado[0][5];
 
                                         $rs = $lineaAire->getSolicitudesLineas($filtro);
 
-                                        for ($i = 0; $i < count($rs); $i++) {
+
+                                        for ($i = 0; $i < count($rs); $i++)
+                                        {
                                             $cod = $rs[$i]['cod'];
                                             $tipoLinea = $rs[$i]['tipo'];
                                             $telefono = $rs[$i]['telefono'];
@@ -173,20 +170,21 @@ $pvp=$listado[0][5];
 
                                             echo "<tr>";
                                             echo "<td>$cod</td><td>$tipoLinea</td><td>$telefono</td><td>$cliente</td><td>$tarifa</td><td>$fechaPeticion</td><td>$codPortabilidad</td><td>$estado</td>";
-echo ' <td class="td-actions text-right">';
+                                            echo ' <td class="td-actions text-right">';
+
                                             if($estado==LINEA_AIRE_NO_PROCESADA)
                                             {
 
                                                 ?>
 
                                                     <a onclick="cancelarSolicitud(<?php echo $cod; ?>)" ">
-                                                    <button type="button" rel="tooltip">
-                                                        <i class="fa fa-remove"></i>
+                                                <button type="button" rel="tooltip">
+                                                        <i class="fa fa-remove"></i> Cancelar
                                                     </button>
                                                     </a>
-                                                <a onclick="obtenerDocumento(<?php echo $cod; ?>,'PORTABILIDAD')" ">
+                                                <a href="airenetworks/obtener-documento.php?codSolicitud=<?php echo $cod;?>&tipo=PORTABILIDAD" target="_blank">
                                                 <button type="button" rel="tooltip">
-                                                    <i class="fa fa-pagelines"></i>
+                                                   <i class="fa fa-file-pdf-o"></i> Descargar
                                                 </button>
                                                 </a>
 
@@ -199,8 +197,63 @@ echo ' <td class="td-actions text-right">';
 
                                             </tr>
                                             <?php
+
                                         }
-                                    }?>
+                                        echo "Entramos";
+                                    }
+                                    else if($_GET['proveedor']==ID_PROVEEDOR_MASMOVIL || empty($_GET['proveedor']))
+                                    {?>
+                                    <table id="example1" class="table table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>CODIGO</th>
+                                            <th>TELEFONO</th>
+                                            <th>CLIENTE</th>
+                                            <th>FECHA</th>
+                                            <th>TARIFA</th>
+                                            <th>ESTADO</th>
+                                            <th>FASE</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                    <?php
+                                        require_once("../../clases/masmovil/MasMovilAPI.php");
+                                        require_once("../../clases/Servicio.php");
+
+                                        $apiMasmovil=new MasMovilAPI();
+
+                                        $rs=$apiMasmovil->getListadoPortabilidades("","","","","","20180101","");
+                                        $solicitudes=$rs->Portabilidades->SolicitudPortabilidad;
+
+
+
+                                        for($j=0;$j<count($solicitudes);$j++)
+                                        {
+                                            $cod=$solicitudes[$j]->Contract;
+                                            $numero=$solicitudes[$j]->fromPhoneNumber;
+                                            $nombre=$solicitudes[$j]->firstName;
+                                            $apellido=$solicitudes[$j]->lastName;
+                                            $apellido2=$solicitudes[$j]->secondLastName;
+                                            $fecha=$solicitudes[$j]->Date;
+                                            $tarifa=$solicitudes[$j]->productProfile;
+                                            $servicioInterno=Servicio::getServicioInternoIdAPIMasMovil($tarifa,$_SESSION['REVENDEDOR']);
+                                            $servicioInterno=$servicioInterno[0][0];
+                                            $estado=$solicitudes[$j]->id_fase;
+                                            $fase=$solicitudes[$j]->fase;
+
+                                            $nombre.=" ".$apellido." ".$apellido2;
+
+                                            $fecha = date("d-m-Y", strtotime($fecha));
+
+                                            echo "<tr>";
+                                            echo "<td>$cod</td><td>$numero</td><td>$nombre</td><td> $fecha </td><td>$servicioInterno</td><td>$estado</td><td>$fase</td>";
+
+                                        }
+
+                                    }
+
+                                    ?>
 
                                         </tbody>
 
@@ -208,14 +261,7 @@ echo ' <td class="td-actions text-right">';
 
 
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12 col-sm-4">
 
-                                        <input type="checkbox" name="cascada-precio"  placeholder="0" > ¿Realizar una actualización de precios a todos los clientes con dicho paquete contratado?
-
-
-                                    </div>
-                                </div>
 
 
                             </form>
@@ -268,23 +314,11 @@ function cancelarSolicitud(numeroSolicitud)
         });
     }
 }
-    function obtenerDocumento(numeroSolicitud,tipo)
-    {
+function cambiar()
+{
 
-            jQuery.ajax({
-                url: 'airenetworks/obtener-documento.php',
-                type: 'POST',
-                cache: false,
-                async:true,
-                data:{codSolicitud:numeroSolicitud,tipo:tipo},
-                success: function(data)
-                {
+}
 
-                    alert(data);
-                }
-            });
-
-    }
     $(function () {
         $('#example1').DataTable()
         $('#example2').DataTable({

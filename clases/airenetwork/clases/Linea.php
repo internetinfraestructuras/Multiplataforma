@@ -294,6 +294,22 @@ class Linea
         return $result;
     }
 
+
+    public function setDocumentosSolicitud($dniCliente,$codSolicitud,$documento64,$tipoDocumento,$nombreFichero)
+    {
+
+        $client = new nusoap_client($this->url,$proxyhost=false,$proxyport=false,$proxyusername=false,$proxupassword=false,$timeout=0,$response_timeout=160);
+        $err=$client->getError();
+        if($err)
+        {
+            echo "ERROR";
+        }
+        $datos = array("user" => $this->user, "pass" => $this->pass,"codigo_solicitud"=>$codSolicitud,"nif_cliente"=>$dniCliente,"documento"=>$documento64,"tipo_documento"=>$tipoDocumento,"documento_name"=>$nombreFichero);
+        $result = $client->call("subirDocumento", array($datos));
+
+        return $result;
+    }
+
     public function setRestablecerCorteImpago($telefono)
     {
 

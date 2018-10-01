@@ -19,8 +19,8 @@ AltaTecnica::addNuevaLineaAire(0,1,0,"31689245Y","diego","demo","demo2",
 "Jerez de la Frontera","11408","Calle del comercio","18","prueba","pruebasenbase64","8934341700104351157","8",43);*/
 //$tarifa,$tipoCliente,$nif,$icc,$dc,$telefono,$modalidadActual,$iccOrigen,$dcOrigen
 
-AltaTecnica::addNuevaPortabilidadAireNetworks(1,"43","1","B90013699","8934341700104351157","8","691934413","postpago","8934011411704178217","");
-
+//AltaTecnica::addNuevaPortabilidadAireNetworks(1,"43","1","B90013699","8934341700104351157","8","691934413","postpago","8934011411704178217","");
+AltaTecnica::getDocumentosPortabilidadAireNetworks("00205430462113","PORTABILIDAD");
 //AltaTecnica::getEstadosPortabilidadesAireNetworks("PORTABILIDAD");
 
 

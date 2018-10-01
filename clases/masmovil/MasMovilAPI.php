@@ -570,7 +570,7 @@ class MasMovilAPI
 
         $resultado=$client->msisdnsPortingMaintenance($parametros);
 
-        return json_encode($resultado->return);
+        return $resultado->return;
     }
     /*
      * $tipoAbono=prepago/postpago 1/0

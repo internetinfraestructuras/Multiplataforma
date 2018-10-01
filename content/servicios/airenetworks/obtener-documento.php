@@ -9,6 +9,7 @@
 if (!isset($_SESSION)) {
     @session_start();
 }
+header('Content-type: application/pdf');
 require_once('../../../config/util.php');
 require_once('../../../clases/airenetwork/clases/Linea.php');
 require_once('../../../clases/Contrato.php');
@@ -23,14 +24,12 @@ $pass=$confAire[0][2];
 $util = new util();
 check_session(1);
 
-$cod=$util->cleanstring($_POST['codSolicitud']);
-$tipo=$util->cleanstring($_POST['tipo']);
+$cod=$util->cleanstring($_GET['codSolicitud']);
+$tipo=$util->cleanstring($_GET['tipo']);
 
-
-echo $tipo;
 $apiAire=new Linea($url,$usuario,$pass);
 
 $rs=$apiAire->getDocumentosSolicitud($cod,$tipo);
-echo $rs;
+var_dump($rs);
 
 ?>

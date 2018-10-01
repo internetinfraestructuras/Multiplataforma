@@ -611,6 +611,13 @@ class Servicio
     "servicios.id=".$idServicio." AND servicios.id=servicios_externos.id_servicio AND servicios_externos.id_empresa=$idEmpresa");
     }
 
+    public static function getServicioInternoIdAPIMasMovil($idAPI,$idEmpresa)
+    {
+        $util=new util();
+        return $util->selectWhere3("servicios,servicios_externos", array("servicios.nombre"),
+            " servicios.id=servicios_externos.id_servicio AND servicios_externos.id_empresa=$idEmpresa AND servicios_externos.id_externo='$idAPI'");
+    }
+
     public static function getProveedor($idServicio)
     {
     $util=new util();

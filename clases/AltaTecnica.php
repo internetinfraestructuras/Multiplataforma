@@ -225,5 +225,37 @@ class AltaTecnica
 
         var_dump($rs);
     }
+
+    public static function getDocumentosPortabilidadAireNetworks($codigoSolicitud,$tipoDocumento)
+    {
+        require_once ('./airenetwork/clases/Linea.php');
+        require_once ('./Empresa.php');
+        $configuracion=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
+        $lineaAire=new Linea($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
+
+        $rs=$lineaAire->getDocumentosSolicitud($codigoSolicitud,$tipoDocumento);
+        var_dump($rs);
+
+    }
+
+    /*
+     * SUBIR DOCUMENTACIÓN POR API AIRENETWORKS
+     * $dniCliente
+     * $codSolicitud=Es el código de solicitud de la línea
+     * $documento64=Documento en base64
+     * $tipoDocumento= DOCUMENTO/PORTABILIDAD/CONTRATOS/OTROS
+     * $nombreFichero= Nombre del fichero pasado en base64.
+     */
+    public static function setDocumentosPortabilidadAireNetworks($dniCliente,$codSolicitud,$documento64,$tipoDocumento,$nombreFichero)
+    {
+        require_once ('./airenetwork/clases/Linea.php');
+        require_once ('./Empresa.php');
+        $configuracion=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
+        $lineaAire=new Linea($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
+
+        $rs=$lineaAire->subirDocumento($codigoSolicitud,$tipoDocumento);
+        var_dump($rs);
+
+    }
 }
 ?>
