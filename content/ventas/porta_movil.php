@@ -44,6 +44,7 @@ check_session(3);
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="../../assets/css/portabilidades.css" rel="stylesheet" type="text/css"/>
+    <link href="../../assets/plugins/dropzone/css/dropzone.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -94,6 +95,7 @@ check_session(3);
                     <li class="active">Cliente</li>
                     <li>Donante</li>
                     <li>Líneas</li>
+                    <li>Documentos</li>
                     <li>Activar</li>
                 </ul>
                 <div class="spinner" id="animacion1">
@@ -281,8 +283,6 @@ check_session(3);
 
                 </fieldset>
 
-
-
                 <fieldset class="caja">
                     <div class="row text-center">
                         <label><b>Seleccione el operador donante</b></label><br><br>
@@ -312,7 +312,6 @@ check_session(3);
                            value="Paso Anterior"/>
                     <input  type="button" name="next" id="next3" class="next action-button" value="Continuar"/>
                 </fieldset>
-
 
                 <fieldset class="caja">
                     <div class="row text-center">
@@ -363,7 +362,33 @@ check_session(3);
                     </div>
                     <input  type="button" name="previous" class="previous action-button-previous"
                            value="Paso Anterior"/>
-                    <input  type="button" name="next" id="next4" class="next action-button" value="Finalizar y Contratar"/>
+                    <input  type="button" name="next" id="next4" class="next action-button" value="Continuar"/>
+                </fieldset>
+
+                <fieldset class="caja">
+
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-4 text-center">
+                            <label><b>Descargue este documento</b></label><br>
+                            <img src="../../img/pdf.png" class="img-responsive"  style="margin-top:5%"><br>
+                            <img src="../../img/descargue.png" class="img-responsive" style="margin-top:40%">
+                        </div>
+                        <div class="col-xs-12 col-sm-4  text-center">
+                            <label><b>Firme el documento</b></label><br>
+                            <img src="../../img/firme.png" class="img-responsive" style="margin-top:80%">
+                        </div>
+                        <div class="col-xs-12 col-sm-4 text-center">
+                            <label><b>Cargue el documento</b></label><br>
+                            <div action="upload.php" method="post" class="dropzone" id="my-dropzone" style="width:98%;height:80%;min-height:250px;margin:1%;"></div>
+                            <br>
+                            <img src="../../img/cargue.png" class="img-responsive">
+
+                        </div>
+                    </div>
+                    <input  type="button" name="previous" class="previous action-button-previous" value="Paso Anterior"/>
+                    <input  type="button" name="next" id="next4" class="next action-button" value="Continuar"/>
+
                 </fieldset>
 
                 <fieldset class="caja">
@@ -507,6 +532,36 @@ check_session(3);
 
     });
 
+    loadScript(plugin_path + 'dropzone/dropzone.js', function() {
+
+        Dropzone.options.myDropzone = {
+            init: function() {
+                this.on("addedfile", function(file) {
+                    // Create the remove button
+                    var removeButton = Dropzone.createElement("<button class='btn btn-sm btn-default fullwidth margin-top-10'>Remove file</button>");
+
+                    // Capture the Dropzone instance as closure.
+                    var _this = this;
+
+                    // Listen to the click event
+                    removeButton.addEventListener("click", function(e) {
+                        // Make sure the button click doesn't submit the form:
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        // Remove the file preview.
+                        _this.removeFile(file);
+                        // If you want to the delete the file on the server as well,
+                        // you can do the AJAX request here.
+                    });
+
+                    // Add the button to the file preview element.
+                    file.previewElement.appendChild(removeButton);
+                });
+            }
+        }
+
+    });
     function goToAnchor(anchor) {
         var loc = document.location.toString().split('#')[0];
         document.location = loc + '#' + anchor;

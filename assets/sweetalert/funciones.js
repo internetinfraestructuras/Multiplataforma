@@ -2,7 +2,7 @@
 function alerta(titulo, texto, icono, botonSi, botonNo, funcionAceptar, funcionCancelar) {
 
     const swalWithBootstrapButtons = swal.mixin({
-        confirmButtonClass: 'btn btn-success',
+        confirmButtonClass: 'btn btn-success next',
         cancelButtonClass: 'btn btn-danger',
         buttonsStyling: true
     });
@@ -40,12 +40,11 @@ function alertaOk(titulo, texto, icono, botonSi, funcion) {
         reverseButtons: true,
         width: 500
     }).then((result) => {
-        if (result.value) {
+        if (result.value && funcion!='') {
             self[funcion]();
         }
     })
 }
-
 
 function alerta2(titulo, texto, icono, pie) {
 

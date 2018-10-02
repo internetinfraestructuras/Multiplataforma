@@ -20,10 +20,11 @@ $root = "/";
 <link rel="stylesheet" href="/assets/sweetalert/sweetalert2.min.css">
 
 <script>
+
     function alerta(titulo, texto, icono, botonSi, botonNo, funcionAceptar, funcionCancelar) {
 
         const swalWithBootstrapButtons = swal.mixin({
-            confirmButtonClass: 'btn btn-success',
+            confirmButtonClass: 'btn btn-success next',
             cancelButtonClass: 'btn btn-danger',
             buttonsStyling: true
         });
@@ -61,11 +62,40 @@ $root = "/";
             reverseButtons: true,
             width: 500
         }).then((result) => {
-            if (result.value) {
+            if (result.value && funcion!='') {
                 self[funcion]();
             }
         })
     }
+
+    function alertaOkKo(titulo, texto, icono, botonSi, botonNo) {
+
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: true
+        });
+
+        swalWithBootstrapButtons({
+            title: titulo,
+            html: texto,
+            type: icono,
+            showCancelButton: true,
+            confirmButtonText: botonSi,
+            cancelButtonText: botonNo,
+            reverseButtons: true,
+            width: 500
+        }).then((result) => {
+            if (result.value) {
+                return true;
+            } else if (result.dismiss === swal.DismissReason.cancel) {
+                return false;
+            }
+        })
+    }
+
+
+
 
 
     function alerta2(titulo, texto, icono, pie) {

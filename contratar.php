@@ -814,6 +814,9 @@ check_session(2);
     var contenedordenumeros=0;
     var numerosNuevos=[];
     var totalDescuento=0;
+    var avanzar = true;
+    var sintodoslosproductos=false;
+
 
     function mostrarmodal(){
            $("#masservicios").modal();
@@ -1253,8 +1256,6 @@ check_session(2);
         current_fs = $(this).parent();
         next_fs = $(this).parent().next();
 
-        var avanzar = true;
-
         if (this.id == 'next1') {
 
             if (parseInt($("#id")[0].selectedIndex) == -1) {
@@ -1292,6 +1293,10 @@ check_session(2);
             if($("#campanas").val()==-1){
                 if(!confirm("No ha seleccionado ninguna campaña, ¿estás seguro/a?"))
                     return;
+                else {
+                    guardar_borrador(3);
+                    asignar_productos();
+                }
             } else{
                 guardar_borrador(3);
                 asignar_productos();
@@ -1299,14 +1304,29 @@ check_session(2);
         }
 
         if (this.id == 'next5'){
-            if($("#campanas").val()==-1){
-                if(!confirm("No ha seleccionado ninguna campaña, ¿estás seguro/a?"))
+
+            // if($("#campanas").val()==-1){
+            //     if(!confirm("No ha seleccionado ninguna campaña, ¿estás seguro/a?"))
+            //         return;
+            // } else{
+            //     if(!guardar_borrador(4))
+            //         return;
+            // }
+            avanzar = true;
+            $('.selnuevo').each(function (){
+                var elemento = this.id;
+
+                // $("#"+elemento).css('border','solid 1px #c9c9c9');
+                if(this.value==-1){
+                    alertaOk('ATENCION','No puede dar un alta de telefonía fija, sin seleccionar un número de teléfono','warning','Entendido');
+                    $("#"+elemento).css('border','solid 2px red');
+                    avanzar = false;
                     return;
-            } else{
-                if(!guardar_borrador(4))
-                    return;
-            }
-            mostrar_resumen();
+                }
+            });
+
+            if(!guardar_borrador(4) && avanzar==true)
+                return;
         }
 
 
@@ -1641,18 +1661,16 @@ check_session(2);
 
             }
 
-            if (todos_ok>0) {
-                var resp = confirm("No ha asignado productos a todos los servicios,\n¿Deseas continuar?\nAceptar = Si, Cancelar= No. ");
-                if(resp)
-                    return true;
-                else
-                    return false;
+            if (todos_ok>0 && sintodoslosproductos==false) {
+                alerta("ATENCION","No ha asignado productos a todos los servicios, es importante hacer esto. ¿Desea continuar sin asignar los productos?",
+                                    "warning","Regresar","Avanzar sin asignar","returnfalse","returntrue");
             } else
                 return true;
 
         }
 
     }
+
 
     function add_service(objeto) {
         tot_extras=0;
@@ -2091,6 +2109,22 @@ check_session(2);
             }
         });
     }
+
+
+    function returntrue(){
+
+        avanzar=true;
+        sintodoslosproductos=true;
+        mostrar_resumen();
+        $("#next5").click();
+    }
+
+
+    function returnfalse(){
+        avanzar=false;
+        return false;
+    }
+
 
 
     function mostrar_resumen() {

@@ -43,8 +43,4 @@ $iccNuevo="ASDA";
 //echo $api->peticionCambioIccparaMsisdn($regCliente,$msid,$iccNuevo,$motivo);
 echo $api->getEstadoCambioIccid($regCliente,$msid,$iccNuevo,$fecha);
 
-
-
-
-
 ?>
