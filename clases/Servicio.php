@@ -384,19 +384,23 @@ Contrato::cambiarLineaProducto($lineaDetallesAll[$k]['ID'],$idLineaDetalleNueva)
     $lineaDetalles=Contrato::getLineaDetallesServicio($idLinea,$idServicio);
 
     $productosLinea=Contrato::getProductosLinea($lineaDetalles[0][3]);
-
+    $idOrden="";
 for($i=0;$i<count($lineaDetalles);$i++)
 {
 
 
     if($lineaDetalles[$i][0]==ID_SER_INTERNET)
     {
+        if($idOrden=="")
+            $idOrden=Orden::crearOrdenTrabajo($idContrato,"");
+
         if($productosLinea!=null)
         {
 
             $idModelo=$productosLinea[0][2];
             $idProducto=$productosLinea[0][0];
-            echo "ENTRAMOS PRODUCTO";
+            Orden::crearLineaOrden($idOrden,ID_ORDEN_RMA_BAJA,$idProducto,$lineaDetalles[$i][3]);
+
             $pon=Producto::getIdAtributoProducto(1,$idModelo,"PON");
 
             $idpon=$pon[0][0];
@@ -404,17 +408,21 @@ for($i=0;$i<count($lineaDetalles);$i++)
             $valorPon=Producto::getValorAtributoProducto($idpon,$idProducto);
             $valorPon=$valorPon[0][0];
 
-            echo "El pon es $valorPon";
             require_once ('Provision.php');
             $ontProvision=new Provision();
+            echo "El pon es $valorPon<hr>";
 
-            //FALTA LLAMADA A LA FUNCIÓN DAR DE BAJA PON
-           // $r=$ontProvision->cambiarVelocidad($valorPon,$subida,$bajada);
+            $a=$ontProvision->bajaServicios($valorPon,true,false,false);
+
+
         }
 
     }
     if($lineaDetalles[$i][0]==ID_SER_FIJO)
     {
+
+
+
         if($lineaDetalles[$i][1]==ID_ATRIBUTO_TRONCAL)
         {
             $troncal=$lineaDetalles[$i][2];
@@ -455,6 +463,7 @@ for($i=0;$i<count($lineaDetalles);$i++)
         echo "damos de baja la tv";
      }
 }
+
 //COMENTAMOS TODO ESTO PARA LAS PRUEBAS TÉCNICAS DESCOMENTAR CUANDO ESTE TODO EFECTIVO.
 
     //Contrato::setLineaDetallesBajaServicio($idLinea,$idServicio);//Seteamos la linea actual a baja
@@ -682,6 +691,156 @@ for($i=0;$i<count($lineaDetalles);$i++)
 
 
     }
+
+    public static function  darBajaPaqueteRompiendo($idEmpresa,$idContrato,$idLinea,$idServicio)
+    {
+
+        $lineaDetalles=Contrato::getLineaDetalles($idLinea);
+
+        $idPaquete=Contrato::getIdPaqueteLinea($idContrato,$idLinea);
+        $idPaquete=$idPaquete[0][0];
+        Contrato::setLineaContratoBaja($idContrato,$idLinea,$idPaquete);
+
+        $numeroMax=0;
+        $util=new util();
+        $flag=false;
+        $idLineaContratoNueva=0;
+
+
+        $usuarioTroncal="";
+        $paqueteDestino="";
+        $grupoRecarga="";
+
+        for($i=0;$i<count($lineaDetalles);$i++)
+        {
+
+            $tipoServicio=$lineaDetalles[$i]['ID_TIPO_SERVICIO'];
+            $idLineaDetalle=$lineaDetalles[$i]['ID'];
+            $idAtributo=$lineaDetalles[$i]['ID_ATRIBUTO_SERVICIO'];
+            $valor=$lineaDetalles[$i]['VALOR'];
+            $servicioLinea=$lineaDetalles[$i]['ID_SERVICIO'];
+
+            echo "El servicio de la línea es $servicioLinea y el buscado $idServicio<br><br>";
+            $productos=Contrato::getProductosLinea($idLineaDetalle);
+
+            if($idServicio==$servicioLinea)
+            {
+
+                    if($tipoServicio==ID_SER_INTERNET)
+                    {
+                        echo "Baja de internet";
+                    }
+                    if($tipoServicio==ID_SER_FIJO && $idAtributo==ID_ATRIBUTO_TRONCAL)
+                    {
+
+                            $troncal=$lineaDetalles[$i][2];
+                            $telefonia=new Telefonia();
+                            $telefonia->desactivarLinea($troncal);
+
+                    }
+                    if($tipoServicio==ID_SER_MOVIL)
+                    {
+                        echo "Baja movil";
+                        /*
+                        if ($idAtributo == ID_NUMERO_MOVIL && $lineaDetalles[$i]['ID_SERVICIO'] == $servicio) {
+
+                            echo "<hr>Entramos en el servicio";
+
+
+                            $externo = self::getIdExternoApi($servicio,$_SESSION['REVENDEDOR']);
+
+                            $idExterno = $externo[0][0];
+                            $idProveedor = self::getProveedor($servicio);
+                            $idProveedor = $idProveedor[0][0];
+
+
+                            if ($idProveedor == ID_PROVEEDOR_MASMOVIL) {
+                                echo "<br>El proveedor es MASMOVIL<HR>";
+                                $apiMasMovil = new MasMovilAPI();
+                                $resultado = $apiMasMovil->getListadoClientes("", $valor);
+
+                                $refClienteAPI = $resultado->Client[0]->refCustomerId;
+
+                                $res = $apiMasMovil->cambioProducto($refClienteAPI, "", $valor, $idExterno);
+
+
+                                $apiMasMovil->setLogApi($valor, $res, $_SESSION['REVENDEDOR'], 1);
+                            } else if ($idProveedor == ID_PROVEEDOR_AIRENETWORKS) {
+                                echo "El proveedor es AIRENETWORK<HR>";
+                            }
+                        }*/
+                    }
+                    /*
+                    if($tipoServicio==ID_SER_TV)
+                    {
+                        echo "BAJA TELEVISION";
+                    }*/
+
+                Contrato::setLineaDetallesBaja($idLineaDetalle);
+                for($k=0;$k<count($productos);$k++)
+                {
+                   Contrato::setProductoBaja($productos[0][0]);
+                }
+
+            }
+            else
+            {
+                echo "volcamos linea detalle <br>";
+
+
+                if($numeroMax==$idLineaDetalle || $flag==false)
+                {
+
+
+                    $numero = $util->selectWhere3('servicios_tipos_atributos',
+                        array("count(id)"),
+                        "servicios_tipos_atributos.id_servicio=$tipoServicio AND servicios_tipos_atributos.id_tipo=2");
+
+                    $numero = $numero[0][0];
+                    $numeroMax = $idLineaDetalle + ($numero);
+                    $idServi=$lineaDetalles[$i]['ID_SERVICIO'];
+                    $detallesServicio=Servicio::getDetallesServicio($idServi);
+
+                    $precioProveedor=$detallesServicio[0]['PRECIO_PROVEEDOR'];
+                    $impuesto=$detallesServicio[0]['IMPUESTO'];
+                    $beneficio=$detallesServicio[0]['BENEFICIO'];
+                    $pvp=$detallesServicio[0]['PVP'];
+
+                    $permanencia=null;
+
+                  $idLineaContratoNueva=Contrato::setNuevaLineaContrato(2,$idServi,$idContrato,$precioProveedor,$beneficio,$impuesto,$pvp,$permanencia,1);
+
+                    $flag=true;
+                    echo "El número max:$numeroMax";
+
+                }
+
+
+            $nuevaLineaDetalles=Contrato::setNuevaLineaDetalles($idLineaContratoNueva,$tipoServicio,$idServi,$idAtributo,$valor,1);
+
+
+
+        Contrato::setLineaDetallesBaja($idLineaDetalle);
+
+
+
+            for($k=0;$k<count($productos);$k++)
+            {
+               Contrato::cambiarLineaProducto($idLineaDetalle,$nuevaLineaDetalles);
+            }
+
+        }
+
+
+
+
+         }
+
+//        Contrato::setLineaBaja($idContrato,$idLinea);
+
+        //Contrato::generarAnexo($idContrato,1,$idPaquete,$idLinea,ID_ANEXO_BAJA_SERVICIO);
+
+}
 
     public static function getIdExternoApi($idServicio,$idEmpresa)
     {

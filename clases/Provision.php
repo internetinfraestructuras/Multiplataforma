@@ -14,7 +14,7 @@
 */
 
 
-include_once('../../config/util.php');
+require_once('../../config/util.php');
 
 
 class Provision
@@ -44,8 +44,6 @@ class Provision
 
         $campos = array('id', 'c', 't', 'p', 'id_en_olt', 'id_internet', 'cabecera');
         $provision = $this->util->selectWhere3(FIBRADB . 'aprovisionados', $campos, ' num_pon="' . $pon . '"', ' id DESC');
-
-        $responder="OK";
 
         if (intval($provision[0]) > 0) {
             $cabecera = $this->util->selectWhere(FIBRADB . 'olts', array('ip', 'usuario', 'clave'), ' id=' . $provision[0]['cabecera']);
@@ -90,6 +88,8 @@ class Provision
            ║ Compruebo que se creó bien     ║
            ╚═════════════════════════════════════╝
            */
+            $responder = "ok";
+
             if (strpos($respuesta_olt, 'The traffic table does not exist') > 0) {
                 $responder = "Error: El / Los perfiles de velocidad no existen en la cabecera";
                 $err_num = 3;
@@ -114,7 +114,7 @@ class Provision
         $campos = array('nombre_perfil', 'perfil_olt');
 
 
-        $result = $this->util->selectWhere(FIBRADB."perfil_internet", $campos,
+        $result = $this->util->selectWhere(FIBRADB . "perfil_internet", $campos,
             "id_olt=( SELECT cabecera FROM " . FIBRADB . "aprovisionados WHERE num_pon='" . $pon . "' order by id desc limit 1)");
 
         $aItems = array();
@@ -131,6 +131,294 @@ class Provision
 
 
     }
+
+    public function bajaTotal($pon)
+    {
+        $campos = array('id', 'c', 't', 'p', 'id_en_olt', 'id_internet', 'id_voip', 'id_iptv', 'id_vpn', 'id_acs', 'cabecera');
+        $provision = $this->util->selectWhere3(FIBRADB . 'aprovisionados', $campos, ' num_pon="' . $pon . '"', ' id DESC');
+
+        if (intval($provision[0]) > 0) {
+            $cabecera = $this->util->selectWhere(FIBRADB . 'olts', array('ip', 'usuario', 'clave'), ' id=' . $provision[0]['cabecera']);
+            $row = mysqli_fetch_array($cabecera);
+            $server = $row['ip'];
+            $user = $row['usuario'];
+            $pass = $row['clave'];
+        }
+
+        $idinternet = $provision[0][5];
+        $idvoz = $provision[0][6];
+        $idtv = $provision[0][7];
+        $idvpn = $provision[0][8];
+        $idacs = $provision[0][9];
+
+        $idont = $provision[0][4];
+        $gpon = $provision[0][1] . "/" . $provision[0][2] . "/" . $provision[0][3];
+        $c = $provision[0][1];
+        $t = $provision[0][2];
+        $p = $provision[0][3];
+        $id_olt = $provision[0]['cabecera'];
+
+        $result = $this->telnet->Connect($server, $user, $pass);
+
+        if ($result == 0) {
+            $this->telnet->DoCommand('enable', $result);
+            $this->telnet->DoCommand(PHP_EOL, $result);
+
+            $this->telnet->DoCommand('config', $result);
+            $this->telnet->DoCommand(PHP_EOL, $result);
+
+            /*
+          ╔═══════════════════════════════════════════╗
+          ║ Resetear la ont a fabrica para poder║
+            aprovisionarla de neuvo si es necesario
+          ╚═══════════════════════════════════════════╝
+          */
+
+            $this->telnet->DoCommand('interface gpon ' . $c . '/' . $t . PHP_EOL, $result);
+            $this->telnet->DoCommand(PHP_EOL, $result);
+            $this->util->log('interface gpon ' . $c . "/" . $t . " " . $result . $id_olt);
+            //$telnet->DoCommand('clear' . PHP_EOL, $void);
+
+            $this->telnet->DoCommand('ont factory-setting-restore ' . $p . ' ' . $idont . PHP_EOL . "y" . PHP_EOL, $result);
+
+
+            $this->telnet->DoCommand('quit' . PHP_EOL . PHP_EOL, $void);
+
+            /*
+          ╔═════════════════════════════════════╗
+          ║ Borra el servicio de internet  ║
+          ╚═════════════════════════════════════╝
+          */
+            if (intval($idinternet) > 0) {
+                $this->telnet->DoCommand('undo service-port ' . $idinternet . PHP_EOL, $result);
+
+            }
+
+            /*
+          ╔═════════════════════════════════════╗
+          ║ Borra el servicio de tv        ║
+          ╚═════════════════════════════════════╝
+          */
+            if (intval($idtv) > 0) {
+
+                $this->telnet->DoCommand('undo service-port ' . $idtv . PHP_EOL, $result);
+                $this->util->log('undo service-port ' . $idtv . " " . $result . " " . $id_olt);
+
+            }
+
+            /*
+          ╔═════════════════════════════════════╗
+          ║ Borra el servicio de Voz       ║
+          ╚═════════════════════════════════════╝
+          */
+            if (intval($idvoz) > 0) {
+
+                $this->telnet->DoCommand('undo service-port ' . $idvoz . PHP_EOL, $result);
+                $this->util->log('undo service-port ' . $idvoz . " " . $result . " " . $id_olt);
+
+            }
+            /*
+          ╔═════════════════════════════════════╗
+          ║ Borra el servicio de VPn       ║
+          ╚═════════════════════════════════════╝
+          */
+            if (intval($idvpn) > 0) {
+
+                $this->telnet->DoCommand('undo service-port ' . $idvpn . PHP_EOL, $result);
+
+
+            }
+
+            /*
+          ╔═════════════════════════════════════╗
+          ║ Borra el servicio de ACS       ║
+          ╚═════════════════════════════════════╝
+          */
+            if (intval($idacs) > 0) {
+
+                $this->telnet->DoCommand('undo service-port ' . $idacs . PHP_EOL, $result);
+
+            }
+
+            /*
+          ╔═══════════════════════════════════════════╗
+          ║ Cambia la interface y Borra la ont  ║
+          ╚═══════════════════════════════════════════╝
+          */
+
+            $this->telnet->DoCommand('interface gpon ' . $c . '/' . $t . PHP_EOL . PHP_EOL, $result);
+
+            $this->telnet->DoCommand('ont delete ' . $p . ' ' . $idont . PHP_EOL . "y" . PHP_EOL, $result);
+
+            /*
+           ╔═══════════════════════════════════════════════════════════════════╗
+           ║ Borra la ont del servidor acs para poder reutilizarla.  ║
+           ╚═══════════════════════════════════════════════════════════════════╝
+           */
+
+            $result = $this->util->selectWhere('acs_ids', array('id_acs'), " pon='" . $pon . "'");
+
+            while ($row = mysqli_fetch_array($result)) {
+                $id_device = $row[0];
+            }
+            if ($id_device == '')
+                $id_device = '00259E-HG8546M-' . $pon;
+
+            $url = "http://10.211.2.2:7557/devices/" . $id_device . "/";
+
+            $ch = curl_init();
+            $default_curl_options = array(
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_HEADER => true,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_TIMEOUT => 10,
+            );
+
+            curl_setopt_array($ch, $default_curl_options);
+            curl_setopt($ch, CURLOPT_HEADER, true);
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+
+
+            /*
+           ╔═══════════════════════════════════════════════════════╗
+           ║Borra el registro de la tabla aprovisionados   ║
+           ╚═══════════════════════════════════════════════════════╝
+           */
+            $q = "DELETE FROM aprovisionados WHERE id='" . $_POST['p'] . "';";
+            $this->util->consulta($q);
+            $this->telnet->Disconnect();
+
+
+        }
+
+    }
+
+    public function bajaServicios($pon,$internet=false, $voz=false, $tv=false)
+    {
+        $campos = array('id', 'c', 't', 'p', 'id_en_olt', 'id_internet', 'id_voip', 'id_iptv', 'id_vpn', 'id_acs', 'cabecera');
+        $provision = $this->util->selectWhere3(FIBRADB . 'aprovisionados', $campos, ' num_pon="' . $pon . '"', ' id DESC');
+        var_dump($provision);
+        if (intval($provision[0]) > 0) {
+            $cabecera = $this->util->selectWhere(FIBRADB . 'olts', array('ip', 'usuario', 'clave'), ' id=' . $provision[0]['cabecera']);
+            $row = mysqli_fetch_array($cabecera);
+            $server = $row['ip'];
+            $user = $row['usuario'];
+            $pass = $row['clave'];
+            var_dump($cabecera);
+        }
+
+        $idinternet = $provision[0][5];
+        $idvoz = $provision[0][6];
+        $idtv = $provision[0][7];
+        $idvpn = $provision[0][8];
+        $idacs = $provision[0][9];
+
+        $idont = $provision[0][4];
+        $gpon = $provision[0][1] . "/" . $provision[0][2] . "/" . $provision[0][3];
+        $c = $provision[0][1];
+        $t = $provision[0][2];
+        $p = $provision[0][3];
+        $id_olt = $provision[0]['cabecera'];
+
+        $result = $this->telnet->Connect($server, $user, $pass);
+
+        if ($result == 0) {
+            $this->telnet->DoCommand('enable', $result);
+            $this->telnet->DoCommand(PHP_EOL, $result);
+
+            $this->telnet->DoCommand('config', $result);
+            $this->telnet->DoCommand(PHP_EOL, $result);
+
+            /*
+          ╔═════════════════════════════════════════════╗
+          ║ Resetear la ont a fabrica para poder  ║
+            aprovisionarla de neuvo si es necesario
+          ╚══════════════════════════════════════════════╝
+          */
+
+            $this->telnet->DoCommand('interface gpon ' . $c . '/' . $t . PHP_EOL, $result);
+            $this->telnet->DoCommand(PHP_EOL, $result);
+            $this->util->log('interface gpon ' . $c . "/" . $t . " " . $result . $id_olt);
+            //$telnet->DoCommand('clear' . PHP_EOL, $void);
+
+            $this->telnet->DoCommand('ont factory-setting-restore ' . $p . ' ' . $idont . PHP_EOL . "y" . PHP_EOL, $result);
+
+
+            $this->telnet->DoCommand('quit' . PHP_EOL . PHP_EOL, $void);
+
+            /*
+          ╔═════════════════════════════════════╗
+          ║ Borra el servicio de internet  ║
+          ╚═════════════════════════════════════╝
+          */
+            if (intval($idinternet)  > 0  && $internet==true) {
+                $this->telnet->DoCommand('undo service-port ' . $idinternet . PHP_EOL, $result);
+
+            }
+
+            /*
+          ╔═════════════════════════════════════╗
+          ║ Borra el servicio de tv        ║
+          ╚═════════════════════════════════════╝
+          */
+            if (intval($idtv) > 0 && $tv == true) {
+
+                $this->telnet->DoCommand('undo service-port ' . $idtv . PHP_EOL, $result);
+                $this->util->log('undo service-port ' . $idtv . " " . $result . " " . $id_olt);
+
+            }
+
+            /*
+          ╔═════════════════════════════════════╗
+          ║ Borra el servicio de Voz       ║
+          ╚═════════════════════════════════════╝
+          */
+            if (intval($idvoz) > 0 && $voz == true) {
+
+                $this->telnet->DoCommand('undo service-port ' . $idvoz . PHP_EOL, $result);
+                $this->util->log('undo service-port ' . $idvoz . " " . $result . " " . $id_olt);
+
+            }
+            /*
+
+            /*
+
+
+//            /*
+//           ╔═══════════════════════════════════════════════════════════════════╗
+//           ║ Borra la ont del servidor acs para poder reutilizarla.  ║
+//           ╚═══════════════════════════════════════════════════════════════════╝
+//           */
+//
+//            $result = $this->util->selectWhere('acs_ids', array('id_acs'), " pon='" . $pon . "'");
+//
+//            while ($row = mysqli_fetch_array($result)) {
+//                $id_device = $row[0];
+//            }
+//            if ($id_device == '')
+//                $id_device = '00259E-HG8546M-' . $pon;
+//
+//            $url = "http://10.211.2.2:7557/devices/" . $id_device . "/";
+//
+//            $ch = curl_init();
+//            $default_curl_options = array(
+//                CURLOPT_SSL_VERIFYPEER => false,
+//                CURLOPT_HEADER => true,
+//                CURLOPT_RETURNTRANSFER => true,
+//                CURLOPT_TIMEOUT => 10,
+//            );
+//
+//            curl_setopt_array($ch, $default_curl_options);
+//            curl_setopt($ch, CURLOPT_HEADER, true);
+//            curl_setopt($ch, CURLOPT_URL, $url);
+//            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+//
+
+        }
+
+    }
+
 }
 
 

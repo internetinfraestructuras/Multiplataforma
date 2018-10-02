@@ -32,7 +32,13 @@ if(isset($_POST['id']) && $_POST['id']!='')
     $idContrato=$_POST['idContrato'];
     $idLinea=$_POST['idLineaContrato'];
     $idPaquete=$_POST['idPaquete'];
+    $mantenerPaquete=$_POST['mantenerPaquete'];
+    echo $mantenerPaquete;
 
-    Servicio::darBajaServicioPaquete($_SESSION['REVENDEDOR'],$idContrato,$idLinea,$idPaquete,$idServicio);
+
+    if($mantenerPaquete=="true")
+        Servicio::darBajaServicioPaquete($_SESSION['REVENDEDOR'],$idContrato,$idLinea,$idPaquete,$idServicio);
+    else
+        Servicio::darBajaPaqueteRompiendo($_SESSION['REVENDEDOR'],$idContrato,$idLinea,$idServicio);
 
 }

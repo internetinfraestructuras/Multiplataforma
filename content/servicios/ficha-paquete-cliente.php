@@ -470,7 +470,8 @@ $pvp=$listado[0][5];
                         id:id,
                         idPaquete:<?php echo $_GET['idPaquete']; ?>,
                         idContrato:<?php echo $_GET['idContrato']; ?>,
-                        idLineaContrato:<?php echo $_GET['idLineaContrato']; ?>
+                        idLineaContrato:<?php echo $_GET['idLineaContrato'];?>,
+                        mantenerPaquete:true
                     },
                     success: function (data)
                     {
@@ -482,7 +483,25 @@ $pvp=$listado[0][5];
             }
             else
             {
-                alert("Romper paquete");
+                jQuery.ajax({
+                    url: 'baja-servicio-paquete.php',
+                    type: 'POST',
+                    cache: false,
+                    async: true,
+                    data: {
+                        a: 'cancelar-baja',
+                        id:id,
+                        idPaquete:<?php echo $_GET['idPaquete']; ?>,
+                        idContrato:<?php echo $_GET['idContrato']; ?>,
+                        idLineaContrato:<?php echo $_GET['idLineaContrato'];?>,
+                        mantenerPaquete:false
+                    },
+                    success: function (data)
+                    {
+                        console.log(data);
+                        //  location.reload();
+                    }
+                });
             }
 
 

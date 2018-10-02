@@ -211,6 +211,17 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         $result = $util->update('contratos_lineas', $campos, $values,"id_asociado=$idAsociado AND id_contrato=$idContrato AND id=$idLinea");
     }
 
+    public static function setLineaBaja($idContrato,$idLinea)
+    {
+        $util = new util();
+
+        $campos = array('ESTADO', 'FECHA_BAJA');
+        $fecha_actual = strtotime(date("y-m-d", time()));
+        $values = array(CONTRATO_BAJA, date('Y-m-d'));
+        return $util->update('contratos_lineas', $campos, $values,"id_asociado=$idAsociado AND id_contrato=$idContrato AND id=$idLinea");
+
+    }
+
 
     public static function setContratoBaja($idContrato,$idEmpresa)
     {

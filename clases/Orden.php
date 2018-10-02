@@ -67,6 +67,7 @@ class Orden
         if($idProducto==null || $idProducto=='' || intval($idProducto)<=0)
             $idProducto=null;
 
+
         $t_ordenes=array("ID_ORDEN","ID_TIPO_ORDEN","ID_PRODUCTO","ID_LINEA_DETALLE_CONTRATO");
 
         $values=array($idOrden, $idTipoOrden, $idProducto, $idLineaDetalle);//TIPO DE ESTADO ES 1 DE APERTURA
