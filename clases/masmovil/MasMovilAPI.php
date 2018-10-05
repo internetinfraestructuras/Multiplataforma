@@ -636,6 +636,7 @@ class MasMovilAPI
  * =================================================================================================================
  */
 
+
     public function getPeticionRiesgo($refCliente,$msisdns,$tipoRiesgo)
     {
 
@@ -663,7 +664,37 @@ class MasMovilAPI
 
         $resultado=$client->msisdnsRiskMaintenance($parametros);
 
-        return json_encode($resultado->return);
+        return $resultado->return;
+    }
+
+    public function setModificarRiesgo($refCliente,$msisdns,$tipoRiesgo,$cantidad)
+    {
+
+        $ts=$this->getTimeStamp();
+        $parametros=array();
+        $instructions= array("timeStamp"=>$ts,
+            "resellerId"=>$this->resellerId,
+            "resellerPin"=>$this->pass,
+            "branchId"=>"",
+            "posId"=>"",
+            "transactionId"=>$ts,
+            "refCustomerId"=>$refCliente,
+            "operationType"=>"MODRISK");
+
+        $lineDetails=array("msisdn"=>$msisdns);
+
+
+        $parametros['soap_request']=
+            array("Operation"=>
+                array("instruction"=>$instructions,"activate"=>array("lineDetails"=>$lineDetails,"riskServices"=>array("riskAction"=>$tipoRiesgo,"riskAmount"=>$cantidad))));
+
+
+
+        $client = new SoapClient($this->servicio."cableMsisdnsRiskModRisk.wsdl", $this->parametrosCliente);
+
+        $resultado=$client->msisdnsRiskMaintenance($parametros);
+
+        return $resultado->return;
     }
 
     //public function getPeticionRiesgo($refCliente,$msisdns)

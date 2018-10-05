@@ -553,6 +553,25 @@ $actual = date ("Y-m-d");
                             }?>
 
                             <a href="../servicios/cdr-actual.php?numero=<?php echo $msidn;?>"
+                               class="btn btn-danger btn-xs">SOLICITAR AMPLIACION RIESGOS  <i class="fas fa-phone"></i></a></br>
+                            <br/>
+                            <a href="../servicios/cdr-actual.php?numero=<?php echo $msidn;?>"
+                               class="btn btn-danger btn-xs">CAMBIO RIESGO MENSUAL  <i class="fas fa-phone"></i></a></br>
+                            <br/>
+                            <a href="../servicios/cdr-actual.php?numero=<?php echo $msidn;?>"
+                               class="btn btn-danger btn-xs">BLOQUEAR SI SUPERA RIESGO MENSUAL  <i class="fas fa-phone"></i></a></br>
+                            <br/>
+                            <a href="../servicios/cdr-actual.php?numero=<?php echo $msidn;?>"
+                               class="btn btn-danger btn-xs">NO BLOQUEAR SI SUPERA RIESGO MENSUAL <i class="fas fa-phone"></i></a></br>
+                            <br/>
+                            <a href="../servicios/cdr-actual.php?numero=<?php echo $msidn;?>"
+                               class="btn btn-danger btn-xs">DESBLOQUEO AUTOMÁTICO DIA 1<i class="fas fa-phone"></i></a></br>
+                            <br/>
+                            <a href="../servicios/cdr-actual.php?numero=<?php echo $msidn;?>"
+                               class="btn btn-danger btn-xs">NO DESBLOQUEO AUTOMÁTICO DIA 1<i class="fas fa-phone"></i></a></br>
+                            <br/>
+
+                            <a href="../servicios/cdr-actual.php?numero=<?php echo $msidn;?>"
                                class="btn btn-blue btn-xs">CONSULTAR CDR   <i class="fas fa-phone"></i></a></br>
                             <br/>
                         </div>
