@@ -79,7 +79,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'servicios')
     $resultServicio = $util->insertInto('servicios', $t_servicios, $values);
 
 
-    $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado el servicio:'.$resultServicio.' con el resultado:'.$result);
+ //   $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado el servicio:'.$resultServicio.' con el resultado:'.$result);
 
     /*
      * UNA VEZ CREADO EL PRODUCTO ASOCIAMOS LOS ATRIBUTOS A DICHO PRODUCTO $RESULT TIENE EL ID DEL PRODUCTO

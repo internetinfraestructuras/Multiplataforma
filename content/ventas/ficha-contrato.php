@@ -208,11 +208,14 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
                             ?>
 
                                 <button type="button" rel="tooltip" >
-                                    <i class="fas fa-edit"></i>
+                                    <i class="fas fa-edit" title="Ver detalles línea contrato"></i>
                                 </button>
-                            </a>
+
                             <button type="button" rel="tooltip" class="">
-                                <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="baja('<?php echo $id;?>');"></i>
+                                <i class="fas fa-ban" style="font-size:1em; color:red; cursor: pointer" onclick="baja('<?php echo $id;?>');" title="Corte por impago"></i>
+                            </button>
+                            <button type="button" rel="tooltip" class="">
+                                <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="baja('<?php echo $id;?>');" title="Dar de baja línea de contrato"></i>
                             </button>
 
                         </td>

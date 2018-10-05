@@ -579,7 +579,7 @@ class MasMovilAPI
      *$tipoCliente Empresa;PArticular 0/1
      */
 
-    public function altaPortabilidad($refCliente,$numero,$newIccid,$donante,$msisdn,$tipoAbono,$fechaPortabilidad,$idPerfilProducto,$bonos,$tipoCliente,$nombre,$apellido1,$apellido2,$tipoDocumento,
+    public function altaPortabilidad($refCliente,$newIccid,$donante,$msisdn,$tipoAbono,$fechaPortabilidad,$idPerfilProducto,$bonos,$tipoCliente,$nombre,$apellido1,$apellido2,$tipoDocumento,
                                      $dni,$nombreEmpresa,$emailContacto,$telefonoContacto,$nombreCalle,$numeroCalle,$piso,$localidad,$codProvincia,$pais,$cp,$iccOrigen)
     {
 
@@ -636,7 +636,7 @@ class MasMovilAPI
  * =================================================================================================================
  */
 
-    public function getPeticionRiesgo($refCliente,$msisdns)
+    public function getPeticionRiesgo($refCliente,$msisdns,$tipoRiesgo)
     {
 
         $ts=$this->getTimeStamp();
@@ -655,10 +655,11 @@ class MasMovilAPI
 
         $parametros['soap_request']=
             array("Operation"=>
-                array("instruction"=>$instructions,"activate"=>array("lineDetails"=>$lineDetails),"riskService"=>""));
+                array("instruction"=>$instructions,"activate"=>array("lineDetails"=>$lineDetails,"riskServices"=>$tipoRiesgo)));
 
 
-        $client = new SoapClient($this->servicio."cableMsisdnsRiskGetRisk-test.wsdl", $this->parametrosCliente);
+
+        $client = new SoapClient($this->servicio."cableMsisdnsRiskGetRisk.wsdl", $this->parametrosCliente);
 
         $resultado=$client->msisdnsRiskMaintenance($parametros);
 

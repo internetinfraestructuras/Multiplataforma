@@ -134,6 +134,13 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
             "contratos_lineas_detalles.estado=1 AND contratos_lineas_detalles.id_linea=$idLinea");
     }
 
+    public static function getLineaDetallesId($idLinea)
+    {
+        $util = new util();
+        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR", "ID","ID_SERVICIO","ID"),
+            "contratos_lineas_detalles.estado=1 AND contratos_lineas_detalles.id=$idLinea");
+    }
+
     /*
      * Le pasamos la primera línea de detalles de dicho servicio y el segundo parámetro es la última línea de dicho servicio
      */
@@ -296,7 +303,25 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
         return $util->update('contratos_lineas_detalles', $campos, $values, "id_linea=" . $idLineaContrato);
     }
+    public static function setLineaDetallesBajaId($idLineaContrato, $fechaBaja=null)
+    {
+        $util = new util();
+        $campos = array('ESTADO', 'FECHA_BAJA');
+        $fecha_actual = strtotime(date("y-m-d", time()));
+        $fechaBaja = strtotime(date("y-m-d", strtotime($fechaBaja)));
+        $tipo=0;
+        if ($fecha_actual < $fechaBaja)
+            $tipo = 4;
+        else
+            $tipo = 2;
 
+        if ($fechaBaja == null)
+            $values = array($tipo, date('Y-m-d'));
+        else
+            $values = array($tipo, $fechaBaja);
+
+        return $util->update('contratos_lineas_detalles', $campos, $values, "id=" . $idLineaContrato);
+    }
     public static function setLineaDetallesImpago($idLineaDetalles)
     {
         $util = new util();
