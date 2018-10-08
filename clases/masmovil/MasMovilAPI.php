@@ -636,7 +636,6 @@ class MasMovilAPI
  * =================================================================================================================
  */
 
-
     public function getPeticionRiesgo($refCliente,$msisdns,$tipoRiesgo)
     {
 
@@ -664,7 +663,10 @@ class MasMovilAPI
 
         $resultado=$client->msisdnsRiskMaintenance($parametros);
 
-        return $resultado->return;
+        if(!empty($resultado->return->RiskDetails))
+            return $resultado->return->RiskDetails->Risk;
+        else
+            return $resultado->return;
     }
 
     public function setModificarRiesgo($refCliente,$msisdns,$tipoRiesgo,$cantidad)

@@ -130,8 +130,8 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     public static function getLineaDetalles($idLinea)
     {
         $util = new util();
-        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR", "ID","ID_SERVICIO","ID"),
-            "contratos_lineas_detalles.estado=1 AND contratos_lineas_detalles.id_linea=$idLinea");
+        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR", "ID","ID_SERVICIO","ID","ESTADO"),
+            "contratos_lineas_detalles.estado!=2 AND contratos_lineas_detalles.id_linea=$idLinea");
     }
 
     public static function getLineaDetallesId($idLinea)
@@ -151,6 +151,12 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
             "contratos_lineas_detalles.id>=$idLineaDetalles AND contratos_lineas_detalles.id<=$idLineaMax");
     }
 
+    public static function getValorLineaDetalle($idLineaDetalles)
+    {
+        $util = new util();
+        return $util->selectWhere3("contratos_lineas_detalles", array("VALOR"),
+            "contratos_lineas_detalles.id>=$idLineaDetalles ");
+    }
     //obtiene las linea de detalle de un contrato
     public static function getLineaDetallesActivas($idLinea)
     {
@@ -314,6 +320,19 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
             $tipo = 4;
         else
             $tipo = 2;
+
+        if ($fechaBaja == null)
+            $values = array($tipo, date('Y-m-d'));
+        else
+            $values = array($tipo, $fechaBaja);
+
+        return $util->update('contratos_lineas_detalles', $campos, $values, "id=" . $idLineaContrato);
+    }
+    public static function setLineaDetallesImpagoId($idLineaContrato, $fechaBaja=null)
+    {
+        $util = new util();
+        $campos = array('ESTADO', 'FECHA_BAJA');
+        $tipo=CONTRATO_IMPAGO;
 
         if ($fechaBaja == null)
             $values = array($tipo, date('Y-m-d'));

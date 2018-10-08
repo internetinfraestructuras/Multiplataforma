@@ -16,6 +16,7 @@ define('OWNER','AT Control');
 
 /*atributos de SERVICIOS*/
 define('ID_NUMERO_MOVIL',48);
+define('ID_ATRIBUTO_ICC',48);
 define('ID_ATRIBUTO_TRONCAL',56);
 define('ID_ATRIBUTO_GRUPO_RECARGA',43);
 define('ID_ATRIBUTO_PAQUETE_DESTINO',44);

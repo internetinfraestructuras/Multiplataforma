@@ -72,6 +72,8 @@ class Telefonia
     }
 
 
+
+
     /**
      * Incrementa el saldo del cliente $cif en $importe, ya sean minutos o euros
      * @param $cifCliente
@@ -1305,7 +1307,44 @@ class Telefonia
         return $result;
 
     }
+    public function reactivarLinea($troncal){
 
+        if($troncal==""){
+            throw new Exception('Troncal de linea vacia');
+        }
+
+        $troncal="'".$troncal."'";
+
+        //Controlamos que  existe una troncal con dichos valores
+        $existePack="";
+        $existeTroncal=$this->util->selectLast('troncales', 'usuario_troncal','usuario_troncal='.$troncal);
+
+        if($existeTroncal=="")
+            throw new Exception('No existe un troncal con dicho valor:$troncal');
+
+
+        //si todo ok, procedemos a "eliminar"
+        //realmente hare un update y la dejaré inhabiltada
+
+        $numeroTroncal=$this->getNumero($troncal);
+
+        //1 desactivo su numero de las entrantes
+        $campos=array('numero');
+        $values = array($numeroTroncal);
+        //update
+        $result = $this->util->update('numericos', $campos, $values,'usuario_troncal='.$troncal,true);
+
+        //2 desactivo dicha linea en las troncales => marco como no habilitada
+        $campos=array('habilitado');
+        $values = array('si');
+        //update
+        $result = $this->util->update('troncales', $campos, $values,'usuario_troncal='.$troncal,true);
+
+
+
+        return $result;
+
+    }
     /**
      * Devuelve true si esta linea esta instalada, para ello consulta el CDR si tiene llamadas realizadas hacia el exterior
      * @param $numero

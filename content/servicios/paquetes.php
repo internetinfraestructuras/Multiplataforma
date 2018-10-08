@@ -107,7 +107,7 @@ $root="../../";
                     <center>
                         <label><strong>Internet</strong></label>
                     </center>
-                    <a href="servicios.php" id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px"><i class="fa fa-pencil"></i> Nueva </a>
+                    <a href="servicios.php" id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px"><i class="fa fa-edit"></i> Nueva </a>
 
                     <select id="internet" multiple="multiple" name="paquete[internet]" style="height:260px" class="form-control" onchange="calcularPVP(this)">
                         <?php
@@ -133,7 +133,7 @@ $root="../../";
                     <center>
                         <label><strong>Telefonía FIJA</strong></label>
                     </center>
-                    <a href="servicios.php" id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px"><i class="fa fa-pencil"></i> Nueva </a>
+                    <a href="servicios.php" id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px"><i class="fa fa-edit"></i> Nueva </a>
 
                     <select id="fijo" multiple="multiple" style="height:260px" class="form-control" name="paquete[fijo]" onchange="calcularPVP(this)" >
                         <?php
@@ -161,7 +161,7 @@ $root="../../";
                     <center>
                         <label><strong>Telefonía MOVIL</strong></label>
                     </center>
-                    <a href="servicios.php" id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px"><i class="fa fa-pencil"></i> Nueva </a>
+                    <a href="servicios.php" id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px"><i class="fa fa-edit"></i> Nueva </a>
 
                     <select id="movil"  multiple="multiple" style="height:260px" class="form-control" name="paquete[movil][]" onchange="calcularPVP(this)">
                         <?php
@@ -179,7 +179,7 @@ $root="../../";
                         }
                         ?>
                     </select>
-                    <a  id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px" onclick="resetearSelect('movil')"><i class="fa fa-recycle"></i> Deseleccionar </a>
+                    <a  id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px" onclick="anadirProducto('movil')"><i class="fa fa-recycle"></i> Deseleccionar </a>
                     <label>COSTE SERVICIO: </label>
                     <input type="text"  id="precio-movil" onchange="calcularPVP(this.value)" step=".01" class="form-control ">
 
@@ -188,7 +188,7 @@ $root="../../";
                     <center>
                         <label><strong>TELEVISIÓN</strong></label>
                     </center>
-                    <a href="servicios.php" id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px"><i class="fa fa-pencil"></i> Nueva </a>
+                    <a href="servicios.php" id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px"><i class="fa fa-edit"></i> Nueva </a>
 
                     <select id="tv" multiple="multiple"  style="height:260px" class="form-control" name="paquete[tv]" onchange="calcularPVP(this)">
                         <?php
@@ -206,13 +206,29 @@ $root="../../";
                         }
                         ?>
                     </select>
-                    <a id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px" onclick="resetearSelect('tv')"s><i class="fa fa-recycle"></i> Deseleccionar </a>
+                    <a id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px" onclick="resetearSelect('tv')"><i class="fa fa-recycle"></i> Deseleccionar </a>
                     <label>COSTE SERVICIO: </label>
                     <input type="text"  id="precio-tv" onchange="calcularPVP(this.value)" step=".01" class="form-control ">
                 </div>
 
             </div>
             <hr/>
+                <h2>Contenido Paquete:</h2>
+                <table id="contenido-paquete" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>ID SERVICIO</th>
+                        <th>NOMBRE</th>
+                        <th>PRECIO COSTE</th>
+                        <th>IMPUESTOS</th>
+                        <th>MARGEN</th>
+                        <th>PVP</th>
+                    </tr>
+                    </thead>
+
+                    </tbody>
+
+                </table>
             <h2>Precios del paquete:</h2>
             <div class="row">
                 <div class="col-lg-3">
@@ -401,6 +417,12 @@ $root="../../";
         jQuery("#"+id).val("");
             jQuery("#precio-"+id).val("");
         sumarTotales();
+    }
+
+    function anadirProducto(id)
+    {
+        var val=jQuery("#"+id).val("");
+            console.log(val);
     }
 
     function calcularMargen(campo)

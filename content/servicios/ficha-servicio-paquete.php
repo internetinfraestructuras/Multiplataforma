@@ -273,9 +273,9 @@ $actual = date ("Y-m-d");
 
                                     $resultado=$apiMasMovil->getListadoClientes($res[0][3],$msidn);
 
-
                                     $refClienteAPI=$resultado->Client[0]->refCustomerId;
-                                    $resultado=$apiMasMovil->getLineasMsisdnsIccids($refClienteAPI,$msidn,"8934011411704178217","");
+                                    $resultado=$apiMasMovil->getLineasMsisdnsIccids($refClienteAPI,$msidn,"","");
+
                                     $iccid=$resultado->msisdnList->Msisdn->Iccid;
                                     $tipoSim=$resultado->msisdnList->Msisdn->typeIccid;
 
@@ -283,6 +283,10 @@ $actual = date ("Y-m-d");
 
                                     $estadoLinea=$resultado->msisdnList->Msisdn->status;
 
+                                    $riesgos=$apiMasMovil->getPeticionRiesgo($refClienteAPI,$msidn,"");
+
+                                /*    $establecerRiesgo=$apiMasMovil->setModificarRiesgo($refClienteAPI,$msidn,"L","50");
+                                    var_dump($establecerRiesgo);*/
 
                                 }
                                 else if($idProveedor==ID_PROVEEDOR_AIRENETWORKS)
@@ -532,7 +536,9 @@ $actual = date ("Y-m-d");
                             <hr>
 
                             <?php if($estadoLinea==LINEA_ACTIVA_MASMOVIL)
-                            {?>
+                            {
+
+                                ?>
                                 <a href="javascript:;" onclick="establecerRoaming('A')"
                                    class="btn btn-info btn-xs">ACTIVAR ROAMING <i class="fas fa-globe-asia"></i></a></br>
                                 <br/>

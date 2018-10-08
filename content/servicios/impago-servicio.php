@@ -34,12 +34,12 @@ if(isset($_POST['id']) && $_POST['id']!='')
     $idPaquete=$_POST['idPaquete'];
     $mantenerPaquete=$_POST['mantenerPaquete'];
     $idLineaDetalle=$_POST['idLineaDetalle'];
+    $tipo=Servicio::getTipoServicio($_SESSION['REVENDEDOR'],$idServicio);
+    $tipo=$tipo[0][0];
+
+    Servicio::setImpagoServicioPaquete($idContrato,$idLinea,$tipo,"",$idServicio,$idLineaDetalle);
 
 
 
-    if($mantenerPaquete=="true")
-        Servicio::darBajaServicioPaquete($_SESSION['REVENDEDOR'],$idContrato,$idLinea,$idPaquete,$idServicio,$idLineaDetalle);
-    else
-        Servicio::darBajaPaqueteRompiendo($_SESSION['REVENDEDOR'],$idContrato,$idLinea,$idServicio,$idLineaDetalle);
 
 }
