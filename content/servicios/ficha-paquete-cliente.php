@@ -567,7 +567,7 @@ $pvp=$listado[0][5];
                         idContrato:<?php echo $_GET['idContrato']; ?>,
                         idLineaContrato:<?php echo $_GET['idLineaContrato'];?>,
                         idLineaDetalle:lineaDetalle,
-                        mantenerPaquete:true
+                        restablecer:1
                     },
                     success: function (data)
                     {
@@ -576,6 +576,40 @@ $pvp=$listado[0][5];
                         //  location.reload();
                     }
                 });
+
+
+        }
+    }
+
+    function restaurarServicio(id,lineaDetalle)
+    {
+
+        var respuesta = confirmar("¿Estas seguro de restablecer el servicio? ");
+        if(respuesta)
+        {
+
+
+            jQuery.ajax({
+                url: 'impago-servicio.php',
+                type: 'POST',
+                cache: false,
+                async: true,
+                data: {
+                    a: 'cancelar-baja',
+                    id:id,
+                    idPaquete:<?php echo $_GET['idPaquete']; ?>,
+                    idContrato:<?php echo $_GET['idContrato']; ?>,
+                    idLineaContrato:<?php echo $_GET['idLineaContrato'];?>,
+                    idLineaDetalle:lineaDetalle,
+                    restablecer:0
+                },
+                success: function (data)
+                {
+
+                    console.log(data);
+                    //  location.reload();
+                }
+            });
 
 
         }

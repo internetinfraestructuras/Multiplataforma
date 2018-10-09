@@ -9,8 +9,8 @@
 
 /*
     ╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
-    ║ Borra un servicio de una instancia de un paquete en un cliente                                                   ║
-    ║                                                                                                                  |
+    ║                                                                                                                  ║
+    ║               REALIZA UN CORTE/RESTABLECE CORTE POR IMPAGO EN LOS SERVICIOS DE FORMA INDEPENDIENTE               ║                                                                                                     |
     ║                                                                                                                  ║
     ║                                                                                                                  ║
     ╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
@@ -32,13 +32,16 @@ if(isset($_POST['id']) && $_POST['id']!='')
     $idContrato=$_POST['idContrato'];
     $idLinea=$_POST['idLineaContrato'];
     $idPaquete=$_POST['idPaquete'];
-    $mantenerPaquete=$_POST['mantenerPaquete'];
+    $restablecer=$_POST['restablecer'];
     $idLineaDetalle=$_POST['idLineaDetalle'];
+
     $tipo=Servicio::getTipoServicio($_SESSION['REVENDEDOR'],$idServicio);
     $tipo=$tipo[0][0];
 
-    Servicio::setImpagoServicioPaquete($idContrato,$idLinea,$tipo,"",$idServicio,$idLineaDetalle);
-
+    if($restablecer==1)
+         Servicio::setImpagoServicioPaquete($idContrato,$idLinea,$tipo,"",$idServicio,$idLineaDetalle);
+    else
+        Servicio::setRestablecerCorteImpago($idContrato,$idLinea,$tipo,"",$idServicio,$idLineaDetalle);
 
 
 

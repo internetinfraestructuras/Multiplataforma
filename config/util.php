@@ -310,7 +310,7 @@ class util {
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
 
-     // echo "<br>".$query."<br>";
+      echo "<br>".$query."<br>";
 
             if (!($result = $link->query($query)))
                 throw new Exception();

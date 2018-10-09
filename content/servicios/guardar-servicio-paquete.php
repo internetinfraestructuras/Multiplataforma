@@ -56,7 +56,7 @@ if(
        // Llamada a la rutina compleja actualizar servicio de un contrato
 
         if($romperPaquete!='on')
-         Servicio::actualizarServicioPaqueteContrato($idContrato,$idLinea,$id,$tipo,$servicio,$atributos,$fechaCambio,$idServicioOriginal,$idLineaDetalle);
+            Servicio::actualizarServicioPaqueteContrato($idContrato,$idLinea,$id,$tipo,$servicio,$atributos,$fechaCambio,$idServicioOriginal,$idLineaDetalle);
         else
             Servicio::romperPaquete($idContrato,$idLinea,$servicio,$fechaCambio,$idLineaDetalle,$atributos);
 

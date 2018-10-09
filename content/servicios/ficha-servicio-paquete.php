@@ -420,13 +420,7 @@ $actual = date ("Y-m-d");
                     </div>
 
                 </div>
-                <!-- /----- -->
-                <?php
 
-                var_dump($r[0]['consumo_maximo']);
-
-
-                ?>
                 <div class="col-md-4">
 
                     <div class="panel panel-default">
@@ -689,14 +683,14 @@ $actual = date ("Y-m-d");
             </div>
             <?php
 
-                    $prodcs=Producto::getProductosServicio($_SESSION['REVENDEDOR'],$_GET['tipo']);
+            $prodcs=Producto::getProductosServicio($_SESSION['REVENDEDOR'],$_GET['tipo']);
+
             if($idProveedor!=ID_PROVEEDOR_AIRENETWORKS)
             {
                     if($prodcs!=NULL )
                     {
+                    ?>
 
-
-                            ?>
                     <div class="row">
                         <form action="" method="post">
                             <input  value='' id="producto-original" class='form-control' disabled />
@@ -704,6 +698,7 @@ $actual = date ("Y-m-d");
                         <select name="servicio" id="producto-cambio"
                                 class="form-control pointer " name="nombre"  onchange="carga_detalles_servicio(this.value)">
                         <?php
+
                         if($_GET['tipo']!=3)
                         {
                             $refClienteAPI="NULL";
@@ -719,20 +714,25 @@ $actual = date ("Y-m-d");
                          ?>
                         </select>
                     </div>
+                    <?php if($idTipoServicio==ID_SER_MOVIL && $idProveedor==ID_PROVEEDOR_MASMOVIL) {
+                        ?>
 
-                    <div class="row">
-                        <div class="col-lg-4 col-xs-5"><b>Motivo cambio:</b></div>
-                        <select name="servicio" id="motivo-cambio"
-                                class="form-control pointer " name="nombre" id="motivo" onchange="carga_detalles_servicio(this.value)">
-                            <option value="PER">Perdida de tarjeta</option>
-                            <option value="ROT">Rotura o deterioro</option>
-                            <option value="ROB">Robo</option>
-                            <option value="R4G">Remplazo tarjeta a 4G</option>
-                            <option value="OTH">Otros motivos</option>
-                        </select>
 
-                    </div>
-                    <?php
+                        <div class="row">
+                            <div class="col-lg-4 col-xs-5"><b>Motivo cambio:</b></div>
+                            <select name="servicio" id="motivo-cambio"
+                                    class="form-control pointer " name="nombre" id="motivo"
+                                    onchange="carga_detalles_servicio(this.value)">
+                                <option value="PER">Perdida de tarjeta</option>
+                                <option value="ROT">Rotura o deterioro</option>
+                                <option value="ROB">Robo</option>
+                                <option value="R4G">Remplazo tarjeta a 4G</option>
+                                <option value="OTH">Otros motivos</option>
+                            </select>
+
+                        </div>
+                        <?php
+                    }
                     }
                     else
                         echo "No se puede hacer el cambio de SIM a este terminal, porque no hay tarjetas SIM en Stock";
@@ -757,7 +757,7 @@ $actual = date ("Y-m-d");
                 if($prodcs!=NULL && $idProveedor!=ID_PROVEEDOR_AIRENETWORKS) {
                     ?>
                     <div class="col-lg-3 col-xs-6 text-right">
-                        <a href="#" id="btn-enviar" onclick="enviar();" style="margin-top:25px" class="btn btn-success">
+                        <a href="#" id="btn-enviar" onclick="enviar('<?php echo $idTipoServicio;?>');" style="margin-top:25px" class="btn btn-success">
                             <span>Activar</span>
                         </a>
                     </div>
@@ -811,11 +811,12 @@ $actual = date ("Y-m-d");
 
         $("#modal").modal();
     }
-    function enviar()
+    function enviar(tipoServicio)
     {
         var idProducto=$("#producto-cambio").val();
         var motivo=$("#motivo-cambio").val();
         var idProductoOriginal=$("#producto-original").val();
+
 
         jQuery.ajax({
             url: 'guardar-cambio-producto.php',
