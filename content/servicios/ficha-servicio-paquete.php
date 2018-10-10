@@ -826,7 +826,7 @@ $actual = date ("Y-m-d");
             data:{idProducto:idProducto,motivo:motivo,idProductoOriginal:idProductoOriginal,servicio:<?php echo $_GET['idServicio'];?>,tipo:<?php echo $_GET['tipo'];?>,contrato:<?php echo $_GET['idContrato'];?>,numeroMovil:$("#atributo-<?php echo ID_NUMERO_MOVIL;?>").val()},
             success: function(data)
             {
-                alert(data);
+               location.reload();
             }
         });
 

@@ -248,22 +248,22 @@ class MasMovilAPI
             "operationType"=>"SERVICE");
 
         $lineDetails=array("msisdn"=>$msid);
-        $lineServices=array("serviceAction"=>"L");
+        $lineServices=array("serviceAction"=>"J");
 
         $parametros['soap_request']=
             array("Operation"=>
                 array("instruction"=>$instructions,"activate"=>array("lineDetails"=>$lineDetails,"lineServices"=>$lineServices)));
 
 
-        $client = new SoapClient($this->servicio."cableMsisdnsErased.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableMsisdnsServices.wsdl", $this->parametrosCliente);
         $resultado=$client->msisdnsMaintenance($parametros);
-        return json_encode($resultado->return);
+        return $resultado->return;
     }
 
     public function reactivacionLineaMovil($refCliente,$msid)
     {
-
         $ts=$this->getTimeStamp();
+
         $parametros=array();
         $instructions= array("timeStamp"=>$ts,
             "resellerId"=>$this->resellerId,
@@ -282,9 +282,90 @@ class MasMovilAPI
                 array("instruction"=>$instructions,"activate"=>array("lineDetails"=>$lineDetails,"lineServices"=>$lineServices)));
 
 
-        $client = new SoapClient($this->servicio."cableMsisdnsErased-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableMsisdnsServices.wsdl", $this->parametrosCliente);
         $resultado=$client->msisdnsMaintenance($parametros);
-        return json_encode($resultado->return);
+        return $resultado->return;
+    }
+
+    public function desactivarFraude($refCliente,$msid)
+    {
+        $ts=$this->getTimeStamp();
+
+        $parametros=array();
+        $instructions= array("timeStamp"=>$ts,
+            "resellerId"=>$this->resellerId,
+            "resellerPin"=>$this->pass,
+            "branchId"=>"",
+            "posId"=>"",
+            "transactionId"=>$ts,
+            "refCustomerId"=>$refCliente,
+            "operationType"=>"SERVICE");
+
+        $lineDetails=array("msisdn"=>$msid);
+        $lineServices=array("serviceAction"=>"F");
+
+        $parametros['soap_request']=
+            array("Operation"=>
+                array("instruction"=>$instructions,"activate"=>array("lineDetails"=>$lineDetails,"lineServices"=>$lineServices)));
+
+
+        $client = new SoapClient($this->servicio."cableMsisdnsServices.wsdl", $this->parametrosCliente);
+        $resultado=$client->msisdnsMaintenance($parametros);
+        return $resultado->return;
+    }
+
+    public function desactivarHurto($refCliente,$msid)
+    {
+        $ts=$this->getTimeStamp();
+
+        $parametros=array();
+        $instructions= array("timeStamp"=>$ts,
+            "resellerId"=>$this->resellerId,
+            "resellerPin"=>$this->pass,
+            "branchId"=>"",
+            "posId"=>"",
+            "transactionId"=>$ts,
+            "refCustomerId"=>$refCliente,
+            "operationType"=>"SERVICE");
+
+        $lineDetails=array("msisdn"=>$msid);
+        $lineServices=array("serviceAction"=>"X");
+
+        $parametros['soap_request']=
+            array("Operation"=>
+                array("instruction"=>$instructions,"activate"=>array("lineDetails"=>$lineDetails,"lineServices"=>$lineServices)));
+
+
+        $client = new SoapClient($this->servicio."cableMsisdnsServices.wsdl", $this->parametrosCliente);
+        $resultado=$client->msisdnsMaintenance($parametros);
+        return $resultado->return;
+    }
+
+    public function activarHotLine($refCliente,$msid)
+    {
+        $ts=$this->getTimeStamp();
+
+        $parametros=array();
+        $instructions= array("timeStamp"=>$ts,
+            "resellerId"=>$this->resellerId,
+            "resellerPin"=>$this->pass,
+            "branchId"=>"",
+            "posId"=>"",
+            "transactionId"=>$ts,
+            "refCustomerId"=>$refCliente,
+            "operationType"=>"SERVICE");
+
+        $lineDetails=array("msisdn"=>$msid);
+        $lineServices=array("serviceAction"=>"H");
+
+        $parametros['soap_request']=
+            array("Operation"=>
+                array("instruction"=>$instructions,"activate"=>array("lineDetails"=>$lineDetails,"lineServices"=>$lineServices)));
+
+
+        $client = new SoapClient($this->servicio."cableMsisdnsServices.wsdl", $this->parametrosCliente);
+        $resultado=$client->msisdnsMaintenance($parametros);
+        return $resultado->return;
     }
 
     public function bajaLineaMovil($refCliente,$msid)
