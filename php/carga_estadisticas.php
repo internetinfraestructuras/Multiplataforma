@@ -30,30 +30,30 @@ if(isset($_POST['olt']) && $_POST['olt']!='') {
 
         } else if (intval($olt) == 0)
             if ($desde != '' || $hasta != '')
-                $result = $util->selectWhere('fibra.aprovisionados', array("CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 7 day,'%d/%m/%Y') )", 'count(id)'), "  AND (fecha BETWEEN '" . $desde . "' and '" . $hasta . "')", '', ' week(fecha,0)');
+                $result = $util->selectWhere('fibra.aprovisionados', array("CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 6 day,'%d/%m/%Y') )", 'count(id)'), "  AND (fecha BETWEEN '" . $desde . "' and '" . $hasta . "')", '', ' week(fecha,0)');
             else
-                $result = $util->selectWhere('fibra.aprovisionados', array("CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 7 day,'%d/%m/%Y') )", 'count(id)'), '', '', ' week(fecha,0)');
+                $result = $util->selectWhere('fibra.aprovisionados', array("CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 6 day,'%d/%m/%Y') )", 'count(id)'), '', '', ' week(fecha,0)');
 
         else
             if ($desde != '' || $hasta != '')
-                $result = $util->selectWhere('fibra.aprovisionados', array("CONCAT ( DATE_FORMAT(fecha,'%d/%m/%Y'), ' a ', DATE_FORMAT(fecha  + interval 7 day,'%d/%m/%Y') )", 'count(id)'), 'cabecera = ' . $olt . "  and (fecha BETWEEN '" . $desde . "' and '" . $hasta . "')", '', ' week(fecha,0)');
+                $result = $util->selectWhere('fibra.aprovisionados', array("CONCAT ( DATE_FORMAT(fecha,'%d/%m/%Y'), ' a ', DATE_FORMAT(fecha  + interval 6 day,'%d/%m/%Y') )", 'count(id)'), 'cabecera = ' . $olt . "  and (fecha BETWEEN '" . $desde . "' and '" . $hasta . "')", '', ' week(fecha,0)');
             else
-                $result = $util->selectWhere('fibra.aprovisionados', array("CONCAT ( DATE_FORMAT(fecha,'%d/%m/%Y'), ' a ', DATE_FORMAT(fecha  + interval 7 day,'%d/%m/%Y') )", 'count(id)'), 'cabecera = ' . $olt, '', ' week(fecha,0)');
+                $result = $util->selectWhere('fibra.aprovisionados', array("CONCAT ( DATE_FORMAT(fecha,'%d/%m/%Y'), ' a ', DATE_FORMAT(fecha  + interval 6 day,'%d/%m/%Y') )", 'count(id)'), 'cabecera = ' . $olt, '', ' week(fecha,0)');
     } else {
 
         if(intval($olt)==-1){
 
         } else if(intval($olt)==0)
             if($desde!='' || $hasta != '')
-                $result = $util->selectWhere('fibra.aprovisionados', array("CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 7 day,'%d/%m/%Y') )",'count(id)')," cabecera in (select id from olts where wifero  = ".$_SESSION['REVENDEDOR'].") AND (fecha BETWEEN '".$desde."' and '" .$hasta."')",'', ' week(fecha,0)');
+                $result = $util->selectWhere('fibra.aprovisionados', array("CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 6 day,'%d/%m/%Y') )",'count(id)')," cabecera in (select id from olts where wifero  = ".$_SESSION['REVENDEDOR'].") AND (fecha BETWEEN '".$desde."' and '" .$hasta."')",'', ' week(fecha,0)');
             else
-                $result = $util->selectWhere('fibra.aprovisionados', array("CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 7 day,'%d/%m/%Y') )",'count(id)'),' cabecera in (select id from olts where wifero  = '.$_SESSION['REVENDEDOR'].')','', ' week(fecha,0)');
+                $result = $util->selectWhere('fibra.aprovisionados', array("CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 6 day,'%d/%m/%Y') )",'count(id)'),' cabecera in (select id from olts where wifero  = '.$_SESSION['REVENDEDOR'].')','', ' week(fecha,0)');
 
         else
             if($desde!='' || $hasta != '')
-                $result = $util->selectWhere('fibra.aprovisionados', array("CONCAT ( DATE_FORMAT(fecha,'%d/%m/%Y'), ' a ', DATE_FORMAT(fecha  + interval 7 day,'%d/%m/%Y') )",'count(id)'),'cabecera = '.$olt ." and cabecera in (select id from olts where wifero  = ".$_SESSION['REVENDEDOR'].") and (fecha BETWEEN '".$desde."' and '" .$hasta."')",'', ' week(fecha,0)');
+                $result = $util->selectWhere('fibra.aprovisionados', array("CONCAT ( DATE_FORMAT(fecha,'%d/%m/%Y'), ' a ', DATE_FORMAT(fecha  + interval 6 day,'%d/%m/%Y') )",'count(id)'),'cabecera = '.$olt ." and cabecera in (select id from olts where wifero  = ".$_SESSION['REVENDEDOR'].") and (fecha BETWEEN '".$desde."' and '" .$hasta."')",'', ' week(fecha,0)');
             else
-                $result = $util->selectWhere('fibra.aprovisionados', array("CONCAT ( DATE_FORMAT(fecha,'%d/%m/%Y'), ' a ', DATE_FORMAT(fecha  + interval 7 day,'%d/%m/%Y') )",'count(id)'),'cabecera = '.$olt,' cabecera in (select id from olts where wifero  = '.$_SESSION['REVENDEDOR'].')', ' week(fecha,0)');
+                $result = $util->selectWhere('fibra.aprovisionados', array("CONCAT ( DATE_FORMAT(fecha,'%d/%m/%Y'), ' a ', DATE_FORMAT(fecha  + interval 6 day,'%d/%m/%Y') )",'count(id)'),'cabecera = '.$olt,' cabecera in (select id from olts where wifero  = '.$_SESSION['REVENDEDOR'].')', ' week(fecha,0)');
 
     }
 

@@ -9,12 +9,14 @@
 if (!isset($_SESSION)) {
     @session_start();
 }
+
+
 header('Content-type: application/pdf');
-require_once('../../../config/util.php');
-require_once('../../../clases/airenetwork/clases/Linea.php');
-require_once('../../../clases/Contrato.php');
-require_once('../../../clases/Servicio.php');
-require_once('../../../clases/Empresa.php');
+include_once('../../../config/util.php');
+include_once('../../../clases/airenetwork/clases/Linea.php');
+include_once('../../../clases/Contrato.php');
+include_once('../../../clases/Servicio.php');
+include_once('../../../clases/Empresa.php');
 
 $confAire=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
 $url=$confAire[0][3];

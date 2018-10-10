@@ -8,7 +8,8 @@
 
 
 require_once ('Provision.php');
-
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
 $p = new Provision();
 
-print_r($p->listarVelocidades('48575443CDE3319A'));
+print_r($p->bajaServicios('48575443CDE3319A',true));

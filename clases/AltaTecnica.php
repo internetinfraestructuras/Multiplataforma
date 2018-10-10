@@ -5,14 +5,13 @@
  * Date: 22/08/2018
  * Time: 13:39
  */
-ini_set('display_errors', 1);
 
-error_reporting(E_ALL);
 
-require_once '../config/define.php';
+include_once ('../config/define.php');
 
-require_once ('./../config/util.php');
-require_once ('Servicio.php');
+include_once ('../config/util.php');
+include_once ('Servicio.php');
+
 class AltaTecnica
 {
     /*
@@ -87,7 +86,8 @@ class AltaTecnica
                                                  $titularCuenta,$nombreBanco,$codigoBanco,$oficina,$digitoControl,$numeroCuenta,$iccTarjeta,$idServicio)
     {
 
-        require_once ('./masmovil/MasMovilAPI.php');
+        require_once ('masmovil/MasMovilAPI.php');
+
         $apiMasMovil=new MasMovilAPI();
         $rs=$apiMasMovil->getListadoClientes($dni);
 
@@ -103,7 +103,15 @@ class AltaTecnica
             {
 
                 $refCliente=$rs->customerId;
-                $rs=$apiMasMovil->altaLineaMovil($refCliente,$iccTarjeta,"","");
+                $ser=new Servicio();
+                $idExterno=Servicio::getIdExternoApi($idServicio,$_SESSION['REVENDEDOR']);
+                if($idExterno!=NULL)
+                {
+                    $idExterno=$idExterno[0][0];
+                    $rs=$apiMasMovil->altaLineaMovil($refCliente,$iccTarjeta,$idExterno,"");
+
+                }
+
             }
         }
         else
@@ -111,17 +119,17 @@ class AltaTecnica
 
             $refCliente=$rs->Client[0]->refCustomerId;
             $ser=new Servicio();
-            $idExterno=Servicio::getIdExternoApi($idServicio);
+            $idExterno=Servicio::getIdExternoApi($idServicio,$_SESSION['REVENDEDOR']);
             if($idExterno!=NULL)
             {
                 $idExterno=$idExterno[0][0];
                 $rs=$apiMasMovil->altaLineaMovil($refCliente,$iccTarjeta,$idExterno,"");
-
             }
 
 
         }
 
+        return $rs;
     }
 
     /*
@@ -132,22 +140,26 @@ class AltaTecnica
                                              $apellido1,$apellido2,$fechaNacimiento,$email,$telefono,$region,
                                              $provincia,$ciudad,$cp,$direccion,$numero,$docNombre,$documento,$icc,$dc,$idServicio)
     {
-        require_once ('./airenetwork/clases/Cliente.php');
-        require_once ('./airenetwork/clases/Linea.php');
+        require_once ('airenetwork/clases/Cliente.php');
+        require_once ('airenetwork/clases/Linea.php');
+        require_once ('Empresa.php');
 
-       $clienteAire=new Cliente("","","");
-       $lineaAire=new Linea("","","");
+        $configuracion=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
+
+
+
+        $clienteAire=new Cliente($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
+        $lineaAire=new Linea($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
 
         $rs=$clienteAire->getClientByDNI($numeroDocumento);
+
         if($rs==NULL)
-        {
             $rs=$clienteAire->crearCliente($tipoCliente,$consentimiento,$tipoDocumento,$numeroDocumento,$nombre,$apellido1,$apellido2,$fechaNacimiento,$email,$telefono,$region,$provincia,$ciudad,$cp,$direccion,$numero,$docNombre,$documento);
-        }
 
         $pool=$lineaAire->getNumerosLibres();
         $codigoReserva=$pool['codigo_reserva'];
         $numeroTelefono=$pool['n1'];
-        $idExterno=Servicio::getIdExternoApi($idServicio);
+        $idExterno=Servicio::getIdExternoApi($idServicio,$_SESSION['REVENDEDOR']);
 
         if($idExterno!=NULL)
         {
@@ -162,4 +174,90 @@ class AltaTecnica
 
 
     }
+
+    public static function addNuevaPortabilidadAireNetworks($idEmpresa,$idServicio,$tipoCliente,$consentimiento,$nombre,
+                                                            $apellido1,$apellido2,$fechaNacimiento,$email,$region,$provincia,
+                                                            $ciudad,$cp,$direccion,$numero,$docNombre,$documento,$tipoDocumento,$nif,$icc,$dc,$telefono,$modalidadActual,$iccOrigen,$dcOrigen)
+    {
+
+        require_once ('airenetwork/clases/Cliente.php');
+        require_once ('airenetwork/clases/Linea.php');
+        require_once ('Empresa.php');
+        require_once ('Servicio.php');
+
+
+        $configuracion=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
+
+
+
+        $clienteAire=new Cliente($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
+        $lineaAire=new Linea($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
+
+        $rs=$clienteAire->getClientByDNI($nif);
+
+
+        if($rs==NULL)
+            $rs=$clienteAire->crearCliente($tipoCliente,$consentimiento,$tipoDocumento,$nif,$nombre,$apellido1,$apellido2,$fechaNacimiento,$email,$telefono,$region,$provincia,$ciudad,$cp,$direccion,$numero,$docNombre,$documento);
+
+
+        $rservicio=Servicio::getIdExternoApi($idServicio,$_SESSION['REVENDEDOR']);
+
+        if($rservicio!=null)
+        {
+
+            $tarifa=$rservicio[0]['ID_EXTERNO'];
+
+            $rsP=$lineaAire->setAltaPortabilidad($tarifa,$tipoCliente,$nif,$icc,$dc,$telefono,$modalidadActual,$iccOrigen,$dcOrigen);
+            return $rsP;
+        } else
+            return "Error";
+
+    }
+
+    public static function getEstadosPortabilidadesAireNetworks($filtro)
+    {
+        require_once ('airenetwork/clases/Cliente.php');
+        require_once ('airenetwork/clases/Linea.php');
+        require_once ('Empresa.php');
+        require_once ('Servicio.php');
+
+        $configuracion=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
+        $lineaAire=new Linea($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
+        $rs=$lineaAire->getSolicitudesLineas($filtro);
+
+        var_dump($rs);
+    }
+
+    public static function getDocumentosPortabilidadAireNetworks($codigoSolicitud,$tipoDocumento)
+    {
+        require_once ('airenetwork/clases/Linea.php');
+        require_once ('Empresa.php');
+        $configuracion=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
+        $lineaAire=new Linea($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
+
+        $rs=$lineaAire->getDocumentosSolicitud($codigoSolicitud,$tipoDocumento);
+        var_dump($rs);
+
+    }
+
+    /*
+     * SUBIR DOCUMENTACIÓN POR API AIRENETWORKS
+     * $dniCliente
+     * $codSolicitud=Es el código de solicitud de la línea
+     * $documento64=Documento en base64
+     * $tipoDocumento= DOCUMENTO/PORTABILIDAD/CONTRATOS/OTROS
+     * $nombreFichero= Nombre del fichero pasado en base64.
+     */
+    public static function setDocumentosPortabilidadAireNetworks($dniCliente,$codSolicitud,$documento64,$tipoDocumento,$nombreFichero)
+    {
+        require_once ('airenetwork/clases/Linea.php');
+        require_once ('Empresa.php');
+        $configuracion=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
+        $lineaAire=new Linea($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
+
+        $rs=$lineaAire->subirDocumento($codSolicitud,$tipoDocumento);
+        var_dump($rs);
+
+    }
 }
+?>

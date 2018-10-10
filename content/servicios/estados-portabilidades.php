@@ -92,7 +92,7 @@ check_session(2);
                 <div class="col-md-12">
 
                     <!-- ------ -->
-                    <div class="panel panel-default">
+                    <div id="tabla" class="panel panel-default">
                         <div class="panel-heading panel-heading-transparent">
                             <strong>Estados <?php echo strtoupper(DEF_PORTA_CONF); ?> móviles</strong>
                         </div>

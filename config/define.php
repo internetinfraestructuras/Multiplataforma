@@ -103,32 +103,6 @@ define ('DB_TELEFONIA_DATABASENAME', 'gestioncdr');
 define ('DB_TELEFONIA_USER', 'testerp');
 define ('DB_TELEFONIA_PASSWORD', 'erpDirect18');
 
-//
-//// comandos SNMP
-//
-//define('ROOT','.1.3.6.1');
-//define('HUAWEI','1.3.6.1.4.1.2011');
-//define('SYS_DESCRYPT','.1.3.6.1.2.1');
-//define('VLANS','.1.3.6.1.4.1.2011.5.6.1.1.1.2');
-//define('HARDWARE','.1.3.6.1.4.1.2011.6');
-//define('HARDWARE_CFG','.1.3.6.1.4.1.2011.6.10');
-//define('TEMP','.1.3.6.1.4.1.2011.6.1.1.2.1.2.1');
-//define('SYS_UP','.1.3.6.1.2.1.1.3');
-//define('ONTS','1.3.6.1.4.1.2011.6.128.1.1.2.43.1');
-//
-////profiles
-//define('PROFILES','.1.3.6.1.4.1.2011.6.128.1.1.2.142.1.2.4194307840.1');
-//define('PROFILES_GENERIC','.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.7');
-//define('HG8546M','.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.8');
-//
-//
-//define('hwHdsl','.1.3.6.1.4.1.2011.6');
-//
-//
-//define('INTERFACE_NAME','.1.3.6.1.2.1.31.1.1.1.1');
-//define('VOLTAGE','1.3.6.1.4.1.2011.6.128.1.1.2.51.1.5');
-//define('INTERFACES','.1.3.6.1.2.1.17.1.4.1.2');
-//define('TEST','.1.3.6.1.2.1.65');
 
 
 define("ESPACIO","\040");
@@ -138,3 +112,30 @@ define("ESPACIO","\040");
 
 define('RUTA_ANTIGUA','http://localhost/');
 define("CLAVE_API","2a10c77db1d6d0bedc7eafe582041830");
+define('ATRIBUTO_TELEFONO_FIJO',45);
+define('ATRIBUTO_TELEFONO_MOVIL',48);
+define('ID_ATRIBUTO_TRONCAL',56);
+define('NUMERO_LLAMAR_VERIFICAR_MOVIL','856001011');
+
+
+define('ID_SERVICIO_INTERNET',1);
+define('ID_SERVICIO_VOZIP',2);
+define('ID_SERVICIO_MOVIL',3);
+define('ID_SERVICIO_IPTV',4);
+
+define('FIBRADB','fibra.');
+define('NUEVADB','multiplataforma.');
+define('ETIQUETAS','etiquetas.');
+
+define('PROV_MASMOVIL',14);
+define('PROV_AIRE',15);
+
+
+//clientes documentos
+define('CLI_DOC_DNI',1);
+define('CLI_DOC_CIF',2);
+define('CLI_DOC_RECIBO',3);
+define('CLI_DOC_FACTURA_MOVIL',4);
+define('CLI_DOC_FACTURA_FIJO',5);
+
+define('CLI_RUTA_DOCUMENTOS','content/documentos/clientes/');

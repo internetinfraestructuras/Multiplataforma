@@ -8,16 +8,20 @@
 if (!isset($_SESSION)) {
     @session_start();
 }
-require_once('../../config/util.php');
-require_once('../../clases/Contrato.php');
-require_once('../../clases/Orden.php');
-require_once('../../clases/Servicio.php');
-require_once('../../clases/AltaTecnica.php');
-require_once('../../clases/Clientes.php');
+
+
+include_once('../../config/util.php');
+include_once('../../clases/Contrato.php');
+include_once('../../clases/Orden.php');
+include_once('../../clases/Servicio.php');
+include_once('../../clases/AltaTecnica.php');
+include_once('../../clases/Clientes.php');
 $tel = new AltaTecnica();
 $cli = new Clientes();
 
-
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
 $cifSuperUsuario = 'B45782687';
 
 $util = new util();
@@ -165,7 +169,12 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
             $dc = substr($datosCliente[13], 12, 2);
             $ccc = substr($datosCliente[13], 14, 10);
             $codProv = substr($datosCliente[11], 0, 2);
-            $icc = $linea[10];
+
+            $icc ='';
+
+            if(isset($linea[10]))
+                $icc = $linea[10];
+
             $idServicio = $linea[0];
 
             $res = AltaTecnica::addNuevaLineaMasMovil($datosCliente[0] . " " . $datosCliente[1],
@@ -176,6 +185,19 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
 
             Orden::setresultadoInstalacionLineaOrden($idLineaAtributoNumeroTelefono, $util->hoy('fechahora'), $_SESSION['USER_ID'], '', '', '',
                 $res->activateDescription, '', '');
+
+            $serviciosMasmovil = $util->selectWhere3('servicios',array('ID'), 'ID_PROVEEDOR='.ID_PROVEEDOR_MASMOVIL);
+            foreach ($serviciosMasmovil as $servMas){
+                if($servMas[0]==$idServicio) {
+                    $util->consulta("INSERT INTO altas_mas_movil (ID_LINEA_DETALLE, ESTADO, ICC, ID_EMPRESA) VALUES ($idLineaAtributoNumeroTelefono, 1,'".$icc."',".$_SESSION['REVENDEDOR']."); ");
+                    break;
+                }
+
+            }
+
+
+//            if(in_array($idServicio, $serviciosMasmovil['ID']))
+
 
 //                if($res['activationCode']==OPERACION_OK_MASMOVIL){
 //
@@ -202,54 +224,4 @@ if (isset($_POST['action']) && $_POST['action'] == 'contrato') {
     echo "nose";
     die();
 }
-
-/*
- * lineas[0][]: 38
-lineas[0][]: 1
-lineas[0][]: 37.81
-lineas[0][]: 1
-lineas[0][]: FIBRA 100/100
-lineas[0][]: p
-lineas[0][]: 0
-lineas[0][]:
-lineas[0][]: 19
-lineas[0][]: 10
-lineas[0][]: 18092018IPTVM1100000001
-
-lineas[1][]: 55
-lineas[1][]: 3
-lineas[1][]: 22.46
-lineas[1][]: 1
-lineas[1][]: ILIM5
-lineas[1][]: p
-lineas[1][]: 1
-lineas[1][]:
-lineas[1][]: 17
-lineas[1][]:
-lineas[1][]: SIM001
-
-lineas[2][]: 46
-lineas[2][]: 2
-lineas[2][]: 2.66
-lineas[2][]: 1
-lineas[2][]: NACIONALES 5
-lineas[2][]: p
-lineas[2][]: 1
-lineas[2][]: 956000000
-lineas[2][]: 31
-lineas[2][]:
-lineas[2][]: ASDAS
-
-lineas[3][]: 43
-lineas[3][]: 3
-lineas[3][]: 5.86
-lineas[3][]: 1
-lineas[3][]: TARIFA AIRE 1
-lineas[3][]: p
-lineas[3][]: 1
-lineas[3][]:
-lineas[3][]: 33
-lineas[3][]: 6
-lineas[3][]: 123456789
- */
 ?>

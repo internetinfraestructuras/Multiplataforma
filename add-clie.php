@@ -185,7 +185,7 @@ check_session(3);
                                             <div class="col-md-4 col-xs-6">
                                                 <label>Nacionalidad </label>
                                                 <select name="nacion" id="nacion"
-                                                        class="form-control pointer"  onchange="carga_comunidades(this.value)">
+                                                        class="form-control pointer select2"  onchange="carga_comunidades(this.value)">
                                                     <option value="-1">--- Seleccionar una ---</option>
                                                     <?php $util->carga_select('pais', 'id', 'paisnombre', 'paisnombre','','','',28); ?>
 
@@ -194,7 +194,7 @@ check_session(3);
                                             <div class="col-md-4 col-xs-6">
                                                 <label>Región</label>
                                                 <select name="clientes[region]" id="regiones"
-                                                        class="form-control pointer " onchange="carga_provincias(this.value)">
+                                                        class="form-control pointer select2" onchange="carga_provincias(this.value)">
                                                     <option value="">--- Seleccionar una ---</option>
                                                     <?php $util->carga_select('comunidades', 'id', 'comunidad', 'comunidad'); ?>
                                                 </select>
@@ -208,14 +208,14 @@ check_session(3);
                                             <div class="col-md-4 col-xs-12">
                                                 <label>Provincia </label>
                                                 <select name="clientes[provincia]" id="provincias"
-                                                        class="form-control pointer " onchange="carga_poblaciones(this.value)">
+                                                        class="form-control pointer select2" onchange="carga_poblaciones(this.value)">
                                                     <option value="">--- Seleccionar una ---</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-5 col-xs-12">
                                                 <label>Localidad </label>
                                                 <select name="clientes[localidad]" id="localidades"
-                                                        class="form-control pointer ">
+                                                        class="form-control pointer select2">
                                                     <option value="">--- Seleccionar una ---</option>
                                                 </select>
                                             </div>
@@ -238,6 +238,7 @@ check_session(3);
                                             <div class="col-lg-7 col-xs-12">
                                                 <label>Notas </label>
                                                 <input type="text" name="clientes[notas]" id="notas" class="form-control">
+                                                <br>
                                             </div>
                                         </div>
                                     </div>
@@ -287,18 +288,18 @@ check_session(3);
 
                     <div class="panel panel-default">
                         <div class="panel-heading panel-heading-transparent">
-                            <strong>Consentimientos LOPD</strong>
+                            <strong>Consentimientos LOPD <i class="fa fa-question-circle" data-toggle="tooltip" title="El cliente tiene el derecho y la obligación de indicar que tipo de notificaciones desea recibir."></i></strong>
                         </div>
                         <div class="panel-body">
 
                             <div class="row">
                                 <div class="form-group">
                                     <div class="col-xs-12">
-                                        <label>Seleccionar una opción <a href="lopd.html" target="_blank"><i class="fa fa-question-circle"></i></a> </label>
-                                        <br>
+<!--                                        <label>Explicar al cliente y seleccionar una opción </label>-->
+<!--                                        <br>-->
                                         <select name="consentimiento" id="consentimiento"
                                                 class="form-control pointer">
-                                            <option value="-1">--- --- ---</option>
+                                            <option value="-1" disabled selected>-- Seleccione --</option>
                                             <?php $util->carga_select('clientes_consentimientos', 'ID', 'NOMBRE', 'NOMBRE'); ?>
 
                                         </select>
@@ -309,11 +310,43 @@ check_session(3);
                         </div>
                     </div>
 
-
                     <div class="panel panel-default">
+                        <div class="panel-heading panel-heading-transparent">
+                            <strong>Documentos <i class="fa fa-question-circle" data-toggle="tooltip" title="Aquí puede precargar documentos escaneados del cliente que podrá utilizar para distintas operaciones en el futuro."></i></strong>
+                        </div>
                         <div class="panel-body">
 
+                            <div class="row">
+                                <div class="form-group">
 
+                                    <div class="col-xs-12">
+
+                                        <select name="tiposdocumentos" id="tiposdocumentos"
+                                                class="form-control pointer">
+                                            <option value="-1" disabled selected>Seleccionar un tipo de documento y pulsar cargar</option>
+                                            <?php $util->carga_select('clientes_documentos_tipos', 'ID', 'NOMBRE', 'ID'); ?>
+                                        </select>
+                                        <br>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <input class="btn btn-warning"  onclick="return cargarDocumentos();" type="file" name="file" id="file" style="width:100%"/>
+                                        <br />
+                                        <table style="width:100%" id="uploaded_image"></table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body" >
                             <div class="row">
                                 <div class="col-md-12">
                                     <button type="button" onclick="verificaryGuardar();"
@@ -325,9 +358,7 @@ check_session(3);
                             </div>
                         </div>
                     </div>
-
                 </div>
-
             </div>
 
         </div>
@@ -346,6 +377,7 @@ check_session(3);
 
 <script>
     var volver=false;
+    var array_documentos=[];
 
     $(document).ready(function(){
 
@@ -366,8 +398,86 @@ check_session(3);
                 }
             });
         });
+
+        // $('[data-toggle="tooltip"]').tooltip();
+
+
+        // subida de ficheros
+
+
+        $(document).on('change', '#file', function(){
+            if(!cargarDocumentos())
+                return;
+
+            var name = document.getElementById("file").files[0].name;
+
+            var form_data = new FormData();
+            var ext = name.split('.').pop().toLowerCase();
+            if(jQuery.inArray(ext, ['gif','png','jpg','jpeg','pdf']) == -1)
+            {
+                alert("Por favor seleccione un documento válido (gif, png, jpg, pdf)");
+            }
+            var oFReader = new FileReader();
+            oFReader.readAsDataURL(document.getElementById("file").files[0]);
+            var f = document.getElementById("file").files[0];
+            var fsize = f.size||f.fileSize;
+            if(fsize > 2000000)
+            {
+                alertaOk("ATENCIÓN","El tamaño del fichero exece de lo permitido (2Mb)","warning","Entendido","");
+            }
+            else
+            {
+                form_data.append("file", document.getElementById('file').files[0]);
+                $.ajax({
+                    url:"content/documentos/clientes/upload.php",
+                    method:"POST",
+                    data: form_data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success:function(data)
+                    {
+                        $('#uploaded_image').append("<tr id='"+data.slice(0, 20)+"'><td width='40%'><b>"+
+                            $("#tiposdocumentos :selected").text() + ":</b></td><td width='50%'> " + data + "</td><td width='5%'>" +
+                            "<a href='"+data+"' target='_blank'><i class='fa fa-file' style='color:#000'></i></a></td><td width='5%'> " +
+                            " <i class='fa fa-trash' style='color:red; cursor: pointer' onclick='borrar_documento(\""+
+                            data+"\",this);'></i></td></tr>");
+
+                        // $('#uploaded_image').append("<span id='"+data.slice(0, 20)+"'><i class='fa fa-check' style='color:greenyellow'></i><b>"+
+                        //     $("#tiposdocumentos :selected").text() + ":</b> " + data +
+                        //     " </span><i class='fa fa-trash' style='color:red; cursor: pointer' onclick='borrar_documento(\""+
+                        //     data+"\",this);'></i><br>");
+
+                        var tipodoccargar = $("#tiposdocumentos").val();
+                        var fichero=[tipodoccargar,data];
+                        array_documentos.push(fichero);
+                    }
+                });
+            }
+        });
+
     });
 
+    function cargarDocumentos(){
+        var tipodoccargar = $("#tiposdocumentos").val();
+        if(tipodoccargar==null) {
+            alertaOk('ALERTA', 'Para cargar un documento debe seleccionar a que corresponde', 'warning', 'Entendido', '');
+            return false;
+        } else
+            return true;
+
+    }
+
+    function borrar_documento(fichero, item){
+        for(var i in array_documentos){
+            if(array_documentos[i][1]==fichero){
+                array_documentos.splice(i,1);
+                $("#"+fichero.slice(0, 20)).remove();
+                $(item).remove();
+                break;
+            }
+        }
+    }
 
 
     // carga las provincias en el combo correspondiente
@@ -475,6 +585,7 @@ check_session(3);
         var localidad = $("#localidades").val();
 
         var texto ='';
+        var texto2 ='';
 
         
         if (tcli == -1) {
@@ -556,6 +667,21 @@ check_session(3);
                 texto = texto +'<span class="alerta"> El número IBAN no es correcto</span><br>';
         }
 
+        if (banco == '') {
+            texto2 = texto2 +'<span class="alerta"> No ha indicado el nombre del banco</span><br>';
+            volver=true;
+        }
+
+        if (dirbanco == '') {
+            texto2 = texto2 +'<span class="alerta"> No ha indicado la dirección del nombre del banco</span><br>';
+            volver=true;
+        }
+
+        if (iban == '') {
+            texto2 = texto2 +'<span class="alerta"> No ha indicado el iban o cuenta</span><br>';
+            volver=true;
+        }
+
         // si la diferencia entre la fecha de hoy y la de nacimiento no es superior a dias es que es menor de edad
 
         if (difference = dateDiffInDays(new Date(fnac), new Date(hoy()))<6570) {
@@ -570,27 +696,27 @@ check_session(3);
 
         if(texto!=''){
 
-            alerta("Atención", texto, 'warning','Continuar','Volver','confirmarGuardar','cancelarguardar');
+            alertaOk("Atención", texto+texto2, 'error','Entendido','confirmarGuardar');
+
+        } else if(texto2!=''){
+            volver=false;
+            alerta("Atención", texto2, 'info','Regresar y completar','Continuar y Guardar','','confirmarGuardar','','volver');
 
         } else confirmarGuardar();
 
+        // else confirmarGuardar();
+
    }
 
-
-    function cancelarguardar() {
-
-
-    }
-
-   function confirmarGuardar(){
+   function confirmarGuardar(p){
 
        if(volver)
            return;
 
-       var nom = $("#nombre").val();
-       var ape = $("#apellidos").val();
-       var dni = $("#dni").val();
-       var dir = $("#direccion").val();
+       var nom = $("#nombre").val().toUpperCase();
+       var ape = $("#apellidos").val().toUpperCase();
+       var dni = $("#dni").val().toUpperCase();
+       var dir = $("#direccion").val().toUpperCase();
        var reg = $("#regiones").val();
        var pro = $("#provincias").val();
        var loc = $("#localidades").val();
@@ -603,10 +729,10 @@ check_session(3);
        var tcli = $("#tipocli").val();
        var fnac = $("#nacim").val();
        var lopd = $("#consentimiento").val();
-       var banco = $("#banco").val();
-       var dirbanco = $("#dirbanco").val();
-       var iban = $("#iban").val();
-       var swift = $("#swift").val();
+       var banco = $("#banco").val().toUpperCase();
+       var dirbanco = $("#dirbanco").val().toUpperCase();
+       var iban = $("#iban").val().toUpperCase();
+       var swift = $("#swift").val().toUpperCase();
        var nacion = $("#nacion").val();
        var region = $("#regiones").val();
        var provincia = $("#provincias").val();
@@ -628,15 +754,16 @@ check_session(3);
            data: {
                action: 'clientes',
                clientes: clientes,
+               documentos: array_documentos,
                is_ajax: true
            },
            success: function (data) {
                if (parseInt(data) > 0) {
-                   confirmacion("Cliente guardado correctamente",2000);
-                   location.reload();
+                   reload("Cliente guardado correctamente",4000);
+
                }
                else {
-                   error("ERROR: Posible datos duplicados, revise los clientes actuales.",3000);
+                   error("ERROR: "+$("#tipodoc :selected").text()+" o email duplicados, revise los clientes actuales.",3000);
                    $("#next1").css('display', 'block');
                    animating = false;
                }

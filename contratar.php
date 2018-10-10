@@ -15,7 +15,9 @@ require_once('config/util.php');
 $util = new util();
 check_session(2);
 
-
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
 ?>
 <!doctype html>
 <html lang="en-US">

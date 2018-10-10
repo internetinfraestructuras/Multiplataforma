@@ -588,6 +588,4 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         return $util->selectWhere3("contratos,clientes", array("clientes.dni"),
             "contratos.id_cliente=clientes.id AND contratos.id=$idContrato AND contratos.id_empresa=$idEmpresa");
     }
-
-
 }

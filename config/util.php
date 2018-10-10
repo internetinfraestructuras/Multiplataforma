@@ -17,15 +17,15 @@ include_once('def_tablas.php');
 date_default_timezone_set('Europe/Madrid');
 //
 
-//error_reporting(E_ALL);
-//ini_set("display_errors", 1);
+error_reporting(E_ALL);
+ini_set("display_errors", 0);
 class util
 {
     function write_log($cadena,$tipo=null)
     {
         $arch = fopen( $_SERVER['DOCUMENT_ROOT']."/logs/logmultiplataforma-".date("Y-m-d").".txt", "a+");
 
-        fwrite($arch,  $cadena.PHP_EOL.PHP_EOL);
+        fwrite($arch, date('d/m/y') ." ".  $cadena.PHP_EOL.PHP_EOL);
         fclose($arch);
     }
 
@@ -220,6 +220,7 @@ class util
     public function consulta($query)
     {
         try {
+            echo $query;
 
             $link = $this->conectar();
 
@@ -229,6 +230,7 @@ class util
             $fieldNames = array();
 
             $numFields = mysqli_num_fields($result);
+
             for ($i = 0; $i < $numFields; $i++) {
                 $fieldNames[] = mysqli_fetch_field_direct($result, $i);
             }
@@ -362,7 +364,6 @@ class util
             $this->log('Error SelectWhere 3: ' . $query);
             $this->write_log($e->getMessage() . $query, "debug");
         }
-        return $fieldNames;
 
     }
 
@@ -550,13 +551,15 @@ class util
         if ($where != null)
             $query = $query . " WHERE " . $where;
         $this->log($query);
+        $this->write_log($query, "info");
+
         try {
             $link->query($query);
         } catch (Exception $e) {
             $this->log('eror update: ' . $e->getFile());
             $this->write_log($e->getMessage() . $query, "debug");
         }
-        $this->write_log($query, "info");
+
         $lastid = mysqli_affected_rows($link);
 
         if ($log) {

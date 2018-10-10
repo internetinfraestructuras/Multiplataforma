@@ -39,7 +39,7 @@ if(isset($_POST['filtro'])) {
 //   19                    20                   21              22
 $campos=array('clientes.ID','DNI','NOMBRE','APELLIDOS','DIRECCION','LOCALIDAD','clientes.PROVINCIA','COMUNIDAD','IBAN',
     'SWIFT','ID_EMPRESA','CP','FIJO','MOVIL','EMAIL','FECHA_ALTA','BANCO', 'DOCUMENTO_URL','DOCUMENTO',
-    'TIPO_DOCUMENTO','ID_CONSENTIMIENTO','ID_TIPO_CLIENTE','FECHA_NACIMIENTO','NOTAS');
+    'TIPO_DOCUMENTO','ID_CONSENTIMIENTO','ID_TIPO_CLIENTE','FECHA_NACIMIENTO','NOTAS','NACIONALIDAD','DIRECCION_BANCO');
 
 
 /*
@@ -99,7 +99,10 @@ if($_SESSION['USER_LEVEL']==0) {
                 'tipodoc' => $row[19],
                 'idconsentimiento' => $row[20],
                 'tipocli' => $row[21],
-                'fnacimiento' => $row[22]
+                'fnacimiento' => $row[22],
+                'nacion' => $row[24],
+                'dirbanco' => $row[25],
+                'hash'=>md5($row[0])
             );
 
             array_push($aItems, $aItem);
@@ -120,7 +123,9 @@ if($_SESSION['USER_LEVEL']==0) {
                 'email' => $row[14],
                 'notas' => $row[11],
                 'alta' => $row[15],
-                'region' => $row[7]
+                'region' => $row[7],
+                'nacion' => $row[24]
+
             );
             array_push($aItems, $aItem);
         }

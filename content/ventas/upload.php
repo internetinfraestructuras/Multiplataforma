@@ -24,6 +24,9 @@ if (!isset($_SESSION)) {
 require_once('../../config/util.php');
 $util = new util();
 
+// solo los usuarios de nivel 3 a 0 pueden agregar clientes
+check_session(3);
+
 
 if (!empty($_FILES)) {
     $targetPath = '../../content/documentos/';

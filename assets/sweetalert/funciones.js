@@ -1,5 +1,6 @@
 
-function alerta(titulo, texto, icono, botonSi, botonNo, funcionAceptar, funcionCancelar) {
+
+function alerta(titulo, texto, icono, botonSi, botonNo, funcionAceptar, funcionCancelar, parametro1, parametro2) {
 
     const swalWithBootstrapButtons = swal.mixin({
         confirmButtonClass: 'btn btn-success next',
@@ -17,14 +18,19 @@ function alerta(titulo, texto, icono, botonSi, botonNo, funcionAceptar, funcionC
         reverseButtons: true,
         width: 500
     }).then((result) => {
-        if (result.value) {
-            self[funcionAceptar]();
-        } else if (result.dismiss === swal.DismissReason.cancel) {
-            self[funcionCancelar]();
+        if (result.value && funcionAceptar!='') {
+            if(parametro1!='')
+                self[funcionAceptar](parametro1);
+            else
+                self[funcionAceptar]();
+        } else if (result.dismiss === swal.DismissReason.cancel && funcionCancelar!='') {
+            if(parametro2!='')
+                self[funcionCancelar](parametro2);
+            else
+                self[funcionCancelar]();
         }
     })
 }
-
 function alertaOk(titulo, texto, icono, botonSi, funcion) {
 
     const swalWithBootstrapButtons = swal.mixin({

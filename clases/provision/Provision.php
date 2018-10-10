@@ -134,7 +134,7 @@ class Provision
 
     public function bajaTotal($pon)
     {
-        $campos = array('id', 'c', 't', 'p', 'id_en_olt', 'id_internet', 'id_vozip', 'id_iptv', 'id_vpn', 'id_acs', 'cabecera');
+        $campos = array('id', 'c', 't', 'p', 'id_en_olt', 'id_internet', 'id_voip', 'id_iptv', 'id_vpn', 'id_acs', 'cabecera');
         $provision = $this->util->selectWhere3(FIBRADB . 'aprovisionados', $campos, ' num_pon="' . $pon . '"', ' id DESC');
 
         if (intval($provision[0]) > 0) {
@@ -296,11 +296,12 @@ class Provision
 
     public function bajaServicios($pon,$internet=false, $voz=false, $tv=false)
     {
-        $campos = array('id', 'c', 't', 'p', 'id_en_olt', 'id_internet', 'id_vozip', 'id_iptv', 'id_vpn', 'id_acs', 'cabecera');
+        $campos = array('id', 'c', 't', 'p', 'id_en_olt', 'id_internet', 'id_voip', 'id_iptv', 'id_vpn', 'id_acs', 'cabecera');
         $provision = $this->util->selectWhere3(FIBRADB . 'aprovisionados', $campos, ' num_pon="' . $pon . '"', ' id DESC');
 
         if (intval($provision[0]) > 0) {
             $cabecera = $this->util->selectWhere(FIBRADB . 'olts', array('ip', 'usuario', 'clave'), ' id=' . $provision[0]['cabecera']);
+            print_r($cabecera);
             $row = mysqli_fetch_array($cabecera);
             $server = $row['ip'];
             $user = $row['usuario'];
@@ -379,45 +380,82 @@ class Provision
                 $this->util->log('undo service-port ' . $idvoz . " " . $result . " " . $id_olt);
 
             }
-            /*
-
-            /*
-
-
-//            /*
-//           ╔═══════════════════════════════════════════════════════════════════╗
-//           ║ Borra la ont del servidor acs para poder reutilizarla.  ║
-//           ╚═══════════════════════════════════════════════════════════════════╝
-//           */
-//
-//            $result = $this->util->selectWhere('acs_ids', array('id_acs'), " pon='" . $pon . "'");
-//
-//            while ($row = mysqli_fetch_array($result)) {
-//                $id_device = $row[0];
-//            }
-//            if ($id_device == '')
-//                $id_device = '00259E-HG8546M-' . $pon;
-//
-//            $url = "http://10.211.2.2:7557/devices/" . $id_device . "/";
-//
-//            $ch = curl_init();
-//            $default_curl_options = array(
-//                CURLOPT_SSL_VERIFYPEER => false,
-//                CURLOPT_HEADER => true,
-//                CURLOPT_RETURNTRANSFER => true,
-//                CURLOPT_TIMEOUT => 10,
-//            );
-//
-//            curl_setopt_array($ch, $default_curl_options);
-//            curl_setopt($ch, CURLOPT_HEADER, true);
-//            curl_setopt($ch, CURLOPT_URL, $url);
-//            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-//
-
         }
 
     }
 
+
+    public function reactivarServicios($pon,$internet=true, $voz=false, $tv=false)
+    {
+        $campos = array('id', 'c', 't', 'p', 'id_en_olt', 'id_internet', 'id_voip', 'id_iptv', 'id_vpn', 'id_acs', 'cabecera', 'velocidad_up', 'velocidad_dw');
+        $provision = $this->util->selectWhere3(FIBRADB . 'aprovisionados', $campos, ' num_pon="' . $pon . '"', ' id DESC');
+
+        if (intval($provision[0]) > 0) {
+            $cabecera = $this->util->selectWhere(FIBRADB . 'olts', array('ip', 'usuario', 'clave'), ' id=' . $provision[0]['cabecera']);
+            print_r($cabecera);
+            $row = mysqli_fetch_array($cabecera);
+            $server = $row['ip'];
+            $user = $row['usuario'];
+            $pass = $row['clave'];
+        }
+
+        $idinternet = $provision[0][5];
+        $idvoz = $provision[0][6];
+        $idtv = $provision[0][7];
+        $up = $provision[0][11];
+        $dw = $provision[0][12];
+
+        $idont = $provision[0][4];
+        $gpon = $provision[0][1] . "/" . $provision[0][2] . "/" . $provision[0][3];
+
+        $id_olt = $provision[0]['cabecera'];
+
+        $result = $this->telnet->Connect($server, $user, $pass);
+
+        if ($result == 0) {
+            $this->telnet->DoCommand('enable', $result);
+            $this->telnet->DoCommand(PHP_EOL, $result);
+
+            $this->telnet->DoCommand('config', $result);
+            $this->telnet->DoCommand(PHP_EOL, $result);
+
+
+            /*
+          ╔═════════════════════════════════════╗
+          ║ Activa el servicio de internet  ║
+          ╚═════════════════════════════════════╝
+          */
+            if (intval($idinternet)  > 0  && $internet==true) {
+                $comando1 = "service-port " . $idinternet . " vlan 100 gpon " . $gpon . " ont " . $idont . " gemport 1 multi-service user-vlan 100 tag-transform translate inbound traffic-table index " . $up . " outbound traffic-table index " . $dw . " " . PHP_EOL;
+                $this->telnet->DoCommand($comando1 . PHP_EOL, $result);
+            }
+
+            /*
+          ╔═════════════════════════════════════╗
+          ║ Activa el servicio de tv        ║
+          ╚═════════════════════════════════════╝
+          */
+            if (intval($idtv) > 0 && $tv == true) {
+
+                $comando1 = "service-port " . $idtv . " vlan 400 gpon " . $gpon . " ont " . $idont . " gemport 4 multi-service user-vlan 400 tag-transform translate inbound traffic-table index 50 outbound traffic-table index 50 " . PHP_EOL;
+                $this->telnet->DoCommand($comando1 . PHP_EOL, $result);
+
+            }
+
+            /*
+          ╔═════════════════════════════════════╗
+          ║ Activa el servicio de Voz       ║
+          ╚═════════════════════════════════════╝
+          */
+            if (intval($idvoz) > 0 && $voz == true) {
+
+                $comando1 = "service-port " . $idvoz . " vlan 300 gpon " . $gpon . " ont " . $idont . " gemport 3 multi-service user-vlan 300 tag-transform translate inbound traffic-table index 9 outbound traffic-table index 9" . PHP_EOL . PHP_EOL;
+                $this->telnet->DoCommand($comando1 . PHP_EOL, $result);
+
+            }
+        }
+
+    }
 }
 
 

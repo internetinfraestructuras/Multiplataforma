@@ -9,8 +9,8 @@
 
 if (!isset($_SESSION)) {@session_start();}
 
-require_once('../../config/define.php');
-require_once('../../config/def_tablas.php');
+include_once('../../config/define.php');
+include_once('../../config/def_tablas.php');
 
 //ini_set('display_errors', 1);
 //ini_set('display_startup_errors', 1);

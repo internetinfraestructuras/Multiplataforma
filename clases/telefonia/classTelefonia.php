@@ -5,7 +5,7 @@
  * Date: 23/07/2018
  * Time: 9:25
  */
-require_once($_SERVER['DOCUMENT_ROOT'].'clases/telefonia/utilTelefonia.php');
+include_once('utilTelefonia.php');
 
 class Telefonia
 {
@@ -874,15 +874,4 @@ class Telefonia
 
 
     }
-
-    /**
-     *
-     * TARIFAS
-     *
-     *
-     */
-
-
-
-
 }

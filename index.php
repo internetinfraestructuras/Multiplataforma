@@ -126,16 +126,16 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                                     </thead>
                                                     <tbody>
                                                     <?php
-                                                        $estados = array("SOLICITADA","TRAMITADA","PROCESANDO","RECHAZADA","ACEPTADA","CONTRATADA");
-                                                        $estadosOrdenes = array("PENDIENTE","ASIGNADA","EN TRAMITE","CERRADA","INCIDENCIA","CANCELADA");
-                                                        $estadosColores = array("label label-primary","label label-info","label label-warning","label label-danger","label label-success","label label-default");
-                                                        $estadosColoresOrdenes = array("label label-primary","label label-info","label label-warning","label label-success","label label-danger","label label-default");
-                                                        $portas = $util->selectJoin("portabilidades",
+                                                    $estados = array("SOLICITADA","TRAMITADA","PROCESANDO","RECHAZADA","ACEPTADA","CONTRATADA");
+                                                    $estadosOrdenes = array("PENDIENTE","ASIGNADA","EN TRAMITE","CERRADA","INCIDENCIA","CANCELADA");
+                                                    $estadosColores = array("label label-primary","label label-info","label label-warning","label label-danger","label label-success","label label-default");
+                                                    $estadosColoresOrdenes = array("label label-primary","label label-info","label label-warning","label label-success","label label-danger","label label-default");
+                                                    $portas = $util->selectJoin("portabilidades",
                                                         array('FECHA_SOLICITUD', 'NOMBRE_TITULAR',  'NUMERO_PORTAR','clientes.NOMBRE', 'clientes.APELLIDOS','clientes.EMAIL','portabilidades.ESTADO','portabilidades.ID'),
                                                         " left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE", 'FECHA_SOLICITUD','ESTADO != 6 AND portabilidades.ID_EMPRESA='.$_SESSION['USER_ID']);
 
-                                                        while ($row = mysqli_fetch_array( $portas)) {
-                                                            echo '
+                                                    while ($row = mysqli_fetch_array( $portas)) {
+                                                        echo '
                                                                 <tr >
                                                                     <td><span class="'.$estadosColores[intval($row[6])-1].'">'.$estados[intval($row[6])-1].'</span></td >
                                                                     <td >'.$util->fecha_eur($row[0]).'</td >
@@ -174,15 +174,15 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                                     </tr>
                                                     </tr>
                                                     </thead>
-                                                   <tbody>
-                                                   <?php
+                                                    <tbody>
+                                                    <?php
 
-                                                   $portas = $util->selectJoin("portabilidades",
-                                                       array('FECHA_SOLICITUD', 'NOMBRE_TITULAR',  'NUMERO_PORTAR','clientes.NOMBRE', 'clientes.APELLIDOS','clientes.EMAIL','portabilidades.ESTADO','portabilidades.ID'),
-                                                       " left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE", 'FECHA_SOLICITUD','ESTADO = 6 AND portabilidades.ID_EMPRESA='.$_SESSION['USER_ID']);
+                                                    $portas = $util->selectJoin("portabilidades",
+                                                        array('FECHA_SOLICITUD', 'NOMBRE_TITULAR',  'NUMERO_PORTAR','clientes.NOMBRE', 'clientes.APELLIDOS','clientes.EMAIL','portabilidades.ESTADO','portabilidades.ID'),
+                                                        " left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE", 'FECHA_SOLICITUD','ESTADO = 6 AND portabilidades.ID_EMPRESA='.$_SESSION['USER_ID']);
 
-                                                   while ($row = mysqli_fetch_array( $portas)) {
-                                                       echo '
+                                                    while ($row = mysqli_fetch_array( $portas)) {
+                                                        echo '
                                                                 <tr >
                                                                     <td><span class="'.$estadosColores[intval($row[6])-1].'">'.$estados[intval($row[6])-1].'</span></td >
                                                                     <td >'.$util->fecha_eur($row[0]).'</td >
@@ -190,9 +190,9 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                                                     <td >'.$row[2].'</td >
                                                                     <td ><span class="btn btn-default btn-xs btn-block" onclick="ver_mas('.$row[7].');" > Más</span ></td >
                                                                 </tr >';
-                                                   }
-                                                   ?>
-                                                   </tbody>
+                                                    }
+                                                    ?>
+                                                    </tbody>
                                                 </table>
 
                                                 <a class="size-12" href="#">
@@ -211,7 +211,6 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                 <!-- /panel content -->
 
                             </div>
-
                         </div>
                         <div class="col-md-6">
 
@@ -481,7 +480,7 @@ if ($_SESSION['USER_LEVEL'] == 0) {
                                 <div class="panel-body" style="height:400px">
 
                                     <!-- tabs content -->
-                                    <div class="tab-content transparent">
+                                    <div class="tab-content transparent" >
 
                                         <div id="inst_sema" class="tab-pane active"><!-- TAB 1 CONTENT -->
                                             <div class="row">

@@ -285,12 +285,12 @@ check_session(3);
 
                 <fieldset class="caja">
                     <div class="row text-center">
-                        <label><b>Seleccione el operador donante</b></label><br><br>
+                        <label><h3><b>Seleccione el operador donante</b></h3></label><br><br>
                     </div>
                     <div class="row">
                         <?php
                             $util = new util();
-                            $donantes = $util->selectWhere('operadores_telefonia', array('ID', 'NOMBRE','LOGO'), ' TIPO=1 OR TIPO=3 ', 'NOMBRE');
+                            $donantes = $util->selectWhere('operadores_telefonia', array('ID', 'NOMBRE','LOGO'), ' TIPO=1 OR TIPO=3 ', 'ID');
                             while ($row = mysqli_fetch_array($donantes)) {
                                 echo '
                                 <div class="col-xs-3 col-sm-3 text-center">
@@ -315,7 +315,7 @@ check_session(3);
 
                 <fieldset class="caja">
                     <div class="row text-center">
-                        <label><b>Datos de las linea a portar</b></label><br><br><br>
+                        <label><h3><b>Datos de las linea a portar</b></h3></label><br><br><br>
                     </div>
                     <div class="row">
                         <div class="col-md-4 col-xs-12">
@@ -339,27 +339,46 @@ check_session(3);
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4 col-xs-12">
-                            <label>Número de tarjeta SIM (ICC)</label>
+                        <div class="col-md-3 col-xs-12">
+                            <label>Número tarjeta SIM (Nueva)</label>
                             <input  type="number" name="icc" id="icc" class="form-control datoscli">
                         </div>
                         <div class="col-md-3 col-xs-12">
-                            <label>Digito de control de la SIM</label>
+                            <label>Digito de control SIM* (Nueva)</label>
                             <input  type="number" name="dc" id="dc"   class="form-control datoscli" style="width:60px">
                         </div>
                         <div class="col-md-3 col-xs-12">
-                            <label>Número Teléfono</label>
-                            <input  type="number" name="telportar" id="telportar"  class="form-control datoscli">
+                            <label>Número tarjeta SIM (Antigua)</label>
+                            <input  type="number" name="iccorigen" id="iccorigen" class="form-control datoscli">
                         </div>
-                        <div class="col-md-2 col-xs-12">
-                            <label>Modalidad actual</label>
-                            <select id="modalidad" class="form-control datoscli">
+                        <div class="col-md-3 col-xs-12">
+                            <label>Digito de control SIM* (Antigua)</label>
+                            <input  type="number" name="dcorigen" id="dcorigen"   class="form-control datoscli" style="width:60px">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 col-xs-12">
+
+                        </div>
+                        <div class="col-md-3 col-xs-12">
+                            <label>Número Teléfono a portar</label>
+                            <input  type="number" name="telportar" id="telportar"  class="form-control datoscli" style="width:150px">
+                        </div>
+
+                        <div class="col-md-3 col-xs-12">
+                            <label>Modalidad proveedor actual</label>
+                            <select id="modalidad" class="form-control datoscli" style="width:150px">
+                                <option value="0" selected disabled>Seleccionar una</option>
                                 <option value="prepago">Prepago</option>
                                 <option value="postpago">Contrato</option>
                             </select>
                         </div>
+                        <br>
 
                     </div>
+                    <br><br>
+                    <h6><b><i>*Disponible en algunas sim</i></b></h6>
                     <input  type="button" name="previous" class="previous action-button-previous"
                            value="Paso Anterior"/>
                     <input  type="button" name="next" id="next4" class="next action-button" value="Continuar"/>
@@ -371,18 +390,23 @@ check_session(3);
                     <div class="row">
                         <div class="col-xs-12 col-sm-4 text-center">
                             <label><b>Descargue este documento</b></label><br>
-                            <img src="../../img/pdf.png" class="img-responsive"  style="margin-top:5%"><br>
-                            <img src="../../img/descargue.png" class="img-responsive" style="margin-top:40%">
+                            <p>Haga clic sobre el icono de PDF para comenzar la descarga.</p><br>
+                            <img src="../../img/descargue.png" class="img-responsive"><br>
+                            <img src="../../img/pdf.png" class="img-responsive"  style="margin-top:100px"><br>
                         </div>
                         <div class="col-xs-12 col-sm-4  text-center">
                             <label><b>Firme el documento</b></label><br>
-                            <img src="../../img/firme.png" class="img-responsive" style="margin-top:80%">
+                            <p>El cliente debe firmar este documento para poder tramitar la portabilidad.</p><br>
+                            <img src="../../img/firme.png" class="img-responsive" style="margin-top:10px">
                         </div>
                         <div class="col-xs-12 col-sm-4 text-center">
                             <label><b>Cargue el documento</b></label><br>
+                            <p>Una vez firmado y escaneado, arrastrelo hasta la zona de lineas inclinada.</p><br>
+
+                            <img src="../../img/cargue.png" class="img-responsive">
                             <div action="upload.php" method="post" class="dropzone" id="my-dropzone" style="width:98%;height:80%;min-height:250px;margin:1%;"></div>
                             <br>
-                            <img src="../../img/cargue.png" class="img-responsive">
+
 
                         </div>
                     </div>
@@ -498,12 +522,7 @@ check_session(3);
 <script>
     var nuevo = 0;
     var id_cliente_seleccionado = 0;
-    var id_paquete_seleccionado = 0;
-    var precio = 0;
-    var tot_extras = 0;
-    var mostrandocoste=false;
-    var servicios_contratados=[];
-    var id_contrato_borrador=0;
+
 
 
     $(document).ready(function(){
@@ -805,24 +824,41 @@ check_session(3);
         }
 
         if (this.id == 'next3') {
-            var donante = $("input[name=donante]:checked").val();
-            if (donante == undefined){
-                alert("Debe seleccionar el operador donante");
+            // var donante = $("input[name=donante]:checked").val();
+            //
+            // if (donante == undefined){
+            //     alert("Debe seleccionar el operador donante");
+            //     return;
+            // }
+        }
+
+        if (this.id == 'next4') {
+            var modalidad = $("#modalidad").val();
+
+            if (modalidad == 0){
+                alertaOk("ATENCIÓN","Debe seleccionar el tipo de linea a portar","warning");
                 return;
             }
-        }
-        if (this.id == 'next4') {
-            // var tipo_acceso = $("input[name=tipo_acceso]:checked").val();
-            // if (tipo_acceso == undefined){
-            //     alert("Debe seleccionar el tipo de linea a portar");
-            //     return;
-            // }
-            //
-            // var num_porta = $("#num_porta").val();
-            // if (num_porta == ""){
-            //     alert("Debe especificar el / los numero/s a portar");
-            //     return;
-            // }
+
+            var num_porta = $("#telportar").val();
+            if (num_porta == ""){
+                alertaOk("ATENCIÓN","Debe especificar el / los numero/s a portar");
+                return;
+            }
+
+            var icc = $("#icc").val();
+            if (icc == ""){
+                alertaOk("ATENCIÓN","Debe especificar número icc de la sim NUEVA");
+                return;
+            }
+
+            var iccO = $("#iccorigen").val();
+            if (iccO == ""){
+                alertaOk("ATENCIÓN","Debe especificar número icc de la sim ANTIGUA");
+                return;
+            }
+
+
         }
 
 
@@ -871,6 +907,8 @@ check_session(3);
         var tarifa = $("#tarifa").val();
         var icc = $("#icc").val();
         var dc = $("#dc").val();
+        var iccO = $("#iccorigen").val();
+        var dcO = $("#dcorigen").val();
         var telportar = $("#telportar").val();
         var modalidad = $("#modalidad").val();
         var tipo_cli = $("#tipocli").val();
@@ -888,6 +926,8 @@ check_session(3);
                 tarifa  :tarifa,
                 icc :icc,
                 dc :dc,
+                iccorigen :iccO,
+                dcorigen :dcO,
                 num_porta :telportar,
                 modalidad :modalidad,
                 firma : firma,
@@ -898,8 +938,9 @@ check_session(3);
             success: function (data) {
 
                 if(parseInt(data)>0){
-                    $("#imprimir_img").attr('href', 'imprimirPortabilidad.php?idContrato=' + data+'&tipo=portaMovil');
-                    $("#imprimir").modal();
+                    alerta("RESPUESTA SERVIDOR","La solicitud de portabilidad se ha generado correctamente, ahora puede imprimir el documento si lo desea",
+                        "success","Cerrar","Imprimir Documento","home", "imprimir", "",data);
+
                 }
 
 
@@ -907,6 +948,9 @@ check_session(3);
         });
 
 
+    }
+    function imprimir(solicitud){
+        window.open("../servicios/airenetworks/obtener-documento.php?codSolicitud="+solicitud+"&tipo=PORTABILIDAD","_blank");
     }
 
 

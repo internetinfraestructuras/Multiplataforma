@@ -11,8 +11,7 @@ require_once ('Producto.php');
 require_once ('Orden.php');
 require_once ('masmovil/MasMovilAPI.php');
 require_once ('telefonia/classTelefonia.php');
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
+
 
 
 class Servicio
@@ -783,6 +782,6 @@ for($i=0;$i<count($lineaDetalles);$i++)
 
 
     }
-
 }
 
+//4857544321F7219B	181907IPTV12M70B00361	Lebron Gago Antonia	654543491	17/08/2018	50Mb / 50Mb	181907IPTV12M70B00361	T9C16 / 1	0/1/0
