@@ -5,15 +5,14 @@
  * Date: 22/08/2018
  * Time: 13:39
  */
+ini_set('display_errors', 1);
 
-//
-//require_once '../config/define.php';
-//
-//require_once ('./../config/util.php');
-include_once ('Servicio.php');
+error_reporting(E_ALL);
 
-//error_reporting(E_ALL);
-//ini_set("display_errors", 1);
+require_once '../config/define.php';
+
+require_once ('./../config/util.php');
+require_once ('Servicio.php');
 class AltaTecnica
 {
     /*
@@ -27,7 +26,6 @@ class AltaTecnica
         require_once ($_SERVER['DOCUMENT_ROOT'].'clases/telefonia/classTelefonia.php');
 
         $telefonia=new Telefonia();
-        $troncal='';
 
         if(!$telefonia->existeCliente($cifCliente))
         {
@@ -42,7 +40,7 @@ class AltaTecnica
             try
             {
                 $troncal=$telefonia->addLinea($cifCliente,"","",$numero);
-                return $troncal;
+//                echo $troncal;
             }catch(Exception $ex)
             {
                 echo $ex."<br/>";
@@ -61,8 +59,6 @@ class AltaTecnica
             try
             {
                 $troncal=$telefonia->addLinea($cifCliente,"","",$numero);
-                return $troncal;
-
 //                echo "<hr/>la troncal es".$troncal;
 //                echo "<hr>";
             }catch(Exception $ex)
@@ -88,11 +84,10 @@ class AltaTecnica
     public static function addNuevaLineaMasMovil($nombre,$nombreEmpresa,$tipoDocumento,$dni,
                                                  $nombreContacto,$telContacto,$movilContacto,$faxContacto,$emailContacto,
                                                  $calle,$localidad,$codigoProvincia,$codigoPais,$codigoPostal,
-                                                 $titularCuenta,$nombreBanco,$codigoBanco,$oficina,$digitoControl,$numeroCuenta,
-                                                 $iccTarjeta,$idServicio)
+                                                 $titularCuenta,$nombreBanco,$codigoBanco,$oficina,$digitoControl,$numeroCuenta,$iccTarjeta,$idServicio)
     {
 
-        include_once ('masmovil/MasMovilAPI.php');
+        require_once ('./masmovil/MasMovilAPI.php');
         $apiMasMovil=new MasMovilAPI();
         $rs=$apiMasMovil->getListadoClientes($dni);
 
@@ -108,21 +103,14 @@ class AltaTecnica
             {
 
                 $refCliente=$rs->customerId;
-//
-                $idExterno=Servicio::getIdExternoApi($idServicio);
-                if($idExterno!=NULL)
-                {
-                    $idExterno=$idExterno[0][0];
-                    $rs=$apiMasMovil->altaLineaMovil($refCliente,$iccTarjeta,$idExterno,"");
-
-                }
-
+                $rs=$apiMasMovil->altaLineaMovil($refCliente,$iccTarjeta,"","");
             }
         }
         else
         {
 
             $refCliente=$rs->Client[0]->refCustomerId;
+            $ser=new Servicio();
             $idExterno=Servicio::getIdExternoApi($idServicio);
             if($idExterno!=NULL)
             {
@@ -133,7 +121,6 @@ class AltaTecnica
 
 
         }
-        return $rs;
 
     }
 
@@ -148,8 +135,8 @@ class AltaTecnica
         require_once ('./airenetwork/clases/Cliente.php');
         require_once ('./airenetwork/clases/Linea.php');
 
-        $clienteAire=new Cliente("","","");
-        $lineaAire=new Linea("","","");
+       $clienteAire=new Cliente("","","");
+       $lineaAire=new Linea("","","");
 
         $rs=$clienteAire->getClientByDNI($numeroDocumento);
         if($rs==NULL)

@@ -229,39 +229,9 @@ class MasMovilAPI
                         'productProfile' => $perfilProducto, 'bonosAlta'  => $bonos))));
 
         $response = $client->msisdnsMaintenanceRequest(  $params  );
-        return $response;
+       return $response;
     }
-    /*
-        public function altaLineaMovil($refCliente,$icc,$perfilProducto,$bonos)
-        {
 
-            $ts=$this->getTimeStamp();
-            $parametros=array();
-
-            $instructions= array("timeStamp"=>$ts,
-                "resellerId"=>$this->resellerId,
-                "resellerPin"=>$this->pass,
-                "branchId"=>"",
-                "posId"=>"",
-                "transactionId"=>$ts,
-                "refCustomerId"=>$refCliente,
-                "operationType"=>"NEWLINE");
-
-            $lineDetails=array("iccid"=>$icc);
-            $lineProducts=array("productProfile"=>$perfilProducto,"bonosAlta"=>$bonos);
-
-            $parametros['soap_request']=
-                array("Operation"=>
-                    array("instruction"=>$instructions,"activate"=>array("lineDetails"=>$lineDetails,"lineProductDetails"=>$lineProducts)));
-
-
-            $client = new SoapClient($this->servicio."cableMsisdnsNewline.wsdl", $this->parametrosCliente);
-
-            $resultado=$client->msisdnsMaintenance($parametros);
-            var_dump($resultado);
-            return json_encode($resultado->return);
-        }
-    */
     public function suspensionLineaMovil($refCliente,$msid)
     {
 
@@ -600,15 +570,17 @@ class MasMovilAPI
 
         $resultado=$client->msisdnsPortingMaintenance($parametros);
 
-        return json_encode($resultado->return);
+        return $resultado->return;
     }
+
     /*
      * $tipoAbono=prepago/postpago 1/0
      *$bonos=B01;B02...separados por ;
      *$tipoCliente Empresa;PArticular 0/1
      */
+
     public function altaPortabilidad($refCliente,$numero,$newIccid,$donante,$msisdn,$tipoAbono,$fechaPortabilidad,$idPerfilProducto,$bonos,$tipoCliente,$nombre,$apellido1,$apellido2,$tipoDocumento,
-                                     $dni,$nombreEmpresa,$emailContacto,$telefonoContacto,$nombreCalle,$numeroCalle,$piso,$localidad,$codProvincia,$pais,$cp)
+                                     $dni,$nombreEmpresa,$emailContacto,$telefonoContacto,$nombreCalle,$numeroCalle,$piso,$localidad,$codProvincia,$pais,$cp,$iccOrigen)
     {
 
         $ts=$this->getTimeStamp();
@@ -620,49 +592,42 @@ class MasMovilAPI
             "posId"=>"",
             "transactionId"=>$ts,
             "refCustomerId"=>$refCliente,
-            "operationType"=>"DETPOR");
+            "operationType"=>"NEWPOR");
 
-        $portDetails=array("Contract"=>$numero);
+        $numberDetails= array("newIccid"=>$newIccid,
+            "fromServiceProvider"=>$donante,
+            "fromSIMCardNumber"=>$iccOrigen,
+            "fromPhoneNumber"=>$msisdn,
+            "fromContractType"=>$tipoAbono,
+            "portingDate"=>$fechaPortabilidad);
 
+        $productsDetails=array("productProfile"=>$idPerfilProducto,"bonosAlta"=>$bonos);
+        $clientDetails=array("clientType"=>$tipoCliente,"firstName"=>$nombre,    "lastName"=>$apellido1,    "secondLastName"=>$apellido2,    "identityType"=>$tipoDocumento,    "identityValue"=>$dni,    "companyName"=>$nombreEmpresa,    "contactMail"=>$emailContacto,"contactPhone"=>$telefonoContacto);
+        $adrresDetails=array("streetName"=>$nombreCalle,
+            "propertyNumber"=>$numeroCalle,
+            "flatName"=>$piso,
+            "locality"=>$localidad,
+            "postalTown"=>$codProvincia,
+            "country"=>$pais,
+            "postcode"=>$cp);
+
+        $activate=array("productDetails"=>$productsDetails,"numberPortDetails"=>$numberDetails,
+            "clientDetails"=>$clientDetails,
+            "address"=>$adrresDetails);
 
         $parametros['soap_request']=
             array("Operation"=>
                 array("instruction"=>$instructions,
-                    "activate"=>array("portDetails"=>
-                        array("newIccid"=>$newIccid,
-                            "fromServiceProvider"=>$donante,
-                            "fromPhoneNumber"=>$msisdn,
-                            "fromContractType"=>$tipoAbono,
-                            "portingDate"=>$fechaPortabilidad,),
-                        array("productDetails"=>
-                            array("productProfile"=>$idPerfilProducto,
-                                "bonosAlta"=>$bonos)),
-                        array("clientDetails"=>
-                            array("clientType"=>$tipoCliente,
-                                "firstName"=>$nombre,
-                                "lastName"=>$apellido1,
-                                "secondLastName"=>$apellido2,
-                                "identityType"=>$tipoDocumento,
-                                "identityValue"=>$dni,
-                                "companyName"=>$nombreEmpresa,
-                                "contactMail"=>$emailContacto,
-                                "contactPhone"=>$telefonoContacto)),
-                        array("address"=>array("streetName"=>$nombreCalle,
-                            "propertyNumber"=>$numeroCalle,
-                            "flatName"=>$piso,
-                            "locality"=>$localidad,
-                            "postalTown"=>$codProvincia,
-                            "country"=>$pais,
-                            "postcode"=>$cp)))));
+                    "activate"=>$activate));
 
 
-        $client = new SoapClient($this->servicio."cableMsisdnsPortingDetPor.wsdl", $this->parametrosCliente);
+
+        $client = new SoapClient($this->servicio."cableMsisdnsPortingNewPor.wsdl", $this->parametrosCliente);
 
         $resultado=$client->msisdnsPortingMaintenance($parametros);
 
-        return json_encode($resultado->return);
+        return $resultado->return;
     }
-
     /*
  * =================================================================================================================
  * |                                                                                                               |

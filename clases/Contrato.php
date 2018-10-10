@@ -134,6 +134,16 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
             "contratos_lineas_detalles.estado=1 AND contratos_lineas_detalles.id_linea=$idLinea");
     }
 
+    /*
+     * Le pasamos la primera línea de detalles de dicho servicio y el segundo parámetro es la última línea de dicho servicio
+     */
+    public static function getLineasDetallesServicio($idLineaDetalles,$idLineaMax)
+    {
+        $util = new util();
+        return $util->selectWhere3("contratos_lineas_detalles", array("ID"),
+            "contratos_lineas_detalles.id>=$idLineaDetalles AND contratos_lineas_detalles.id<=$idLineaMax");
+    }
+
     //obtiene las linea de detalle de un contrato
     public static function getLineaDetallesActivas($idLinea)
     {
@@ -154,7 +164,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     public static function getLineaDetallesServicio($idLinea, $idServicio)
     {
         $util = new util();
-        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR"),
+        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR","ID"),
             "contratos_lineas_detalles.id_linea=" . $idLinea . " AND contratos_lineas_detalles.id_servicio=" . $idServicio);
     }
 
@@ -276,6 +286,16 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         return $util->update('contratos_lineas_detalles', $campos, $values, "id_linea=" . $idLineaContrato);
     }
 
+    public static function setLineaDetallesImpago($idLineaDetalles)
+    {
+        $util = new util();
+        $campos = array('ESTADO', 'FECHA_BAJA');
+        $values = array(CONTRATO_IMPAGO, date('Y-m-d'));
+
+
+        return $util->update('contratos_lineas_detalles', $campos, $values, "id=" . $idLineaDetalles);
+    }
+
     //Establece una línea detalle a baja
     public static function setLineaDetallesAlta($idLineaContrato)
     {
@@ -286,6 +306,17 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
 
         $result = $util->update('contratos_lineas_detalles', $campos, $values, "id_linea=" . $idLineaContrato);
+    }
+
+    public static function setLineaDetalleAlta($idLineaDetalle)
+    {
+        $util = new util();
+        $campos = array('ESTADO', 'FECHA_BAJA');
+
+        $values = array(1, null);
+
+
+        $result = $util->update('contratos_lineas_detalles', $campos, $values, "id=" . $idLineaDetalle);
     }
 
 
@@ -387,8 +418,8 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     public static function getProductosLinea($idLinea)
     {
         $util = new util();
-        return $util->selectWhere3("contratos_lineas_productos", array("ID_PRODUCTO", "ESTADO"),
-            "contratos_lineas_productos.id_linea=" . $idLinea);
+        return $util->selectWhere3("contratos_lineas_productos,productos", array("contratos_lineas_productos.ID_PRODUCTO", "contratos_lineas_productos.ESTADO","productos.id_modelo_producto"),
+            "contratos_lineas_productos.id_linea=$idLinea AND productos.id=contratos_lineas_productos.id_producto");
     }
 
     //Cambiar el producto a otra línea
@@ -535,5 +566,28 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         return $util->selectWhere3("contratos_lineas_productos", array("ID_LINEA"),
             "contratos_lineas_productos.id_producto=$idProducto AND contratos_lineas_productos.estado!=6");
     }
+
+    public static function getLineasMovilesActivas($idEmpresa)
+    {
+        $util = new util();
+        return $util->selectWhere3('contratos,contratos_lineas,contratos_lineas_detalles,clientes,servicios',
+            array("contratos_lineas_detalles.valor","clientes.nombre","clientes.apellidos","clientes.id","servicios.id_proveedor"),
+            " contratos_lineas.id_contrato=contratos.id 
+                                            AND clientes.id=contratos.id_cliente
+                                            AND contratos_lineas.id=contratos_lineas_detalles.id_linea 
+                                            AND contratos_lineas.estado=1 
+                                            AND servicios.id=contratos_lineas_detalles.id_servicio
+                                            AND contratos_lineas_detalles.id_atributo_servicio=48 AND contratos_lineas_detalles.valor!=''
+                                            AND contratos.id_empresa=$idEmpresa");
+    }
+
+
+    public static function getDNIClienteContrato($idEmpresa,$idContrato)
+    {
+        $util = new util();
+        return $util->selectWhere3("contratos,clientes", array("clientes.dni"),
+            "contratos.id_cliente=clientes.id AND contratos.id=$idContrato AND contratos.id_empresa=$idEmpresa");
+    }
+
 
 }

@@ -1,18 +1,15 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: diego
- * Date: 13/08/2018
- * Time: 9:25
+ * User: Ruben
+ * Date: 15/02/2018
+ * Time: 9:38
  */
 
 
 /*
     ╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
-    ║ Borra un servicio de una instancia de un paquete en un cliente                                                   ║
-    ║                                                                                                                  |
-    ║                                                                                                                  ║
-    ║                                                                                                                  ║
+    ║ ACTIVA/DESACTIVA SERVICIO DE ROAMING EN LÍNEAS DE MÁSMOVIL!!!                                                       ║
     ╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
 */
 
@@ -20,19 +17,30 @@
 if (!isset($_SESSION)) {
     @session_start();
 }
-require_once('../../config/util.php');
-require_once ('../../clases/Servicio.php');
+require_once('../../../config/util.php');
+require_once('../../../clases/masmovil/MasMovilAPI.php');
 $util = new util();
 check_session(1);
 
+$cliente=$util->cleanstring($_POST['refCliente']);
+$numero=$util->cleanstring($_POST['numero']);
+$valor=$util->cleanstring($_POST['valor']);
 
-if(isset($_POST['id']) && $_POST['id']!='')
-{
-    $idServicio=$_POST['id'];
-    $idContrato=$_POST['idContrato'];
-    $idLinea=$_POST['idLineaContrato'];
-    $idPaquete=$_POST['idPaquete'];
+$apiMasMovil=new MasMovilAPI();
 
-    Servicio::darBajaServicioPaquete($_SESSION['REVENDEDOR'],$idContrato,$idLinea,$idPaquete,$idServicio);
+if($valor=="A")
+    $idTransaccion=2;
+else if($valor=="D")
+    $idTransaccion=3;
 
-}
+$rs=$apiMasMovil->setRoaming($cliente,$numero,$valor,"");
+var_dump($rs);
+$apiMasMovil->setLogApi($numero,$rs,$_SESSION['REVENDEDOR'],$idTransaccion);
+
+
+
+
+
+
+
+

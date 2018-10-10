@@ -235,38 +235,42 @@ $pvp=$listado[0][5];
 
 
                                                 $numero=$numero[0][0];
-                                                echo "El numero de atributos es $numero<br>";
-                                            }
-                                            echo $i;
 
-                                            if($idEstadoId==1)
+                                            }
+
+
+                                            if($idEstadoId==CONTRATO_ALTA)
                                             {
                                                 $bColor="green";
                                                 $color="white";
                                             }
-                                            if($idEstadoId==3)
+                                            if($idEstadoId==CONTRATO_PROCESO_ALTA)
                                             {
                                                 $bColor="blue";
                                                 $color="white";
                                             }
-                                            if($idEstadoId==4)
+                                            if($idEstadoId==CONTRATO_PROCESO_BAJA)
                                             {
                                                 $bColor="red";
                                                 $color="white";
                                             }
-                                            if($idEstadoId==6 || $idEstadoId==7 || $idEstadoId==8)
+                                            if($idEstadoId==CONTRATO_PTE_CAMBIO || $idEstadoId==CONTRATO_PROCESO_BAJA_CAMBIO || $idEstadoId==CONTRATO_PROCESO_ALTA_CAMBIO)
                                             {
                                                 $bColor="orange";
+                                                $color="white";
+                                            }
+                                            if($idEstadoId==CONTRATO_IMPAGO)
+                                            {
+                                                $bColor="red";
                                                 $color="white";
                                             }
 
 
 
-                                            echo "El numero es $numero y $contador<br>";
 
                                             if($contador==$numero)
                                             {
-                                                echo "ENTRAAA";  echo "El numero es $numero y $contador<br>";
+
                                                 $contador=1;
                                             echo "<tr>";
                                             echo "<td>$id</td>
@@ -280,7 +284,7 @@ $pvp=$listado[0][5];
                                                     <button type="button" rel="tooltip" >
                                                         <?php
                                                         echo "<a href='/ml/content/servicios/ficha-servicio-paquete.php?idServicio=".$id."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$_GET['idLineaContrato']."&idLineaDetalle=".$idLineaDetalle."&tipo=$servicioId''>";
-                                                        echo ' <i class="fa fa-pencil"></i>';
+                                                        echo ' <i class="fas fa-edit"></i>';
                                                         echo "</a>";
                                                         ?>
 
@@ -305,7 +309,7 @@ $pvp=$listado[0][5];
 
                                         }
 
-                                        ?>*/
+                                        ?>
                                         </tbody>
 
                                     </table>
@@ -358,7 +362,7 @@ $pvp=$listado[0][5];
                                             <td class="td-actions text-right">
                                                 <a href="ficha-servicio.php?idServicio=<?php echo $idServicio;?>">
                                                     <button type="button" rel="tooltip" >
-                                                        <i class="fa fa-pencil"></i>
+                                                        <i class="fas fa-edit"></i>
                                                     </button>
                                                 </a>
                                                 <button type="button" rel="tooltip" class="">
@@ -452,27 +456,35 @@ $pvp=$listado[0][5];
         var respuesta = confirmar("¿Estas seguro de eliminar el servicio del paquete? ");
         if(respuesta)
         {
+            var mantenerPaquete = confirmar("¿Desea conservar el precio del paquete y dar de baja el servicio? Si selecciona cancelar el paquete se romperá y se oobrarán los servicios de forma independiente");
 
+            if(mantenerPaquete)
+            {
+                jQuery.ajax({
+                    url: 'baja-servicio-paquete.php',
+                    type: 'POST',
+                    cache: false,
+                    async: true,
+                    data: {
+                        a: 'cancelar-baja',
+                        id:id,
+                        idPaquete:<?php echo $_GET['idPaquete']; ?>,
+                        idContrato:<?php echo $_GET['idContrato']; ?>,
+                        idLineaContrato:<?php echo $_GET['idLineaContrato']; ?>
+                    },
+                    success: function (data)
+                    {
 
-            jQuery.ajax({
-                url: 'baja-servicio-paquete.php',
-                type: 'POST',
-                cache: false,
-                async: true,
-                data: {
-                    a: 'cancelar-baja',
-                    id:id,
-                    idPaquete:<?php echo $_GET['idPaquete']; ?>,
-                    idContrato:<?php echo $_GET['idContrato']; ?>,
-                    idLineaContrato:<?php echo $_GET['idLineaContrato']; ?>
-                },
-                success: function (data)
-                {
+                        console.log(data);
+                        //  location.reload();
+                    }
+                });
+            }
+            else
+            {
+                alert("Romper paquete");
+            }
 
-                    console.log(data);
-                    //  location.reload();
-                }
-            });
 
         }
     }

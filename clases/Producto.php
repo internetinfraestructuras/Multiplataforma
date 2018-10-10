@@ -79,4 +79,20 @@ class Producto
 
     }
 
+    public static function getIdAtributoProducto($idEmpresa,$idModelo,$nombreAtributo)
+    {
+        $util = new util();
+        return $util->selectWhere3('productos_modelos_atributos',
+            array("productos_modelos_atributos.id"),
+            "productos_modelos_atributos.id_empresa=$idEmpresa AND productos_modelos_atributos.nombre='$nombreAtributo' AND productos_modelos_atributos.id_modelo=$idModelo");
+    }
+
+    public static function getValorAtributoProducto($idAtributo,$idProducto)
+    {
+        $util = new util();
+        return $util->selectWhere3('productos_atributos',
+            array("productos_atributos.valor"),
+            "productos_atributos.id_atributo=$idAtributo AND productos_atributos.id_producto=$idProducto");
+    }
+
 }

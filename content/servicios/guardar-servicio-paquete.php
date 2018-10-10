@@ -41,8 +41,9 @@ if(
     $servicio = $util->cleanstring($_POST['servicio']);
     $fechaCambio=$util->cleanstring($_POST['fecha-baja']);
     @$atributos=$_POST['atributo'];
+     $idLineaDetalle=$util->cleanstring($_POST['idLineaDetalle']);
 
-    $idLineaDetalle=$util->cleanstring($_POST['idLineaDetalle']);
+     var_dump($atributos);
 
 
 
@@ -53,10 +54,11 @@ if(
     if(isset($_POST['idContrato']))
     {
        // Llamada a la rutina compleja actualizar servicio de un contrato
+
         if($romperPaquete!='on')
          Servicio::actualizarServicioPaqueteContrato($idContrato,$idLinea,$id,$tipo,$servicio,$atributos,$fechaCambio,$idServicioOriginal,$idLineaDetalle);
         else
-            Servicio::romperPaquete($idContrato,$idLinea,$servicio,$fechaCambio,$idLineaDetalle);
+            Servicio::romperPaquete($idContrato,$idLinea,$servicio,$fechaCambio,$idLineaDetalle,$atributos);
 
     }
 

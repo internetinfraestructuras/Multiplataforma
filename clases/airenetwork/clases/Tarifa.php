@@ -1,5 +1,7 @@
 <?php
 require_once "lib/nusoap.php";
+
+
 class Tarifa
 {
     var $url;
@@ -14,9 +16,9 @@ class Tarifa
      */
     public function __construct($url, $user, $pass)
     {
-        $this->url="https://wscliente.airenetworks.es/ws_desarrollo/mv/gestMOVIL_2.php?wsdl";
+        $this->url="https://wscliente.airenetworks.es/ws/mv/gestMOVIL_2.php?wsdl";
         $this->user="B10452795";
-        $this->pass="aSo2Onc03H";
+        $this->pass="Telereq1430";
     }
 
     public function getAllTarifas()
@@ -30,13 +32,9 @@ class Tarifa
 
         $error = $client->getError();
         if ($error)
-            echo "<pre>".$error."</pre>";
-
-        for($i=0;$i<count($result);$i++)
-        {
-
-        }
-        print_r($result);
+            return $error;
+        else
+            return $result;
     }
     public function getTarifasStatus($status)
     {
@@ -48,14 +46,12 @@ class Tarifa
         $result = $client->call("getTarifas", array($data));
 
         $error = $client->getError();
+
         if ($error)
-            echo "<pre>".$error."</pre>";
+          return $error;
+        else
+            return $result;
 
-        for($i=0;$i<count($result);$i++)
-        {
-
-        }
-        print_r($result);
     }
 
     public function getTarifasPaginadas($paginas,$registros)

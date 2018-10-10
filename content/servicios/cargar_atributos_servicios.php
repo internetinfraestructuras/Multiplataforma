@@ -25,7 +25,7 @@ check_session(3);
  * where servicios.id=servicios_atributos.ID_SERVICIO AND servicios.id=29
  */
 $id=$_POST['id'];
-$campos=array('servicios_atributos.ID_TIPO_ATRIBUTO','valor');
+$campos=array('servicios_atributos.ID_TIPO_ATRIBUTO','valor','servicios.id_proveedor');
 $atributos = $util->selectWhere('servicios,servicios_atributos', $campos,'servicios.id=servicios_atributos.id_servicio AND servicios.id='.$id,'servicios_atributos.ID_TIPO_ATRIBUTO');
 
 $aItems = array();

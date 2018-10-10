@@ -2,17 +2,12 @@
 /**
  * Created by PhpStorm.
  * User: diego
- * Date: 13/08/2018
- * Time: 9:25
- */
+ * Date: 25/09/2018
+ * Time: 16:45
 
 
-/*
     ╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
-    ║ Borra un servicio de una instancia de un paquete en un cliente                                                   ║
-    ║                                                                                                                  |
-    ║                                                                                                                  ║
-    ║                                                                                                                  ║
+    ║ BLOQUEO/DESBLOQUEOS DE LÍNEAS ACTIVAS EN MAS MOVIL                                                               ║
     ╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
 */
 
@@ -20,19 +15,31 @@
 if (!isset($_SESSION)) {
     @session_start();
 }
-require_once('../../config/util.php');
-require_once ('../../clases/Servicio.php');
+require_once('../../../config/util.php');
+require_once('../../../clases/masmovil/MasMovilAPI.php');
 $util = new util();
 check_session(1);
 
+$cliente=$util->cleanstring($_POST['refCliente']);
+$numero=$util->cleanstring($_POST['numero']);
+$valor=$util->cleanstring($_POST['valor']);
 
-if(isset($_POST['id']) && $_POST['id']!='')
+
+$apiMasMovil=new MasMovilAPI();
+
+
+if($valor=="A")//REACTIVACION LINEA
 {
-    $idServicio=$_POST['id'];
-    $idContrato=$_POST['idContrato'];
-    $idLinea=$_POST['idLineaContrato'];
-    $idPaquete=$_POST['idPaquete'];
-
-    Servicio::darBajaServicioPaquete($_SESSION['REVENDEDOR'],$idContrato,$idLinea,$idPaquete,$idServicio);
-
+    $rs=$apiMasMovil->reactivacionLineaMovil($cliente,$numero);
+    $apiMasMovil->setLogApi($numero,$rs,$_SESSION['REVENDEDOR'],ID_BLOQUEO_LINEA_TEMPORAL);
+    var_dump($rs);
 }
+
+else if($valor=="S")//SUSPENSION TEMPORAL
+{
+    $rs=$apiMasMovil->suspensionLineaMovil($cliente,$numero);
+    $apiMasMovil->setLogApi($numero,$rs,$_SESSION['REVENDEDOR'],ID_DESBLOQUEO_LINEA);
+    var_dump($rs);
+}
+
+

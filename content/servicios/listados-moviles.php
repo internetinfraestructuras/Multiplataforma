@@ -11,6 +11,7 @@ if (!isset($_SESSION)) {
     */
 
 require_once('../../config/util.php');
+    require_once('../../clases/Contrato.php');
 $util = new util();
 check_session(2);
 
@@ -116,6 +117,7 @@ check_session(2);
                                     <tr>
                                         <th>NUMERO</th>
                                         <th>CLIENTE</th>
+
                                         <th>OPCIONES</th>
                                     </tr>
                                     </thead>
@@ -129,22 +131,16 @@ check_session(2);
                                         AND contratos_lineas.id=contratos_lineas_detalles.ID_LINEA AND contratos_lineas.ESTADO=1
                                         ANd contratos_lineas_detalles.ID_ATRIBUTO_SERVICIO=48
                                      */
-                                    $listado= $util->selectWhere3('contratos,contratos_lineas,contratos_lineas_detalles,clientes',
-                                        array("contratos_lineas_detalles.valor","clientes.nombre","clientes.apellidos","clientes.id"),
-                                        " contratos_lineas.id_contrato=contratos.id 
-                                            AND clientes.id=contratos.id_cliente
-                                            AND contratos_lineas.id=contratos_lineas_detalles.id_linea 
-                                            AND contratos_lineas.estado=1 
-                                            AND contratos_lineas_detalles.id_atributo_servicio=48 AND contratos_lineas_detalles.valor!=''
-                                            AND contratos.id_empresa=".$_SESSION['REVENDEDOR']);
 
 
+                                    $listado=Contrato::getLineasMovilesActivas($_SESSION['REVENDEDOR']);
                                     for($i=0;$i<count($listado);$i++)
                                     {
 
                                         $msidn=$listado[$i][0];
                                         $nombreCliente=$listado[$i][1]." ".$listado[$i][2];
                                         $idCliente=$listado[$i][3];
+                                        $idProveedor=$listado[$i][4];
 
 
 
@@ -155,23 +151,32 @@ check_session(2);
                                                 </button>
                                             </a></td>";
 
+                                        if($idProveedor==ID_PROVEEDOR_MASMOVIL)
+                                        {
+                                            echo "
+                                        <td class=\"td-actions text-right\">
+                                            <a href=cdr-actual.php?msidn=$msidn target=\"_blank\">
+                                                <button type=\"button\" rel=\"tooltip\" >
+                                                    <i class=\"fa fa-list\"></i>
+                                                </button>
+                                            </a>";
+                                            echo "</td>";
+                                        }
+
+                                        if($idProveedor==ID_PROVEEDOR_AIRENETWORKS)
+                                        {
+                                            echo "
+                                        <td class=\"td-actions text-right\">
+                                            <a href=cdr-actual-aire.php?numero=$msidn target=\"_blank\">
+                                                <button type=\"button\" rel=\"tooltip\" >
+                                                    <i class=\"fa fa-list\"></i>
+                                                </button>
+                                            </a>";
+                                            echo "</td>";
+                                        }
                                         ?>
-                                        <td class="td-actions text-right">
-                                            <a href=cdr-actual.php?msidn=<?php echo $msidn;?> target="_blank">
-                                                <button type="button" rel="tooltip" >
-                                                    <i class="fa fa-list"></i>
-                                                </button>
-                                            </a>
-                                            <a href=cambio-icc.php?msidn=<?php echo $msidn;?> target="_blank">
-                                                <button type="button" rel="tooltip" >
-                                                    <i class="fa fa-credit-card"></i>
-                                                </button>
-                                            </a>
-                                            <a href=set-roaming.php?msidn=<?php echo $msidn;?> target="_blank">
-                                                <button type="button" rel="tooltip" >
-                                                    <i class="fa fa-globe"></i>
-                                                </button>
-                                            </a>
+
+
 
                                         </td>
                                         </tr>

@@ -16,9 +16,9 @@ class Cliente
      */
     public function __construct($url, $user, $pass)
     {
-        $this->url="https://wscliente.airenetworks.es/ws_desarrollo/mv/gestMOVIL_2.php?wsdl";
-        $this->user="B10452795";
-        $this->pass="aSo2Onc03H";
+        $this->url=$url;
+        $this->user=$user;
+        $this->pass=$pass;
     }
 
     /**
@@ -50,9 +50,9 @@ class Cliente
         $result = $client->call("getCliente", array($data));
         $error = $client->getError();
         if ($error)
-            echo "<pre>".$error."</pre>";
-
-        return $result;
+            return $error;
+        else
+            return $result;
     }
 
     public function getClientByName($name)
@@ -73,10 +73,11 @@ class Cliente
         $data = array("user" => $this->user, "pass" => $this->pass,"pagina"=>$paginas,"registros"=>$registros);
         $result = $client->call("getCliente", array($data));
         $error = $client->getError();
+
         if ($error)
-            echo "<pre>".$error."</pre>";
-        var_dump($result);
-        return json_encode($result);
+            return $error;
+        else
+            return $result;
     }
 
     public function crearCliente($tipoCliente,$consentimiento,$tipoDocumento,$numeroDocumento,$nombre,$apellido1,$apellido2,$fechaNacimiento,$email,$telefono,$region,$provincia,$ciudad,$cp,$direccion,$numero,$docNombre,$documento)

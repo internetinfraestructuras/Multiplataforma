@@ -22,7 +22,7 @@ class CDRAire
     {
         $this->url="https://wscliente.airenetworks.es/ws/mv/gestMOVIL_2.php?wsdl";
         $this->user="B10452795";
-        $this->pass="aSo2Onc03H";
+        $this->pass="Telereq1430";
     }
 
     public function getDatosCDR($telefono,$anio,$mes,$tipoServicio)
