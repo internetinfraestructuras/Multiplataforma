@@ -1,0 +1,963 @@
+SELECT id,descripcion FROM fibra.olts ORDER BY descripcion
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+Error en selectJoin.SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+Error en selectJoin.SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+Error en selectJoin.SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA =  ORDER BY ordenes.FECHA_ALTA
+
+Error en selectJoin.SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA =  ORDER BY ordenes.FECHA_ALTA
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+Error en selectJoin.SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT id,descripcion FROM fibra.olts ORDER BY descripcion
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+Error en selectJoin.SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+Error en selectJoin.SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+Error en selectJoin.SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA =  ORDER BY ordenes.FECHA_ALTA
+
+Error en selectJoin.SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA =  ORDER BY ordenes.FECHA_ALTA
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+Error en selectJoin.SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT usuarios.id, usuarios.nombre, usuarios.apellidos, nivel,  usuarios.id_empresa, empresas.logo as logo, municipios.municipio as localidad, empresas.CIF, empresas_configuracion.AIRENETWORKS as AIRENETWORKS FROM usuarios   JOIN empresas on usuarios.id_empresa = empresas.id 
+                        JOIN municipios on municipios.id = empresas.MUNICIPIO
+                        JOIN empresas_configuracion ON empresas_configuracion.ID_EMPRESA = empresas.ID  WHERE  (usuarios.email="admin" and usuarios.clave="21232f297a57a5a743894a0e4a801fc3") OR (usuarios.usuario="admin" and usuarios.clave="21232f297a57a5a743894a0e4a801fc3") 
+
+UPDATE usuarios SET ultimo_acceso='2018/10/03 16:53:08' WHERE id=1
+
+SELECT DIA_FACTURACION FROM empresas_configuracion where ID_EMPRESA=1 order by id desc limit 1 
+
+SELECT id,descripcion FROM fibra.olts ORDER BY descripcion
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA = 1 ORDER BY ordenes.FECHA_ALTA
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 7 day,'%d/%m/%Y') ),count(id) FROM fibra.aprovisionados GROUP BY  week(fecha,0)
+
+Error en selectWhere.SELECT ID,NOMBRE FROM clientes_consentimientos WHERE ID_EMPRESA = 1  ORDER BY NOMBRE
+
+SELECT ID,NOMBRE FROM clientes_consentimientos ORDER BY ID
+
+SELECT ID,TEXTO,TEXTO_ACEPTACION FROM textos_legales WHERE  UBICACION="porta1"  ORDER BY ID
+
+SELECT ID,TEXTO,TEXTO_ACEPTACION FROM textos_legales WHERE  UBICACION="porta2"  ORDER BY ID
+
+SELECT servicios.ID, ID_SERVICIO_TIPO, servicios.NOMBRE, PRECIO_PROVEEDOR, IMPUESTO, BENEFICIO, PVP, servicios_tipos.NOMBRE as nombreTipo FROM servicios  JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO  WHERE  ID_EMPRESA=1 ORDER BY ID_SERVICIO_TIPO
+
+SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS FROM clientes WHERE  clientes.id > 0 ORDER BY apellidos, nombre
+
+SELECT ID,NOMBRE,FECHA_INICIO,FECHA_FIN,DURACION,DESCUENTO FROM campanas WHERE  (CURRENT_DATE BETWEEN FECHA_INICIO AND FECHA_FIN) AND ID_EMPRESA=1
+
+SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS FROM clientes WHERE clientes.id = 967 ORDER BY apellidos, nombre
+
+SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+SELECT id,municipio FROM municipios WHERE provincia_id=11 ORDER BY municipio
+
+DELETE FROM contratos_borrador WHERE ID_CLIENTE='967'
+
+INSERT INTO contratos_borrador (ID_CLIENTE, ID_EMPRESA) VALUES ('967', '1')
+
+SELECT servicios.ID, ID_SERVICIO_TIPO, servicios.NOMBRE, PRECIO_PROVEEDOR, IMPUESTO, BENEFICIO, PVP, servicios_tipos.NOMBRE, PERMANENCIA_MINIMA FROM servicios  JOIN paquetes_servicios ON paquetes_servicios.ID_SERVICIO = servicios.ID  JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO  WHERE paquetes_servicios.ID_PAQUETE=48 AND ID_EMPRESA=1 ORDER BY servicios.NOMBRE
+
+SELECT servicios.ID, ID_SERVICIO_TIPO, servicios.NOMBRE, PRECIO_PROVEEDOR, IMPUESTO, BENEFICIO, PVP, servicios_tipos.NOMBRE as nombreTipo FROM servicios  JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO  WHERE  ID_EMPRESA=1 ORDER BY ID_SERVICIO_TIPO
+
+DELETE FROM contratos_lineas_borrador WHERE ID_CONTRATO='1'
+
+INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('48', '1', '1', '44', '13.91', 'p', 'FIBRA 10/10')
+
+INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('48', '1', '3', '55', '22.46', 'p', 'ILIM5')
+
+INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('48', '1', '3', '43', '5.86', 'p', 'TARIFA AIRE 1')
+
+DELETE FROM contratos_campanas_borrador WHERE ID_CONTRATO='1'
+
+INSERT INTO contratos_campanas_borrador (ID_CONTRATO, ID_CAMPANA, DTO, DTO_DIAS, DTO_HASTA) VALUES ('1', '-1', '0', '0', '2018-10-03')
+
+SELECT ID,TIPO,NUMERO_PORTAR FROM portabilidades WHERE ID_CLIENTE = 967 AND ID_EMPRESA = 1 AND ESTADO NOT IN (4,6)  ORDER BY FECHA_SOLICITUD
+
+SELECT productos.id,productos.numero_serie,productos_tipos.id_tipo_servicio as Tipo,productos_modelos.nombre as Modelo FROM productos,productos_tipos,productos_modelos,almacenes WHERE productos.id_tipo_producto=productos_tipos.id
+            AND productos.id_modelo_producto=productos_modelos.id 
+            AND almacenes.id=productos.id_almacen 
+            AND almacenes.id_empresa=1 AND productos.estado=1
+
+SELECT ID,NOMBRE FROM servicios_tipos_atributos WHERE servicios_tipos_atributos.ID_SERVICIO= AND servicios_tipos_atributos.id_tipo=1 ORDER BY NOMBRE
+
+SELECT ID,NOMBRE FROM servicios_tipos_atributos WHERE servicios_tipos_atributos.ID_SERVICIO= AND servicios_tipos_atributos.id_tipo=1 ORDER BY NOMBRE
+
+SELECT max(NUMERO) FROM contratos where ID_EMPRESA =1
+
+INSERT INTO contratos (ID_EMPRESA, ID_CLIENTE, FECHA_INICIO, FECHA_FIN, ESTADO, NUMERO) VALUES ('1', '967', '2018-10-03', '2019-04-07', '3', '1')
+
+INSERT INTO contratos_documentos (ID_CONTRATO, TIPO, FICHERO, SVG) VALUES ('1', '1', '', 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgNzY0IDQxOCIgd2lkdGg9Ijc2NCIgaGVpZ2h0PSI0MTgiPjxwYXRoIGQ9Ik0gMjkxLjgxMywxMzYuMDAwIEMgMjkwLjQyNSwxNTAuMzA2IDI4OC4zMTMsMTQ5LjUwMCAyODQuODEzLDE2My4wMDAiIHN0cm9rZS13aWR0aD0iMy44NDAiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMjg0LjgxMywxNjMuMDAwIEMgMjY3LjYxMywxOTcuMTU4IDI2OS40MjUsMTk3LjgwNiAyNDkuODEzLDIzMS4wMDAiIHN0cm9rZS13aWR0aD0iMS4zNjciIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMjQ5LjgxMywyMzEuMDAwIEMgMjMyLjQzMSwyNzguMTA4IDIyNy4xMTMsMjc0LjE1OCAyMDMuODEzLDMxNy4wMDAiIHN0cm9rZS13aWR0aD0iMS4xMjUiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMjAzLjgxMywzMTcuMDAwIEMgMTcxLjE1MywzNjAuMjI1IDE3My45MzEsMzU3LjYwOCAxMzIuODEzLDM5MC4wMDAiIHN0cm9rZS13aWR0aD0iMS4xMjUiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTMyLjgxMywzOTAuMDAwIEMgMTE5LjQwMSwzOTQuNDQ0IDEyNC4xNTMsMzk2LjcyNSAxMDkuODEzLDM5MC4wMDAiIHN0cm9rZS13aWR0aD0iMS41MzEiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTA5LjgxMywzOTAuMDAwIEMgOTYuOTI0LDM4Mi41NDggOTguOTAxLDM4NC45NDQgOTEuODEzLDM3MS4wMDAiIHN0cm9rZS13aWR0aD0iMS45MDkiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gOTEuODEzLDM3MS4wMDAgQyA4Ni4yMjAsMzUwLjE3NyA4My40MjQsMzUyLjA0OCA4Mi44MTMsMzI5LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjYyNCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA4Mi44MTMsMzI5LjAwMCBDIDc5LjA4MCwzMDYuNTY4IDc5LjIyMCwzMDYuNjc3IDc3LjgxMywyODQuMDAwIiBzdHJva2Utd2lkdGg9IjEuNTYxIiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDc3LjgxMywyODQuMDAwIEMgNzMuMzU4LDI2MS4xNTggNzYuNTgwLDI2Mi4wNjggNzcuODEzLDI0MC4wMDAiIHN0cm9rZS13aWR0aD0iMS42MTEiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gNzcuODEzLDI0MC4wMDAgQyA4NC41ODksMjEyLjcwMyA4My4zNTgsMjEzLjY1OCA5Ny44MTMsMTg5LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjQwNSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA5Ny44MTMsMTg5LjAwMCBDIDExMC45NjQsMTYzLjIxNyAxMTEuMDg5LDE2NS4yMDMgMTMwLjgxMywxNDUuMDAwIiBzdHJva2Utd2lkdGg9IjEuMzUwIiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDEzMC44MTMsMTQ1LjAwMCBDIDE0OS44MjgsMTMwLjEyMyAxNDcuNDY0LDEyOS43MTcgMTcwLjgxMywxMjIuMDAwIiBzdHJva2Utd2lkdGg9IjEuNDYxIiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDE3MC44MTMsMTIyLjAwMCBDIDE4NC4xNTMsMTE3LjI0NyAxODAuODI4LDExOC4xMjMgMTkyLjgxMywxMjEuMDAwIiBzdHJva2Utd2lkdGg9IjIuMDc1IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDE5Mi44MTMsMTIxLjAwMCBDIDE5OS44MDcsMTI3LjIwNSAxOTkuMTUzLDEyMy43NDcgMjAwLjgxMywxMzUuMDAwIiBzdHJva2Utd2lkdGg9IjIuNTgzIiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDIwMC44MTMsMTM1LjAwMCBDIDIwNi4wNDIsMTU5LjkxOSAyMDMuODA3LDE1OC4yMDUgMjAwLjgxMywxODMuMDAwIiBzdHJva2Utd2lkdGg9IjEuNjI5IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDIwMC44MTMsMTgzLjAwMCBDIDE5NC40OTcsMjI4LjM1MCAxOTEuNTQyLDIyMy45MTkgMTcxLjgxMywyNjMuMDAwIiBzdHJva2Utd2lkdGg9IjEuMTI1IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDE3MS44MTMsMjYzLjAwMCBDIDE0My4wNzUsMjk2LjU2NCAxNDguOTk3LDI5Ny44NTAgMTA5LjgxMywzMjIuMDAwIiBzdHJva2Utd2lkdGg9IjEuMTI1IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDEwOS44MTMsMzIyLjAwMCBDIDk4LjQzNCwzMjUuOTQ5IDEwMC41NzUsMzI5LjA2NCA4Ni44MTMsMzI4LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjYzMSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA4Ni44MTMsMzI4LjAwMCBDIDc5LjcyNCwzMzAuMTA2IDgxLjQzNCwzMjguOTQ5IDc1LjgxMywzMjguMDAwIiBzdHJva2Utd2lkdGg9IjIuNjAxIiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDc1LjgxMywzMjguMDAwIEMgNzIuMTU3LDMyMy43NTkgNzMuMjI0LDMyNi42MDYgNzMuODEzLDMyMS4wMDAiIHN0cm9rZS13aWR0aD0iMy43OTMiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gNzMuODEzLDMyMS4wMDAgQyA3OC45OTksMzEwLjI3NCA3OC4xNTcsMzEzLjc1OSA4Ny44MTMsMzA4LjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjkxMiIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA4Ny44MTMsMzA4LjAwMCBDIDExMS44NTMsMzA0LjMzNCAxMDkuOTk5LDMwMi4yNzQgMTM1LjgxMywzMDUuMDAwIiBzdHJva2Utd2lkdGg9IjEuNjYyIiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDEzNS44MTMsMzA1LjAwMCBDIDE2Ny4zOTgsMzAyLjc2OCAxNjUuODUzLDMwNS44MzQgMTk1LjgxMywzMTEuMDAwIiBzdHJva2Utd2lkdGg9IjEuMzQwIiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDE5NS44MTMsMzExLjAwMCBDIDIyMS4wMjQsMzIxLjI1MSAyMjAuODk4LDMxOC4yNjggMjQyLjgxMywzMzYuMDAwIiBzdHJva2Utd2lkdGg9IjEuMzk2IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDI0Mi44MTMsMzM2LjAwMCBDIDI1Mi44NzksMzQ0Ljc1MyAyNTMuNTI0LDM0My4yNTEgMjYwLjgxMywzNTUuMDAwIiBzdHJva2Utd2lkdGg9IjEuODQyIiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDI2MC44MTMsMzU1LjAwMCBDIDI2My4yOTksMzY2LjE4OSAyNjQuODc5LDM2MC4yNTMgMjY2LjgxMywzNjcuMDAwIiBzdHJva2Utd2lkdGg9IjIuNTUzIiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDI2Ni44MTMsMzY3LjAwMCBDIDI3MS4yMjMsMzYzLjAzNCAyNjkuNzk5LDM2Ny42ODkgMjczLjgxMywzNTguMDAwIiBzdHJva2Utd2lkdGg9IjMuNzA3IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDI3My44MTMsMzU4LjAwMCBDIDI4MC42NDksMzQ1LjM4MiAyODAuMjIzLDM0NS41MzQgMjg0LjgxMywzMzIuMDAwIiBzdHJva2Utd2lkdGg9IjIuNDI3IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDI4NC44MTMsMzMyLjAwMCBDIDI4Ny41OTUsMzExLjY5OCAyODcuNjQ5LDMyMi44ODIgMjg3LjgxMywzMTMuMDAwIiBzdHJva2Utd2lkdGg9IjIuNTcyIiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDI4Ny44MTMsMzEzLjAwMCBDIDI4NC43NDMsMzI1LjcwNiAyODguMDk1LDMxNC42OTggMjg1LjgxMywzMzguMDAwIiBzdHJva2Utd2lkdGg9IjMuNDg0IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDI4NS44MTMsMzM4LjAwMCBDIDI4Ni4yNzgsMzUwLjg2MiAyODYuNzQzLDM0OC43MDYgMjkxLjgxMywzNTkuMDAwIiBzdHJva2Utd2lkdGg9IjIuNjI5IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDI5MS44MTMsMzU5LjAwMCBDIDI5Ny4zODAsMzYzLjkzMSAyOTQuNzc4LDM2My4zNjIgMzAyLjgxMywzNjMuMDAwIiBzdHJva2Utd2lkdGg9IjMuMDg0IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDMwMi44MTMsMzYzLjAwMCBDIDMxNS40NzgsMzU5LjI3OCAzMTQuODgwLDM2MC45MzEgMzI2LjgxMywzNTMuMDAwIiBzdHJva2Utd2lkdGg9IjIuNDI3IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDMyNi44MTMsMzUzLjAwMCBDIDM0Ny4xNjksMzM5Ljc2MiAzNDcuOTc4LDM0MS4yNzggMzY3LjgxMywzMjcuMDAwIiBzdHJva2Utd2lkdGg9IjEuNzEzIiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDM2Ny44MTMsMzI3LjAwMCBDIDM3Ni4wMTUsMzE4LjY5NSAzNzQuNjY5LDMyMi43NjIgMzgxLjgxMywzMTkuMDAwIiBzdHJva2Utd2lkdGg9IjIuMzk1IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDM4MS44MTMsMzE5LjAwMCBDIDM4NC44NzQsMzIzLjI2MSAzODUuNTE1LDMxOS4xOTUgMzg2LjgxMywzMjguMDAwIiBzdHJva2Utd2lkdGg9IjMuNjM4IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDM4Ni44MTMsMzI4LjAwMCBDIDM4Ni4xMzEsMzM2Ljg1OCAzODkuMzc0LDMzNC4yNjEgMzkwLjgxMywzNDEuMDAwIiBzdHJva2Utd2lkdGg9IjMuMjYzIiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48L3N2Zz4=')
+
+SELECT max(NUMERO) FROM ordenes where ID_EMPRESA =1
+
+INSERT INTO ordenes (ID_CONTRATO, FECHA_ALTA, ID_TIPO_ESTADO, NUMERO, ID_EMPRESA) VALUES ('1', '2018-10-03 02:53:45 ', '1', '1', '1')
+
+SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 44
+
+INSERT INTO contratos_lineas (ID_TIPO, ID_ASOCIADO, ID_CONTRATO, PRECIO_PROVEEDOR, BENEFICIO, IMPUESTO, PVP, PERMANENCIA, ESTADO, FECHA_ALTA, FECHA_BAJA) VALUES ('1', '48', '1', '10', '10', '21', '80.96', '2019-04-07', '3', '2018-10-03 ', '')
+
+SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 44
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '1', '44', '40', '10', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('1', '15', '2', '2018-10-03')
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '1', '44', '39', '10', '2018-10-03 ', '', '3')
+
+INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '15', '2')
+
+UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=15
+
+UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=15 AND almacenes.id_empresa=1
+
+SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 55
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '55', '48', '', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('3', '17', '3', '2018-10-03')
+
+SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 55
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '55', '47', '5000', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '55', '46', '9999', '2018-10-03 ', '', '3')
+
+SELECT NOMBRE, APELLIDOS, TIPO_DOCUMENTO, DNI, FIJO, MOVIL, EMAIL, DIRECCION, municipios.municipio, provincias.provincia, pais.iso, CP, BANCO, IBAN FROM clientes  JOIN municipios ON municipios.id = clientes.LOCALIDAD 
+                                            JOIN provincias ON provincias.id = clientes.PROVINCIA 
+                                            JOIN pais ON pais.id = clientes.NACIONALIDAD  WHERE clientes.ID = '967'
+
+SELECT ID_EXTERNO FROM servicios,servicios_externos WHERE servicios.id=55 AND servicios.id=servicios_externos.id_servicio AND servicios_externos.id_empresa=1
+
+INSERT INTO multiplataforma.ordenes_test_instalacion (id_linea_contrato, fecha, tecnico, rx, ssid, clave_wifi, test_masmovil, test_aire, test_fijo) VALUES ('3', '2018-10-03 14:53:47', '1', '', '', '', 'El ICC-ID no es correcto. ', '', '')
+
+INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '17', '5')
+
+UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=17
+
+UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=17 AND almacenes.id_empresa=1
+
+SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 43
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '43', '48', '', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('6', '24', '3', '2018-10-03')
+
+SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 43
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '43', '47', '1000', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '43', '46', '100', '2018-10-03 ', '', '3')
+
+SELECT NOMBRE, APELLIDOS, TIPO_DOCUMENTO, DNI, FIJO, MOVIL, EMAIL, DIRECCION, municipios.municipio, provincias.provincia, pais.iso, CP, BANCO, IBAN FROM clientes  JOIN municipios ON municipios.id = clientes.LOCALIDAD 
+                                            JOIN provincias ON provincias.id = clientes.PROVINCIA 
+                                            JOIN pais ON pais.id = clientes.NACIONALIDAD  WHERE clientes.ID = '967'
+
+SELECT ID_EXTERNO FROM servicios,servicios_externos WHERE servicios.id=43 AND servicios.id=servicios_externos.id_servicio AND servicios_externos.id_empresa=1
+
+INSERT INTO multiplataforma.ordenes_test_instalacion (id_linea_contrato, fecha, tecnico, rx, ssid, clave_wifi, test_masmovil, test_aire, test_fijo) VALUES ('6', '2018-10-03 14:53:48', '1', '', '', '', 'Perfil de Producto no existente.', '', '')
+
+INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '24', '8')
+
+UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=24
+
+UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=24 AND almacenes.id_empresa=1
+
+SELECT clientes.ID,clientes.nombre,clientes.apellidos,clientes.dni,clientes.direccion FROM clientes WHERE  clientes.baja=0 AND clientes.id_empresa=1
+
+SELECT clientes.id,clientes.nombre,clientes.apellidos,clientes.dni,clientes.tipo_documento,clientes.direccion,clientes.localidad,clientes.provincia,clientes.comunidad,clientes.iban,clientes.swift,clientes.cp,clientes.fijo,clientes.movil,clientes.email,clientes.fecha_alta,clientes.notas,clientes.baja,clientes.banco,clientes.id_consentimiento,clientes.id_tipo_cliente,clientes.fecha_nacimiento FROM clientes WHERE  clientes.id_empresa=1 AND clientes.id=967
+
+SELECT contratos.ID,contratos.FECHA_INICIO,contratos.FECHA_FIN,estados_contratos.nombre FROM contratos,estados_contratos WHERE contratos.id_empresa=1 AND contratos.id_cliente=967 and contratos.estado=estados_contratos.id
+
+SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS FROM clientes WHERE  clientes.id > 0 ORDER BY apellidos, nombre
+
+SELECT clientes.id,clientes.nombre,clientes.apellidos,clientes.dni,clientes.tipo_documento,clientes.direccion,clientes.localidad,clientes.provincia,clientes.comunidad,clientes.iban,clientes.swift,clientes.cp,clientes.fijo,clientes.movil,clientes.email,clientes.fecha_alta,clientes.notas,clientes.baja,clientes.banco,clientes.id_consentimiento,clientes.id_tipo_cliente,clientes.fecha_nacimiento FROM clientes WHERE  clientes.id_empresa=1 AND clientes.id=967
+
+SELECT contratos.ID,contratos.FECHA_INICIO,contratos.FECHA_FIN,estados_contratos.nombre FROM contratos,estados_contratos WHERE contratos.id_empresa=1 AND contratos.id_cliente=967 and contratos.estado=estados_contratos.id
+
+SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS FROM clientes WHERE  clientes.id > 0 ORDER BY apellidos, nombre
+
+SELECT contratos_lineas.id,contratos_lineas_tipo.nombre as Tipo,contratos_lineas_tipo.id,contratos_lineas.id_asociado,contratos_lineas.pvp,estados_contratos.nombre as nombrecontrato,estados_contratos.id as idestado,contratos_lineas.fecha_alta,contratos_lineas.fecha_baja FROM contratos_lineas,contratos_lineas_tipo,contratos,estados_contratos WHERE contratos.id=contratos_lineas.id_contrato 
+            and contratos_lineas_tipo.id=contratos_lineas.id_tipo
+            AND contratos.id_empresa=1 AND contratos.id=1 AND contratos_lineas.estado!=2 AND estados_contratos.id=contratos_lineas.estado
+
+SELECT ID,nombre FROM paquetes WHERE paquetes.id_empresa=1 AND paquetes.id=48
+
+SELECT id,descripcion FROM fibra.olts ORDER BY descripcion
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA = 1 ORDER BY ordenes.FECHA_ALTA
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT id,descripcion FROM fibra.olts ORDER BY descripcion
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA = 1 ORDER BY ordenes.FECHA_ALTA
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 7 day,'%d/%m/%Y') ),count(id) FROM fibra.aprovisionados GROUP BY  week(fecha,0)
+
+Error en selectWhere.SELECT ID,NOMBRE FROM clientes_consentimientos WHERE ID_EMPRESA = 1  ORDER BY NOMBRE
+
+SELECT ID,NOMBRE FROM clientes_consentimientos ORDER BY ID
+
+SELECT ID,TEXTO,TEXTO_ACEPTACION FROM textos_legales WHERE  UBICACION="porta1"  ORDER BY ID
+
+SELECT ID,TEXTO,TEXTO_ACEPTACION FROM textos_legales WHERE  UBICACION="porta2"  ORDER BY ID
+
+SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS FROM clientes WHERE  clientes.id > 0 ORDER BY apellidos, nombre
+
+SELECT servicios.ID, ID_SERVICIO_TIPO, servicios.NOMBRE, PRECIO_PROVEEDOR, IMPUESTO, BENEFICIO, PVP, servicios_tipos.NOMBRE as nombreTipo FROM servicios  JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO  WHERE  ID_EMPRESA=1 ORDER BY ID_SERVICIO_TIPO
+
+SELECT ID,NOMBRE,FECHA_INICIO,FECHA_FIN,DURACION,DESCUENTO FROM campanas WHERE  (CURRENT_DATE BETWEEN FECHA_INICIO AND FECHA_FIN) AND ID_EMPRESA=1
+
+SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS FROM clientes WHERE clientes.id = 967 ORDER BY apellidos, nombre
+
+SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+SELECT id,municipio FROM municipios WHERE provincia_id=11 ORDER BY municipio
+
+DELETE FROM contratos_borrador WHERE ID_CLIENTE='967'
+
+INSERT INTO contratos_borrador (ID_CLIENTE, ID_EMPRESA) VALUES ('967', '1')
+
+SELECT servicios.ID, ID_SERVICIO_TIPO, servicios.NOMBRE, PRECIO_PROVEEDOR, IMPUESTO, BENEFICIO, PVP, servicios_tipos.NOMBRE, PERMANENCIA_MINIMA FROM servicios  JOIN paquetes_servicios ON paquetes_servicios.ID_SERVICIO = servicios.ID  JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO  WHERE paquetes_servicios.ID_PAQUETE=50 AND ID_EMPRESA=1 ORDER BY servicios.NOMBRE
+
+SELECT servicios.ID, ID_SERVICIO_TIPO, servicios.NOMBRE, PRECIO_PROVEEDOR, IMPUESTO, BENEFICIO, PVP, servicios_tipos.NOMBRE as nombreTipo FROM servicios  JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO  WHERE  ID_EMPRESA=1 ORDER BY ID_SERVICIO_TIPO
+
+Error en selectWhere.SELECT ID,NOMBRE FROM clientes_consentimientos WHERE ID_EMPRESA = 1  ORDER BY NOMBRE
+
+SELECT ID,NOMBRE FROM clientes_consentimientos ORDER BY ID
+
+SELECT ID,TEXTO,TEXTO_ACEPTACION FROM textos_legales WHERE  UBICACION="porta1"  ORDER BY ID
+
+SELECT ID,TEXTO,TEXTO_ACEPTACION FROM textos_legales WHERE  UBICACION="porta2"  ORDER BY ID
+
+SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS FROM clientes WHERE  clientes.id > 0 ORDER BY apellidos, nombre
+
+SELECT servicios.ID, ID_SERVICIO_TIPO, servicios.NOMBRE, PRECIO_PROVEEDOR, IMPUESTO, BENEFICIO, PVP, servicios_tipos.NOMBRE as nombreTipo FROM servicios  JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO  WHERE  ID_EMPRESA=1 ORDER BY ID_SERVICIO_TIPO
+
+SELECT ID,NOMBRE,FECHA_INICIO,FECHA_FIN,DURACION,DESCUENTO FROM campanas WHERE  (CURRENT_DATE BETWEEN FECHA_INICIO AND FECHA_FIN) AND ID_EMPRESA=1
+
+SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS FROM clientes WHERE clientes.id = 967 ORDER BY apellidos, nombre
+
+SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+SELECT id,municipio FROM municipios WHERE provincia_id=11 ORDER BY municipio
+
+DELETE FROM contratos_borrador WHERE ID_CLIENTE='967'
+
+INSERT INTO contratos_borrador (ID_CLIENTE, ID_EMPRESA) VALUES ('967', '1')
+
+SELECT servicios.ID, ID_SERVICIO_TIPO, servicios.NOMBRE, PRECIO_PROVEEDOR, IMPUESTO, BENEFICIO, PVP, servicios_tipos.NOMBRE, PERMANENCIA_MINIMA FROM servicios  JOIN paquetes_servicios ON paquetes_servicios.ID_SERVICIO = servicios.ID  JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO  WHERE paquetes_servicios.ID_PAQUETE=50 AND ID_EMPRESA=1 ORDER BY servicios.NOMBRE
+
+SELECT servicios.ID, ID_SERVICIO_TIPO, servicios.NOMBRE, PRECIO_PROVEEDOR, IMPUESTO, BENEFICIO, PVP, servicios_tipos.NOMBRE as nombreTipo FROM servicios  JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO  WHERE  ID_EMPRESA=1 ORDER BY ID_SERVICIO_TIPO
+
+DELETE FROM contratos_lineas_borrador WHERE ID_CONTRATO='3'
+
+INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('50', '3', '1', '38', '37.81', 'p', 'FIBRA 100/100')
+
+INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('50', '3', '3', '55', '22.46', 'p', 'ILIM5')
+
+INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('50', '3', '2', '46', '2.66', 'p', 'NACIONALES 5')
+
+INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('50', '3', '3', '43', '5.86', 'p', 'TARIFA AIRE 1')
+
+DELETE FROM contratos_campanas_borrador WHERE ID_CONTRATO='3'
+
+INSERT INTO contratos_campanas_borrador (ID_CONTRATO, ID_CAMPANA, DTO, DTO_DIAS, DTO_HASTA) VALUES ('3', '-1', '0', '0', '2018-10-03')
+
+SELECT ID,TIPO,NUMERO_PORTAR FROM portabilidades WHERE ID_CLIENTE = 967 AND ID_EMPRESA = 1 AND ESTADO NOT IN (4,6)  ORDER BY FECHA_SOLICITUD
+
+SELECT productos.id,productos.numero_serie,productos_tipos.id_tipo_servicio as Tipo,productos_modelos.nombre as Modelo FROM productos,productos_tipos,productos_modelos,almacenes WHERE productos.id_tipo_producto=productos_tipos.id
+            AND productos.id_modelo_producto=productos_modelos.id 
+            AND almacenes.id=productos.id_almacen 
+            AND almacenes.id_empresa=1 AND productos.estado=1
+
+SELECT ID,NOMBRE FROM servicios_tipos_atributos WHERE servicios_tipos_atributos.ID_SERVICIO= AND servicios_tipos_atributos.id_tipo=1 ORDER BY NOMBRE
+
+SELECT ID,NOMBRE FROM servicios_tipos_atributos WHERE servicios_tipos_atributos.ID_SERVICIO= AND servicios_tipos_atributos.id_tipo=1 ORDER BY NOMBRE
+
+SELECT max(NUMERO) FROM contratos where ID_EMPRESA =1
+
+INSERT INTO contratos (ID_EMPRESA, ID_CLIENTE, FECHA_INICIO, FECHA_FIN, ESTADO, NUMERO) VALUES ('1', '967', '2018-10-03', '2019-08-09', '3', '1')
+
+INSERT INTO contratos_documentos (ID_CONTRATO, TIPO, FICHERO, SVG) VALUES ('1', '1', '', 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgNzY0IDQxOCIgd2lkdGg9Ijc2NCIgaGVpZ2h0PSI0MTgiPjxwYXRoIGQ9Ik0gMzUwLjgxMyw5OC4wMDAgQyAzNTEuNTg0LDEwNy41NTEgMzUwLjgxMywxMDcuNTAwIDM1MC44MTMsMTE3LjAwMCIgc3Ryb2tlLXdpZHRoPSIzLjc2OSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAzNTAuODEzLDExNy4wMDAgQyAzNTMuNzAwLDEzMy45NTkgMzQ5LjU4NCwxMzIuMDUxIDM0Ni44MTMsMTQ3LjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjI3NiIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAzNDYuODEzLDE0Ny4wMDAgQyAzMjguODI3LDE4MC4zNDQgMzMwLjIwMCwxNzguNDU5IDMwMy44MTMsMjA2LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjI2NSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAzMDMuODEzLDIwNi4wMDAgQyAyODcuMjI1LDIxOC45MjQgMjg5LjgyNywyMjAuMzQ0IDI2OC44MTMsMjI3LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjUxNCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAyNjguODEzLDIyNy4wMDAgQyAyNTcuODkwLDIyOS44NjQgMjU4LjcyNSwyMzEuNDI0IDI0Ni44MTMsMjMxLjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjAxNCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAyNDYuODEzLDIzMS4wMDAgQyAyMzguMjI2LDIzMS44MTQgMjM4LjM5MCwyMzEuODY0IDIyOS44MTMsMjMxLjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjU1OCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAyMjkuODEzLDIzMS4wMDAgQyAyMTguNDYyLDIzMi42MzYgMjIyLjcyNiwyMzAuMzE0IDIxNS44MTMsMjI4LjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjgzMiIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAyMTUuODEzLDIyOC4wMDAgQyAyMTIuNTQxLDIxNi42MjcgMjEyLjQ2MiwyMjIuMTM2IDIxNy44MTMsMjEwLjAwMCIgc3Ryb2tlLXdpZHRoPSIzLjM3MSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAyMTcuODEzLDIxMC4wMDAgQyAyMzIuNDE2LDE5My40MjggMjMwLjA0MSwxOTQuNjI3IDI1MC44MTMsMTg0LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjg1MSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAyNTAuODEzLDE4NC4wMDAgQyAyNzMuODczLDE3NC41MDMgMjcyLjQxNiwxNzIuOTI4IDI5Ny44MTMsMTY5LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjU0NCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAyOTcuODEzLDE2OS4wMDAgQyAzMTguMzczLDE2Mi45NzcgMzE3LjM3MywxNjQuNTAzIDMzNy44MTMsMTY0LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjU4MiIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAzMzcuODEzLDE2NC4wMDAgQyAzNDguNTk5LDE2NS41NzMgMzQ2Ljg3MywxNjQuNDc3IDM1NC44MTMsMTcyLjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjI1MiIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAzNTQuODEzLDE3Mi4wMDAgQyAzNjQuNDIxLDE4MS45MTEgMzYzLjA5OSwxODAuNTczIDM2Ni44MTMsMTk0LjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjMyMSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAzNjYuODEzLDE5NC4wMDAgQyAzNzAuMjQxLDIyOC40NzMgMzczLjQyMSwyMjcuNDExIDM3Mi44MTMsMjYzLjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjI2MiIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAzNzIuODEzLDI2My4wMDAgQyAzNzEuMjU1LDI3Ni4zMDggMzczLjc0MSwyNzUuNDczIDM3My44MTMsMjg4LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjg2OSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAzNzMuODEzLDI4OC4wMDAgQyAzNzUuODIxLDI5My40NzkgMzc0Ljc1NSwyOTIuMzA4IDM3OS44MTMsMjk1LjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjgzNyIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAzNzkuODEzLDI5NS4wMDAgQyAzODcuMzU1LDI5Ni40MzkgMzg2LjMyMSwyOTcuNDc5IDM5NC44MTMsMjk2LjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjg4MSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAzOTQuODEzLDI5Ni4wMDAgQyA0MDQuNTg4LDI5NS41ODMgNDA0LjM1NSwyOTUuNDM5IDQxMy44MTMsMjkzLjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjcwNyIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA0MTMuODEzLDI5My4wMDAgQyA0MjguOTE4LDI4NS45MTIgNDI5LjU4OCwyODguNTgzIDQ0NC44MTMsMjgyLjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjAzNiIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA0NDQuODEzLDI4Mi4wMDAgQyA0NjEuNzYyLDI3OS4wMDYgNDYxLjQxOCwyNzcuOTEyIDQ3OC44MTMsMjc3LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjg1NSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA0NzguODEzLDI3Ny4wMDAgQyA0ODcuMzkyLDI3NS40NTcgNDg3LjI2MiwyNzYuMDA2IDQ5NS44MTMsMjc2LjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjQzNCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA0OTUuODEzLDI3Ni4wMDAgQyA1MDMuNjgwLDI3NS44MTEgNTAyLjg5MiwyNzYuNDU3IDUwOS44MTMsMjc5LjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjc4NSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA1MDkuODEzLDI3OS4wMDAgQyA1MTUuNTYxLDI4My43NDggNTE2LjE4MCwyODIuMzExIDUyMC44MTMsMjg5LjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjkzMyIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA1MjAuODEzLDI4OS4wMDAgQyA1MjcuNjQ2LDI5Ny44NTQgNTI4LjU2MSwyOTYuNzQ4IDUzNS44MTMsMzA1LjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjUxNyIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PC9zdmc+')
+
+SELECT max(NUMERO) FROM ordenes where ID_EMPRESA =1
+
+INSERT INTO ordenes (ID_CONTRATO, FECHA_ALTA, ID_TIPO_ESTADO, NUMERO, ID_EMPRESA) VALUES ('1', '2018-10-03 03:00:03 ', '1', '1', '1')
+
+SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 38
+
+INSERT INTO contratos_lineas (ID_TIPO, ID_ASOCIADO, ID_CONTRATO, PRECIO_PROVEEDOR, BENEFICIO, IMPUESTO, PVP, PERMANENCIA, ESTADO, FECHA_ALTA, FECHA_BAJA) VALUES ('1', '50', '1', '25', '10', '21', '77.49', '2019-08-09', '3', '2018-10-03 ', '')
+
+SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 38
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '1', '38', '40', '100', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('1', '15', '2', '2018-10-03')
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '1', '38', '39', '100', '2018-10-03 ', '', '3')
+
+INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '15', '2')
+
+UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=15
+
+UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=15 AND almacenes.id_empresa=1
+
+SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 55
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '55', '48', '', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('3', '17', '3', '2018-10-03')
+
+SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 55
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '55', '47', '5000', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '55', '46', '9999', '2018-10-03 ', '', '3')
+
+SELECT NOMBRE, APELLIDOS, TIPO_DOCUMENTO, DNI, FIJO, MOVIL, EMAIL, DIRECCION, municipios.municipio, provincias.provincia, pais.iso, CP, BANCO, IBAN FROM clientes  JOIN municipios ON municipios.id = clientes.LOCALIDAD 
+                                            JOIN provincias ON provincias.id = clientes.PROVINCIA 
+                                            JOIN pais ON pais.id = clientes.NACIONALIDAD  WHERE clientes.ID = '967'
+
+SELECT ID_EXTERNO FROM servicios,servicios_externos WHERE servicios.id=55 AND servicios.id=servicios_externos.id_servicio AND servicios_externos.id_empresa=1
+
+INSERT INTO multiplataforma.ordenes_test_instalacion (id_linea_contrato, fecha, tecnico, rx, ssid, clave_wifi, test_masmovil, test_aire, test_fijo) VALUES ('3', '2018-10-03 15:00:05', '1', '', '', '', 'El ICC-ID no es correcto. ', '', '')
+
+INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '17', '5')
+
+UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=17
+
+UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=17 AND almacenes.id_empresa=1
+
+SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 46
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '2', '46', '45', '956123123', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('6', '16', '3', '2018-10-03')
+
+SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 46
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '2', '46', '44', '15', '2018-10-03 ', '', '3')
+
+SELECT servicios_atributos.VALOR FROM servicios_atributos join servicios on servicios_atributos.ID_SERVICIO = servicios.id  WHERE  servicios.id = 46 and servicios_atributos.ID_TIPO_ATRIBUTO IN (43,44) ORDER BY  servicios_atributos.ID_TIPO_ATRIBUTO 
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '2', '46', '56', '', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '2', '46', '43', 'grupo5', '2018-10-03 ', '', '3')
+
+SELECT servicios_atributos.VALOR FROM servicios_atributos join servicios on servicios_atributos.ID_SERVICIO = servicios.id  WHERE  servicios.id = 46 and servicios_atributos.ID_TIPO_ATRIBUTO IN (43,44) ORDER BY  servicios_atributos.ID_TIPO_ATRIBUTO 
+
+INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '16', '9')
+
+UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=16
+
+UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=16 AND almacenes.id_empresa=1
+
+SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 43
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '43', '48', '', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('10', '33', '3', '2018-10-03')
+
+SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 43
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '43', '47', '1000', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '43', '46', '100', '2018-10-03 ', '', '3')
+
+SELECT NOMBRE, APELLIDOS, TIPO_DOCUMENTO, DNI, FIJO, MOVIL, EMAIL, DIRECCION, municipios.municipio, provincias.provincia, pais.iso, CP, BANCO, IBAN FROM clientes  JOIN municipios ON municipios.id = clientes.LOCALIDAD 
+                                            JOIN provincias ON provincias.id = clientes.PROVINCIA 
+                                            JOIN pais ON pais.id = clientes.NACIONALIDAD  WHERE clientes.ID = '967'
+
+SELECT ID_EXTERNO FROM servicios,servicios_externos WHERE servicios.id=43 AND servicios.id=servicios_externos.id_servicio AND servicios_externos.id_empresa=1
+
+INSERT INTO multiplataforma.ordenes_test_instalacion (id_linea_contrato, fecha, tecnico, rx, ssid, clave_wifi, test_masmovil, test_aire, test_fijo) VALUES ('10', '2018-10-03 15:00:07', '1', '', '', '', 'Perfil de Producto no existente.', '', '')
+
+INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '33', '12')
+
+UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=33
+
+UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=33 AND almacenes.id_empresa=1
+
+SELECT id,descripcion FROM fibra.olts ORDER BY descripcion
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA = 1 ORDER BY ordenes.FECHA_ALTA
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 7 day,'%d/%m/%Y') ),count(id) FROM fibra.aprovisionados GROUP BY  week(fecha,0)
+
+SELECT id,descripcion FROM fibra.olts ORDER BY descripcion
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA = 1 ORDER BY ordenes.FECHA_ALTA
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT id,descripcion FROM fibra.olts ORDER BY descripcion
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA = 1 ORDER BY ordenes.FECHA_ALTA
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 7 day,'%d/%m/%Y') ),count(id) FROM fibra.aprovisionados GROUP BY  week(fecha,0)
+
+Error en selectWhere.SELECT ID,NOMBRE FROM clientes_consentimientos WHERE ID_EMPRESA = 1  ORDER BY NOMBRE
+
+SELECT ID,NOMBRE FROM clientes_consentimientos ORDER BY ID
+
+SELECT ID,TEXTO,TEXTO_ACEPTACION FROM textos_legales WHERE  UBICACION="porta1"  ORDER BY ID
+
+SELECT ID,TEXTO,TEXTO_ACEPTACION FROM textos_legales WHERE  UBICACION="porta2"  ORDER BY ID
+
+SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS FROM clientes WHERE  clientes.id > 0 ORDER BY apellidos, nombre
+
+SELECT servicios.ID, ID_SERVICIO_TIPO, servicios.NOMBRE, PRECIO_PROVEEDOR, IMPUESTO, BENEFICIO, PVP, servicios_tipos.NOMBRE as nombreTipo FROM servicios  JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO  WHERE  ID_EMPRESA=1 ORDER BY ID_SERVICIO_TIPO
+
+SELECT ID,NOMBRE,FECHA_INICIO,FECHA_FIN,DURACION,DESCUENTO FROM campanas WHERE  (CURRENT_DATE BETWEEN FECHA_INICIO AND FECHA_FIN) AND ID_EMPRESA=1
+
+SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS FROM clientes WHERE clientes.id = 967 ORDER BY apellidos, nombre
+
+SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+SELECT id,municipio FROM municipios WHERE provincia_id=11 ORDER BY municipio
+
+DELETE FROM contratos_borrador WHERE ID_CLIENTE='967'
+
+INSERT INTO contratos_borrador (ID_CLIENTE, ID_EMPRESA) VALUES ('967', '1')
+
+SELECT servicios.ID, ID_SERVICIO_TIPO, servicios.NOMBRE, PRECIO_PROVEEDOR, IMPUESTO, BENEFICIO, PVP, servicios_tipos.NOMBRE, PERMANENCIA_MINIMA FROM servicios  JOIN paquetes_servicios ON paquetes_servicios.ID_SERVICIO = servicios.ID  JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO  WHERE paquetes_servicios.ID_PAQUETE=50 AND ID_EMPRESA=1 ORDER BY servicios.NOMBRE
+
+SELECT servicios.ID, ID_SERVICIO_TIPO, servicios.NOMBRE, PRECIO_PROVEEDOR, IMPUESTO, BENEFICIO, PVP, servicios_tipos.NOMBRE as nombreTipo FROM servicios  JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO  WHERE  ID_EMPRESA=1 ORDER BY ID_SERVICIO_TIPO
+
+DELETE FROM contratos_lineas_borrador WHERE ID_CONTRATO='2'
+
+INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('50', '2', '1', '38', '37.81', 'p', 'FIBRA 100/100')
+
+INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('50', '2', '3', '55', '22.46', 'p', 'ILIM5')
+
+INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('50', '2', '2', '46', '2.66', 'p', 'NACIONALES 5')
+
+INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('50', '2', '3', '43', '5.86', 'p', 'TARIFA AIRE 1')
+
+DELETE FROM contratos_campanas_borrador WHERE ID_CONTRATO='2'
+
+INSERT INTO contratos_campanas_borrador (ID_CONTRATO, ID_CAMPANA, DTO, DTO_DIAS, DTO_HASTA) VALUES ('2', '-1', '0', '0', '2018-10-03')
+
+SELECT ID,TIPO,NUMERO_PORTAR FROM portabilidades WHERE ID_CLIENTE = 967 AND ID_EMPRESA = 1 AND ESTADO NOT IN (4,6)  ORDER BY FECHA_SOLICITUD
+
+SELECT productos.id,productos.numero_serie,productos_tipos.id_tipo_servicio as Tipo,productos_modelos.nombre as Modelo FROM productos,productos_tipos,productos_modelos,almacenes WHERE productos.id_tipo_producto=productos_tipos.id
+            AND productos.id_modelo_producto=productos_modelos.id 
+            AND almacenes.id=productos.id_almacen 
+            AND almacenes.id_empresa=1 AND productos.estado=1
+
+SELECT ID,NOMBRE FROM servicios_tipos_atributos WHERE servicios_tipos_atributos.ID_SERVICIO= AND servicios_tipos_atributos.id_tipo=1 ORDER BY NOMBRE
+
+SELECT ID,NOMBRE FROM servicios_tipos_atributos WHERE servicios_tipos_atributos.ID_SERVICIO= AND servicios_tipos_atributos.id_tipo=1 ORDER BY NOMBRE
+
+SELECT max(NUMERO) FROM contratos where ID_EMPRESA =1
+
+INSERT INTO contratos (ID_EMPRESA, ID_CLIENTE, FECHA_INICIO, FECHA_FIN, ESTADO, NUMERO) VALUES ('1', '967', '2018-10-03', '2019-08-09', '3', '1')
+
+INSERT INTO contratos_documentos (ID_CONTRATO, TIPO, FICHERO, SVG) VALUES ('1', '1', '', 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgNzY0IDQxOCIgd2lkdGg9Ijc2NCIgaGVpZ2h0PSI0MTgiPjxwYXRoIGQ9Ik0gMjA2LjgxMywxMjUuMDAwIEMgMjA1Ljk3NiwxMzIuNDg5IDIwNi4zMTMsMTMyLjUwMCAyMDUuODEzLDE0MC4wMDAiIHN0cm9rZS13aWR0aD0iNC4xMjciIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMjA1LjgxMywxNDAuMDAwIEMgMjA3LjU2MCwxNTUuNjYyIDIwNS40NzYsMTU1LjQ4OSAyMDUuODEzLDE3MS4wMDAiIHN0cm9rZS13aWR0aD0iMi4yODIiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMjA1LjgxMywxNzEuMDAwIEMgMjA0LjA3OSwxOTUuODM4IDIwMy4wNjAsMTk1LjE2MiAxOTYuODEzLDIxOS4wMDAiIHN0cm9rZS13aWR0aD0iMS41NzMiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTk2LjgxMywyMTkuMDAwIEMgMTg2LjU2NywyNDYuNjIxIDE4OC4wNzksMjQ2LjgzOCAxNzMuODEzLDI3My4wMDAiIHN0cm9rZS13aWR0aD0iMS4zNDMiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTczLjgxMywyNzMuMDAwIEMgMTY1LjYyNSwyOTMuNTczIDE2NC41NjcsMjkyLjEyMSAxNTIuODEzLDMxMC4wMDAiIHN0cm9rZS13aWR0aD0iMS40NzMiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTUyLjgxMywzMTAuMDAwIEMgMTQ0Ljc4NSwzMTkuMDY0IDE0Ni4xMjUsMzE4LjU3MyAxMzQuODEzLDMyMy4wMDAiIHN0cm9rZS13aWR0aD0iMi4wMzgiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTM0LjgxMywzMjMuMDAwIEMgMTI0LjgyMiwzMjUuMDAwIDEyNS43ODUsMzI2LjU2NCAxMTQuODEzLDMyNS4wMDAiIHN0cm9rZS13aWR0aD0iMi4zODgiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTE0LjgxMywzMjUuMDAwIEMgMTAwLjQ4NSwzMjguNjUwIDEwMi4zMjIsMzI1LjAwMCA4OS44MTMsMzIzLjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjI0NiIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA4OS44MTMsMzIzLjAwMCBDIDYzLjE2NSwzMTAuMDkyIDY2LjQ4NSwzMTAuNjUwIDQ2LjgxMywyODkuMDAwIiBzdHJva2Utd2lkdGg9IjEuNjIxIiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDQ2LjgxMywyODkuMDAwIEMgMjguNzY2LDI2Mi45MjEgMjguNjY1LDI2NS41OTIgMjAuODEzLDIzNC4wMDAiIHN0cm9rZS13aWR0aD0iMS4zNzAiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMjAuODEzLDIzNC4wMDAgQyAxMS4xNjMsMjAxLjAzMyAxMi4yNjYsMjAyLjkyMSAxMy44MTMsMTY5LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjE3NCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAxMy44MTMsMTY5LjAwMCBDIDE0LjM1NiwxMjkuODQxIDE2LjY2MywxMzQuNTMzIDMxLjgxMywxMDEuMDAwIiBzdHJva2Utd2lkdGg9IjEuMTI1IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDMxLjgxMywxMDEuMDAwIEMgNTQuOTMzLDczLjkxOCA0OC44NTYsNzIuODQxIDgyLjgxMyw1NS4wMDAiIHN0cm9rZS13aWR0aD0iMS4xMjUiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gODIuODEzLDU1LjAwMCBDIDk4Ljg5Miw0Ni45MDggOTYuOTMzLDQ1LjQxOCAxMTUuODEzLDQ0LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjU0NCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAxMTUuODEzLDQ0LjAwMCBDIDEzMy4zMTAsMzguMDgxIDEzMC44OTIsNDEuNDA4IDE0Ni44MTMsNDQuMDAwIiBzdHJva2Utd2lkdGg9IjEuODMyIiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDE0Ni44MTMsNDQuMDAwIEMgMTc0LjU0Miw1NC44OTYgMTY5LjgxMCw1NC4wODEgMTg4LjgxMyw3Ni4wMDAiIHN0cm9rZS13aWR0aD0iMS4zNzciIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTg4LjgxMyw3Ni4wMDAgQyAyMDkuMjk5LDExMS4yMTkgMjEwLjA0MiwxMDcuMzk2IDIxNy44MTMsMTQ5LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjEyNSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAyMTcuODEzLDE0OS4wMDAgQyAyMjMuNDc4LDE4My45NDMgMjI1LjI5OSwxODIuMjE5IDIyMC44MTMsMjE4LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjEyNSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAyMjAuODEzLDIxOC4wMDAgQyAyMTguNTI2LDI0My4wMDYgMjE4Ljk3OCwyNDEuNDQzIDIwOC44MTMsMjY0LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjI4NSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAyMDguODEzLDI2NC4wMDAgQyAyMDAuMjExLDI3NS42NDEgMjAzLjAyNiwyNzYuNTA2IDE4OS44MTMsMjg1LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjg0MCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAxODkuODEzLDI4NS4wMDAgQyAxNzcuNTUwLDI4Ny41NzMgMTg1LjIxMSwyODkuMTQxIDE3OC44MTMsMjkxLjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjU5OCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAxNzguODEzLDI5MS4wMDAgQyAxODcuNDU4LDI5OC4wMzUgMTgxLjA1MCwyOTcuMDczIDE5Ni44MTMsMzA0LjAwMCIgc3Ryb2tlLXdpZHRoPSIzLjY1NSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAxOTYuODEzLDMwNC4wMDAgQyAyMjEuOTQ5LDMyMC4xMjggMjIxLjk1OCwzMjAuMDM1IDI0Ny44MTMsMzM1LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjU1NCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAyNDcuODEzLDMzNS4wMDAgQyAyODAuMjQ1LDM1OS40NjUgMjgxLjk0OSwzNTQuNjI4IDMxNi44MTMsMzczLjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjEyNSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAzMTYuODEzLDM3My4wMDAgQyAzNTguODY0LDM4OC42MzcgMzU3LjI0NSwzODcuOTY1IDQwMS44MTMsMzkyLjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjEyNSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA0MDEuODEzLDM5Mi4wMDAgQyA0NDQuNjQzLDM5Ni45MDYgNDQxLjg2NCwzOTUuMTM3IDQ4Mi44MTMsMzg2LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjEyNSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA0ODIuODEzLDM4Ni4wMDAgQyA1MTguODI3LDM3MS42NTYgNTE4LjE0MywzNzUuOTA2IDU0OC44MTMsMzUwLjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjEyNSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA1NDguODEzLDM1MC4wMDAgQyA1NjUuODU4LDMzNy40MTMgNTYzLjgyNywzMzkuMTU2IDU3Mi44MTMsMzIxLjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjQwNCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA1NzIuODEzLDMyMS4wMDAgQyA1NzguMTc4LDMwNC4zNTQgNTc4LjM1OCwzMDcuOTEzIDU3My44MTMsMjkxLjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjc1MCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA1NzMuODEzLDI5MS4wMDAgQyA1NjYuODQ1LDI3Ny4zMzYgNTY5LjY3OCwyNzguMzU0IDU1NS44MTMsMjY5LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjkzNCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA1NTUuODEzLDI2OS4wMDAgQyA1NDIuNjgwLDI2MS4yNjcgNTQ0LjM0NSwyNjAuMzM2IDUyOC44MTMsMjU3LjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjA2NyIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA1MjguODEzLDI1Ny4wMDAgQyA1MjAuOTUwLDI1My44OTcgNTIzLjE4MCwyNTUuMjY3IDUxNi44MTMsMjU3LjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjc1NSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA1MTYuODEzLDI1Ny4wMDAgQyA1MTEuMTU3LDI2NC4wODYgNTEwLjk1MCwyNjEuMzk3IDUwOC44MTMsMjcyLjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjczNiIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA1MDguODEzLDI3Mi4wMDAgQyA1MDYuNTIxLDI3OS40MTYgNTA3LjE1NywyNzcuNTg2IDUwOC44MTMsMjg0LjAwMCIgc3Ryb2tlLXdpZHRoPSIzLjEwNiIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA1MDguODEzLDI4NC4wMDAgQyA1MTIuNDY5LDI4Ny40NTcgNTEwLjUyMSwyODcuNDE2IDUxNi44MTMsMjg4LjAwMCIgc3Ryb2tlLXdpZHRoPSIzLjQ5MCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA1MTYuODEzLDI4OC4wMDAgQyA1MjkuNTEzLDI5MS4zNzUgNTI4LjQ2OSwyODkuNDU3IDU0MC44MTMsMjg4LjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjUxOCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA1NDAuODEzLDI4OC4wMDAgQyA1NjcuNDk5LDI3Ni45MTAgNTY4LjAxMywyNzkuODc1IDU5My44MTMsMjY1LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjUwMCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA1OTMuODEzLDI2NS4wMDAgQyA2MTUuMjM2LDI1NS43MDAgNjE0Ljk5OSwyNTUuNDEwIDYzNS44MTMsMjQ1LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjUwNCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA2MzUuODEzLDI0NS4wMDAgQyA2NDMuMTYwLDIzNy42OTYgNjQwLjIzNiwyNDIuNzAwIDY0My44MTMsMjM5LjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjUxOCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PC9zdmc+')
+
+SELECT max(NUMERO) FROM ordenes where ID_EMPRESA =1
+
+INSERT INTO ordenes (ID_CONTRATO, FECHA_ALTA, ID_TIPO_ESTADO, NUMERO, ID_EMPRESA) VALUES ('1', '2018-10-03 03:09:08 ', '1', '1', '1')
+
+SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 38
+
+INSERT INTO contratos_lineas (ID_TIPO, ID_ASOCIADO, ID_CONTRATO, PRECIO_PROVEEDOR, BENEFICIO, IMPUESTO, PVP, PERMANENCIA, ESTADO, FECHA_ALTA, FECHA_BAJA) VALUES ('1', '50', '1', '25', '10', '21', '77.49', '2019-08-09', '3', '2018-10-03 ', '')
+
+SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 38
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '1', '38', '40', '100', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('1', '15', '2', '2018-10-03')
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '1', '38', '39', '100', '2018-10-03 ', '', '3')
+
+INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '15', '2')
+
+UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=15
+
+UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=15 AND almacenes.id_empresa=1
+
+SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 55
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '55', '48', '', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('3', '17', '3', '2018-10-03')
+
+SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 55
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '55', '47', '5000', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '55', '46', '9999', '2018-10-03 ', '', '3')
+
+SELECT NOMBRE, APELLIDOS, TIPO_DOCUMENTO, DNI, FIJO, MOVIL, EMAIL, DIRECCION, municipios.municipio, provincias.provincia, pais.iso, CP, BANCO, IBAN FROM clientes  JOIN municipios ON municipios.id = clientes.LOCALIDAD 
+                                            JOIN provincias ON provincias.id = clientes.PROVINCIA 
+                                            JOIN pais ON pais.id = clientes.NACIONALIDAD  WHERE clientes.ID = '967'
+
+SELECT ID_EXTERNO FROM servicios,servicios_externos WHERE servicios.id=55 AND servicios.id=servicios_externos.id_servicio AND servicios_externos.id_empresa=1
+
+INSERT INTO multiplataforma.ordenes_test_instalacion (id_linea_contrato, fecha, tecnico, rx, ssid, clave_wifi, test_masmovil, test_aire, test_fijo) VALUES ('3', '2018-10-03 15:09:09', '1', '', '', '', 'El ICC-ID no es correcto. ', '', '')
+
+INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '17', '5')
+
+UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=17
+
+UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=17 AND almacenes.id_empresa=1
+
+SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 46
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '2', '46', '45', '956000000', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('6', '16', '3', '2018-10-03')
+
+SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 46
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '2', '46', '44', '15', '2018-10-03 ', '', '3')
+
+SELECT servicios_atributos.VALOR FROM servicios_atributos join servicios on servicios_atributos.ID_SERVICIO = servicios.id  WHERE  servicios.id = 46 and servicios_atributos.ID_TIPO_ATRIBUTO IN (43,44) ORDER BY  servicios_atributos.ID_TIPO_ATRIBUTO 
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '2', '46', '56', '', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '2', '46', '43', 'grupo5', '2018-10-03 ', '', '3')
+
+SELECT servicios_atributos.VALOR FROM servicios_atributos join servicios on servicios_atributos.ID_SERVICIO = servicios.id  WHERE  servicios.id = 46 and servicios_atributos.ID_TIPO_ATRIBUTO IN (43,44) ORDER BY  servicios_atributos.ID_TIPO_ATRIBUTO 
+
+INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '16', '9')
+
+UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=16
+
+UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=16 AND almacenes.id_empresa=1
+
+SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 43
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '43', '48', '', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('10', '24', '3', '2018-10-03')
+
+SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 43
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '43', '47', '1000', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '43', '46', '100', '2018-10-03 ', '', '3')
+
+SELECT NOMBRE, APELLIDOS, TIPO_DOCUMENTO, DNI, FIJO, MOVIL, EMAIL, DIRECCION, municipios.municipio, provincias.provincia, pais.iso, CP, BANCO, IBAN FROM clientes  JOIN municipios ON municipios.id = clientes.LOCALIDAD 
+                                            JOIN provincias ON provincias.id = clientes.PROVINCIA 
+                                            JOIN pais ON pais.id = clientes.NACIONALIDAD  WHERE clientes.ID = '967'
+
+SELECT ID_EXTERNO FROM servicios,servicios_externos WHERE servicios.id=43 AND servicios.id=servicios_externos.id_servicio AND servicios_externos.id_empresa=1
+
+INSERT INTO multiplataforma.ordenes_test_instalacion (id_linea_contrato, fecha, tecnico, rx, ssid, clave_wifi, test_masmovil, test_aire, test_fijo) VALUES ('10', '2018-10-03 15:09:11', '1', '', '', '', 'Perfil de Producto no existente.', '', '')
+
+INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '24', '12')
+
+UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=24
+
+UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=24 AND almacenes.id_empresa=1
+
+SELECT id,descripcion FROM fibra.olts ORDER BY descripcion
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA = 1 ORDER BY ordenes.FECHA_ALTA
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 7 day,'%d/%m/%Y') ),count(id) FROM fibra.aprovisionados GROUP BY  week(fecha,0)
+
+SELECT clientes.ID,clientes.nombre,clientes.apellidos,clientes.dni,clientes.direccion FROM clientes WHERE  clientes.baja=0 AND clientes.id_empresa=1
+
+SELECT clientes.id,clientes.nombre,clientes.apellidos,clientes.dni,clientes.tipo_documento,clientes.direccion,clientes.localidad,clientes.provincia,clientes.comunidad,clientes.iban,clientes.swift,clientes.cp,clientes.fijo,clientes.movil,clientes.email,clientes.fecha_alta,clientes.notas,clientes.baja,clientes.banco,clientes.id_consentimiento,clientes.id_tipo_cliente,clientes.fecha_nacimiento FROM clientes WHERE  clientes.id_empresa=1 AND clientes.id=967
+
+SELECT contratos.ID,contratos.FECHA_INICIO,contratos.FECHA_FIN,estados_contratos.nombre FROM contratos,estados_contratos WHERE contratos.id_empresa=1 AND contratos.id_cliente=967 and contratos.estado=estados_contratos.id
+
+SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS FROM clientes WHERE  clientes.id > 0 ORDER BY apellidos, nombre
+
+SELECT contratos_lineas.id,contratos_lineas_tipo.nombre as Tipo,contratos_lineas_tipo.id,contratos_lineas.id_asociado,contratos_lineas.pvp,estados_contratos.nombre as nombrecontrato,estados_contratos.id as idestado,contratos_lineas.fecha_alta,contratos_lineas.fecha_baja FROM contratos_lineas,contratos_lineas_tipo,contratos,estados_contratos WHERE contratos.id=contratos_lineas.id_contrato 
+            and contratos_lineas_tipo.id=contratos_lineas.id_tipo
+            AND contratos.id_empresa=1 AND contratos.id=1 AND contratos_lineas.estado!=2 AND estados_contratos.id=contratos_lineas.estado
+
+SELECT ID,nombre FROM servicios WHERE servicios.id_empresa=1 AND servicios.id=38
+
+SELECT ID,nombre FROM servicios WHERE servicios.id_empresa=1 AND servicios.id=46
+
+SELECT ID,nombre FROM servicios WHERE servicios.id_empresa=1 AND servicios.id=55
+
+SELECT servicios.id,servicios.nombre,contratos_lineas.pvp,contratos_lineas.precio_proveedor,contratos_lineas.impuesto,contratos_lineas.beneficio,servicios.id_servicio_tipo,contratos_lineas.permanencia,contratos_lineas.estado FROM servicios,servicios_tipos,contratos,contratos_lineas WHERE servicios.id_empresa=1
+                                                     AND servicios.id_servicio_tipo=servicios_tipos.id AND contratos.id=1
+                                                      AND contratos.id_empresa=1 
+                                                      AND contratos.id=contratos_lineas.id_contrato AND servicios.id=55 AND contratos_lineas.id=5
+
+SELECT servicios_tipos_atributos.id,servicios_tipos_atributos.nombre,contratos_lineas_detalles.valor FROM contratos_lineas,contratos_lineas_detalles,servicios_tipos_atributos WHERE servicios_tipos_atributos.id=contratos_lineas_detalles.id_atributo_servicio AND contratos_lineas_detalles.id_linea=5 AND contratos_lineas.id=contratos_lineas_detalles.id_linea
+
+SELECT productos.id,productos.numero_serie,productos_estados.nombre FROM contratos,contratos_lineas,contratos_lineas_detalles,contratos_lineas_productos,productos,productos_estados WHERE contratos.id=contratos_lineas.id_contrato 
+                                            AND productos.estado=productos_estados.id
+                                                AND contratos_lineas.id=contratos_lineas_detalles.id_linea
+                                                AND contratos_lineas_detalles.id=contratos_lineas_productos.id_linea
+                                                AND contratos_lineas_productos.id_producto=productos.id 
+                                                AND contratos_lineas_detalles.id_linea=5 
+                                                AND contratos_lineas_detalles.id_tipo_servicio=2
+
+SELECT productos.id,productos.numero_serie,productos_estados.nombre FROM contratos,contratos_lineas,contratos_lineas_detalles,contratos_lineas_productos,productos,productos_estados WHERE contratos.id=contratos_lineas.id_contrato 
+                                            AND productos.estado=productos_estados.id
+                                                AND contratos_lineas.id=contratos_lineas_detalles.id_linea
+                                                AND contratos_lineas_detalles.id=contratos_lineas_productos.id_linea
+                                                AND contratos_lineas_productos.id_producto=productos.id 
+                                                AND contratos_lineas_detalles.id_linea=5 
+                                                AND contratos_lineas_detalles.id_tipo_servicio=2
+
+SELECT id,descripcion FROM fibra.olts ORDER BY descripcion
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA = 1 ORDER BY ordenes.FECHA_ALTA
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 7 day,'%d/%m/%Y') ),count(id) FROM fibra.aprovisionados GROUP BY  week(fecha,0)
+
+Error en selectWhere.SELECT ID,NOMBRE FROM clientes_consentimientos WHERE ID_EMPRESA = 1  ORDER BY NOMBRE
+
+SELECT ID,NOMBRE FROM clientes_consentimientos ORDER BY ID
+
+SELECT ID,TEXTO,TEXTO_ACEPTACION FROM textos_legales WHERE  UBICACION="porta1"  ORDER BY ID
+
+SELECT ID,TEXTO,TEXTO_ACEPTACION FROM textos_legales WHERE  UBICACION="porta2"  ORDER BY ID
+
+SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS FROM clientes WHERE  clientes.id > 0 ORDER BY apellidos, nombre
+
+SELECT servicios.ID, ID_SERVICIO_TIPO, servicios.NOMBRE, PRECIO_PROVEEDOR, IMPUESTO, BENEFICIO, PVP, servicios_tipos.NOMBRE as nombreTipo FROM servicios  JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO  WHERE  ID_EMPRESA=1 ORDER BY ID_SERVICIO_TIPO
+
+SELECT ID,NOMBRE,FECHA_INICIO,FECHA_FIN,DURACION,DESCUENTO FROM campanas WHERE  (CURRENT_DATE BETWEEN FECHA_INICIO AND FECHA_FIN) AND ID_EMPRESA=1
+
+SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS FROM clientes WHERE clientes.id = 967 ORDER BY apellidos, nombre
+
+SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+SELECT id,municipio FROM municipios WHERE provincia_id=11 ORDER BY municipio
+
+DELETE FROM contratos_borrador WHERE ID_CLIENTE='967'
+
+INSERT INTO contratos_borrador (ID_CLIENTE, ID_EMPRESA) VALUES ('967', '1')
+
+SELECT servicios.ID, ID_SERVICIO_TIPO, servicios.NOMBRE, PRECIO_PROVEEDOR, IMPUESTO, BENEFICIO, PVP, servicios_tipos.NOMBRE, PERMANENCIA_MINIMA FROM servicios  JOIN paquetes_servicios ON paquetes_servicios.ID_SERVICIO = servicios.ID  JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO  WHERE paquetes_servicios.ID_PAQUETE=48 AND ID_EMPRESA=1 ORDER BY servicios.NOMBRE
+
+SELECT servicios.ID, ID_SERVICIO_TIPO, servicios.NOMBRE, PRECIO_PROVEEDOR, IMPUESTO, BENEFICIO, PVP, servicios_tipos.NOMBRE as nombreTipo FROM servicios  JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO  WHERE  ID_EMPRESA=1 ORDER BY ID_SERVICIO_TIPO
+
+DELETE FROM contratos_lineas_borrador WHERE ID_CONTRATO='1'
+
+INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('48', '1', '1', '44', '13.91', 'p', 'FIBRA 10/10')
+
+INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('48', '1', '3', '55', '22.46', 'p', 'ILIM5')
+
+INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('48', '1', '3', '43', '5.86', 'p', 'TARIFA AIRE 1')
+
+SELECT ID,TIPO,NUMERO_PORTAR FROM portabilidades WHERE ID_CLIENTE = 967 AND ID_EMPRESA = 1 AND ESTADO NOT IN (4,6)  ORDER BY FECHA_SOLICITUD
+
+DELETE FROM contratos_campanas_borrador WHERE ID_CONTRATO='1'
+
+INSERT INTO contratos_campanas_borrador (ID_CONTRATO, ID_CAMPANA, DTO, DTO_DIAS, DTO_HASTA) VALUES ('1', '-1', '0', '0', '2018-10-03')
+
+SELECT productos.id,productos.numero_serie,productos_tipos.id_tipo_servicio as Tipo,productos_modelos.nombre as Modelo FROM productos,productos_tipos,productos_modelos,almacenes WHERE productos.id_tipo_producto=productos_tipos.id
+            AND productos.id_modelo_producto=productos_modelos.id 
+            AND almacenes.id=productos.id_almacen 
+            AND almacenes.id_empresa=1 AND productos.estado=1
+
+SELECT ID,NOMBRE FROM servicios_tipos_atributos WHERE servicios_tipos_atributos.ID_SERVICIO= AND servicios_tipos_atributos.id_tipo=1 ORDER BY NOMBRE
+
+SELECT ID,NOMBRE FROM servicios_tipos_atributos WHERE servicios_tipos_atributos.ID_SERVICIO= AND servicios_tipos_atributos.id_tipo=1 ORDER BY NOMBRE
+
+SELECT max(NUMERO) FROM contratos where ID_EMPRESA =1
+
+INSERT INTO contratos (ID_EMPRESA, ID_CLIENTE, FECHA_INICIO, FECHA_FIN, ESTADO, NUMERO) VALUES ('1', '967', '2018-10-03', '2019-04-07', '3', '1')
+
+INSERT INTO contratos_documentos (ID_CONTRATO, TIPO, FICHERO, SVG) VALUES ('1', '1', '', 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgNzY0IDQxOCIgd2lkdGg9Ijc2NCIgaGVpZ2h0PSI0MTgiPjxwYXRoIGQ9Ik0gMTM1LjgxMyw4Mi4wMDAgQyAxMzkuNDQ2LDg0LjQ4NCAxMzcuODEzLDg1LjAwMCAxMzkuODEzLDg4LjAwMCIgc3Ryb2tlLXdpZHRoPSI0Ljg3OSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAxMzkuODEzLDg4LjAwMCBDIDE0MC40NzksMTA4Ljk5OCAxNDEuOTQ2LDEwOC40ODQgMTQwLjgxMywxMzAuMDAwIiBzdHJva2Utd2lkdGg9IjEuOTUwIiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDE0MC44MTMsMTMwLjAwMCBDIDE0MS4xMTcsMTQwLjUwNiAxNDAuOTc5LDE0MC40OTggMTQwLjgxMywxNTEuMDAwIiBzdHJva2Utd2lkdGg9IjIuMzYyIiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDE0MC44MTMsMTUxLjAwMCBDIDE0NC42NDksMTc2LjA1NiAxNDAuMTE3LDE3NS4wMDYgMTM4LjgxMywxOTkuMDAwIiBzdHJva2Utd2lkdGg9IjEuNjU4IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDEzOC44MTMsMTk5LjAwMCBDIDEyNS41NTEsMjMyLjEwMSAxMzAuMTQ5LDIzMy4wNTYgMTExLjgxMywyNjUuMDAwIiBzdHJva2Utd2lkdGg9IjEuMjA5IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDExMS44MTMsMjY1LjAwMCBDIDEwNi4xMTEsMjc3LjQxNyAxMDYuNTUxLDI3Ny42MDEgMTAwLjgxMywyOTAuMDAwIiBzdHJva2Utd2lkdGg9IjEuNzA5IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDEwMC44MTMsMjkwLjAwMCBDIDk4LjMzNywyOTYuNTA5IDk4LjExMSwyOTYuNDE3IDk1LjgxMywzMDMuMDAwIiBzdHJva2Utd2lkdGg9IjIuNDQ5IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDk1LjgxMywzMDMuMDAwIEMgOTQuMzUxLDMxMC4wMzQgOTQuODM3LDMwNS41MDkgOTMuODEzLDMwOC4wMDAiIHN0cm9rZS13aWR0aD0iMy40MjkiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gOTMuODEzLDMwOC4wMDAgQyA4OC4xMDEsMjg4LjY5NyA4OS44NTEsMjkzLjAzNCA4Ni44MTMsMjY5LjAwMCIgc3Ryb2tlLXdpZHRoPSIzLjcwNSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSA4Ni44MTMsMjY5LjAwMCBDIDgzLjYwNiwyMzQuNjcyIDg0LjYwMSwyMzUuMTk3IDg2LjgxMywyMDEuMDAwIiBzdHJva2Utd2lkdGg9IjEuNDIyIiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDg2LjgxMywyMDEuMDAwIEMgOTAuNjY4LDE3MS4zNzUgODkuNjA2LDE3MS42NzIgOTguODEzLDE0My4wMDAiIHN0cm9rZS13aWR0aD0iMS4yNTYiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gOTguODEzLDE0My4wMDAgQyAxMDUuNjIzLDExNi4zNjQgMTA2LjE2OCwxMTcuMzc1IDExNy44MTMsOTMuMDAwIiBzdHJva2Utd2lkdGg9IjEuMzY0IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDExNy44MTMsOTMuMDAwIEMgMTI0LjI5Niw4MC41MjAgMTIzLjYyMyw4MS44NjQgMTM0LjgxMyw3NC4wMDAiIHN0cm9rZS13aWR0aD0iMS45MjEiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTM0LjgxMyw3NC4wMDAgQyAxNTAuNzk5LDY1LjY0NiAxNDkuMjk2LDY1LjAyMCAxNjcuODEzLDYyLjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjgwNiIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAxNjcuODEzLDYyLjAwMCBDIDE4Ni4yOTEsNTkuNTcwIDE4NS43OTksNTguMTQ2IDIwNC44MTMsNTkuMDAwIiBzdHJva2Utd2lkdGg9IjEuNzc4IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDIwNC44MTMsNTkuMDAwIEMgMjE5LjkwMSw1Ni4yNzAgMjE4Ljc5MSw1OC41NzAgMjMyLjgxMyw2MC4wMDAiIHN0cm9rZS13aWR0aD0iMS45NTciIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMjMyLjgxMyw2MC4wMDAgQyAyNDMuOTI4LDYzLjkzNSAyNDIuNDAxLDYyLjc3MCAyNDkuODEzLDcyLjAwMCIgc3Ryb2tlLXdpZHRoPSIyLjM3MiIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAyNDkuODEzLDcyLjAwMCBDIDI1Ny40OTYsODMuOTQ1IDI1Ny40MjgsODIuNDM1IDI1OS44MTMsOTcuMDAwIiBzdHJva2Utd2lkdGg9IjIuMjMyIiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDI1OS44MTMsOTcuMDAwIEMgMjYzLjAzMywxMTUuNzkwIDI2Mi45OTYsMTE0Ljk0NSAyNjAuODEzLDEzNC4wMDAiIHN0cm9rZS13aWR0aD0iMS45OTUiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMjYwLjgxMywxMzQuMDAwIEMgMjU5Ljc5MiwxNTguNzc3IDI1OC4wMzMsMTU2Ljc5MCAyNDkuODEzLDE3OS4wMDAiIHN0cm9rZS13aWR0aD0iMS42MjkiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMjQ5LjgxMywxNzkuMDAwIEMgMjM4LjM5MCwxOTcuMzQwIDI0MC43OTIsMTk3LjI3NyAyMjIuODEzLDIxMS4wMDAiIHN0cm9rZS13aWR0aD0iMS41NzciIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMjIyLjgxMywyMTEuMDAwIEMgMjA0Ljk4OCwyMjUuNzkzIDIwNS44OTAsMjI1Ljg0MCAxODQuODEzLDIzNi4wMDAiIHN0cm9rZS13aWR0aD0iMS41NDQiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTg0LjgxMywyMzYuMDAwIEMgMTYxLjMxNywyNDUuMDEzIDE2Mi40ODgsMjQ3LjI5MyAxMzcuODEzLDI1NC4wMDAiIHN0cm9rZS13aWR0aD0iMS40NTUiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTM3LjgxMywyNTQuMDAwIEMgMTI3LjMyMSwyNTguMDI0IDEyNy4zMTcsMjU4LjAxMyAxMTYuODEzLDI2Mi4wMDAiIHN0cm9rZS13aWR0aD0iMi4xMjYiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTE2LjgxMywyNjIuMDAwIEMgMTA4LjkzMiwyNjYuNzAxIDEwOC44MjEsMjY1LjAyNCAxMDAuODEzLDI2OC4wMDAiIHN0cm9rZS13aWR0aD0iMi41NjAiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTAwLjgxMywyNjguMDAwIEMgOTAuOTA5LDI2OS40MTIgOTYuNDMyLDI2OC43MDEgOTEuODEzLDI2Ni4wMDAiIHN0cm9rZS13aWR0aD0iMy42MTgiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gOTEuODEzLDI2Ni4wMDAgQyA5OS4zODEsMjQ4LjE4NyA5NS40MDksMjUyLjQxMiAxMDkuODEzLDIzNC4wMDAiIHN0cm9rZS13aWR0aD0iMi4xNjgiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTA5LjgxMywyMzQuMDAwIEMgMTE1LjY2OSwyMjkuODc2IDExMS44ODEsMjMxLjE4NyAxMTYuODEzLDIzMi4wMDAiIHN0cm9rZS13aWR0aD0iMy4xOTMiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTE2LjgxMywyMzIuMDAwIEMgMTE4LjE3MiwyMzkuNjkwIDExOS4xNjksMjM2LjM3NiAxMTYuODEzLDI0Ny4wMDAiIHN0cm9rZS13aWR0aD0iMy45MjIiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTE2LjgxMywyNDcuMDAwIEMgMTEzLjAyNSwyNjEuMDY2IDExNC4xNzIsMjYxLjE5MCAxMDguODEzLDI3NS4wMDAiIHN0cm9rZS13aWR0aD0iMi4zNDAiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTA4LjgxMywyNzUuMDAwIEMgMTAzLjU1OCwyODkuNzQ1IDEwNi41MjUsMjgyLjU2NiAxMDMuODEzLDI5MC4wMDAiIHN0cm9rZS13aWR0aD0iMi43MTQiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTAzLjgxMywyOTAuMDAwIEMgMTA0LjE1MCwyODAuODEzIDEwNC4wNTgsMjkwLjI0NSAxMDkuODEzLDI3Ni4wMDAiIHN0cm9rZS13aWR0aD0iMy41NDIiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTA5LjgxMywyNzYuMDAwIEMgMTM0LjkzOCwyNTQuMTA3IDEzNC4xNTAsMjU1LjMxMyAxNjMuODEzLDIzOS4wMDAiIHN0cm9rZS13aWR0aD0iMS40NTMiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTYzLjgxMywyMzkuMDAwIEMgMjEyLjY2NSwyMTguNzY1IDIxMC40MzgsMjE0LjYwNyAyNjAuODEzLDE5Ny4wMDAiIHN0cm9rZS13aWR0aD0iMS4xMjUiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMjYwLjgxMywxOTcuMDAwIEMgMjg1LjI1MiwxODQuODcxIDI4NS42NjUsMTg1Ljc2NSAzMDkuODEzLDE3My4wMDAiIHN0cm9rZS13aWR0aD0iMS4yMDAiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMzA5LjgxMywxNzMuMDAwIEMgMzE4LjgxNSwxNjUuNzgwIDMxNS4yNTIsMTcwLjM3MSAzMjAuODEzLDE2OC4wMDAiIHN0cm9rZS13aWR0aD0iMi4xODQiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMzIwLjgxMywxNjguMDAwIEMgMzE5Ljc5MSwxNzUuNDk3IDMyMy4zMTUsMTcwLjc4MCAzMTguODEzLDE4My4wMDAiIHN0cm9rZS13aWR0aD0iMy40NzciIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMzE4LjgxMywxODMuMDAwIEMgMzE2LjY5OCwxODkuODg1IDMxOC4yOTEsMTg2Ljk5NyAzMTcuODEzLDE5MS4wMDAiIHN0cm9rZS13aWR0aD0iMy42NTciIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMzE3LjgxMywxOTEuMDAwIEMgMzIwLjY2MywxODkuMzY0IDMxOC42OTgsMTkxLjg4NSAzMjIuODEzLDE4Ny4wMDAiIHN0cm9rZS13aWR0aD0iNC40NDQiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMzIyLjgxMywxODcuMDAwIEMgMzM2LjMxMSwxNzMuMjQ2IDMzNS42NjMsMTcyLjg2NCAzNDcuODEzLDE1OC4wMDAiIHN0cm9rZS13aWR0aD0iMi4xMTgiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMzQ3LjgxMywxNTguMDAwIEMgMzU4Ljc2MSwxNDQuNzc1IDM1Ny44MTEsMTQ0Ljc0NiAzNjUuODEzLDEzMC4wMDAiIHN0cm9rZS13aWR0aD0iMS45NjIiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMzY1LjgxMywxMzAuMDAwIEMgMzY3LjcxNiwxMjIuMDM4IDM2OS4yNjEsMTIyLjc3NSAzNjguODEzLDExNC4wMDAiIHN0cm9rZS13aWR0aD0iMi40NzUiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMzY4LjgxMywxMTQuMDAwIEMgMzY5LjYxMCwxMDYuMDg2IDM2OS4yMTYsMTExLjAzOCAzNjguODEzLDEwOC4wMDAiIHN0cm9rZS13aWR0aD0iMy40NTMiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMzY4LjgxMywxMDguMDAwIEMgMzYxLjUwMSwxMjIuNDc3IDM2NC42MTAsMTE4LjA4NiAzNTguODEzLDEzOC4wMDAiIHN0cm9rZS13aWR0aD0iMy40NjYiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMzU4LjgxMywxMzguMDAwIEMgMzUwLjgwOSwxODYuMzc3IDM1MC41MDEsMTg1Ljk3NyAzNDYuODEzLDIzNS4wMDAiIHN0cm9rZS13aWR0aD0iMS4xMjUiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMzQ2LjgxMywyMzUuMDAwIEMgMzQxLjI4NiwyNjIuNjI5IDM0NC44MDksMjU5LjM3NyAzNDYuODEzLDI4NC4wMDAiIHN0cm9rZS13aWR0aD0iMS4zODMiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMzQ2LjgxMywyODQuMDAwIEMgMzUzLjk0MCwyOTMuNjg1IDM0OC43ODYsMjkxLjYyOSAzNjEuODEzLDI5My4wMDAiIHN0cm9rZS13aWR0aD0iMi4xMzAiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMzYxLjgxMywyOTMuMDAwIEMgMzc4LjA2NCwyODcuOTk1IDM3Ni45NDAsMjkxLjY4NSAzOTIuODEzLDI4MC4wMDAiIHN0cm9rZS13aWR0aD0iMi4wNjAiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMzkyLjgxMywyODAuMDAwIEMgNDMxLjUxNiwyNTguMzEwIDQzMS41NjQsMjU4Ljk5NSA0NjguODEzLDIzNS4wMDAiIHN0cm9rZS13aWR0aD0iMS4xMjUiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gNDY4LjgxMywyMzUuMDAwIEMgNDcxLjc4MCwyMjkuNzQyIDQ3MS41MTYsMjMzLjMxMCA0NzIuODEzLDIzMC4wMDAiIHN0cm9rZS13aWR0aD0iMi4yMjYiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gNDcyLjgxMywyMzAuMDAwIEMgNDcyLjgxMywyMzMuMDAwIDQ3My43ODAsMjMwLjI0MiA0NzIuODEzLDIzNi4wMDAiIHN0cm9rZS13aWR0aD0iMy42NTIiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gNDcyLjgxMywyMzYuMDAwIEMgNDcxLjM2NSwyNDkuNjg3IDQ3Mi44MTMsMjQ5LjUwMCA0NzIuODEzLDI2My4wMDAiIHN0cm9rZS13aWR0aD0iMi40NzQiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gNDcyLjgxMywyNjMuMDAwIEMgNDczLjI4MiwyNzQuMzM0IDQ3My44NjUsMjcyLjY4NyA0NzcuODEzLDI4Mi4wMDAiIHN0cm9rZS13aWR0aD0iMi41MDkiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gNDc3LjgxMywyODIuMDAwIEMgNDgxLjY0OSwyODUuMDAwIDQ3OS43ODIsMjg1LjMzNCA0ODUuODEzLDI4NS4wMDAiIHN0cm9rZS13aWR0aD0iMy4yNjIiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjwvc3ZnPg==')
+
+SELECT max(NUMERO) FROM ordenes where ID_EMPRESA =1
+
+INSERT INTO ordenes (ID_CONTRATO, FECHA_ALTA, ID_TIPO_ESTADO, NUMERO, ID_EMPRESA) VALUES ('1', '2018-10-03 03:13:34 ', '1', '1', '1')
+
+SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 44
+
+INSERT INTO contratos_lineas (ID_TIPO, ID_ASOCIADO, ID_CONTRATO, PRECIO_PROVEEDOR, BENEFICIO, IMPUESTO, PVP, PERMANENCIA, ESTADO, FECHA_ALTA, FECHA_BAJA) VALUES ('1', '48', '1', '10', '10', '21', '80.96', '2019-04-07', '3', '2018-10-03 ', '')
+
+SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 44
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '1', '44', '40', '10', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('1', '15', '2', '2018-10-03')
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '1', '44', '39', '10', '2018-10-03 ', '', '3')
+
+INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '15', '2')
+
+UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=15
+
+UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=15 AND almacenes.id_empresa=1
+
+SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 55
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '55', '48', '', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('3', '17', '3', '2018-10-03')
+
+SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 55
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '55', '47', '5000', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '55', '46', '9999', '2018-10-03 ', '', '3')
+
+SELECT NOMBRE, APELLIDOS, TIPO_DOCUMENTO, DNI, FIJO, MOVIL, EMAIL, DIRECCION, municipios.municipio, provincias.provincia, pais.iso, CP, BANCO, IBAN FROM clientes  JOIN municipios ON municipios.id = clientes.LOCALIDAD 
+                                            JOIN provincias ON provincias.id = clientes.PROVINCIA 
+                                            JOIN pais ON pais.id = clientes.NACIONALIDAD  WHERE clientes.ID = '967'
+
+SELECT ID_EXTERNO FROM servicios,servicios_externos WHERE servicios.id=55 AND servicios.id=servicios_externos.id_servicio AND servicios_externos.id_empresa=1
+
+INSERT INTO multiplataforma.ordenes_test_instalacion (id_linea_contrato, fecha, tecnico, rx, ssid, clave_wifi, test_masmovil, test_aire, test_fijo) VALUES ('3', '2018-10-03 15:13:35', '1', '', '', '', 'El ICC-ID no es correcto. ', '', '')
+
+INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '17', '5')
+
+UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=17
+
+UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=17 AND almacenes.id_empresa=1
+
+SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 43
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '43', '48', '', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('6', '23', '3', '2018-10-03')
+
+SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 43
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '43', '47', '1000', '2018-10-03 ', '', '3')
+
+INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '43', '46', '100', '2018-10-03 ', '', '3')
+
+SELECT NOMBRE, APELLIDOS, TIPO_DOCUMENTO, DNI, FIJO, MOVIL, EMAIL, DIRECCION, municipios.municipio, provincias.provincia, pais.iso, CP, BANCO, IBAN FROM clientes  JOIN municipios ON municipios.id = clientes.LOCALIDAD 
+                                            JOIN provincias ON provincias.id = clientes.PROVINCIA 
+                                            JOIN pais ON pais.id = clientes.NACIONALIDAD  WHERE clientes.ID = '967'
+
+SELECT ID_EXTERNO FROM servicios,servicios_externos WHERE servicios.id=43 AND servicios.id=servicios_externos.id_servicio AND servicios_externos.id_empresa=1
+
+INSERT INTO multiplataforma.ordenes_test_instalacion (id_linea_contrato, fecha, tecnico, rx, ssid, clave_wifi, test_masmovil, test_aire, test_fijo) VALUES ('6', '2018-10-03 15:13:35', '1', '', '', '', 'Transacion ya procesada', '', '')
+
+INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '23', '8')
+
+UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=23
+
+UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=23 AND almacenes.id_empresa=1
+
+SELECT id,descripcion FROM fibra.olts ORDER BY descripcion
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA = 1 ORDER BY ordenes.FECHA_ALTA
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 7 day,'%d/%m/%Y') ),count(id) FROM fibra.aprovisionados GROUP BY  week(fecha,0)
+
+SELECT id,descripcion FROM fibra.olts ORDER BY descripcion
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA = 1 ORDER BY ordenes.FECHA_ALTA
+
+SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+SELECT CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 7 day,'%d/%m/%Y') ),count(id) FROM fibra.aprovisionados GROUP BY  week(fecha,0)
+
+SELECT clientes.ID,clientes.nombre,clientes.apellidos,clientes.dni,clientes.direccion FROM clientes WHERE  clientes.baja=0 AND clientes.id_empresa=1
+

@@ -1,0 +1,88 @@
+09/10/18 SELECT ID FROM clientes where DNI = '25590126G' AND ID_EMPRESA=1 order by id desc limit 1 
+
+09/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+09/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=11 ORDER BY municipio
+
+09/10/18 INSERT INTO clientes (NOMBRE, APELLIDOS, DNI, TIPO_DOCUMENTO, DIRECCION, LOCALIDAD, PROVINCIA, COMUNIDAD, IBAN, SWIFT, ID_EMPRESA, CP, FIJO, MOVIL, EMAIL, FECHA_ALTA, NOTAS, BAJA, BANCO, ID_CONSENTIMIENTO, ID_TIPO_CLIENTE, FECHA_NACIMIENTO, DIRECCION_BANCO, NACIONALIDAD) VALUES ('RUBEN', 'CORRAELS', '25590126G', '1', '12323', '1766', '11', '1', '123', '123', '1', '12323', '987987', '654654', 'info@ruben.com', '2018-10-09', '123', '0', '123', '8', '1', '1974-05-15', '123', '28')
+
+09/10/18 SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS,NACIONALIDAD,DIRECCION_BANCO FROM clientes WHERE  clientes.id > 0 ORDER BY apellidos, nombre
+
+09/10/18 SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS,NACIONALIDAD,DIRECCION_BANCO FROM clientes WHERE clientes.id = 2931 ORDER BY apellidos, nombre
+
+09/10/18 SELECT clientes_documentos.DOCUMENTO, clientes_documentos_tipos.NOMBRE FROM clientes_documentos  JOIN clientes_documentos_tipos ON clientes_documentos_tipos.ID = clientes_documentos.ID_TIPO_DOCUMENTO WHERE  clientes_documentos.ID_CLIENTE = 2931 ORDER BY clientes_documentos.ID
+
+09/10/18 SELECT id,comunidad FROM comunidades ORDER BY comunidad
+
+09/10/18 SELECT id,comunidad FROM comunidades ORDER BY comunidad
+
+09/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id= ORDER BY provincia
+
+09/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id= ORDER BY provincia
+
+09/10/18 SELECT id,municipio FROM municipios WHERE provincia_id= ORDER BY municipio
+
+09/10/18 SELECT id,municipio FROM municipios WHERE provincia_id= ORDER BY municipio
+
+09/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+09/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=11 ORDER BY municipio
+
+09/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=NaN ORDER BY municipio
+
+09/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=NaN ORDER BY municipio
+
+09/10/18 UPDATE clientes SET NOMBRE='RUBEN',APELLIDOS='CORRAELS',DNI='31689245Y',TIPO_DOCUMENTO='1',DIRECCION='12323',LOCALIDAD='1766',PROVINCIA='11',COMUNIDAD='1',IBAN='123',SWIFT='123',ID_EMPRESA='1',CP='12323',FIJO='987987',MOVIL='654654',EMAIL='info@ruben.com',NOTAS='123',BANCO='123',ID_CONSENTIMIENTO='8',ID_TIPO_CLIENTE='1',FECHA_NACIMIENTO='1974-05-15',DIRECCION_BANCO='123',NACIONALIDAD='28' WHERE ID=2931 AND ID_EMPRESA = 1
+
+09/10/18 SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS,NACIONALIDAD,DIRECCION_BANCO FROM clientes WHERE clientes.id = 2799 ORDER BY apellidos, nombre
+
+09/10/18 SELECT clientes_documentos.DOCUMENTO, clientes_documentos_tipos.NOMBRE FROM clientes_documentos  JOIN clientes_documentos_tipos ON clientes_documentos_tipos.ID = clientes_documentos.ID_TIPO_DOCUMENTO WHERE  clientes_documentos.ID_CLIENTE = 2799 ORDER BY clientes_documentos.ID
+
+09/10/18 SELECT id,estadonombre FROM estado WHERE ubicacionpaisid= ORDER BY estadonombre
+
+09/10/18 SELECT id,estadonombre FROM estado WHERE ubicacionpaisid= ORDER BY estadonombre
+
+09/10/18 SELECT id,estadonombre FROM estado WHERE ubicacionpaisid=0 ORDER BY estadonombre
+
+09/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id= ORDER BY provincia
+
+09/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id= ORDER BY provincia
+
+09/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=11 ORDER BY municipio
+
+09/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+09/10/18 SELECT id,municipio FROM municipios WHERE provincia_id= ORDER BY municipio
+
+09/10/18 SELECT id,municipio FROM municipios WHERE provincia_id= ORDER BY municipio
+
+09/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=NaN ORDER BY municipio
+
+09/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=NaN ORDER BY municipio
+
+09/10/18 SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS,NACIONALIDAD,DIRECCION_BANCO FROM clientes WHERE clientes.id = 2931 ORDER BY apellidos, nombre
+
+09/10/18 SELECT clientes_documentos.DOCUMENTO, clientes_documentos_tipos.NOMBRE FROM clientes_documentos  JOIN clientes_documentos_tipos ON clientes_documentos_tipos.ID = clientes_documentos.ID_TIPO_DOCUMENTO WHERE  clientes_documentos.ID_CLIENTE = 2931 ORDER BY clientes_documentos.ID
+
+09/10/18 SELECT id,comunidad FROM comunidades ORDER BY comunidad
+
+09/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id= ORDER BY provincia
+
+09/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id= ORDER BY provincia
+
+09/10/18 SELECT id,comunidad FROM comunidades ORDER BY comunidad
+
+09/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+09/10/18 SELECT id,municipio FROM municipios WHERE provincia_id= ORDER BY municipio
+
+09/10/18 SELECT id,municipio FROM municipios WHERE provincia_id= ORDER BY municipio
+
+09/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=11 ORDER BY municipio
+
+09/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=NaN ORDER BY municipio
+
+09/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=NaN ORDER BY municipio
+
+09/10/18 UPDATE clientes SET NOMBRE='RUBEN',APELLIDOS='CORRAELES CORBACHO',DNI='31689245Y',TIPO_DOCUMENTO='1',DIRECCION='12323',LOCALIDAD='1766',PROVINCIA='11',COMUNIDAD='1',IBAN='123',SWIFT='123',ID_EMPRESA='1',CP='12323',FIJO='987987',MOVIL='654654',EMAIL='info@ruben.com',NOTAS='123',BANCO='123',ID_CONSENTIMIENTO='8',ID_TIPO_CLIENTE='1',FECHA_NACIMIENTO='1974-05-15',DIRECCION_BANCO='123',NACIONALIDAD='28' WHERE ID=2931 AND ID_EMPRESA = 1
+

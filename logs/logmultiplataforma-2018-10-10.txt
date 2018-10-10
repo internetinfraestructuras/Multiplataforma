@@ -1,0 +1,563 @@
+10/10/18 SELECT id,descripcion FROM fibra.olts ORDER BY descripcion
+
+10/10/18 SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+10/10/18 Error en selectJoin.SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+10/10/18 SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+10/10/18 Error en selectJoin.SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 Error en selectJoin.SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA =  ORDER BY ordenes.FECHA_ALTA
+
+10/10/18 Error en selectJoin.SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA =  ORDER BY ordenes.FECHA_ALTA
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 Error en selectJoin.SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 SELECT usuarios.id, usuarios.nombre, usuarios.apellidos, nivel,  usuarios.id_empresa, empresas.logo as logo, municipios.municipio as localidad, empresas.CIF, empresas_configuracion.AIRENETWORKS as AIRENETWORKS FROM usuarios   JOIN empresas on usuarios.id_empresa = empresas.id 
+                        JOIN municipios on municipios.id = empresas.MUNICIPIO
+                        JOIN empresas_configuracion ON empresas_configuracion.ID_EMPRESA = empresas.ID  WHERE  (usuarios.email="admin" and usuarios.clave="21232f297a57a5a743894a0e4a801fc3") OR (usuarios.usuario="admin" and usuarios.clave="21232f297a57a5a743894a0e4a801fc3") 
+
+10/10/18 UPDATE usuarios SET ultimo_acceso='2018/10/10 08:50:56' WHERE id=1
+
+10/10/18 SELECT DIA_FACTURACION FROM empresas_configuracion where ID_EMPRESA=1 order by id desc limit 1 
+
+10/10/18 SELECT id,descripcion FROM fibra.olts ORDER BY descripcion
+
+10/10/18 SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+10/10/18 SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA = 1 ORDER BY ordenes.FECHA_ALTA
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 SELECT CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 6 day,'%d/%m/%Y') ),count(id) FROM fibra.aprovisionados GROUP BY  week(fecha,0)
+
+10/10/18 SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS,NACIONALIDAD,DIRECCION_BANCO FROM clientes WHERE  clientes.id > 0 ORDER BY apellidos, nombre
+
+10/10/18 SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS,NACIONALIDAD,DIRECCION_BANCO FROM clientes WHERE clientes.id = 2931 ORDER BY apellidos, nombre
+
+10/10/18 SELECT clientes_documentos.DOCUMENTO, clientes_documentos_tipos.NOMBRE FROM clientes_documentos  JOIN clientes_documentos_tipos ON clientes_documentos_tipos.ID = clientes_documentos.ID_TIPO_DOCUMENTO WHERE  clientes_documentos.ID_CLIENTE = 2931 ORDER BY clientes_documentos.ID
+
+10/10/18 SELECT id,comunidad FROM comunidades ORDER BY comunidad
+
+10/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id= ORDER BY provincia
+
+10/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id= ORDER BY provincia
+
+10/10/18 SELECT id,comunidad FROM comunidades ORDER BY comunidad
+
+10/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id= ORDER BY municipio
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id= ORDER BY municipio
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=11 ORDER BY municipio
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=NaN ORDER BY municipio
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=NaN ORDER BY municipio
+
+10/10/18 UPDATE clientes SET NOMBRE='RUBEN',APELLIDOS='CORRALES CORBACHO',DNI='31689245Y',TIPO_DOCUMENTO='1',DIRECCION='CALLE JEREZ, 7',LOCALIDAD='1775',PROVINCIA='11',COMUNIDAD='1',IBAN='ES4621005091',SWIFT='SWIFT',ID_EMPRESA='1',CP='11670',FIJO='956716244',MOVIL='670889900',EMAIL='info@ruben.com',NOTAS='notas',BANCO='LA CAIXA',ID_CONSENTIMIENTO='4',ID_TIPO_CLIENTE='1',FECHA_NACIMIENTO='1974-05-15',DIRECCION_BANCO='PLAZA CONSTITUCIÓN',NACIONALIDAD='28' WHERE ID=2931 AND ID_EMPRESA = 1
+
+10/10/18 SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS,NACIONALIDAD,DIRECCION_BANCO FROM clientes WHERE  clientes.id > 0 ORDER BY apellidos, nombre
+
+10/10/18 SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS,NACIONALIDAD,DIRECCION_BANCO FROM clientes WHERE clientes.id = 2931 ORDER BY apellidos, nombre
+
+10/10/18 SELECT clientes_documentos.DOCUMENTO, clientes_documentos_tipos.NOMBRE FROM clientes_documentos  JOIN clientes_documentos_tipos ON clientes_documentos_tipos.ID = clientes_documentos.ID_TIPO_DOCUMENTO WHERE  clientes_documentos.ID_CLIENTE = 2931 ORDER BY clientes_documentos.ID
+
+10/10/18 SELECT id,comunidad FROM comunidades ORDER BY comunidad
+
+10/10/18 SELECT id,comunidad FROM comunidades ORDER BY comunidad
+
+10/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id= ORDER BY provincia
+
+10/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id= ORDER BY provincia
+
+10/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id= ORDER BY municipio
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id= ORDER BY municipio
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=11 ORDER BY municipio
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=NaN ORDER BY municipio
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=NaN ORDER BY municipio
+
+10/10/18 UPDATE clientes SET NOMBRE='RUBEN',APELLIDOS='CORRALES CORBACHO',DNI='31689245Y',TIPO_DOCUMENTO='1',DIRECCION='CALLE JEREZ, 7',LOCALIDAD='1775',PROVINCIA='11',COMUNIDAD='1',IBAN='ES4621005091',SWIFT='SWIFT',ID_EMPRESA='1',CP='11670',FIJO='956716244',MOVIL='670889900',EMAIL='info@ruben.com',NOTAS='notas',BANCO='LA CAIXA',ID_CONSENTIMIENTO='4',ID_TIPO_CLIENTE='1',FECHA_NACIMIENTO='1974-05-15',DIRECCION_BANCO='PLAZA CONSTITUCIÓN',NACIONALIDAD='28' WHERE ID=2931 AND ID_EMPRESA = 1
+
+10/10/18 SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS,NACIONALIDAD,DIRECCION_BANCO FROM clientes WHERE  clientes.id > 0 ORDER BY apellidos, nombre
+
+10/10/18 SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS,NACIONALIDAD,DIRECCION_BANCO FROM clientes WHERE clientes.id = 2931 ORDER BY apellidos, nombre
+
+10/10/18 SELECT clientes_documentos.DOCUMENTO, clientes_documentos_tipos.NOMBRE FROM clientes_documentos  JOIN clientes_documentos_tipos ON clientes_documentos_tipos.ID = clientes_documentos.ID_TIPO_DOCUMENTO WHERE  clientes_documentos.ID_CLIENTE = 2931 ORDER BY clientes_documentos.ID
+
+10/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+10/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id= ORDER BY provincia
+
+10/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id= ORDER BY provincia
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=11 ORDER BY municipio
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id= ORDER BY municipio
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id= ORDER BY municipio
+
+10/10/18 SELECT id,comunidad FROM comunidades ORDER BY comunidad
+
+10/10/18 SELECT id,comunidad FROM comunidades ORDER BY comunidad
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=NaN ORDER BY municipio
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=NaN ORDER BY municipio
+
+10/10/18 UPDATE clientes SET NOMBRE='RUBEN',APELLIDOS='CORRALES CORBACHO',DNI='31689245Y',TIPO_DOCUMENTO='1',DIRECCION='CALLE JEREZ, 7',LOCALIDAD='1775',PROVINCIA='11',COMUNIDAD='1',IBAN='ES4621005091',SWIFT='SWIFT',ID_EMPRESA='1',CP='11670',FIJO='956716244',MOVIL='670889900',EMAIL='info@ruben.com',NOTAS='notas',BANCO='LA CAIXA',ID_CONSENTIMIENTO='4',ID_TIPO_CLIENTE='1',FECHA_NACIMIENTO='1974-05-15',DIRECCION_BANCO='PLAZA CONSTITUCIÓN',NACIONALIDAD='28' WHERE ID=2931 AND ID_EMPRESA = 1
+
+10/10/18 SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS,NACIONALIDAD,DIRECCION_BANCO FROM clientes WHERE  clientes.id > 0 ORDER BY apellidos, nombre
+
+10/10/18 SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS,NACIONALIDAD,DIRECCION_BANCO FROM clientes WHERE clientes.id = 2931 ORDER BY apellidos, nombre
+
+10/10/18 SELECT clientes_documentos.DOCUMENTO, clientes_documentos_tipos.NOMBRE FROM clientes_documentos  JOIN clientes_documentos_tipos ON clientes_documentos_tipos.ID = clientes_documentos.ID_TIPO_DOCUMENTO WHERE  clientes_documentos.ID_CLIENTE = 2931 ORDER BY clientes_documentos.ID
+
+10/10/18 SELECT id,comunidad FROM comunidades ORDER BY comunidad
+
+10/10/18 SELECT id,comunidad FROM comunidades ORDER BY comunidad
+
+10/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id= ORDER BY provincia
+
+10/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id= ORDER BY provincia
+
+10/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id= ORDER BY municipio
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id= ORDER BY municipio
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=11 ORDER BY municipio
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=NaN ORDER BY municipio
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=NaN ORDER BY municipio
+
+10/10/18 UPDATE clientes SET NOMBRE='RUBEN',APELLIDOS='CORRALES CORBACHO',DNI='31689245Y',TIPO_DOCUMENTO='1',DIRECCION='CALLE JEREZ, 7',LOCALIDAD='1775',PROVINCIA='11',COMUNIDAD='1',IBAN='ES4621005091',SWIFT='SWIFT',ID_EMPRESA='1',CP='11670',FIJO='956716244',MOVIL='670889900',EMAIL='info@ruben.com',NOTAS='notas',BANCO='LA CAIXA',ID_CONSENTIMIENTO='4',ID_TIPO_CLIENTE='1',FECHA_NACIMIENTO='1974-05-15',DIRECCION_BANCO='PLAZA CONSTITUCIÓN',NACIONALIDAD='28' WHERE ID=2931 AND ID_EMPRESA = 1
+
+10/10/18 UPDATE clientes SET NOMBRE='RUBEN',APELLIDOS='CORRALES CORBACHO',DNI='31689245Y',TIPO_DOCUMENTO='1',DIRECCION='CALLE JEREZ, 7',LOCALIDAD='1775',PROVINCIA='11',COMUNIDAD='1',IBAN='ES4621005091',SWIFT='SWIFT',ID_EMPRESA='1',CP='11670',FIJO='956716244',MOVIL='670889900',EMAIL='info@ruben.com',NOTAS='notas',BANCO='LA CAIXA',ID_CONSENTIMIENTO='4',ID_TIPO_CLIENTE='1',FECHA_NACIMIENTO='1974-05-15',DIRECCION_BANCO='PLAZA CONSTITUCIÓN',NACIONALIDAD='28' WHERE ID=2931 AND ID_EMPRESA = 1
+
+10/10/18 SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS,NACIONALIDAD,DIRECCION_BANCO FROM clientes WHERE  clientes.id > 0 ORDER BY apellidos, nombre
+
+10/10/18 SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS,NACIONALIDAD,DIRECCION_BANCO FROM clientes WHERE clientes.id = 2931 ORDER BY apellidos, nombre
+
+10/10/18 SELECT clientes_documentos.DOCUMENTO, clientes_documentos_tipos.NOMBRE FROM clientes_documentos  JOIN clientes_documentos_tipos ON clientes_documentos_tipos.ID = clientes_documentos.ID_TIPO_DOCUMENTO WHERE  clientes_documentos.ID_CLIENTE = 2931 ORDER BY clientes_documentos.ID
+
+10/10/18 SELECT id,comunidad FROM comunidades ORDER BY comunidad
+
+10/10/18 SELECT id,comunidad FROM comunidades ORDER BY comunidad
+
+10/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id= ORDER BY provincia
+
+10/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id= ORDER BY provincia
+
+10/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id= ORDER BY municipio
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id= ORDER BY municipio
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=11 ORDER BY municipio
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=NaN ORDER BY municipio
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=NaN ORDER BY municipio
+
+10/10/18 SELECT clientes.ID,clientes.nombre,clientes.apellidos,clientes.dni,clientes.direccion FROM clientes WHERE  clientes.baja=0 AND clientes.id_empresa=1
+
+10/10/18 SELECT id,descripcion FROM fibra.olts ORDER BY descripcion
+
+10/10/18 SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+10/10/18 SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA = 1 ORDER BY ordenes.FECHA_ALTA
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 SELECT CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 6 day,'%d/%m/%Y') ),count(id) FROM fibra.aprovisionados GROUP BY  week(fecha,0)
+
+10/10/18 SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS,NACIONALIDAD,DIRECCION_BANCO FROM clientes WHERE  clientes.id > 0 ORDER BY apellidos, nombre
+
+10/10/18 SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS,NACIONALIDAD,DIRECCION_BANCO FROM clientes WHERE  clientes.id > 0 ORDER BY apellidos, nombre
+
+10/10/18 SELECT id,descripcion FROM fibra.olts ORDER BY descripcion
+
+10/10/18 SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+10/10/18 Error en selectJoin.SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+10/10/18 SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+10/10/18 Error en selectJoin.SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 Error en selectJoin.SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA =  ORDER BY ordenes.FECHA_ALTA
+
+10/10/18 Error en selectJoin.SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA =  ORDER BY ordenes.FECHA_ALTA
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 Error en selectJoin.SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 SELECT id,descripcion FROM fibra.olts ORDER BY descripcion
+
+10/10/18 SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+10/10/18 Error en selectJoin.SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+10/10/18 SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+10/10/18 Error en selectJoin.SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA= ORDER BY FECHA_SOLICITUD
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 Error en selectJoin.SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA =  ORDER BY ordenes.FECHA_ALTA
+
+10/10/18 Error en selectJoin.SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA =  ORDER BY ordenes.FECHA_ALTA
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 Error en selectJoin.SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA =  ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 SELECT usuarios.id, usuarios.nombre, usuarios.apellidos, nivel,  usuarios.id_empresa, empresas.logo as logo, municipios.municipio as localidad, empresas.CIF, empresas_configuracion.AIRENETWORKS as AIRENETWORKS FROM usuarios   JOIN empresas on usuarios.id_empresa = empresas.id 
+                        JOIN municipios on municipios.id = empresas.MUNICIPIO
+                        JOIN empresas_configuracion ON empresas_configuracion.ID_EMPRESA = empresas.ID  WHERE  (usuarios.email="admin" and usuarios.clave="21232f297a57a5a743894a0e4a801fc3") OR (usuarios.usuario="admin" and usuarios.clave="21232f297a57a5a743894a0e4a801fc3") 
+
+10/10/18 UPDATE usuarios SET ultimo_acceso='2018/10/10 09:07:41' WHERE id=1
+
+10/10/18 SELECT DIA_FACTURACION FROM empresas_configuracion where ID_EMPRESA=1 order by id desc limit 1 
+
+10/10/18 SELECT id,descripcion FROM fibra.olts ORDER BY descripcion
+
+10/10/18 SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+10/10/18 SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA = 1 ORDER BY ordenes.FECHA_ALTA
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 SELECT CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 6 day,'%d/%m/%Y') ),count(id) FROM fibra.aprovisionados GROUP BY  week(fecha,0)
+
+10/10/18 SELECT id,descripcion FROM fibra.olts ORDER BY descripcion
+
+10/10/18 SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO != 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+10/10/18 SELECT FECHA_SOLICITUD, NOMBRE_TITULAR, NUMERO_PORTAR, clientes.NOMBRE, clientes.APELLIDOS, clientes.EMAIL, portabilidades.ESTADO, portabilidades.ID FROM portabilidades  left JOIN clientes ON clientes.ID=portabilidades.ID_CLIENTE WHERE ESTADO = 6 AND portabilidades.ID_EMPRESA=1 ORDER BY FECHA_SOLICITUD
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO != 1 AND ordenes.ID_TIPO_ESTADO != 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, ordenes.FECHA_ALTA FROM ordenes JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO  
+               JOIN clientes ON clientes.id = contratos.ID_CLIENTE  WHERE ordenes.ID NOT IN (SELECT ID_ORDEN from ordenes_usuario) AND contratos.ID_EMPRESA = 1 ORDER BY ordenes.FECHA_ALTA
+
+10/10/18 Error en selectWhere.SELECT ID,NOMBRE FROM clientes_consentimientos WHERE ID_EMPRESA = 1  ORDER BY NOMBRE
+
+10/10/18 SELECT ordenes.ID, clientes.NOMBRE, clientes.APELLIDOS, usuarios.NOMBRE, usuarios.APELLIDOS, ordenes_usuario.FECHA_ASIGNACION, ordenes.ID_TIPO_ESTADO FROM ordenes_usuario  JOIN ordenes ON ordenes_usuario.ID_ORDEN = ordenes.ID 
+                JOIN contratos ON contratos.ID = ordenes.ID_CONTRATO 
+                JOIN clientes ON clientes.id = contratos.ID_CLIENTE  
+                JOIN usuarios ON usuarios.ID = ordenes_usuario.ID_USUARIO  WHERE ordenes.ID_TIPO_ESTADO = 4 AND contratos.ID_EMPRESA = 1 ORDER BY ordenes_usuario.FECHA_ASIGNACION
+
+10/10/18 SELECT ID,NOMBRE FROM clientes_consentimientos ORDER BY ID
+
+10/10/18 SELECT ID,TEXTO,TEXTO_ACEPTACION FROM textos_legales WHERE  UBICACION="porta1"  ORDER BY ID
+
+10/10/18 SELECT ID,TEXTO,TEXTO_ACEPTACION FROM textos_legales WHERE  UBICACION="porta2"  ORDER BY ID
+
+10/10/18 SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS,NACIONALIDAD,DIRECCION_BANCO FROM clientes WHERE  clientes.id > 0 ORDER BY apellidos, nombre
+
+10/10/18 SELECT servicios.ID, ID_SERVICIO_TIPO, servicios.NOMBRE, PRECIO_PROVEEDOR, IMPUESTO, BENEFICIO, PVP, servicios_tipos.NOMBRE as nombreTipo FROM servicios  JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO  WHERE  ID_EMPRESA=1 ORDER BY ID_SERVICIO_TIPO
+
+10/10/18 SELECT ID,NOMBRE,FECHA_INICIO,FECHA_FIN,DURACION,DESCUENTO FROM campanas WHERE  (CURRENT_DATE BETWEEN FECHA_INICIO AND FECHA_FIN) AND ID_EMPRESA=1
+
+10/10/18 SELECT CONCAT (DATE_FORMAT(fecha,'%d/%m/%Y'),' a ',DATE_FORMAT(fecha  + interval 6 day,'%d/%m/%Y') ),count(id) FROM fibra.aprovisionados GROUP BY  week(fecha,0)
+
+10/10/18 SELECT clientes.ID,DNI,NOMBRE,APELLIDOS,DIRECCION,LOCALIDAD,clientes.PROVINCIA,COMUNIDAD,IBAN,SWIFT,ID_EMPRESA,CP,FIJO,MOVIL,EMAIL,FECHA_ALTA,BANCO,DOCUMENTO_URL,DOCUMENTO,TIPO_DOCUMENTO,ID_CONSENTIMIENTO,ID_TIPO_CLIENTE,FECHA_NACIMIENTO,NOTAS,NACIONALIDAD,DIRECCION_BANCO FROM clientes WHERE clientes.id = 967 ORDER BY apellidos, nombre
+
+10/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+10/10/18 SELECT id,provincia FROM provincias WHERE comunidad_id=1 ORDER BY provincia
+
+10/10/18 SELECT id,municipio FROM municipios WHERE provincia_id=11 ORDER BY municipio
+
+10/10/18 DELETE FROM contratos_borrador WHERE ID_CLIENTE='967'
+
+10/10/18 INSERT INTO contratos_borrador (ID_CLIENTE, ID_EMPRESA) VALUES ('967', '1')
+
+10/10/18 SELECT servicios.ID, ID_SERVICIO_TIPO, servicios.NOMBRE, PRECIO_PROVEEDOR, IMPUESTO, BENEFICIO, PVP, servicios_tipos.NOMBRE, PERMANENCIA_MINIMA FROM servicios  JOIN paquetes_servicios ON paquetes_servicios.ID_SERVICIO = servicios.ID  JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO  WHERE paquetes_servicios.ID_PAQUETE=40 AND ID_EMPRESA=1 ORDER BY servicios.NOMBRE
+
+10/10/18 SELECT servicios.ID, ID_SERVICIO_TIPO, servicios.NOMBRE, PRECIO_PROVEEDOR, IMPUESTO, BENEFICIO, PVP, servicios_tipos.NOMBRE as nombreTipo FROM servicios  JOIN servicios_tipos ON servicios_tipos.id = servicios.ID_SERVICIO_TIPO  WHERE  ID_EMPRESA=1 ORDER BY ID_SERVICIO_TIPO
+
+10/10/18 DELETE FROM contratos_lineas_borrador WHERE ID_CONTRATO='1'
+
+10/10/18 INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('40', '1', '4', '40', '36.6', 'p', 'BÁSICO+SERIES')
+
+10/10/18 INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('40', '1', '2', '41', '7.32', 'p', 'ESPAÑA+3')
+
+10/10/18 INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('40', '1', '1', '38', '37.81', 'p', 'FIBRA 100/100')
+
+10/10/18 INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('40', '1', '3', '55', '22.46', 'p', 'ILIM5')
+
+10/10/18 INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('40', '1', '3', '55', '22.46', 'p', 'ILIM5')
+
+10/10/18 INSERT INTO contratos_lineas_borrador (ID_PAQUETE, ID_CONTRATO, ID_TIPO, ID_ASOCIADO, PVP, PAQUETEOSERVICIO, NOMBRE) VALUES ('40', '1', '3', '43', '5.86', 'p', 'TARIFA AIRE 1')
+
+10/10/18 DELETE FROM contratos_campanas_borrador WHERE ID_CONTRATO='1'
+
+10/10/18 INSERT INTO contratos_campanas_borrador (ID_CONTRATO, ID_CAMPANA, DTO, DTO_DIAS, DTO_HASTA) VALUES ('1', '-1', '0', '0', '2018-10-10')
+
+10/10/18 SELECT ID,TIPO,NUMERO_PORTAR FROM portabilidades WHERE ID_CLIENTE = 967 AND ID_EMPRESA = 1 AND ESTADO NOT IN (4,6)  ORDER BY FECHA_SOLICITUD
+
+10/10/18 SELECT productos.id,productos.numero_serie,productos_tipos.id_tipo_servicio as Tipo,productos_modelos.nombre as Modelo FROM productos,productos_tipos,productos_modelos,almacenes WHERE productos.id_tipo_producto=productos_tipos.id
+            AND productos.id_modelo_producto=productos_modelos.id 
+            AND almacenes.id=productos.id_almacen 
+            AND almacenes.id_empresa=1 AND productos.estado=1
+
+10/10/18 SELECT ID,NOMBRE FROM servicios_tipos_atributos WHERE servicios_tipos_atributos.ID_SERVICIO= AND servicios_tipos_atributos.id_tipo=1 ORDER BY NOMBRE
+
+10/10/18 SELECT ID,NOMBRE FROM servicios_tipos_atributos WHERE servicios_tipos_atributos.ID_SERVICIO= AND servicios_tipos_atributos.id_tipo=1 ORDER BY NOMBRE
+
+10/10/18 SELECT max(NUMERO) FROM contratos where ID_EMPRESA =1
+
+10/10/18 INSERT INTO contratos (ID_EMPRESA, ID_CLIENTE, FECHA_INICIO, FECHA_FIN, ESTADO, NUMERO) VALUES ('1', '967', '2018-10-10', '2019-08-16', '3', '1')
+
+10/10/18 INSERT INTO contratos_documentos (ID_CONTRATO, TIPO, FICHERO, SVG) VALUES ('1', '1', '', 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgNzY0IDQxOCIgd2lkdGg9Ijc2NCIgaGVpZ2h0PSI0MTgiPjxwYXRoIGQ9Ik0gMjkzLjgxMywxMzguMDAwIEMgMzAzLjMwNywxNDQuMzEwIDI5OC44MTMsMTQ1LjUwMCAzMDMuODEzLDE1My4wMDAiIHN0cm9rZS13aWR0aD0iMy40NDkiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMzAzLjgxMywxNTMuMDAwIEMgMzE0LjQxOCwxOTQuNDc2IDMwNS44MDcsMTg3LjMxMCAyOTguODEzLDIyNC4wMDAiIHN0cm9rZS13aWR0aD0iMS4zNjUiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMjk4LjgxMywyMjQuMDAwIEMgMjY3LjUxMywyNjIuMzI5IDI3Ny40MTgsMjY0LjQ3NiAyMjkuODEzLDI5My4wMDAiIHN0cm9rZS13aWR0aD0iMS4xMjUiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMjI5LjgxMywyOTMuMDAwIEMgMTc5LjU2MiwzMzguNTI0IDE3OS4wMTMsMzM0LjMyOSAxMjEuODEzLDM2OC4wMDAiIHN0cm9rZS13aWR0aD0iMS4xMjUiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMTIxLjgxMywzNjguMDAwIEMgNjEuMTgxLDQxMi40NTMgODMuNTYyLDM4Ny41MjQgMzcuODEzLDM5MS4wMDAiIHN0cm9rZS13aWR0aD0iMS4xMjUiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMzcuODEzLDM5MS4wMDAgQyAtMTUuOTIzLDMxNC41MTcgMC4xODEsMzU2LjQ1MyAtMC4xODgsMjU2LjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjM1NCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAtMC4xODgsMjU2LjAwMCBDIDQ0LjIxNiwxOTUuNjQ2IDE2LjA3NywxOTUuNTE3IDEwMS44MTMsMTUzLjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjEyNSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAxMDEuODEzLDE1My4wMDAgQyAxNjUuMzgxLDEwOS4yODggMTYxLjcxNiwxMDguNjQ2IDIzNC44MTMsODIuMDAwIiBzdHJva2Utd2lkdGg9IjEuMTI1IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDIzNC44MTMsODIuMDAwIEMgMjgyLjcxOCw3MS41NDAgMjc5Ljg4MSw2NC4yODggMzMwLjgxMyw2My4wMDAiIHN0cm9rZS13aWR0aD0iMS4xMjUiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMzMwLjgxMyw2My4wMDAgQyAzMzkuMDI5LDU5LjUyMSAzMzYuMjE4LDYyLjA0MCAzNDEuODEzLDYzLjAwMCIgc3Ryb2tlLXdpZHRoPSIxLjYxOSIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48L3BhdGg+PHBhdGggZD0iTSAzNDEuODEzLDYzLjAwMCBDIDM0OC43NTIsNzMuMzAxIDM0Ny4wMjksNjkuNTIxIDM0Ni44MTMsODMuMDAwIiBzdHJva2Utd2lkdGg9IjIuMTI3IiBzdHJva2U9ImJsYWNrIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjwvcGF0aD48cGF0aCBkPSJNIDM0Ni44MTMsODMuMDAwIEMgMzQxLjQ4MSwxMDcuNjg3IDM0Mi4yNTIsMTA1LjgwMSAzMjguODEzLDEyOC4wMDAiIHN0cm9rZS13aWR0aD0iMS41NTciIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMzI4LjgxMywxMjguMDAwIEMgMzExLjM3NywxNTQuNzk0IDMxMi40ODEsMTU0LjE4NyAyODguODEzLDE3Ni4wMDAiIHN0cm9rZS13aWR0aD0iMS4yOTEiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMjg4LjgxMywxNzYuMDAwIEMgMjY4LjEzNywxOTIuNjA2IDI2OS44NzcsMTkzLjc5NCAyNDUuODEzLDIwNi4wMDAiIHN0cm9rZS13aWR0aD0iMS4zNTAiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjxwYXRoIGQ9Ik0gMjQ1LjgxMywyMDYuMDAwIEMgMjI5LjA3NCwyMDkuMzg5IDIzOC4xMzcsMjEwLjYwNiAyMjguODEzLDIxMi4wMDAiIHN0cm9rZS13aWR0aD0iMi4wNTQiIHN0cm9rZT0iYmxhY2siIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PC9wYXRoPjwvc3ZnPg==')
+
+10/10/18 SELECT max(NUMERO) FROM ordenes where ID_EMPRESA =1
+
+10/10/18 INSERT INTO ordenes (ID_CONTRATO, FECHA_ALTA, ID_TIPO_ESTADO, NUMERO, ID_EMPRESA) VALUES ('1', '2018-10-10 07:08:18 ', '1', '1', '1')
+
+10/10/18 SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 40
+
+10/10/18 INSERT INTO contratos_lineas (ID_TIPO, ID_ASOCIADO, ID_CONTRATO, PRECIO_PROVEEDOR, BENEFICIO, IMPUESTO, PVP, PERMANENCIA, ESTADO, FECHA_ALTA, FECHA_BAJA) VALUES ('1', '40', '1', '25', '10', '21', '120', '2019-08-16', '3', '2018-10-10 ', '')
+
+10/10/18 SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 40
+
+10/10/18 INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '4', '40', '49', 'BASICO+SERI', '2018-10-10 ', '', '3')
+
+10/10/18 INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('1', '18', '2', '2018-10-10')
+
+10/10/18 INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '18', '1')
+
+10/10/18 UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=18
+
+10/10/18 UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=18 AND almacenes.id_empresa=1
+
+10/10/18 SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 41
+
+10/10/18 INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '2', '41', '45', '956123123', '2018-10-10 ', '', '3')
+
+10/10/18 INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('2', '16', '3', '2018-10-10')
+
+10/10/18 SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 41
+
+10/10/18 INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '2', '41', '44', '16', '2018-10-10 ', '', '3')
+
+10/10/18 SELECT servicios_atributos.VALOR FROM servicios_atributos join servicios on servicios_atributos.ID_SERVICIO = servicios.id  WHERE  servicios.id = 41 and servicios_atributos.ID_TIPO_ATRIBUTO IN (43,44) ORDER BY  servicios_atributos.ID_TIPO_ATRIBUTO 
+
+10/10/18 INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '2', '41', '56', '', '2018-10-10 ', '', '3')
+
+10/10/18 INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '2', '41', '43', 'grupo3', '2018-10-10 ', '', '3')
+
+10/10/18 SELECT servicios_atributos.VALOR FROM servicios_atributos join servicios on servicios_atributos.ID_SERVICIO = servicios.id  WHERE  servicios.id = 41 and servicios_atributos.ID_TIPO_ATRIBUTO IN (43,44) ORDER BY  servicios_atributos.ID_TIPO_ATRIBUTO 
+
+10/10/18 INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '16', '5')
+
+10/10/18 UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=16
+
+10/10/18 UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=16 AND almacenes.id_empresa=1
+
+10/10/18 SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 38
+
+10/10/18 SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 38
+
+10/10/18 INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '1', '38', '40', '100', '2018-10-10 ', '', '3')
+
+10/10/18 INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('6', '19', '2', '2018-10-10')
+
+10/10/18 INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '1', '38', '39', '100', '2018-10-10 ', '', '3')
+
+10/10/18 INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '19', '7')
+
+10/10/18 UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=19
+
+10/10/18 UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=19 AND almacenes.id_empresa=1
+
+10/10/18 SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 55
+
+10/10/18 INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '55', '48', '', '2018-10-10 ', '', '3')
+
+10/10/18 INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('8', '17', '3', '2018-10-10')
+
+10/10/18 SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 55
+
+10/10/18 INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '55', '47', '5000', '2018-10-10 ', '', '3')
+
+10/10/18 INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '55', '46', '9999', '2018-10-10 ', '', '3')
+
+10/10/18 SELECT NOMBRE, APELLIDOS, TIPO_DOCUMENTO, DNI, FIJO, MOVIL, EMAIL, DIRECCION, municipios.municipio, provincias.provincia, pais.iso, CP, BANCO, IBAN FROM clientes  JOIN municipios ON municipios.id = clientes.LOCALIDAD 
+                                            JOIN provincias ON provincias.id = clientes.PROVINCIA 
+                                            JOIN pais ON pais.id = clientes.NACIONALIDAD  WHERE clientes.ID = '967'
+
+10/10/18 SELECT ID_EXTERNO FROM servicios,servicios_externos WHERE servicios.id=55 AND servicios.id=servicios_externos.id_servicio AND servicios_externos.id_empresa=1
+
+10/10/18 INSERT INTO multiplataforma.ordenes_test_instalacion (id_linea_contrato, fecha, tecnico, rx, ssid, clave_wifi, test_masmovil, test_aire, test_fijo) VALUES ('8', '2018-10-10 07:08:20', '1', '', '', '', 'El ICC-ID no es correcto. ', '', '')
+
+10/10/18 SELECT ID FROM servicios WHERE ID_PROVEEDOR=14
+
+10/10/18 INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '17', '10')
+
+10/10/18 UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=17
+
+10/10/18 UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=17 AND almacenes.id_empresa=1
+
+10/10/18 SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 55
+
+10/10/18 INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '55', '48', '', '2018-10-10 ', '', '3')
+
+10/10/18 INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('11', '23', '3', '2018-10-10')
+
+10/10/18 SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 55
+
+10/10/18 INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '55', '47', '5000', '2018-10-10 ', '', '3')
+
+10/10/18 INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '55', '46', '9999', '2018-10-10 ', '', '3')
+
+10/10/18 SELECT NOMBRE, APELLIDOS, TIPO_DOCUMENTO, DNI, FIJO, MOVIL, EMAIL, DIRECCION, municipios.municipio, provincias.provincia, pais.iso, CP, BANCO, IBAN FROM clientes  JOIN municipios ON municipios.id = clientes.LOCALIDAD 
+                                            JOIN provincias ON provincias.id = clientes.PROVINCIA 
+                                            JOIN pais ON pais.id = clientes.NACIONALIDAD  WHERE clientes.ID = '967'
+
+10/10/18 SELECT ID_EXTERNO FROM servicios,servicios_externos WHERE servicios.id=55 AND servicios.id=servicios_externos.id_servicio AND servicios_externos.id_empresa=1
+
+10/10/18 INSERT INTO multiplataforma.ordenes_test_instalacion (id_linea_contrato, fecha, tecnico, rx, ssid, clave_wifi, test_masmovil, test_aire, test_fijo) VALUES ('11', '2018-10-10 07:08:21', '1', '', '', '', 'El ICC-ID no es correcto. ', '', '')
+
+10/10/18 SELECT ID FROM servicios WHERE ID_PROVEEDOR=14
+
+10/10/18 INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '23', '13')
+
+10/10/18 UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=23
+
+10/10/18 UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=23 AND almacenes.id_empresa=1
+
+10/10/18 SELECT PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO FROM servicios WHERE  id = 43
+
+10/10/18 INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '43', '48', '', '2018-10-10 ', '', '3')
+
+10/10/18 INSERT INTO contratos_lineas_productos (ID_LINEA, ID_PRODUCTO, ESTADO, FECHA_ALTA) VALUES ('14', '24', '3', '2018-10-10')
+
+10/10/18 SELECT ID_TIPO_ATRIBUTO,VALOR FROM servicios_atributos WHERE  ID_SERVICIO = 43
+
+10/10/18 INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '43', '47', '1000', '2018-10-10 ', '', '3')
+
+10/10/18 INSERT INTO contratos_lineas_detalles (ID_LINEA, ID_TIPO_SERVICIO, ID_SERVICIO, ID_ATRIBUTO_SERVICIO, VALOR, FECHA_ALTA, FECHA_BAJA, ESTADO) VALUES ('1', '3', '43', '46', '100', '2018-10-10 ', '', '3')
+
+10/10/18 SELECT NOMBRE, APELLIDOS, TIPO_DOCUMENTO, DNI, FIJO, MOVIL, EMAIL, DIRECCION, municipios.municipio, provincias.provincia, pais.iso, CP, BANCO, IBAN FROM clientes  JOIN municipios ON municipios.id = clientes.LOCALIDAD 
+                                            JOIN provincias ON provincias.id = clientes.PROVINCIA 
+                                            JOIN pais ON pais.id = clientes.NACIONALIDAD  WHERE clientes.ID = '967'
+
+10/10/18 SELECT ID_EXTERNO FROM servicios,servicios_externos WHERE servicios.id=43 AND servicios.id=servicios_externos.id_servicio AND servicios_externos.id_empresa=1
+
+10/10/18 INSERT INTO multiplataforma.ordenes_test_instalacion (id_linea_contrato, fecha, tecnico, rx, ssid, clave_wifi, test_masmovil, test_aire, test_fijo) VALUES ('14', '2018-10-10 07:08:22', '1', '', '', '', 'Perfil de Producto no existente.', '', '')
+
+10/10/18 SELECT ID FROM servicios WHERE ID_PROVEEDOR=14
+
+10/10/18 INSERT INTO ordenes_lineas (ID_ORDEN, ID_TIPO_ORDEN, ID_PRODUCTO, ID_LINEA_DETALLE_CONTRATO) VALUES ('1', '1', '24', '16')
+
+10/10/18 UPDATE contratos_lineas_productos SET ESTADO='2',FECHA_BAJA='' WHERE id_producto=24
+
+10/10/18 UPDATE productos,almacenes SET ESTADO='2' WHERE productos.id_almacen=almacenes.id AND productos.id=24 AND almacenes.id_empresa=1
+
