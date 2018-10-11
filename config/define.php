@@ -13,7 +13,46 @@ define('DDBB','pruebas.');
 // cabeceras de los ficheros html
 define('AUTOR','Internet Infraestructuras S.L.');
 define('OWNER','AT Control');
+
+/*atributos de SERVICIOS*/
 define('ID_NUMERO_MOVIL',48);
+define('ID_ATRIBUTO_TRONCAL',56);
+define('ID_ATRIBUTO_GRUPO_RECARGA',43);
+define('ID_ATRIBUTO_PAQUETE_DESTINO',44);
+define('ID_ATRIBUTO_BAJADA',40);
+define('ID_ATRIBUTO_SUBIDA',39);
+
+define('FIBRADB','fibra.');
+define('NUEVADB','multiplataforma.');
+define('ETIQUETAS','etiquetas.');
+
+
+/*tipos de servicios*/
+define('ID_SER_INTERNET',1);
+define('ID_SER_FIJO',2);
+define('ID_SER_MOVIL',3);
+define('ID_SER_TV',4);
+
+
+/*TIPOS DE ANEXOS*/
+define('ID_ANEXO_ALTA',1);
+define('ID_ANEXO_BAJA',2);
+define('ID_ANEXO_CAMBIO_SERV',3);
+define('ID_ANEXO_CAMBIO_PAQ',4);
+define('ID_ANEXO_SOLICITUD_BAJA_SERV',5);
+define('ID_ANEXO_CANCELACION_SOL_BAJA',6);
+define('ID_ANEXO_BAJA_SERVICIO',7);
+define('ID_ANEXO_ROTURA_PAQ',8);
+define('ID_ANEXO_CAMBIO_PRECIO_PAQ',9);
+define('ID_ANEXO_CAMBIO_TARIFA_PAQ',10);
+
+//TIPOS DE ORDENES DE TRABAJO
+define('ORDEN_INSTALACION',1);
+define('REPARACIÓN',2);
+define('RMA',3);
+define('RMA_BAJA',4);
+define('BAJA',5);
+define('CANCELADA',6);
 
 define('ID_PRODUCTO_STOCK',1);
 define('ID_PRODUCTO_ASIGNADO',2);
@@ -33,7 +72,21 @@ define('LINEA_BAJA_MASMOVIL','B');
 define('LINEA_DESACTIVADA_MASMOVIL','D');
 define('LINEA_SUSPENDIDA_MASMOVIL','S');
 define('NO_EXISTE_CLIENTE_MASMOVIL','FIND-ERR-003');
-define('OPERACION_OK_MASMOVIL','OK-001');
+define('OPERACION_OK_MASMOVIL','0001');
+
+//DEVOLUCIONES API AIRENETWORKS
+define('PETICION_AIRE_OK','0001');
+define('PETICION_AIRE_USER_INVALIDO','0002');
+define('PETICION_AIRE_PASS_INVALIDO','0003');
+define('PETICION_AIRE_USER_NO_EXISTE','0004');
+define('PETICION_AIRE_PASS_INCORRECTA','0005');
+define('PETICION_AIRE_IP_INCORRECTA','0006');
+define('PETICION_AIRE_PETICIONES_EXCEDIDAS','0100');
+define('LINEA_AIRE_NO_PROCESADA','LINEA NO PROCESADA');
+define('LINEA_AIRE_PORTABILIDAD_CANCELADA','PORTABILIDAD CANCELADA');
+define('LINEA_AIRE_LINEA_ACTIVA','PORTABILIDAD CANCELADA');
+
+
 
 
 /*ID TRANSACCIONES API MAS MOVIL PARA EL LOG*/
@@ -52,6 +105,20 @@ define('ID_ORDEN_RMA_BAJA',4);
 define('ID_ORDEN_BAJA',5);
 define('ID_ORDEN_CANCELADA',6);
 
+/*ESTADOS DE CONTRATOS*/
+
+define('CONTRATO_ALTA',1);
+define('CONTRATO_BAJA',2);
+define('CONTRATO_PROCESO_ALTA',3);
+define('CONTRATO_PROCESO_BAJA',4);
+define('CONTRATO_BAJA',5);
+define('CONTRATO_PTE_CAMBIO',6);
+define('CONTRATO_PROCESO_BAJA_CAMBIO',7);
+define('CONTRATO_PROCESO_ALTA_CAMBIO',8);
+define('CONTRATO_CANCELACION_CAMBIOS',9);
+define('CONTRATO_IMPAGO',10);
+
+
 
 define('ID_PROVEEDOR_MASMOVIL',14);
 define('ID_PROVEEDOR_AIRENETWORKS',15);
@@ -69,6 +136,7 @@ define('DEF_ALMACEN','Almacén');
 define('DEF_ORDENES','Ordenes de trabajo');
 define('DEF_CONTRATOS','Contratos');
 define('DEF_SERVICIOS','Servicios');
+define('DEF_MODULO_AIRE','Módulo AireNetworks');
 define('DEF_PAQUETES','Paquete');
 define('DEF_PRODUCTO','Producto');
 define('DEF_TIPOS','Tipos de productos');
@@ -103,6 +171,32 @@ define ('DB_TELEFONIA_DATABASENAME', 'gestioncdr');
 define ('DB_TELEFONIA_USER', 'testerp');
 define ('DB_TELEFONIA_PASSWORD', 'erpDirect18');
 
+//
+//// comandos SNMP
+//
+//define('ROOT','.1.3.6.1');
+//define('HUAWEI','1.3.6.1.4.1.2011');
+//define('SYS_DESCRYPT','.1.3.6.1.2.1');
+//define('VLANS','.1.3.6.1.4.1.2011.5.6.1.1.1.2');
+//define('HARDWARE','.1.3.6.1.4.1.2011.6');
+//define('HARDWARE_CFG','.1.3.6.1.4.1.2011.6.10');
+//define('TEMP','.1.3.6.1.4.1.2011.6.1.1.2.1.2.1');
+//define('SYS_UP','.1.3.6.1.2.1.1.3');
+//define('ONTS','1.3.6.1.4.1.2011.6.128.1.1.2.43.1');
+//
+////profiles
+//define('PROFILES','.1.3.6.1.4.1.2011.6.128.1.1.2.142.1.2.4194307840.1');
+//define('PROFILES_GENERIC','.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.7');
+//define('HG8546M','.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.8');
+//
+//
+//define('hwHdsl','.1.3.6.1.4.1.2011.6');
+//
+//
+//define('INTERFACE_NAME','.1.3.6.1.2.1.31.1.1.1.1');
+//define('VOLTAGE','1.3.6.1.4.1.2011.6.128.1.1.2.51.1.5');
+//define('INTERFACES','.1.3.6.1.2.1.17.1.4.1.2');
+//define('TEST','.1.3.6.1.2.1.65');
 
 
 define("ESPACIO","\040");
@@ -112,30 +206,3 @@ define("ESPACIO","\040");
 
 define('RUTA_ANTIGUA','http://localhost/');
 define("CLAVE_API","2a10c77db1d6d0bedc7eafe582041830");
-define('ATRIBUTO_TELEFONO_FIJO',45);
-define('ATRIBUTO_TELEFONO_MOVIL',48);
-define('ID_ATRIBUTO_TRONCAL',56);
-define('NUMERO_LLAMAR_VERIFICAR_MOVIL','856001011');
-
-
-define('ID_SERVICIO_INTERNET',1);
-define('ID_SERVICIO_VOZIP',2);
-define('ID_SERVICIO_MOVIL',3);
-define('ID_SERVICIO_IPTV',4);
-
-define('FIBRADB','fibra.');
-define('NUEVADB','multiplataforma.');
-define('ETIQUETAS','etiquetas.');
-
-define('PROV_MASMOVIL',14);
-define('PROV_AIRE',15);
-
-
-//clientes documentos
-define('CLI_DOC_DNI',1);
-define('CLI_DOC_CIF',2);
-define('CLI_DOC_RECIBO',3);
-define('CLI_DOC_FACTURA_MOVIL',4);
-define('CLI_DOC_FACTURA_FIJO',5);
-
-define('CLI_RUTA_DOCUMENTOS','content/documentos/clientes/');

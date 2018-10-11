@@ -17,12 +17,6 @@ date_default_timezone_set('Etc/UTC');
 
 
 
-// todo: --------------------------------------------
-// cuando el cliente es creado por primera vez
-// todo: --------------------------------------------
-
-
-
 if(isset($_POST['action']) && $_POST['action'] == 'productos')
 {
 
@@ -34,7 +28,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'productos')
     $post_data = isset($_POST['producto']) ? $_POST['producto'] : null;
     $is_ajax = (isset($_POST['is_ajax']) && $_POST['is_ajax'] == 'true') ? true : false;
 
-    // check post data
+    //check post data
     if ($post_data === null) {
         if ($is_ajax === false) {
             _redirect('#alert_mandatory');
@@ -106,12 +100,12 @@ if(isset($_POST['action']) && $_POST['action'] == 'productos')
         $values=array($id,$resultProducto,$valor);
 
 
-        $result = $util->insertInto('PRODUCTOS_ATRIBUTOS', $t_productos_atributos, $values);
+        $result = $util->insertInto('productos_atributos', $t_productos_atributos, $values);
 
     }
 
 
-    if(intval($result)>0){
+    /*if(intval($result)>0){
         if($is_ajax === false) {
             _redirect('#alert_success');
             exit;
@@ -125,7 +119,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'productos')
         } else {
             die('_failed_');
         }
-    }
+    }*/
 
 }
 

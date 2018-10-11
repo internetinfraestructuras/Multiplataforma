@@ -130,8 +130,15 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
     public static function getLineaDetalles($idLinea)
     {
         $util = new util();
+        return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR", "ID","ID_SERVICIO","ID","ESTADO"),
+            "contratos_lineas_detalles.estado!=2 AND contratos_lineas_detalles.id_linea=$idLinea");
+    }
+
+    public static function getLineaDetallesId($idLinea)
+    {
+        $util = new util();
         return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR", "ID","ID_SERVICIO","ID"),
-            "contratos_lineas_detalles.estado=1 AND contratos_lineas_detalles.id_linea=$idLinea");
+            "contratos_lineas_detalles.estado=1 AND contratos_lineas_detalles.id=$idLinea");
     }
 
     /*
@@ -144,6 +151,12 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
             "contratos_lineas_detalles.id>=$idLineaDetalles AND contratos_lineas_detalles.id<=$idLineaMax");
     }
 
+    public static function getValorLineaDetalle($idLineaDetalles)
+    {
+        $util = new util();
+        return $util->selectWhere3("contratos_lineas_detalles", array("VALOR"),
+            "contratos_lineas_detalles.id>=$idLineaDetalles ");
+    }
     //obtiene las linea de detalle de un contrato
     public static function getLineaDetallesActivas($idLinea)
     {
@@ -209,6 +222,17 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
 
         $result = $util->update('contratos_lineas', $campos, $values,"id_asociado=$idAsociado AND id_contrato=$idContrato AND id=$idLinea");
+    }
+
+    public static function setLineaBaja($idContrato,$idLinea)
+    {
+        $util = new util();
+
+        $campos = array('ESTADO', 'FECHA_BAJA');
+        $fecha_actual = strtotime(date("y-m-d", time()));
+        $values = array(CONTRATO_BAJA, date('Y-m-d'));
+        return $util->update('contratos_lineas', $campos, $values,"id_asociado=$idAsociado AND id_contrato=$idContrato AND id=$idLinea");
+
     }
 
 
@@ -285,7 +309,38 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
         return $util->update('contratos_lineas_detalles', $campos, $values, "id_linea=" . $idLineaContrato);
     }
+    public static function setLineaDetallesBajaId($idLineaContrato, $fechaBaja=null)
+    {
+        $util = new util();
+        $campos = array('ESTADO', 'FECHA_BAJA');
+        $fecha_actual = strtotime(date("y-m-d", time()));
+        $fechaBaja = strtotime(date("y-m-d", strtotime($fechaBaja)));
+        $tipo=0;
+        if ($fecha_actual < $fechaBaja)
+            $tipo = 4;
+        else
+            $tipo = 2;
 
+        if ($fechaBaja == null)
+            $values = array($tipo, date('Y-m-d'));
+        else
+            $values = array($tipo, $fechaBaja);
+
+        return $util->update('contratos_lineas_detalles', $campos, $values, "id=" . $idLineaContrato);
+    }
+    public static function setLineaDetallesImpagoId($idLineaContrato, $fechaBaja=null)
+    {
+        $util = new util();
+        $campos = array('ESTADO', 'FECHA_BAJA');
+        $tipo=CONTRATO_IMPAGO;
+
+        if ($fechaBaja == null)
+            $values = array($tipo, date('Y-m-d'));
+        else
+            $values = array($tipo, $fechaBaja);
+
+        return $util->update('contratos_lineas_detalles', $campos, $values, "id=" . $idLineaContrato);
+    }
     public static function setLineaDetallesImpago($idLineaDetalles)
     {
         $util = new util();

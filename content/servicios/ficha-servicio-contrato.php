@@ -171,7 +171,7 @@ $actual = date ("Y-m-d");
                                             <div class="col-md-4 col-sm-5">
                                                 <label>Nombre:</label>
                                                 <select name="servicio" id="servicio"
-                                                        class="form-control pointer " name="nombre"  onchange="carga_datos_servicio(this.value)">
+                                                        class="form-control pointer " name="nombre"  onchange="carga_detalles(this.value)">
                                                     <option>--- Seleccionar una ---</option>
                                                     <?php $util->carga_select('servicios', 'id', 'nombre', 'nombre','servicios.id_servicio_tipo='.$idTipoServicio,'','',$id); ?>
                                                 </select>
@@ -734,9 +734,7 @@ $actual = date ("Y-m-d");
             },
         })
     });
-</script>
 
-<script>
     // cargo las provincias por Ajax, cada vez que se cambia la comunidad
     function carga_datos_servicio(id)
     {
@@ -855,6 +853,33 @@ $actual = date ("Y-m-d");
                 }
             });
         }
+    }
+
+
+    function carga_detalles(id)
+    {
+
+
+        jQuery.ajax({
+            url: 'cargar_atributos_servicios.php',
+            type: 'POST',
+            cache: false,
+            async:true,
+            data:{id:id},
+            success: function(data)
+            {
+
+                $.each(data, function(i)
+                {
+                    var id=data[i].id_tipo_atributo;
+
+                    $('#atributo-'+id).val(data[i].valor);
+
+
+
+                });
+            }
+        });
     }
 
     function cancelarBaja(id)

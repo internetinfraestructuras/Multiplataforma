@@ -281,7 +281,7 @@ $pvp=$listado[0][5];
                                             ?>
                                             <td class="td-actions text-right">
                                                 <a href="ficha-servicio.php?idServicio=<?php echo $idServicio;?>">
-                                                    <button type="button" rel="tooltip" >
+                                                    <button type="button" rel="tooltip" title="Ver detalles del servicio">
                                                         <?php
                                                         echo "<a href='/ml/content/servicios/ficha-servicio-paquete.php?idServicio=".$id."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$_GET['idLineaContrato']."&idLineaDetalle=".$idLineaDetalle."&tipo=$servicioId''>";
                                                         echo ' <i class="fas fa-edit"></i>';
@@ -291,8 +291,31 @@ $pvp=$listado[0][5];
                                                     </button>
                                                 </a>
                                                 <button type="button" rel="tooltip" class="">
-                                                    <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>');"></i>
+                                                    <?php
+
+                                                    if($idEstadoId==CONTRATO_IMPAGO)
+                                                    {
+
+                                                    ?>
+
+                                                        <i class="fas fa-hand-holding-usd" style="font-size:1em; color:green; cursor: pointer" onclick="restaurarServicio('<?php echo $id;?>','<?php echo $idLineaDetalle;?>');" title="Corte por impago"></i>
+                                                   <?php
+                                                    }
+                                                    else
+                                                    {
+                                                        ?>
+                                                        <i class="fas fa-ban" style="font-size:1em; color:red; cursor: pointer" onclick="impago('<?php echo $id;?>','<?php echo $idLineaDetalle;?>');" title="Corte por impago"></i>
+                                                    <?php }
+                                                    ?>
+
                                                 </button>
+
+                                                <button type="button" rel="tooltip" class="">
+                                                    <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>','<?php echo $idLineaDetalle;?>');" title="Dar de baja el servicio"></i>
+                                                </button>
+
+
+
 
                                             </td>
 
@@ -366,8 +389,9 @@ $pvp=$listado[0][5];
                                                     </button>
                                                 </a>
                                                 <button type="button" rel="tooltip" class="">
-                                                    <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>');"></i>
+                                                    <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>,'<?php echo $idLineaDetalle; ?>');"></i>
                                                 </button>
+
 
                                             </td>
 
@@ -386,7 +410,12 @@ $pvp=$listado[0][5];
                                 </div>
 
 
+<?php
+                                if($idEstadoId==CONTRATO_ALTA)
+                                {
 
+
+                                ?>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <button type="submit"
@@ -396,6 +425,9 @@ $pvp=$listado[0][5];
                                         </button>
                                     </div>
                                 </div>
+                                <?php
+                                }
+                                ?>
 
                             </form>
 
@@ -413,6 +445,8 @@ $pvp=$listado[0][5];
 
                             <h4>Información</h4>
                             <p><em>Por favor, completa toda la información requerida y revísala antes de proceder a realizar cambios.</em></p>
+
+
                             <hr/>
                             <p>
 
@@ -424,8 +458,12 @@ $pvp=$listado[0][5];
                     <div class="panel panel-default">
                         <div class="panel-body">
 
-                            <a href="javascript:;" onclick=""
-                               class="btn btn-info btn-xs">Ayuda</a>
+                            <h3>Ayuda</h3><hr>
+
+                            <i class="fas fa-edit" style="font-size:1em; color:green; cursor: pointer" title="Corte por impago"> </i> Ver ficha del servicio.<br/>
+                            <i class="fas fa-ban" style="font-size:1em; color:red; cursor: pointer"  title="Corte por impago"> </i> Establece un servicio en impago.<br/>
+                            <i class="fas fa-ban" style="font-size:1em; color:red; cursor: pointer"  title="Restaurar corte impago"> </i> Restablece el servicio despues de un impago.<br/>
+                            <i class="fas  fa-trash" style="font-size:1em; color:green; cursor: pointer" title="Dar de baja el servicio"> </i> Dar de baja un servicio.<br/>
 
                         </div>
                     </div>
@@ -449,7 +487,7 @@ $pvp=$listado[0][5];
 <script>
 
 
-    function borrar(id)
+    function borrar(id,lineaDetalle)
     {
 
         // var hash = md5(id);
@@ -470,7 +508,9 @@ $pvp=$listado[0][5];
                         id:id,
                         idPaquete:<?php echo $_GET['idPaquete']; ?>,
                         idContrato:<?php echo $_GET['idContrato']; ?>,
-                        idLineaContrato:<?php echo $_GET['idLineaContrato']; ?>
+                        idLineaContrato:<?php echo $_GET['idLineaContrato'];?>,
+                        idLineaDetalle:lineaDetalle,
+                        mantenerPaquete:true
                     },
                     success: function (data)
                     {
@@ -482,8 +522,94 @@ $pvp=$listado[0][5];
             }
             else
             {
-                alert("Romper paquete");
+                jQuery.ajax({
+                    url: 'baja-servicio-paquete.php',
+                    type: 'POST',
+                    cache: false,
+                    async: true,
+                    data: {
+                        a: 'cancelar-baja',
+                        id:id,
+                        idPaquete:<?php echo $_GET['idPaquete']; ?>,
+                        idContrato:<?php echo $_GET['idContrato']; ?>,
+                        idLineaContrato:<?php echo $_GET['idLineaContrato'];?>,
+                        idLineaDetalle:lineaDetalle,
+                        mantenerPaquete:false
+                    },
+                    success: function (data)
+                    {
+                        console.log(data);
+                        //  location.reload();
+                    }
+                });
             }
+
+
+        }
+    }
+    function impago(id,lineaDetalle)
+    {
+
+        var respuesta = confirmar("¿Estas seguro de proceder al corte por impago? ");
+        if(respuesta)
+        {
+
+
+                jQuery.ajax({
+                    url: 'impago-servicio.php',
+                    type: 'POST',
+                    cache: false,
+                    async: true,
+                    data: {
+                        a: 'cancelar-baja',
+                        id:id,
+                        idPaquete:<?php echo $_GET['idPaquete']; ?>,
+                        idContrato:<?php echo $_GET['idContrato']; ?>,
+                        idLineaContrato:<?php echo $_GET['idLineaContrato'];?>,
+                        idLineaDetalle:lineaDetalle,
+                        restablecer:1
+                    },
+                    success: function (data)
+                    {
+
+                        console.log(data);
+                        //  location.reload();
+                    }
+                });
+
+
+        }
+    }
+
+    function restaurarServicio(id,lineaDetalle)
+    {
+
+        var respuesta = confirmar("¿Estas seguro de restablecer el servicio? ");
+        if(respuesta)
+        {
+
+
+            jQuery.ajax({
+                url: 'impago-servicio.php',
+                type: 'POST',
+                cache: false,
+                async: true,
+                data: {
+                    a: 'cancelar-baja',
+                    id:id,
+                    idPaquete:<?php echo $_GET['idPaquete']; ?>,
+                    idContrato:<?php echo $_GET['idContrato']; ?>,
+                    idLineaContrato:<?php echo $_GET['idLineaContrato'];?>,
+                    idLineaDetalle:lineaDetalle,
+                    restablecer:0
+                },
+                success: function (data)
+                {
+
+                    console.log(data);
+                    //  location.reload();
+                }
+            });
 
 
         }

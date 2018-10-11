@@ -9,6 +9,7 @@ if (!isset($_SESSION)) {
 }
 
 require_once('../../config/util.php');
+require_once ('../../clases/Contrato.php');
 
 $util = new util();
 check_session(2);
@@ -177,8 +178,10 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
 
                         $tipo=strtolower($tipo);
 
-                        if($idTipo!=3)
+                        if($idTipo==1)
                             $listado= $util->selectWhere3($tipo, array("ID","nombre"),  $tipo.".id_empresa=".$_SESSION['REVENDEDOR']." AND ".$tipo.".id=".$idAsociado);
+                        else if($idTipo==2)
+                            $listado= $util->selectWhere3($tipo, array("ID","nombre","ID_SERVICIO_TIPO"),  $tipo.".id_empresa=".$_SESSION['REVENDEDOR']." AND ".$tipo.".id=".$idAsociado);
                         else
                             $listado= $util->selectWhere3($tipo.",almacenes", array("productos.ID","numero_serie"),  "almacenes.id=productos.id_almacen AND almacenes.id_empresa=".$_SESSION['REVENDEDOR']." AND ".$tipo.".id=".$idAsociado);
 
@@ -197,15 +200,15 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
                         <td class="td-actions text-right">
                             <?php
                             if($idTipo==1)
-                                echo "<a href='/atTotal/content/servicios/ficha-paquete-cliente.php?idPaquete=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."''>";
+                                echo "<a href='/ml/content/servicios/ficha-paquete-cliente.php?idPaquete=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."''>";
                             else if($idTipo==2)
-                                echo "<a href='/atTotal/content/servicios/ficha-servicio-contrato.php?idServicio=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."&tipo=$idTipo''>";
+                                echo "<a href='/ml/content/servicios/ficha-servicio-contrato.php?idServicio=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."&tipo=$idServicioTipo''>";
                             if($idTipo==3)
-                                echo '<a href="/atTotal/content/almacen/ficha-producto.php?idProducto='.$idAsociado.'">';
+                                echo '<a href="/ml/content/almacen/ficha-producto.php?idProducto='.$idAsociado.'">';
                             ?>
 
                                 <button type="button" rel="tooltip" >
-                                    <i class="fa fa-pencil"></i>
+                                    <i class="fas fa-edit"></i>
                                 </button>
                             </a>
                             <button type="button" rel="tooltip" class="">
@@ -239,6 +242,61 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
             </div>
 
         </div>
+        <?php
+        $campanas=Contrato::getCampanasContrato($_GET['idContrato']);
+
+
+        if($campanas!=null)
+        {?>
+             <div id="content" class="padding-20">
+
+            <div class="panel-body">
+                <p>Camapañas aplicadas actualmente al contrato: <strong><?php echo $_GET['idContrato'];?></strong></p>
+        <table id="example2" class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>CAMPAÑA</th>
+                <th>HASTA</th>
+                <th>DESCUENTO</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+
+            for($i=0;$i<count($campanas);$i++)
+            {
+
+                $id=$campanas[$i][0];
+                $dto=$campanas[$i][1];
+                $hasta=$campanas[$i][2];
+                $campana=$campanas[$i][3];
+
+                echo "<tr>";
+                echo "<td>$id</td><td>$campana</td><td>$hasta</td><td>$dto %</td>";
+                echo "</tr>";
+                ?>
+
+
+                <?php
+            }
+
+            ?>
+
+            </tbody>
+
+
+        </table>
+        <hr/>
+
+
+</div>
+
+</div>
+        <?php }
+        ?>
+
+
     </section>
     <!-- /MIDDLE -->
 

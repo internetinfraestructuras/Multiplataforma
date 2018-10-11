@@ -9,8 +9,7 @@ require_once ('../../clases/Contrato.php');
 require_once ('../../clases/Servicio.php');
 require_once ('../../clases/Producto.php');
 require_once ('../../clases/Orden.php');
-require_once ('../../clases/masmovil/MasMovilAPI.php');
-require_once ('../../clases/airenetwork/sim.php');
+
 $util = new util();
 
 check_session(3);
@@ -28,7 +27,7 @@ $idProveedor=Servicio::getProveedor($idServicio);
 /*SI EL CAMBIO ES DE INTERNET SE ESTABLECE EL PRODUCTO ACTUAL EN RMA Y SE CREA LA ORDEN DE CAMBIO*/
 echo "El contrato es $contrato";
 
-if($tipo==1)
+if($tipo==ID_SER_INTERNET)
 {
     echo "El cambio es de INTERNET";
 
@@ -51,7 +50,7 @@ if($tipo==1)
     Contrato::setProductoEstado($_SESSION['REVENDEDOR'],$idProductoNuevo,ID_PRODUCTO_ASIGNADO);
 
 }
-else if($tipo==2)
+else if($tipo==ID_SER_FIJO)
 {
     echo "El cambio es de FIJO";
 
@@ -73,13 +72,16 @@ else if($tipo==2)
 
     Contrato::setProductoEstado($_SESSION['REVENDEDOR'],$idProductoNuevo,ID_PRODUCTO_ASIGNADO);
 }
-else if($tipo==3)
+else if($tipo==ID_SER_MOVIL)
 {
+
     $numeroMovil=$util->cleanstring($_POST['numeroMovil']);
     $motivo=$util->cleanstring($_POST['motivo']);
 
     if($idProveedor[0][0]==ID_PROVEEDOR_MASMOVIL)
     {
+        require_once ('../../clases/masmovil/MasMovilAPI.php');
+
 
         $rsP=Producto::getNumeroSerieProducto($_SESSION['REVENDEDOR'],$idProductoNuevo);
         $numeroSerie=$rsP[0][0];
@@ -97,10 +99,8 @@ else if($tipo==3)
     }
     else if($idProveedor[0][0]==ID_PROVEEDOR_AIRENETWORKS)
     {
+        require_once ('../../clases/airenetwork/sim.php');
         //CAMBIO TECNICO EN LA API DE AIRE
-
-
-
 
     }
 
@@ -123,7 +123,7 @@ else if($tipo==3)
 
     Contrato::setProductoEstado($_SESSION['REVENDEDOR'],$idProductoNuevo,ID_PRODUCTO_INSTALADO);
 }
-else if($tipo==4)
+else if($tipo==ID_SER_TV)
 {
     echo "El cambio es de TELEVISION";
 

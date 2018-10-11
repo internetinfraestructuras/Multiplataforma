@@ -223,6 +223,9 @@ check_session(2);
 
                                         $apiMasmovil=new MasMovilAPI();
 
+                                        $l=$apiMasmovil->getListadoClientes("32010203N");
+                                        var_dump($l);
+
                                         if(empty($_GET['desde']))
                                             $desde=date("Ym")."01";
                                         else

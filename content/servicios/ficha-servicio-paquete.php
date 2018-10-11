@@ -273,9 +273,9 @@ $actual = date ("Y-m-d");
 
                                     $resultado=$apiMasMovil->getListadoClientes($res[0][3],$msidn);
 
-
                                     $refClienteAPI=$resultado->Client[0]->refCustomerId;
-                                    $resultado=$apiMasMovil->getLineasMsisdnsIccids($refClienteAPI,$msidn,"8934011411704178217","");
+                                    $resultado=$apiMasMovil->getLineasMsisdnsIccids($refClienteAPI,$msidn,"","");
+
                                     $iccid=$resultado->msisdnList->Msisdn->Iccid;
                                     $tipoSim=$resultado->msisdnList->Msisdn->typeIccid;
 
@@ -283,6 +283,10 @@ $actual = date ("Y-m-d");
 
                                     $estadoLinea=$resultado->msisdnList->Msisdn->status;
 
+                                    $riesgos=$apiMasMovil->getPeticionRiesgo($refClienteAPI,$msidn,"");
+
+                                /*    $establecerRiesgo=$apiMasMovil->setModificarRiesgo($refClienteAPI,$msidn,"L","50");
+                                    var_dump($establecerRiesgo);*/
 
                                 }
                                 else if($idProveedor==ID_PROVEEDOR_AIRENETWORKS)
@@ -416,13 +420,7 @@ $actual = date ("Y-m-d");
                     </div>
 
                 </div>
-                <!-- /----- -->
-                <?php
 
-                var_dump($r[0]['consumo_maximo']);
-
-
-                ?>
                 <div class="col-md-4">
 
                     <div class="panel panel-default">
@@ -532,7 +530,9 @@ $actual = date ("Y-m-d");
                             <hr>
 
                             <?php if($estadoLinea==LINEA_ACTIVA_MASMOVIL)
-                            {?>
+                            {
+
+                                ?>
                                 <a href="javascript:;" onclick="establecerRoaming('A')"
                                    class="btn btn-info btn-xs">ACTIVAR ROAMING <i class="fas fa-globe-asia"></i></a></br>
                                 <br/>
@@ -551,6 +551,25 @@ $actual = date ("Y-m-d");
                             <br/>
                                 <?php
                             }?>
+
+                            <a href="../servicios/cdr-actual.php?numero=<?php echo $msidn;?>"
+                               class="btn btn-danger btn-xs">SOLICITAR AMPLIACION RIESGOS  <i class="fas fa-phone"></i></a></br>
+                            <br/>
+                            <a href="../servicios/cdr-actual.php?numero=<?php echo $msidn;?>"
+                               class="btn btn-danger btn-xs">CAMBIO RIESGO MENSUAL  <i class="fas fa-phone"></i></a></br>
+                            <br/>
+                            <a href="../servicios/cdr-actual.php?numero=<?php echo $msidn;?>"
+                               class="btn btn-danger btn-xs">BLOQUEAR SI SUPERA RIESGO MENSUAL  <i class="fas fa-phone"></i></a></br>
+                            <br/>
+                            <a href="../servicios/cdr-actual.php?numero=<?php echo $msidn;?>"
+                               class="btn btn-danger btn-xs">NO BLOQUEAR SI SUPERA RIESGO MENSUAL <i class="fas fa-phone"></i></a></br>
+                            <br/>
+                            <a href="../servicios/cdr-actual.php?numero=<?php echo $msidn;?>"
+                               class="btn btn-danger btn-xs">DESBLOQUEO AUTOMÁTICO DIA 1<i class="fas fa-phone"></i></a></br>
+                            <br/>
+                            <a href="../servicios/cdr-actual.php?numero=<?php echo $msidn;?>"
+                               class="btn btn-danger btn-xs">NO DESBLOQUEO AUTOMÁTICO DIA 1<i class="fas fa-phone"></i></a></br>
+                            <br/>
 
                             <a href="../servicios/cdr-actual.php?numero=<?php echo $msidn;?>"
                                class="btn btn-blue btn-xs">CONSULTAR CDR   <i class="fas fa-phone"></i></a></br>
@@ -664,14 +683,14 @@ $actual = date ("Y-m-d");
             </div>
             <?php
 
-                    $prodcs=Producto::getProductosServicio($_SESSION['REVENDEDOR'],$_GET['tipo']);
+            $prodcs=Producto::getProductosServicio($_SESSION['REVENDEDOR'],$_GET['tipo']);
+
             if($idProveedor!=ID_PROVEEDOR_AIRENETWORKS)
             {
                     if($prodcs!=NULL )
                     {
+                    ?>
 
-
-                            ?>
                     <div class="row">
                         <form action="" method="post">
                             <input  value='' id="producto-original" class='form-control' disabled />
@@ -679,6 +698,7 @@ $actual = date ("Y-m-d");
                         <select name="servicio" id="producto-cambio"
                                 class="form-control pointer " name="nombre"  onchange="carga_detalles_servicio(this.value)">
                         <?php
+
                         if($_GET['tipo']!=3)
                         {
                             $refClienteAPI="NULL";
@@ -694,20 +714,25 @@ $actual = date ("Y-m-d");
                          ?>
                         </select>
                     </div>
+                    <?php if($idTipoServicio==ID_SER_MOVIL && $idProveedor==ID_PROVEEDOR_MASMOVIL) {
+                        ?>
 
-                    <div class="row">
-                        <div class="col-lg-4 col-xs-5"><b>Motivo cambio:</b></div>
-                        <select name="servicio" id="motivo-cambio"
-                                class="form-control pointer " name="nombre" id="motivo" onchange="carga_detalles_servicio(this.value)">
-                            <option value="PER">Perdida de tarjeta</option>
-                            <option value="ROT">Rotura o deterioro</option>
-                            <option value="ROB">Robo</option>
-                            <option value="R4G">Remplazo tarjeta a 4G</option>
-                            <option value="OTH">Otros motivos</option>
-                        </select>
 
-                    </div>
-                    <?php
+                        <div class="row">
+                            <div class="col-lg-4 col-xs-5"><b>Motivo cambio:</b></div>
+                            <select name="servicio" id="motivo-cambio"
+                                    class="form-control pointer " name="nombre" id="motivo"
+                                    onchange="carga_detalles_servicio(this.value)">
+                                <option value="PER">Perdida de tarjeta</option>
+                                <option value="ROT">Rotura o deterioro</option>
+                                <option value="ROB">Robo</option>
+                                <option value="R4G">Remplazo tarjeta a 4G</option>
+                                <option value="OTH">Otros motivos</option>
+                            </select>
+
+                        </div>
+                        <?php
+                    }
                     }
                     else
                         echo "No se puede hacer el cambio de SIM a este terminal, porque no hay tarjetas SIM en Stock";
@@ -732,7 +757,7 @@ $actual = date ("Y-m-d");
                 if($prodcs!=NULL && $idProveedor!=ID_PROVEEDOR_AIRENETWORKS) {
                     ?>
                     <div class="col-lg-3 col-xs-6 text-right">
-                        <a href="#" id="btn-enviar" onclick="enviar();" style="margin-top:25px" class="btn btn-success">
+                        <a href="#" id="btn-enviar" onclick="enviar('<?php echo $idTipoServicio;?>');" style="margin-top:25px" class="btn btn-success">
                             <span>Activar</span>
                         </a>
                     </div>
@@ -786,11 +811,12 @@ $actual = date ("Y-m-d");
 
         $("#modal").modal();
     }
-    function enviar()
+    function enviar(tipoServicio)
     {
         var idProducto=$("#producto-cambio").val();
         var motivo=$("#motivo-cambio").val();
         var idProductoOriginal=$("#producto-original").val();
+
 
         jQuery.ajax({
             url: 'guardar-cambio-producto.php',
@@ -800,7 +826,7 @@ $actual = date ("Y-m-d");
             data:{idProducto:idProducto,motivo:motivo,idProductoOriginal:idProductoOriginal,servicio:<?php echo $_GET['idServicio'];?>,tipo:<?php echo $_GET['tipo'];?>,contrato:<?php echo $_GET['idContrato'];?>,numeroMovil:$("#atributo-<?php echo ID_NUMERO_MOVIL;?>").val()},
             success: function(data)
             {
-                alert(data);
+               location.reload();
             }
         });
 

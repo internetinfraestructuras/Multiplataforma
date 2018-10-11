@@ -87,6 +87,7 @@ class Producto
             "productos_modelos_atributos.id_empresa=$idEmpresa AND productos_modelos_atributos.nombre='$nombreAtributo' AND productos_modelos_atributos.id_modelo=$idModelo");
     }
 
+
     public static function getValorAtributoProducto($idAtributo,$idProducto)
     {
         $util = new util();
