@@ -10,12 +10,12 @@
 <script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
 <style>
     .spinner div {
-        width: 20px;
-        height: 20px;
+        width: 40px;
+        height: 40px;
         position: absolute;
-        left: -20px;
-        top: 55px;
-        background-color: #333;
+        left: 10px;
+        top: 6px;
+        background-color: #fff;
         border-radius: 50%;
         animation: move 4s infinite cubic-bezier(.2,.64,.81,.23);
         display:block;
@@ -45,10 +45,12 @@
             <img src="/img/logo.png" alt="admin panel" height="35">
         </span>
 
-    <form method="get" action="page-search.html" class="search pull-left hidden-xs">
-        <input type="text" class="form-control" name="k" placeholder="Encontrar algo..." />
-    </form>
-
+    <div class="spinner" id="animacion1">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
     <nav>
 
         <!-- OPTIONS LIST -->
@@ -90,12 +92,7 @@
         <!-- /OPTIONS LIST -->
 
     </nav>
-    <div class="spinner" id="animacion1">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
+
 </header>
 
 <script>

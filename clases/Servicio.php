@@ -14,6 +14,7 @@ require_once ('Provision.php');
 require_once ('masmovil/MasMovilAPI.php');
 require_once ('airenetwork/clases/Linea.php');
 require_once ('telefonia/classTelefonia.php');
+error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
@@ -57,8 +58,8 @@ class Servicio
 
         echo "el tipo de servicio es" . $tipo . "<br>";
 
-        Contrato::setLineaDetallesBaja($idLinea, null);//Seteamos la linea actual a baja
-        Contrato::setLineaContratoBaja($idContrato, $idLinea, $idServicio);
+        echo Contrato::setLineaDetallesBaja($idLinea, null);//Seteamos la linea actual a baja
+        echo Contrato::setLineaContratoBaja($idContrato, $idLinea, $idServicio);
 
         $idLineaNueva = Contrato::setNuevaLineaContrato($tipo, $idServicioNuevo, $idContrato, $precioProveedor, $beneficio, $impuesto, $pvp, $permanencia, 1);
 
@@ -94,6 +95,8 @@ class Servicio
                     echo "ENTRAMOS PRODUCTO";
                     $pon = Producto::getIdAtributoProducto($_SESSION['REVENDEDOR'], $idModelo, "PON");
                     $idpon = $pon[0][0];
+//                    echo "idpon:".$idpon;
+//                    return;
                     $valorPon = Producto::getValorAtributoProducto($idpon, $idProducto);
                     $valorPon = $valorPon[0][0];
                 }

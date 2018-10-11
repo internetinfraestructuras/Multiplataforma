@@ -56,22 +56,15 @@ if($tipo==2) {
     $docNombre = $_COOKIE['documentos[0]'];
     $documento = "../documentos/".$_COOKIE['documentos[0]'];
 
-    $imagedata = file_get_contents($documento);
-    $base64 = base64_encode($imagedata);
-
+//    $imagedata = file_get_contents($documento);
+//    $base64 = base64_encode($imagedata);
 
 }
 
 
 if (isset($_POST['action']) && $_POST['action'] == 'porta') {
 
-    $campos = array('ID_CLIENTE','ID_EMPRESA', 'FECHA_SOLICITUD',      'TIPO','NOMBRE_TITULAR',    'TIPO_TITULAR',
-        'CIF_TITULAR','DIR_TITULAR','REGION_TITULAR','PROV_TITULAR','POBLACION_TITULAR','CP_TITULAR','TIPO_DOC',
-        'DONANTE','HORARIO','NUMERO_PORTAR','FIRMA','TIPO_ACCESO','TARIFA');
 
-    $values = array($id_cliente, $_SESSION['REVENDEDOR'],$util->hoy('fecha'), $tipo, $tit_n." ". $tit_a,$tipo_cli,
-        $tit_dni,       $tit_dir,    $tit_region,     $tit_prov,     $tit_loc,           $tit_cp,   $tipo_doc,
-        $donante, $hora_porta, $num_porta,    $firma, $tipo_acceso, $tarifa);
 
     if($tipo==3) {
         $campos = array('ID_CLIENTE','ID_EMPRESA',          'FECHA_SOLICITUD',      'TIPO',
@@ -79,6 +72,14 @@ if (isset($_POST['action']) && $_POST['action'] == 'porta') {
 
         $values = array($id_cliente, $_SESSION['REVENDEDOR'],$util->hoy('fecha'),$tipo,
             $donante, $icc, $dc, $tarifa, $modalidad, $num_porta, $firma,1,$tipo_doc,$tipo_cli);
+    } else {
+        $campos = array('ID_CLIENTE','ID_EMPRESA', 'FECHA_SOLICITUD',      'TIPO','NOMBRE_TITULAR',    'TIPO_TITULAR',
+            'CIF_TITULAR','DIR_TITULAR','REGION_TITULAR','PROV_TITULAR','POBLACION_TITULAR','CP_TITULAR','TIPO_DOC',
+            'DONANTE','HORARIO','NUMERO_PORTAR','FIRMA','TIPO_ACCESO','TARIFA');
+
+        $values = array($id_cliente, $_SESSION['REVENDEDOR'],$util->hoy('fecha'), $tipo, $tit_n." ". $tit_a,$tipo_cli,
+            $tit_dni,       $tit_dir,    $tit_region,     $tit_prov,     $tit_loc,           $tit_cp,   $tipo_doc,
+            $donante, $hora_porta, $num_porta,    $firma, $tipo_acceso, $tarifa);
     }
 
     $id = $util->insertInto('portabilidades', $campos, $values);
@@ -89,7 +90,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'porta') {
                         'COMUNIDAD','IBAN','SWIFT','ID_EMPRESA','CP','FIJO','MOVIL','EMAIL','FECHA_ALTA','FECHA_MODIFICA','NOTAS',
                         'BAJA','BANCO','ID_CONSENTIMIENTO','ID_TIPO_CLIENTE','FECHA_NACIMIENTO','DIRECCION_BANCO','NACIONALIDAD');
 
-    $cliente = $util->selectWhere3('clientes',$t_clientes, 'ID='.$id_cliente);
+    $cliente = $util->selectWhere('clientes',$t_clientes, 'ID='.$id_cliente);
+    $cliente= mysqli_fetch_array($cliente);
 
     $proveedor_movil = $util->selectLast('servicios','ID_PROVEEDOR','ID='.$tarifa);
 
@@ -100,12 +102,15 @@ if (isset($_POST['action']) && $_POST['action'] == 'porta') {
 
         // se dividen los apellidos en dos
         $ape = explode(" ", $cliente[2]);
+        $ape1 = $ape[0];
+
+        if(!isset($ape[1]))
+            $ape2='';
 
         $codSolicitud = AltaTecnica::addNuevaPortabilidadAireNetworks(
-            '', $tarifa, $tipo_cli, $cliente[23], $cliente[1], $ape[0], $ape[1],
+            $_SESSION['REVENDEDOR'], $tarifa, $tipo_cli, $cliente[23], $cliente[1], $ape1, $ape2,
                     $cliente[25], $cliente[17], $cliente[10], $cliente[9], $cliente[8], $cliente[14], $cliente[7], '0', $docNombre, $base64,
                     $cliente[6],  $cliente[3], $icc, $dc, $num_porta, $modalidad, $iccOrigen, $dcOrigen);
-
 
     } else {
 

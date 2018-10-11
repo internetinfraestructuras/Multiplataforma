@@ -22,7 +22,7 @@ class AltaTecnica
                                         $paqueteDestino,$numero)
     {
 
-        require_once ($_SERVER['DOCUMENT_ROOT'].'clases/telefonia/classTelefonia.php');
+        require_once ('telefonia/classTelefonia.php');
 
         $telefonia=new Telefonia();
 
@@ -177,7 +177,8 @@ class AltaTecnica
 
     public static function addNuevaPortabilidadAireNetworks($idEmpresa,$idServicio,$tipoCliente,$consentimiento,$nombre,
                                                             $apellido1,$apellido2,$fechaNacimiento,$email,$region,$provincia,
-                                                            $ciudad,$cp,$direccion,$numero,$docNombre,$documento,$tipoDocumento,$nif,$icc,$dc,$telefono,$modalidadActual,$iccOrigen,$dcOrigen)
+                                                            $ciudad,$cp,$direccion,$numero,$docNombre,$documento,$tipoDocumento,
+                                                            $nif,$icc,$dc,$telefono,$modalidadActual,$iccOrigen,$dcOrigen)
     {
 
         require_once ('airenetwork/clases/Cliente.php');
@@ -189,12 +190,10 @@ class AltaTecnica
         $configuracion=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
 
 
-
         $clienteAire=new Cliente($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
         $lineaAire=new Linea($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
 
         $rs=$clienteAire->getClientByDNI($nif);
-
 
         if($rs==NULL)
             $rs=$clienteAire->crearCliente($tipoCliente,$consentimiento,$tipoDocumento,$nif,$nombre,$apellido1,$apellido2,$fechaNacimiento,$email,$telefono,$region,$provincia,$ciudad,$cp,$direccion,$numero,$docNombre,$documento);
@@ -236,7 +235,7 @@ class AltaTecnica
         $lineaAire=new Linea($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
 
         $rs=$lineaAire->getDocumentosSolicitud($codigoSolicitud,$tipoDocumento);
-        var_dump($rs);
+//        var_dump($rs);
 
     }
 
@@ -258,6 +257,11 @@ class AltaTecnica
         $rs=$lineaAire->subirDocumento($codSolicitud,$tipoDocumento);
         var_dump($rs);
 
+    }
+
+    public function geterrores($clase, $error){
+        $msg = 'ERROR-'.$clase.'-'.$error;
+        return $msg;
     }
 }
 ?>

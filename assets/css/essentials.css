@@ -51,7 +51,9 @@
  
 /**	01. Resets
 *************************************************** **/
-
+.em2{
+	font-size:2em;
+}
 .spinner div {
 	width: 20px;
 	height: 20px;

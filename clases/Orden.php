@@ -7,7 +7,7 @@
  */
 //
 //error_reporting(E_ALL);
-//ini_set("display_errors", 1);
+//ini_set("display_errors", 0);
 class Orden
 {
     public static function crearOrdenTrabajo($idContrato,$fechaAlta)
@@ -205,7 +205,7 @@ class Orden
         $campos=array('ordenes_lineas.ID_LINEA_DETALLE_CONTRATO','ordenes_lineas.ID_PRODUCTO',
                         'productos.NUMERO_SERIE as serial','productos_modelos.NOMBRE as modelo',
                         'productos_tipos.NOMBRE as tipo','contratos_lineas_detalles.ID_TIPO_SERVICIO as servicio',
-                        'ordenes_lineas.ID','etiquetas.series.pon','contratos_lineas_detalles.ESTADO');
+                        'ordenes_lineas.ID','etiquetas.series.pon','contratos_lineas_detalles.ESTADO','productos_atributos.VALOR as PON1');
 
         $where='ordenes_lineas.id_orden='.$id.' AND ordenes.id_empresa='.$_SESSION['REVENDEDOR'];
 
@@ -213,6 +213,7 @@ class Orden
                 LEFT JOIN productos ON productos.ID =ordenes_lineas.ID_PRODUCTO 
                 LEFT JOIN servicios_tipos ON servicios_tipos.ID = contratos_lineas_detalles.ID_TIPO_SERVICIO
                 LEFT JOIN productos_modelos ON productos_modelos.ID = productos.ID_MODELO_PRODUCTO
+                LEFT JOIN productos_atributos ON productos_atributos.ID_PRODUCTO = productos.ID 
                 LEFT JOIN productos_tipos ON productos_tipos.ID = productos_modelos.ID_TIPO
                 LEFT JOIN ordenes ON ordenes.ID = ordenes_lineas.id_orden 
                 LEFT JOIN etiquetas.series ON etiquetas.series.pathnumber = productos.NUMERO_SERIE ';

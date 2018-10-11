@@ -388,16 +388,20 @@ check_session(3);
 
 
                     <div class="row">
-                        <div class="col-xs-12 col-sm-4 text-center">
+                        <div class="col-xs-12 col-sm-4 text-center" style="border-right: #0f0f0f 2px dotted ">
                             <label><b>Descargue este documento</b></label><br>
                             <p>Haga clic sobre el icono de PDF para comenzar la descarga.</p><br>
                             <img src="../../img/descargue.png" class="img-responsive"><br>
-                            <img src="../../img/pdf.png" class="img-responsive"  style="margin-top:100px"><br>
+                            <img src="../../img/pdf.png" class="img-responsive"  onclick="imprimir(numero_contrato)" style="cursor:pointer;margin-top:100px"><br><br><br>
                         </div>
-                        <div class="col-xs-12 col-sm-4  text-center">
+                        <div class="col-xs-12 col-sm-4  text-center" style="border-right: #0f0f0f 2px dotted ">
                             <label><b>Firme el documento</b></label><br>
                             <p>El cliente debe firmar este documento para poder tramitar la portabilidad.</p><br>
                             <img src="../../img/firme.png" class="img-responsive" style="margin-top:10px">
+                            <br><br><br><br>
+                            <label><b>Escanne el documento</b></label><br>
+                            <p>Utilice una resolución de al menos 100ppp en formato PDF.</p>
+                            <img src="../../img/scanner.png" class="img-responsive" style="margin-top:10px">
                         </div>
                         <div class="col-xs-12 col-sm-4 text-center">
                             <label><b>Cargue el documento</b></label><br>
@@ -522,7 +526,7 @@ check_session(3);
 <script>
     var nuevo = 0;
     var id_cliente_seleccionado = 0;
-
+    var numero_contrato=0;
 
 
     $(document).ready(function(){
@@ -858,6 +862,7 @@ check_session(3);
                 return;
             }
 
+            guardar_contrato();
 
         }
 
@@ -938,9 +943,12 @@ check_session(3);
             success: function (data) {
 
                 if(parseInt(data)>0){
-                    alerta("RESPUESTA SERVIDOR","La solicitud de portabilidad se ha generado correctamente, ahora puede imprimir el documento si lo desea",
-                        "success","Cerrar","Imprimir Documento","home", "imprimir", "",data);
-
+                    // alerta("RESPUESTA SERVIDOR","La solicitud de portabilidad se ha generado correctamente, ahora puede imprimir el documento si lo desea",
+                    //     "success","Cerrar","Imprimir Documento","home", "imprimir", "",data);
+                    numero_contrato = data;
+                    if(parseInt(data)<50){
+                        alertaOk('ERROR OPERACIÓN','El servidor ha devuelto el siguiente error: ' + errores[data], 'warning','Entendido','' );
+                    }
                 }
 
 

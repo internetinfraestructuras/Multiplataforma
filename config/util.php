@@ -18,7 +18,7 @@ date_default_timezone_set('Europe/Madrid');
 //
 
 error_reporting(E_ALL);
-ini_set("display_errors", 0);
+ini_set("display_errors", 1);
 class util
 {
     function write_log($cadena,$tipo=null)
@@ -220,28 +220,28 @@ class util
     public function consulta($query)
     {
         try {
-            echo $query;
+//            echo $query;
 
             $link = $this->conectar();
 
             if (!($result = $link->query($query)))
                 throw new Exception();
 
-            $fieldNames = array();
-
-            $numFields = mysqli_num_fields($result);
-
-            for ($i = 0; $i < $numFields; $i++) {
-                $fieldNames[] = mysqli_fetch_field_direct($result, $i);
-            }
+//            $fieldNames = array();
+//
+//            $numFields = mysqli_num_fields($result);
+//
+//            for ($i = 0; $i < $numFields; $i++) {
+//                $fieldNames[] = mysqli_fetch_field_direct($result, $i);
+//            }
             $link->close();
 
-            return $fieldNames;
+//            return $fieldNames;
         } catch (Exception $e) {
             $this->log('consulta: ' . $query);
             $this->write_log($e->getMessage() . $query, "debug");
         }
-        return $fieldNames;
+//        return $fieldNames;
 
     }
 
@@ -351,7 +351,7 @@ class util
                 throw new Exception();
 
             $fieldNames = array();
-
+//echo $query;
             while ($row = mysqli_fetch_array($result)) {
                 array_push($fieldNames, $row);
             }

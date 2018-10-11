@@ -8,7 +8,7 @@
 
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
-require_once($_SERVER['DOCUMENT_ROOT'].'/ml/clases/telefonia/utilTelefonia.php');
+require_once('utilTelefonia.php');
 
 
 class Telefonia

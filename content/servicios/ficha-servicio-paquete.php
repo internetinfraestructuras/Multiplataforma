@@ -128,7 +128,7 @@ $actual = date ("Y-m-d");
 
             <div class="row">
 
-                <div class="col-md-8">
+                <div class="col-md-7">
 
                     <!-- ------ -->
                     <div class="panel panel-default">
@@ -421,7 +421,7 @@ $actual = date ("Y-m-d");
 
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-5">
 
                     <div class="panel panel-default">
                         <div class="panel-body">
@@ -431,10 +431,10 @@ $actual = date ("Y-m-d");
                             <table id="example2" class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
-                                    <th>ID PRODUCTO</th>
-                                    <th>NÚMERO DE SERIE</th>
-                                    <th>ESTADO</th>
-                                    <th>OPCIONES</th>
+                                    <th width="20%">ID PRODUCTO</th>
+                                    <th width="40%">NÚMERO DE SERIE</th>
+                                    <th width="20%">ESTADO</th>
+                                    <th width="20%" class="text-center">OPCIONES</th>
 
                                 </tr>
                                 </thead>
@@ -485,20 +485,20 @@ $actual = date ("Y-m-d");
                                             </td>";
 
                                     ?>
-                                    <td>
+                                    <td class="text-center">
                                         <a href="../almacen/ficha-producto.php?idProducto=<?php echo $id; ?>">
-                                            <button type="button" rel="tooltip" >
-                                                <i class="fa fa-eye"></i>
+                                            <button type="button" rel="tooltip" class="em2">
+                                                <i class="fa fa-eye em2"></i>
                                             </button>
                                         </a>
                                         <a onclick="abrirModal(<?php echo $id;?>)">
-                                            <button type="button" rel="tooltip" >
-                                                <i class="fa fa-recycle"></i>
+                                            <button type="button" rel="tooltip"  class="em2">
+                                                <i class="fa fa-recycle em2"></i>
                                             </button>
                                         </a>
                                         <a href="../almacen/ficha-producto.php?idProducto=<?php echo $id; ?>">
-                                            <button type="button" rel="tooltip" >
-                                                <i class="fa fa-trash"></i>
+                                            <button type="button" rel="tooltip"  class="em2">
+                                                <i class="fa fa-trash em2"></i>
                                             </button>
                                         </a>
                                     </td>

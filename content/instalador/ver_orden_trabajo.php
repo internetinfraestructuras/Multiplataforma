@@ -9,9 +9,9 @@
 if (!isset($_SESSION)) {
     @session_start();
 }
-require_once('../../config/util.php');
-require_once('../../clases/Orden.php');
-require_once "../../clases/telefonia/classTelefonia.php";
+include_once('../../config/util.php');
+include_once('../../clases/Orden.php');
+include_once('../../clases/telefonia/classTelefonia.php');
 
 $telefonia = new Telefonia();
 $util = new util();
@@ -156,8 +156,11 @@ $root = "../../";
                                                 echo $lineaD['serial'];
                                                 echo "</span></div>";
                                                 echo "<div class='col-xs-12 col-md-2  '><b>Configuración:</b><br>";
+
                                                 $config = $orden->getLineasOrdenDetalles($lineaD['ID_LINEA_DETALLE_CONTRATO']);
                                                 foreach ($config as $valor) {
+//                                                    var_dump($valor);
+
                                                     echo "<span style='font-size:1em;'><b>" . $valor['NOMBRE'] . ": </b>";
                                                     if ($valor['NOMBRE'] == 'PAQUETE DESTINO')
                                                         echo "<br>" . $telefonia->getPaqueteNombre($valor['VALOR']);
@@ -194,8 +197,10 @@ $root = "../../";
                                                 echo "<div class='col-xs-12 col-md-3 col-lg-2'>";
                                                 if (intval($lineaD['servicio']) == ID_SERVICIO_INTERNET) {
 //                                                    if (intval($lineaD['DETALLE'])==)
-                                                    echo '<input type = "hidden" name= "pon" value ="' . $lineaD['pon'] . '">';
+                                                    $elpon = $lineaD['PON1'] != '' ? $lineaD['PON1'] : $lineaD['pon'];
+                                                    echo '<input type = "hidden" name= "pon" value ="' . $elpon . '">';
                                                     echo '<input type = "hidden" name= "serial" value ="' . $lineaD['serial'] . '">';
+
                                                     echo '
                                                 <br class=\'visible-xs\'>
                                                 <div class="btn-group">
