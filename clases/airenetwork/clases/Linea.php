@@ -234,6 +234,22 @@ class Linea
         return $result;
     }
 
+    public  function setLogApi($numero,$mensaje,$empresa,$idTransaccion)
+    {
+
+        $util=new util();
+
+        $t_ordenes=array("ID_API","DEVOLUCION","NUMERO","ID_EMPRESA","ID_TRANSACCION");
+
+
+
+        $values=array(2,$mensaje,$numero,$empresa,$idTransaccion);//TIPO DE ESTADO ES 1 DE APERTURA
+
+        $resOrden= $util->insertInto('log_api_moviles', $t_ordenes, $values);
+
+        return $resOrden;
+    }
+
     public function setCorteImpago($telefono)
     {
 

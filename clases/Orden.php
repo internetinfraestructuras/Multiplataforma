@@ -39,6 +39,8 @@ class Orden
             AND contratos.id_empresa=".$_SESSION['REVENDEDOR']);
     }
 
+
+
     // ruben
     public static function obtenerOrdenesAsignadas($idEmpresa, $idEmpleado, $estado, $fechaInicio, $fechaFin)
     {
@@ -67,10 +69,11 @@ class Orden
         if($idProducto==null || $idProducto=='' || intval($idProducto)<=0)
             $idProducto=null;
 
-
         $t_ordenes=array("ID_ORDEN","ID_TIPO_ORDEN","ID_PRODUCTO","ID_LINEA_DETALLE_CONTRATO");
 
         $values=array($idOrden, $idTipoOrden, $idProducto, $idLineaDetalle);//TIPO DE ESTADO ES 1 DE APERTURA
+
+
 
         $resOrden= $util->insertInto2('ordenes_lineas', $t_ordenes, $values);
 

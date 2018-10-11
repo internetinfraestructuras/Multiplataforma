@@ -248,8 +248,24 @@ $root="../../";
                     <input type="text" name="paquete[precio-pvp]"  id="precio-pvp"  step=".01" class="form-control" onchange="calcularMargen(this)">
                 </div>
             </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label>Precio Instalación: </label>
+                        <input type="text" name="paquete[precio-instalacion]"  id="precio-instalacion"  step=".01" class="form-control" >
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Impuestos Instalación: </label>
+                        <input type="text" name="paquete[impuestos-instalacion]"  id="precio-instalacion"  step=".01" class="form-control" >
+                    </div>
+                    <div class="col-lg-4">
+                        <label>PVP Instalación: </label>
+                        <input type="text" name="paquete[pvp-instalacion]"  id="precio-instalacion"  step=".01" class="form-control" >
+                    </div>
+
+                </div>
             <div class="row">
                 <div class="col-lg-12">
+
                     <center>
 
                             <button type="submit" class="btn btn-3d btn-teal btn-xlg btn-block margin-top-30">CREAR PAQUETE</button>

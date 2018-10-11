@@ -29,7 +29,7 @@ $t_productos_modelos=array("ID_TIPO","NOMBRE","ID_EMPRESA");
 
 $t_productos_modelos_atributos=array("ID_MODELO","NOMBRE","ID_EMPRESA");
 
-$t_paquetes=array("NOMBRE","PRECIO_COSTE","MARGEN","IMPUESTO","PVP","ID_EMPRESA");
+$t_paquetes=array("NOMBRE","PRECIO_COSTE","MARGEN","IMPUESTO","PVP","ID_EMPRESA","PRECIO_INSTALACION","IMPUESTOS_INSTALACION","PVP_INSTALACION");
 $t_paquetes_servicios=array("ID_PAQUETE","ID_SERVICIO");
 $t_ordenes_usuario=array("ID_USUARIO","ID_ORDEN");
 

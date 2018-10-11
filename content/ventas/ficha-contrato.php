@@ -200,23 +200,50 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
                         <td class="td-actions text-right">
                             <?php
                             if($idTipo==1)
-                                echo "<a href='/ml/content/servicios/ficha-paquete-cliente.php?idPaquete=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."''>";
+                            {
+
+                                echo "<a href='/ml/content/servicios/ficha-paquete-cliente.php?idPaquete=" . $idAsociado . "&idContrato=" . $_GET['idContrato'] . "&idLineaContrato=" . $id . "''>";
+                                echo ' <button type="button" rel="tooltip" ><i class="fas fa-edit" title="Ver detalles línea contrato"></i></button></a>';
+                            }
                             else if($idTipo==2)
+                            {
                                 echo "<a href='/ml/content/servicios/ficha-servicio-contrato.php?idServicio=".$idAsociado."&idContrato=".$_GET['idContrato']."&idLineaContrato=".$id."&tipo=$idServicioTipo''>";
+
+                                if($idEstado==CONTRATO_ALTA)
+                                {
+
+
+                                    echo ' <button type="button" rel="tooltip" ><i class="fas fa-edit" title="Ver detalles línea contrato"></i></button></a>';
+                                    echo '<button type="button" rel="tooltip" class="">
+                                <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="baja(\'<?php echo $id;?>\');" title="Dar de baja línea de contrato"></i>
+                                </button>';
+                                    echo '  <button type="button" rel="tooltip" class="">
+                                            <i class="fas fa-ban" style="font-size:1em; color:red; cursor: pointer" onclick="corteImpago(\''.$id.'\',\''.$idAsociado.'\')" title="Corte por impago"></i>
+                                            </button>';
+                                }
+                                if($idEstado==CONTRATO_PROCESO_ALTA)
+                                {
+                                    echo ' <button type="button" rel="tooltip" ><i class="fas fa-edit" title="Ver detalles línea contrato"></i></button></a>';
+                                }
+                                else
+                                {
+                                    echo ' <button type="button" rel="tooltip" ><i class="fas fa-edit" title="Ver detalles línea contrato"></i></button></a>';
+                                }
+
+                            }
+
                             if($idTipo==3)
+                            {
                                 echo '<a href="/ml/content/almacen/ficha-producto.php?idProducto='.$idAsociado.'">';
+                            }
+
+
                             ?>
 
-                                <button type="button" rel="tooltip" >
-                                    <i class="fas fa-edit" title="Ver detalles línea contrato"></i>
-                                </button>
 
-                            <button type="button" rel="tooltip" class="">
-                                <i class="fas fa-ban" style="font-size:1em; color:red; cursor: pointer" onclick="baja('<?php echo $id;?>');" title="Corte por impago"></i>
-                            </button>
-                            <button type="button" rel="tooltip" class="">
-                                <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="baja('<?php echo $id;?>');" title="Dar de baja línea de contrato"></i>
-                            </button>
+
+
+
 
                         </td>
                         </tr>
@@ -344,12 +371,41 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
             },
         })
     });
-</script>
-
-<script>
 
 
+    function corteImpago(idLinea,idServicio)
+    {
 
+        var respuesta = confirmar("¿Estas seguro de proceder al corte por impago? ");
+        alert("La linea es"+idLinea+" y el asociado"+idServicio);
+        if(respuesta)
+        {
+            $(".spinner").css('display','block');
+
+            jQuery.ajax({
+                url: 'impago-servicio.php',
+                type: 'POST',
+                cache: false,
+                async: true,
+                data: {
+                    a: 'cancelar-baja',
+                    id:id,
+                    idPaquete:<?php echo $_GET['idPaquete']; ?>,
+                    idContrato:<?php echo $_GET['idContrato']; ?>,
+                    idLineaContrato:<?php echo $_GET['idLineaContrato'];?>,
+                    idLineaDetalle:lineaDetalle,
+                    restablecer:1
+                },
+                success: function (data)
+                {
+                    $(".spinner").css('display','none');
+                    history.back();
+                }
+            });
+
+
+        }
+    }
 
     function facturar(id)
     {

@@ -74,7 +74,8 @@ for($k=0;$k<count($listadoEmpresas);$k++)
             {
                 $idFactura=Factura::setNuevaFactura($listaContratos[$i][0],$_SESSION['REVENDEDOR'],$total,$impuesto,$descuento);
                 $total=0;
-
+                $totalDto=0;
+                $totalBruto=0;
 
                 for($j=0;$j<count($lineasContrato);$j++)
                 {
@@ -112,14 +113,10 @@ for($k=0;$k<count($listadoEmpresas);$k++)
                 else
                     $totalDto=$total-$totalDto;
 
-
-
-
-
                 echo "La línea de facturacion es: BRUTO $total con un $impuesto de IVA con dto:$dto. El total bruto es $totalBruto <br>";
 
 
-
+                echo "El total de la factura $idFactura es $total";
 
                 Factura::setImporteTotal($idFactura,$total,21,$dto,$totalDto);
             }

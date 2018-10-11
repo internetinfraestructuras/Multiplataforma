@@ -13,7 +13,7 @@ require_once ('../../clases/Orden.php');
 $util = new util();
 
 check_session(3);
-
+var_dump($_POST);
 $idServicio=$util->cleanstring($_POST['servicio']);
 $idProductoNuevo=$util->cleanstring($_POST['idProducto']);
 $idProductoOriginal=$util->cleanstring($_POST['idProductoOriginal']);

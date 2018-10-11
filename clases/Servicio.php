@@ -14,8 +14,7 @@ require_once ('Provision.php');
 require_once ('masmovil/MasMovilAPI.php');
 require_once ('airenetwork/clases/Linea.php');
 require_once ('telefonia/classTelefonia.php');
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+
 
 
 class Servicio
@@ -291,14 +290,16 @@ class Servicio
                                     $telefoniaClass->updateGrupoRecargaCliente($_SESSION['REVENDEDOR'], $dni[0][0], $grupoRecarga);
                                 }
 
-                            } else if ($tipo == ID_SER_MOVIL && $idAtrib == ID_NUMERO_MOVIL) {
+                            } else if ($tipo == ID_SER_MOVIL && $idAtrib == ID_NUMERO_MOVIL)
+                            {
                                 $externo = self::getIdExternoApi($idServicio, $_SESSION['REVENDEDOR']);
 
                                 $idExterno = $externo[0][0];
                                 $idProveedor = self::getProveedor($idServicio);
                                 $idProveedor = $idProveedor[0][0];
 
-                                if ($idProveedor == ID_PROVEEDOR_MASMOVIL) {
+                                if ($idProveedor == ID_PROVEEDOR_MASMOVIL)
+                                {
                                     $apiMasMovil = new MasMovilAPI();
                                     $resultado = $apiMasMovil->getListadoClientes("", $valor);
                                     $refClienteAPI = $resultado->Client[0]->refCustomerId;
@@ -531,6 +532,7 @@ class Servicio
     {
 
         require_once('Producto.php');
+
         $lineaContrato = Contrato::getLineaContrato($idContrato, $idLinea);
 
         $precioProveedor = $lineaContrato[0]['PRECIO_PROVEEDOR'];
@@ -569,6 +571,9 @@ class Servicio
         $bajada = "";
         $valorPon = "";
 
+        $msisdns="";
+
+        $corteImpago=false;
 
         for ($k = 0; $k < count($lineaDetallesAll); $k++) {
 
@@ -584,8 +589,6 @@ class Servicio
             if($idAtrib==ID_ATRIBUTO_TRONCAL)
                 $usuarioTroncal=$valor;
 
-            echo "Buscar productos de la linea de detalles $idLineaDetalle<br>";
-            echo "El estado es $estado<br>";
 
             if ($lineaDetallesAll[$k]['ID_SERVICIO'] == $idServicioOriginal && ($lineaDetallesAll[$k]['ID'] <= $numeroMax && $lineaDetallesAll[$k]['ID'] >= $idLineaDetalle))
             {
@@ -609,7 +612,7 @@ class Servicio
 
                         }
                     }
-                    echo "El pon es ".var_dump($pon[0]['valor']);
+
                     $provision=new Provision();
                     $provision->bajaServicios($pon[0][1],true,false,false);
                 }
@@ -633,22 +636,40 @@ class Servicio
                 {
                     $proveedor=Servicio::getProveedor($ser);
 
-                    if($proveedor[0][0]==ID_PROVEEDOR_AIRENETWORKS)
+                    if($idAtrib==ID_NUMERO_MOVIL)
+                        $msisdns=$valor;
+                    echo "El numero es $msisdns<br>";
+                    if($proveedor[0][0]==ID_PROVEEDOR_AIRENETWORKS  && $msisdns!=""  && $corteImpago==false)
                     {
                         $conf=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
-                        $apiAire=new Linea($conf[0][1],$conf[0][1],$conf[0][2]);
+                        $apiAire=new Linea($conf[0][3],$conf[0][1],$conf[0][2]);
+
                         $a=Contrato::getValorLineaDetalle($idLineaDetalle);
-                        var_dump($a);
-                        echo "El nnumero para cortar es el de la linea $idLineaDetalle";
-                        //$apiAire->setCorteImpago();
+                        $corteImpago = true;
+
+                        $res=$apiAire->setCorteImpago($msisdns);
+                        var_dump($res);
+                     //   $apiAire->setLogApi($msisdns,$res,$_SESSION['REVENDEDOR'],ID_BLOQUEO_LINEA_TEMPORAL);
+
                     }
-                    if($proveedor[0][0]==ID_PROVEEDOR_MASMOVIL)
+                    if($proveedor[0][0]==ID_PROVEEDOR_MASMOVIL && $msisdns!="" && $corteImpago==false)
                     {
 
+                        $datosContrato=Contrato::getClienteDatosPorLineaDetalle($_SESSION['REVENDEDOR'],$idLineaDetalle);
+
+                        $apiMasMovil = new MasMovilAPI();
+
+                        $resultado = $apiMasMovil->getListadoClientes($datosContrato[0][0], $valor);
+
+                            sleep(1);
+                            $refClienteAPI = $resultado->Client[0]->refCustomerId;
+                            $res = $apiMasMovil->suspensionLineaMovil($refClienteAPI, $msisdns);
+                            $corteImpago = true;
+
+
+                            $apiMasMovil->setLogApi($msisdns,$res->activateDescription,$_SESSION['REVENDEDOR'],ID_BLOQUEO_LINEA_TEMPORAL);
+
                     }
-
-
-
 
                 }
                 if($tipo==ID_SER_TV)
@@ -713,7 +734,8 @@ class Servicio
         $subida = "";
         $bajada = "";
         $valorPon = "";
-
+        $msisdns="";
+        $restablecerCorte=false;
 
         for ($k = 0; $k < count($lineaDetallesAll); $k++) {
 
@@ -729,11 +751,10 @@ class Servicio
             if($idAtrib==ID_ATRIBUTO_TRONCAL)
                 $usuarioTroncal=$valor;
 
-            echo "El estado es $estado<br>";
+
             if ($lineaDetallesAll[$k]['ID_SERVICIO'] == $idServicioOriginal && ($lineaDetallesAll[$k]['ID'] <= $numeroMax && $lineaDetallesAll[$k]['ID'] >= $idLineaDetalle))
             {
                 $estado=CONTRATO_ALTA;
-                echo "Buscar productos de la linea de detalles $idLineaDetalle<br>";
 
                 if($tipo==ID_SER_INTERNET)
                 {
@@ -771,22 +792,45 @@ class Servicio
                 }
                 if($tipo==ID_SER_MOVIL)
                 {
+
                     $proveedor=Servicio::getProveedor($ser);
 
-                    if($proveedor[0][0]==ID_PROVEEDOR_AIRENETWORKS)
+                    if($idAtrib==ID_NUMERO_MOVIL)
+                        $msisdns=$valor;
+
+
+
+                    if($proveedor[0][0]==ID_PROVEEDOR_AIRENETWORKS  && $msisdns!=""  && $restablecerCorte==false)
                     {
+                        echo "ENTRAMOS CORTE IMPAGO PRIMO <HR>";
                         $conf=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
-                        $apiAire=new Linea($conf[0][1],$conf[0][1],$conf[0][2]);
-                        $a=Contrato::getValorLineaDetalle($idLineaDetalle);
-                        var_dump($a);
-                        echo "El nnumero para cortar es el de la linea $idLineaDetalle";
-                        //$apiAire->setCorteImpago();
+                        $apiAire=new Linea($conf[0][3],$conf[0][1],$conf[0][2]);
+
+                        $res=$apiAire->setRestablecerCorteImpago($msisdns);
+
+                        $restablecerCorte=true;
+
+                        if($res=="0016")//SI DEVUELVE EL 0016 LA LINEA TIENE UN PROCESO DE SOLICITUD DE CORTE Y RESTABLECE CANCELANDO ESA SOLICITUD
+                            $res=$apiAire->setCancelarCorteImpago($msisdns);
+
                     }
-                    if($proveedor[0][0]==ID_PROVEEDOR_MASMOVIL)
+                    if($proveedor[0][0]==ID_PROVEEDOR_MASMOVIL && $msisdns!="" && $restablecerCorte==false)
                     {
 
-                    }
+                        $datosContrato=Contrato::getClienteDatosPorLineaDetalle($_SESSION['REVENDEDOR'],$idLineaDetalle);
 
+                        $apiMasMovil = new MasMovilAPI();
+
+                        $resultado = $apiMasMovil->getListadoClientes($datosContrato[0][0], $valor);
+
+                            sleep(1);
+                            $refClienteAPI = $resultado->Client[0]->refCustomerId;
+                            $res=$apiMasMovil->reactivacionLineaMovil($refClienteAPI,$msisdns);
+                            $restablecerCorte=true;
+
+                            $apiMasMovil->setLogApi($msisdns,$res->activateDescription,$_SESSION['REVENDEDOR'],ID_DESBLOQUEO_LINEA);
+
+                    }
 
 
 
@@ -866,7 +910,7 @@ class Servicio
 
         $idPaquete = Contrato::getIdPaqueteLinea($idContrato, $idLinea);
         $idPaquete = $idPaquete[0][0];
-        //Contrato::setLineaContratoBaja($idContrato,$idLinea,$idPaquete);
+        Contrato::setLineaContratoBaja($idContrato,$idLinea,$idPaquete);
 
         $numeroMax = 0;
         $util = new util();
@@ -884,8 +928,10 @@ class Servicio
             $idLineaDetalle = $lineaDetalles[$i]['ID'];
             $idAtributo = $lineaDetalles[$i]['ID_ATRIBUTO_SERVICIO'];
             $valor = $lineaDetalles[$i]['VALOR'];
+            $estado = $lineaDetalles[$i]['ESTADO'];
 
-            if ($tipoServicio == ID_SER_INTERNET) {
+            if ($tipoServicio == ID_SER_INTERNET)
+            {
                 echo "cambios internet";
             }
             if ($tipoServicio == ID_SER_FIJO) {
@@ -903,7 +949,8 @@ class Servicio
                 $dni = Contrato::getDNIClienteContrato($_SESSION['REVENDEDOR'], $idContrato);
 
 
-                if ($usuarioTroncal != "" && $paqueteDestino != "" && $grupoRecarga != "") {
+                if ($usuarioTroncal != "" && $paqueteDestino != "" && $grupoRecarga != "")
+                {
                     $telefoniaClass = new Telefonia();
                     $telefoniaClass->updateTarifasTroncalFromPaqueteDestinos($usuarioTroncal, $paqueteDestino);
                     $telefoniaClass->updateGrupoRecargaCliente($_SESSION['REVENDEDOR'], $dni[0][0], $grupoRecarga);
@@ -967,7 +1014,7 @@ class Servicio
 
                 $permanencia = null;
 
-                $idLineaContratoNueva = Contrato::setNuevaLineaContrato(2, $idServicio, $idContrato, $precioProveedor, $beneficio, $impuesto, $pvp, $permanencia, 1);
+                $idLineaContratoNueva = Contrato::setNuevaLineaContrato(2, $idServicio, $idContrato, $precioProveedor, $beneficio, $impuesto, $pvp, $permanencia, $estado);
 
                 $flag = true;
 

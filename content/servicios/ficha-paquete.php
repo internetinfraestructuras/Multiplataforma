@@ -12,7 +12,7 @@ $util = new util();
 check_session(2);
 
 $listado= $util->selectWhere3('paquetes',
-    array("ID","NOMBRE","PRECIO_COSTE","MARGEN","IMPUESTO","PVP"),
+    array("ID","NOMBRE","PRECIO_COSTE","MARGEN","IMPUESTO","PVP","PRECIO_INSTALACION","IMPUESTOS_INSTALACION","PVP_INSTALACION"),
     "paquetes.id_empresa=".$_SESSION['REVENDEDOR']." and paquetes.id=".$_GET['idPaquete']);
 
 $id=$listado[0][0];
@@ -21,6 +21,9 @@ $coste=$listado[0][2];
 $margen=$listado[0][3];
 $impuestos=$listado[0][4];
 $pvp=$listado[0][5];
+$costeInstalacion=$listado[0][6];
+$impuestoInstalacion=$listado[0][7];
+$pvpInstalacion=$listado[0][8];
 
 
 
@@ -162,6 +165,27 @@ $pvp=$listado[0][5];
                                                 <input type="text" name="pvp" id="dni"
                                                        class="form-control " placeholder="99999999A" value=<?php echo $pvp; ?>>
                                             </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-3 col-sm-4">
+                                                <label>Precio Instalación:</label>
+                                                <input type="text" name="instalacion-coste" id="dni"
+                                                       class="form-control " placeholder="99999999A"  value=<?php echo $costeInstalacion; ?>>
+                                            </div>
+                                            <div class="col-md-3 col-sm-4">
+                                                <label>Impuestos instalación:</label>
+                                                <input type="text" name="instalacion-impuestos" id="dni"
+                                                       class="form-control " placeholder="99999999A" value=<?php echo $impuestoInstalacion; ?>>
+                                            </div>
+                                            <div class="col-md-3 col-sm-4">
+                                                <label>PVP Instalación:</label>
+                                                <input type="text" name="instalacion-pvp" id="dni"
+                                                       class="form-control " placeholder="99999999A" value=<?php echo $pvpInstalacion; ?>>
+                                            </div>
+
 
                                         </div>
                                     </div>

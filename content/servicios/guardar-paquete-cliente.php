@@ -120,11 +120,7 @@ if(
 
 
     if(isset($_POST['idContrato']))
-    {
-
-        echo "En desarrollo";
-        Paquete::modificarPaqueteContrato($_POST['idContrato'],$_POST['idLinea'],$id,$coste,$margen,$impuesto,$pvp);
-    }
+       Paquete::modificarPaqueteContrato($_POST['idContrato'],$_POST['idLinea'],$id,$coste,$margen,$impuesto,$pvp);
     else
     {
 

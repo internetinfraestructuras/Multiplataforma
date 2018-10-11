@@ -477,6 +477,13 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
             "contratos_lineas_productos.id_linea=$idLinea AND productos.id=contratos_lineas_productos.id_producto");
     }
 
+    public static function getEstadoLinea($idLinea)
+    {
+        $util = new util();
+        return $util->selectWhere3("contratos_lineas_detalles", array("estado"),
+            "contratos_lineas_detalles.id_linea=$idLinea");
+    }
+
     //Cambiar el producto a otra línea
     public static function cambiarLineaProducto($idLinea, $idLineaDestino)
     {
@@ -491,6 +498,19 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         $util = new util();
         return $util->selectWhere3("contratos,clientes", array("clientes.ID", "NOMBRE","APELLIDOS","DNI"),
             "contratos.id_cliente=clientes.id AND contratos.id=$idContrato AND contratos.id_empresa=$idEmpresa");
+    }
+
+
+
+    public static function getClienteDatosPorLineaDetalle($idEmpresa,$idLineaDetalle)
+    {
+        $util = new util();
+        return $util->selectWhere3("contratos_lineas_detalles,contratos_lineas,contratos,clientes", array("clientes.DNI"),
+            " contratos_lineas_detalles.ID_LINEA=contratos_lineas.id
+                     AND contratos_lineas.ID_CONTRATO=contratos.id
+                     AND contratos.id_empresa=$idEmpresa
+                     AND contratos_lineas_detalles.ID=$idLineaDetalle
+                     AND contratos.ID_CLIENTE=clientes.ID");
     }
     //Generar un anexo de contrato
     public static function generarAnexo($idContrato,$idTipoLinea,$idAsociado,$idLinea,$idTipoAnexo)

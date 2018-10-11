@@ -73,10 +73,14 @@ if(isset($_POST['action']) && $_POST['action'] == 'paquetes')
         $impuestos= $util->cleanstring($post_data['precio-impuestos']);
         $pvp= $util->cleanstring($post_data['precio-pvp']);
 
+        $costeInstalacion= $util->cleanstring($post_data['precio-instalacion']);
+        $impuestosInstalacion= $util->cleanstring($post_data['impuestos-instalacion']);
+        $pvpInstalacion=$util->cleanstring($post_data['pvp-instalacion']);
+
 
     }
 
-    $values = array( $nombre,$coste,$margen,$impuestos,$pvp,$_SESSION['REVENDEDOR']);
+    $values = array( $nombre,$coste,$margen,$impuestos,$pvp,$_SESSION['REVENDEDOR'],$costeInstalacion,$impuestosInstalacion,$pvpInstalacion);
 
     // llama a la funcion insertInto de la clase util que recibe la tabla (string) y dos arrays (campos y valores)
 
@@ -153,6 +157,12 @@ if(
     $pvp = $util->cleanstring($_POST['pvp']);
     @$cascadaPrecio=$_POST['cascada-precio'];
 
+    $costeInstalacion=$_POST['instalacion-coste'];
+    $pvpInstalacion=$_POST['instalacion-pvp'];
+    $costeInstalacion=$_POST['instalacion-impuestos'];
+
+
+
     if(isset($_POST['idContrato']))
     {
 
@@ -163,8 +173,8 @@ if(
     {
 
 
-        $values = array($nombre,$coste,$margen,$impuesto,$pvp);
-        $campos = array('NOMBRE','PRECIO_COSTE','MARGEN','IMPUESTO','PVP');
+        $values = array($nombre,$coste,$margen,$impuesto,$pvp,$costeInstalacion,$impuestosInstalacion,$pvpInstalacion);
+        $campos = array('NOMBRE','PRECIO_COSTE','MARGEN','IMPUESTO','PVP',"PRECIO_INSTALACION","IMPUESTOS_INSTALACION","PVP_INSTALACION");
 
         $result = $util->update('paquetes', $campos, $values, "id=".$id. " AND id_empresa=".$_SESSION['REVENDEDOR']);
         $util->log('El usuario:'.$_SESSION['USER_ID'].' ha modificado el paquete: '.$id.' con el resultado:'.$result);
