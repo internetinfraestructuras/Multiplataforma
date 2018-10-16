@@ -113,7 +113,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
         $util = new util();
 
-        return $util->selectWhere3("contratos_lineas", array("ID_TIPO", "ID_ASOCIADO", "ID_CONTRATO", "PRECIO_PROVEEDOR", "BENEFICIO", "IMPUESTO", "PVP", "PERMANENCIA"),
+        return $util->selectWhere3("contratos_lineas", array("ID_TIPO", "ID_ASOCIADO", "ID_CONTRATO", "PRECIO_PROVEEDOR", "BENEFICIO", "IMPUESTO", "PVP", "PERMANENCIA","ESTADO"),
             "contratos_lineas.id_contrato=" . $idContrato . " AND id=" . $idLinea);
     }
 
@@ -431,6 +431,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
         $util = new util();
         $t_contratos_lineas_detalles = array("ID_LINEA", "ID_TIPO_SERVICIO", "ID_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR", "FECHA_ALTA", "FECHA_BAJA", "ESTADO");
+
         if ($fechaAlta == null)
             $values = array($idLinea, $tipo, $idservicio, $atributo, $valor, date('Y-m-d '), '', $estado);
         else
@@ -446,11 +447,14 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
         if ($fecha != null)
             $estado = self::comprobarFechas($fecha);
+        echo "El estado devuelto es $estado";
 
         if ($estado == 2)
             $estado = 1;
         if ($estado == 7)
             $estado = 8;
+
+        echo "El estado va a ser $estado";
 
         if ($atributo == 'null' || $valor == 'null') {
             $t_contratos_lineas_detalles = array("ID_LINEA", "ID_TIPO_SERVICIO", "FECHA_ALTA", "FECHA_BAJA", "ESTADO", "ID_SERVICIO");
@@ -461,6 +465,33 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         } else {
             $t_contratos_lineas_detalles = array("ID_LINEA", "ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR", "FECHA_ALTA", "FECHA_BAJA", "ESTADO", "ID_SERVICIO");
             if ($fecha == null)
+                $values = array($idLinea, $tipo, $atributo, $valor, date('Y-m-d '), '', $estado, $idServicio);
+            else
+                $values = array($idLinea, $tipo, $atributo, $valor, $fecha, '', $estado, $idServicio);
+        }
+
+        return $util->insertInto('contratos_lineas_detalles', $t_contratos_lineas_detalles, $values);
+    }
+
+    /*
+     * CREAMOS UNA NUEVA LINEA DE DETALLES INDICANDOLE EL ESTADO
+     */
+    public static function setNuevaLineaDetallesPaqueteEstado($idLinea, $tipo, $atributo, $valor, $estado, $idServicio,$fecha=null)
+    {
+        $util = new util();
+
+
+        echo "El estado va a ser $estado";
+
+        if ($atributo == 'null' || $valor == 'null') {
+            $t_contratos_lineas_detalles = array("ID_LINEA", "ID_TIPO_SERVICIO", "FECHA_ALTA", "FECHA_BAJA", "ESTADO", "ID_SERVICIO");
+            if ($fecha == null)
+                $values = array($idLinea, $tipo, date('Y-m-d '), '', $estado, $idServicio);
+            else
+                $values = array($idLinea, $tipo, $fecha, '', $estado, $idServicio);
+        } else {
+            $t_contratos_lineas_detalles = array("ID_LINEA", "ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR", "FECHA_ALTA", "FECHA_BAJA", "ESTADO", "ID_SERVICIO");
+            if (@$fecha == null)
                 $values = array($idLinea, $tipo, $atributo, $valor, date('Y-m-d '), '', $estado, $idServicio);
             else
                 $values = array($idLinea, $tipo, $atributo, $valor, $fecha, '', $estado, $idServicio);
@@ -526,6 +557,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
     public static function setProductoRMA($idContrato, $productos, $idLineaContrato, $fechaBaja = null)
     {
+        $idOrden="";
         for ($i = 0; $i < count($productos); $i++) {
 
             $idProducto = $productos[$i][0];
@@ -536,9 +568,50 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
                 self::setProductoBaja($idProducto, 6, $fechaBaja);
             } else {
                 self::setProductoBaja($idProducto, 5, $fechaBaja);
-                Orden::crearOrdenTrabajo($idContrato, $idLineaContrato, $fechaBaja, 1, $idProducto);
+
+                if($idOrden=="")
+                {
+                    $idOrden=Orden::crearOrdenTrabajo($idContrato, $idLineaContrato, $fechaBaja, 1, $idProducto);
+                    $idOrden=$idOrden[0][0];
+                }
+                else
+                {
+                    Orden::crearLineaOrden($idOrden,ID_ORDEN_RMA_BAJA,$idProducto,$idLineaContrato);
+                }
+
+
                 //Orden::cancelarOrdenTrabajo($idProducto,$idLineaContrato,4);
             }
+
+        }
+
+
+    }
+
+    public static function setProductosRMA($idContrato, $productos, $idLineaContrato, $fechaBaja = null)
+    {
+        $idOrden="";
+        for ($i = 0; $i < count($productos); $i++)
+        {
+
+            var_dump($productos);
+            $idProducto = $productos[$i]['ID_PRODUCTO'];
+
+
+                self::setProductoBaja($idProducto, ID_PRODUCTO_RMA_BAJA, $fechaBaja);
+
+                if($idOrden=="")
+                {
+                    $idOrden=Orden::crearOrdenTrabajo($idContrato, $idLineaContrato, $fechaBaja, 1, $idProducto);
+
+                }
+
+                    Orden::crearLineaOrden($idOrden,ID_ORDEN_RMA_BAJA,$idProducto,$idLineaContrato);
+
+
+
+                //Orden::cancelarOrdenTrabajo($idProducto,$idLineaContrato,4);
+
 
         }
 

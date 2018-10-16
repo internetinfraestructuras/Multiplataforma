@@ -222,10 +222,6 @@ check_session(2);
                                         require_once("../../clases/Servicio.php");
 
                                         $apiMasmovil=new MasMovilAPI();
-
-                                        $l=$apiMasmovil->getListadoClientes("32010203N");
-                                        var_dump($l);
-
                                         if(empty($_GET['desde']))
                                             $desde=date("Ym")."01";
                                         else
@@ -237,6 +233,32 @@ check_session(2);
                                         $rs=$apiMasmovil->getListadoPortabilidades("","","","","",$desde,"");
 
                                         $solicitudes=$rs->Portabilidades->SolicitudPortabilidad;
+
+
+
+                                    if(empty($solicitudes))
+                                    {
+                                        $cod=$solicitudes->Contract;
+                                        $numero=$solicitudes->fromPhoneNumber;
+                                        $nombre=$solicitudes->firstName;
+                                        $apellido=$solicitudes->lastName;
+                                        $apellido2=$solicitudes->secondLastName;
+                                        $fecha=$solicitudes->Date;
+                                        $tarifa=$solicitudes->productProfile;
+                                        $servicioInterno=Servicio::getServicioInternoIdAPIMasMovil($tarifa,$_SESSION['REVENDEDOR']);
+                                        $servicioInterno=$servicioInterno[0][0];
+                                        $estado=$solicitudes->id_fase;
+                                        $fase=$solicitudes->fase;
+
+                                        $nombre.=" ".$apellido." ".$apellido2;
+
+                                        $fecha = date("d-m-Y", strtotime($fecha));
+
+                                        echo "<tr>";
+                                        echo "<td>$cod</td><td>$numero</td><td>$nombre</td><td> $fecha </td><td>$servicioInterno</td><td>$estado</td><td>$fase</td>";
+                                    }
+                                    else
+                                    {
 
 
 
@@ -262,6 +284,7 @@ check_session(2);
                                             echo "<td>$cod</td><td>$numero</td><td>$nombre</td><td> $fecha </td><td>$servicioInterno</td><td>$estado</td><td>$fase</td>";
 
                                         }
+                                    }
 
                                     }
 

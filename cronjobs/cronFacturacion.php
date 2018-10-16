@@ -8,6 +8,7 @@
 
 require_once ('../clases/Contrato.php');
 require_once ('../clases/Factura.php');
+require_once ('../clases/Recibos.php');
 require_once ('../clases/Empresa.php');
 require_once ('../config/util.php');
 
@@ -31,6 +32,8 @@ for($k=0;$k<count($listadoEmpresas);$k++)
     //Si el día de facturación no está configurado
     if($diaFacturacion=='')
         $diaFacturacion=5;
+echo "<hr>";
+    echo "El dia es $diaFacturacion";
 
 
 
@@ -44,10 +47,11 @@ for($k=0;$k<count($listadoEmpresas);$k++)
         {
             $dto=0;
             $fechaAlta=$listaContratos[$i][3];
+            $idContrato=$listaContratos[$i][0];
 
-            $lineasContrato=Contrato::getLineasContratoAlta($listaContratos[$i][0]);
+            $lineasContrato=Contrato::getLineasContratoAlta($idContrato);
 
-            $campanas=Contrato::getCampanasContrato($listaContratos[$i][0]);
+            $campanas=Contrato::getCampanasContrato($idContrato);
 
             if(!empty($campanas))
             {
@@ -57,22 +61,31 @@ for($k=0;$k<count($listadoEmpresas);$k++)
             }
             //OBTENEMOS LAS FACTURAS DEL MES EN CURSO DE DICHA EMPRESA,SI LA FACTURA YA ESTUVIESE GENERADA NO SE VUELVE A GENERAR!!!
 
-           $facturasMes=Factura::getFacturasMesCurso($idEmpresa);
-            $flag=false;
+           $facturasMes=Factura::getFacturasRecurrentesMesCurso($idEmpresa);
+           $flagFactura=false;
+
+           $recibos=Recibo::getRecibosEmpresaMesActual($idEmpresa,$idContrato);
+
+
+
+
 
            for($o=0;$o<count($facturasMes);$o++)
            {
                if($facturasMes[$o][5]==$listaContratos[$i][0])
                {
-                   $flag=true;
+                   $flagFactura=true;
                    break;
                }
            }
 
-           //SI EL FLAG ES FALSO QUIERE DECIR QUE NO EXISTE UNA FACTURA EN EL MES EN CURSO DE DICHO CONTRATO
-            if($flag==false)
+           //SI EL FLAGFACTURA ES FALSO QUIERE DECIR QUE NO EXISTE UNA FACTURA EN EL MES EN CURSO DE DICHO CONTRATO
+            //SI EL FLAG ES FALSO PERO HAY RECIBO SE TIENE QUE ACTUALIZAR LA TUPLA DEL RECIBO A GENERADO.
+
+            if($flagFactura==false)
             {
                 $idFactura=Factura::setNuevaFactura($listaContratos[$i][0],$_SESSION['REVENDEDOR'],$total,$impuesto,$descuento);
+
                 $total=0;
                 $totalDto=0;
                 $totalBruto=0;
@@ -86,7 +99,7 @@ for($k=0;$k<count($listadoEmpresas);$k++)
 
                     $total+=$importe;
 
-                    $rs= Factura::setNuevaLineaFactura($idFactura,$idLinea,$importe,$impuesto);
+                   $rs= Factura::setNuevaLineaFactura($idFactura,$idLinea,$importe,$impuesto);
 
                 }
 
@@ -119,6 +132,18 @@ for($k=0;$k<count($listadoEmpresas);$k++)
                 echo "El total de la factura $idFactura es $total";
 
                 Factura::setImporteTotal($idFactura,$total,21,$dto,$totalDto);
+                //Recorremos los recibos del contrato si los hubiese
+                if($recibos!=null)
+                {
+                    for($m=0;$m<count($recibos);$m++)
+                    {
+                        echo "Entramos";
+                        $idRecibo=$recibos[$m][0];
+                        $idLineaRecibo=$recibos[$m][1];
+                       Recibo::setIdFacturaRecibo($idEmpresa,$idRecibo,$idLineaRecibo,$idFactura);
+                       Factura::setPagada($idEmpresa,$idFactura);
+                    }
+                }
             }
 
         }

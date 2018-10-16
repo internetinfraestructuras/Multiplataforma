@@ -12,14 +12,15 @@ if (!isset($_SESSION)) {
 header('Content-type: application/pdf');
 require_once('../../../config/util.php');
 require_once('../../../clases/airenetwork/clases/Linea.php');
-require_once('../../../clases/Contrato.php');
-require_once('../../../clases/Servicio.php');
+
 require_once('../../../clases/Empresa.php');
 
 $confAire=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
+
 $url=$confAire[0][3];
 $usuario=$confAire[0][1];
 $pass=$confAire[0][2];
+
 
 $util = new util();
 check_session(1);

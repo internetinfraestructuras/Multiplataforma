@@ -29,6 +29,37 @@ $apiAire=new Linea($url,$usuario,$pass);
 
 $rs=$apiAire->setCancelarSolicitudLinea($cod);
 
+switch($rs)
+{
+    case "0007":
+        $rs="0007:Error al obtener la solicitud de línea";
+    break;
+    case "0008":
+        $rs="0008:Código incorrecto";
+        break;
+    case "0009":
+        $rs="0009:Error al obtener estado solicitud";
+        break;
+    case "0010":
+        $rs="0010:El estado no es correcto para solicitar la cancelación.";
+        break;
+    case "0011":
+        $rs="0011:Error al cancelar la solicitud";
+        break;
+    case "0012":
+        $rs="0012:El periodo de cancelación de portabilidad ha expirado";
+        break;
+    case "0013":
+        $rs="0013:Error al cancelar la solicitud";
+        break;
+    case "0014":
+        $rs="0014:Error al cancelar la solicitud";
+        break;
+    case "0015":
+        $rs="0015:Error al cancelar la solicitud";
+    break;
+}
 echo $rs;
+
 
 ?>

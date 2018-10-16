@@ -12,6 +12,7 @@ if (!isset($_SESSION)) {
 require_once('../../config/util.php');
 require_once ('../../clases/Factura.php');
 require_once ('../../clases/Contrato.php');
+require_once ('../../clases/Recibos.php');
 $util = new util();
 
 // solo los usuarios de nivel 3 a 0 pueden agregar clientes
@@ -98,7 +99,7 @@ check_session(3);
                     <div id="panel-1" class="panel panel-default">
                         <div class="panel-heading">
 							<span class="title elipsis">
-								<strong>LISTADO DE <?php echo DEF_FACTURACION; ?> MES ACTUAL</strong> <!-- panel title -->
+								<strong>LISTADO DE <?php echo DEF_FACTURACION; ?> RECURRENTES MES ACTUAL</strong> <!-- panel title -->
 							</span>
 
 
@@ -130,7 +131,24 @@ check_session(3);
                                 <option value="11">Noviembre</option>
                                 <option value="12">Diciembre</option>
                             </select>
+                            <br>
+                            <label>TIPO REMESA: </label>
+                            <select id="remesa"  name="remesa[orden][]" class="form-control">
+                            <?php
+                            $recibos=Recibo::getTiposRecibos();
+                                for($j=0;$j<count($recibos);$j++)
+                                {
 
+                                $idTipo=$recibos[$j][0];
+                                $nombre=$recibos[$j][1];
+
+
+                                echo "<option data-id='".$idTipo."' value='" .$idTipo. "'>".$nombre."</option>";
+                                }
+
+                                echo '</select>';
+                            ?>
+<br>
                             <table id="example2" class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
@@ -139,13 +157,14 @@ check_session(3);
                                     <th>IMPUESTO</th>
                                     <th>DESCUENTO</th>
                                     <th>TOTAL</th>
+                                    <th>REMESAR</th>
                                     <th>OPCIONES</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <?php
                                 if(empty($_GET['mes']))
-                                    $listado=Factura::getFacturasMesCurso($_SESSION['REVENDEDOR']);
+                                    $listado=Factura::getFacturasRecurrentesMesCurso($_SESSION['REVENDEDOR']);
                                 else
                                     $listado=Factura::getFacturasMes($_SESSION['REVENDEDOR'],2);
                                    // $listado=Factura::getFacturas($_SESSION['REVENDEDOR']);//MES BUSCADO
@@ -163,6 +182,11 @@ check_session(3);
 
                                     echo "<tr>";
                                     echo "<td >$id</td><td>$fecha</td><td>$impuesto</td><td>$dto</td><td>$total</td>";
+                                    echo'<td><select id="empleados"  name="ordenes[orden][]" class="form-control">';
+                                    echo "<option data-id='".$id."' value='0'>No</option>";
+                                    echo "<option data-id='".$id."' value='1'>Si</option>";
+
+
 
                                     ?>
                                     <td class="td-actions text-right">
@@ -205,7 +229,23 @@ check_session(3);
                         <!-- /panel content -->
 
                         <!-- panel footer -->
+                        <!-- panel footer -->
                         <div class="panel-footer">
+                            <div class="row">
+
+
+
+
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <center>
+
+                                            <button type="submit" class="btn btn-3d btn-teal btn-xlg btn-block margin-top-30">GENERAR REMESA</button>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
 
 
                         </div>

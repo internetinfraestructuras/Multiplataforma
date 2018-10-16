@@ -119,9 +119,11 @@ $pvp=$listado[0][5];
                                     $readonly="";
                                     if(isset($_GET['idContrato']))
                                     {
+
                                     echo '<input type="hidden" name="idContrato" value='.$_GET['idContrato'].' id="id" class="form-control">';
                                     echo '<input type="hidden" name="idLinea" value='.$_GET['idLineaContrato'].' id="id" class="form-control">';
                                     $readonly="readonly";
+
                                     } ?>
 
                                     <div class="row">
@@ -293,8 +295,8 @@ $pvp=$listado[0][5];
                                                 </a>
                                                 <button type="button" rel="tooltip" class="">
                                                     <?php
-                                                    if($idEstadoId==CONTRATO_ALTA)
-                                                    {
+                                                    if($idEstadoId==CONTRATO_ALTA) {
+                                                    }
                                                         if($idEstadoId==CONTRATO_IMPAGO)
                                                         {
 
@@ -312,7 +314,7 @@ $pvp=$listado[0][5];
                                                         echo ' <button type="button" rel="tooltip" class="">
                                                     <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar(\'<?php echo $id;?>\',\'<?php echo $idLineaDetalle;?>\');" title="Dar de baja el servicio"></i>
                                                 </button>';
-                                                    }
+
                                                     ?>
 
 
@@ -487,7 +489,7 @@ $pvp=$listado[0][5];
 <!-- JAVASCRIPT FILES -->
 <script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
-<script type="text/javascript" src="assets/js/app.js"></script>
+<script type="text/javascript" src="../../assets/js/app.js"></script>
 
 
 <script>
@@ -523,7 +525,7 @@ $pvp=$listado[0][5];
                     success: function (data)
                     {
                         $(".spinner").css('display','none');
-                        history.back();
+                       // history.back();
                     }
                 });
             }
@@ -571,16 +573,16 @@ $pvp=$listado[0][5];
                     data: {
                         a: 'cancelar-baja',
                         id:id,
-                        idPaquete:1,
-                        idContrato:1,
-                        idLineaContrato:1,
+                        idPaquete:<?php echo $_GET['idPaquete'];?>,
+                        idContrato:<?php echo $_GET['idContrato'];?>,
+                        idLineaContrato:<?php echo $_GET['idLineaContrato'];?>,
                         idLineaDetalle:lineaDetalle,
                         restablecer:1
                     },
                     success: function (data)
                     {
                         $(".spinner").css('display','none');
-                        history.back();
+                       // history.back();
                     }
                 });
 
@@ -613,7 +615,7 @@ $pvp=$listado[0][5];
                 success: function (data)
                 {
                     $(".spinner").css('display','none');
-                    history.back();
+                   // history.back();
                 }
             });
 

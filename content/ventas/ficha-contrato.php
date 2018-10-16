@@ -149,30 +149,29 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
                         $alta=$lineas[$i][7];
                         $baja=$lineas[$i][8];
 
-                        if($idEstado!=3 || $idEstado!=8 || $idEstado!=7)
-                            $totalContrato+=$pvp;
-
-                        if($idEstado==1)
+                        if($idEstado==CONTRATO_ALTA)
                         {
                             $bColor="green";
                             $color="white";
                         }
-
-                        if($idEstado==2)
-                        {
-                            $bColor="red";
-                            $color="white";
-                        }
-
-                        if($idEstado==3)
+                        if($idEstado==CONTRATO_PROCESO_ALTA)
                         {
                             $bColor="blue";
                             $color="white";
                         }
-
-                        if($idEstado==4 || $idEstado==7 || $idEstado==8 )
+                        if($idEstado==CONTRATO_PROCESO_BAJA)
+                        {
+                            $bColor="red";
+                            $color="white";
+                        }
+                        if($idEstado==CONTRATO_PTE_CAMBIO || $idEstadoId==CONTRATO_PROCESO_BAJA_CAMBIO || $idEstadoId==CONTRATO_PROCESO_ALTA_CAMBIO)
                         {
                             $bColor="orange";
+                            $color="white";
+                        }
+                        if($idEstado==CONTRATO_IMPAGO)
+                        {
+                            $bColor="red";
                             $color="white";
                         }
 
@@ -215,7 +214,7 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
 
                                     echo ' <button type="button" rel="tooltip" ><i class="fas fa-edit" title="Ver detalles línea contrato"></i></button></a>';
                                     echo '<button type="button" rel="tooltip" class="">
-                                <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="baja(\'<?php echo $id;?>\');" title="Dar de baja línea de contrato"></i>
+                                <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="baja(\''.$id.'\',\''.$idAsociado.'\');" title="Dar de baja línea de contrato"></i>
                                 </button>';
                                     echo '  <button type="button" rel="tooltip" class="">
                                             <i class="fas fa-ban" style="font-size:1em; color:red; cursor: pointer" onclick="corteImpago(\''.$id.'\',\''.$idAsociado.'\')" title="Corte por impago"></i>
@@ -228,6 +227,10 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
                                 else
                                 {
                                     echo ' <button type="button" rel="tooltip" ><i class="fas fa-edit" title="Ver detalles línea contrato"></i></button></a>';
+                                }
+                                if($idEstado==CONTRATO_IMPAGO)
+                                {
+                                    echo '      <i class="fas fa-hand-holding-usd" style="font-size:1em; color:green; cursor: pointer" onclick="restaurarServicio(\''.$idAsociado.'\',\''.$id.'\',\''.$idTipo.'\');" title="Anular corte impago"></i>';
                                 }
 
                             }
@@ -377,7 +380,6 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
     {
 
         var respuesta = confirmar("¿Estas seguro de proceder al corte por impago? ");
-        alert("La linea es"+idLinea+" y el asociado"+idServicio);
         if(respuesta)
         {
             $(".spinner").css('display','block');
@@ -389,17 +391,16 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
                 async: true,
                 data: {
                     a: 'cancelar-baja',
-                    id:id,
-                    idPaquete:<?php echo $_GET['idPaquete']; ?>,
+                    id:idServicio,
                     idContrato:<?php echo $_GET['idContrato']; ?>,
-                    idLineaContrato:<?php echo $_GET['idLineaContrato'];?>,
-                    idLineaDetalle:lineaDetalle,
+                    idLineaContrato:idLinea,
                     restablecer:1
                 },
                 success: function (data)
                 {
                     $(".spinner").css('display','none');
-                    history.back();
+                   // location.reload();
+
                 }
             });
 
@@ -432,9 +433,43 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
         }
     }
 
-    function baja(id)
+    function restaurarServicio(id,lineaDetalle,tipo)
+    {
+
+        var respuesta = confirmar("¿Estas seguro de restablecer el servicio? ");
+        if(respuesta)
+        {
+            $(".spinner").css('display','block');
+
+            jQuery.ajax({
+                url: 'impago-servicio.php',
+                type: 'POST',
+                cache: false,
+                async: true,
+                data: {
+                    a: 'cancelar-baja',
+                    id:id,
+                    idContrato:<?php echo $_GET['idContrato']; ?>,
+                    idLineaContrato:lineaDetalle,
+                    tipo:tipo,
+                    restablecer:0
+                },
+                success: function (data)
+                {
+                    $(".spinner").css('display','none');
+                   // location.reload();
+
+                }
+            });
+
+
+        }
+    }
+
+    function baja(id,idServicio)
     {
         // var hash = md5(id);
+
         var respuesta = confirmar("¿Seguro/a de que quieres dar de baja la línea de contrato?");
 
         if(respuesta)
@@ -447,11 +482,13 @@ $lineas= $util->selectWhere3('contratos_lineas,contratos_lineas_tipo,contratos,e
                 async: true,
                 data: {
                     a: 'baja-servicio',
-                    p:id
+                    id:id,
+                    idContrato:<?php echo $_GET['idContrato'];?>,
+                    idServicio:idServicio
                 },
                 success: function (data) {
 
-                    location.reload();
+                    //location.reload();
                 }
             });
         }

@@ -1,18 +1,18 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Ruben
- * Date: 15/02/2018
- * Time: 9:38
+ * User: diego
+ * Date: 13/08/2018
+ * Time: 9:25
  */
 
 
 /*
     ╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
-    ║ Borra de la cabecera un service port y una ont                                                                   ║
-    ║ Recibe como parametro post a: tiene que ser un string 'borrar_en_olt                                             ║
-    ║ el id del registro a borrar y que se encuentra en la tabla aprovisionados, de ahi cogemos los datos de la        ║
-    ║ cabecera y todo lo demas como pon, c, t, p, etc                                                                           ║
+    ║                                                                                                                  ║
+    ║               REALIZA UN CORTE/RESTABLECE CORTE POR IMPAGO EN LOS SERVICIOS DE FORMA INDEPENDIENTE               ║                                                                                                     |
+    ║                                                                                                                  ║
+    ║                                                                                                                  ║
     ╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
 */
 
@@ -25,14 +25,24 @@ require_once ('../../clases/Servicio.php');
 $util = new util();
 check_session(1);
 
-var_dump($_POST);
+
 if(isset($_POST['id']) && $_POST['id']!='')
 {
-    $idLinea=$_POST['id'];
+
+    $idServicio=$_POST['id'];
     $idContrato=$_POST['idContrato'];
-    $idServicio=$_POST['idServicio'];
+    $idLinea=$_POST['idLineaContrato'];
+    $restablecer=$_POST['restablecer'];
+    $tipo=$_POST['tipo'];
 
 
-    Servicio::darBajaServicio($idContrato,$idLinea,$idServicio);
+
+    var_dump($_POST);
+    if($restablecer==1)
+         Servicio::setImpagoServicio($idContrato,$idLinea,$tipo,"",$idServicio);
+    else
+        Servicio::setRestablecerServicioCorteImpago($idContrato,$idLinea,$tipo,"",$idServicio);
+
+
+
 }
-

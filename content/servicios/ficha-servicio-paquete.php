@@ -800,7 +800,7 @@ $actual = date ("Y-m-d");
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../assets/js/prompt.js"></script>
 
-<script type="text/javascript" src="../../assets/js/app.js"></script>
+<!--<script type="text/javascript" src="../../assets/js/app.js"></script>-->
 
 
 <script>
@@ -940,6 +940,9 @@ $actual = date ("Y-m-d");
         }
 
     }
+
+
+
     function estadosLineas (valor)
     {
         $(".spinner").css('display','block');
@@ -956,6 +959,7 @@ $actual = date ("Y-m-d");
             }
         });
     }
+
 
     function carga_detalles_servicio(id)
     {
@@ -983,6 +987,8 @@ $actual = date ("Y-m-d");
             }
         });
     }
+
+
     function corteImpago(valor)
     {
         $(".spinner").css('display','block');

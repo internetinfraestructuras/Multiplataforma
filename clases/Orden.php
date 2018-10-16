@@ -129,7 +129,7 @@ class Orden
                     AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes.fecha_alta<=DATE(now()) AND ordenes.id_tipo_estado=1");
     }
 
-    public static function getOrdenesEstados()
+    public static function getOrdenesEstados($idEstado)
     {
 
 
@@ -139,7 +139,7 @@ class Orden
             "ordenes.id_contrato=contratos.id 
                     AND ordenes_estados.id=ordenes.id_tipo_estado 
                     AND contratos.id_cliente=clientes.id
-                    AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes.fecha_alta<=DATE(now()) AND ordenes.id_tipo_estado=1");
+                    AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes.fecha_alta<=DATE(now()) AND ordenes.id_tipo_estado=$idEstado");
     }
 
 

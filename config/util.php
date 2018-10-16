@@ -123,7 +123,7 @@ class util {
             for ($i = 0; $i < $numFields; $i++) {
                 $fieldNames[] = mysqli_fetch_field_direct($result, $i);
             }
-
+            echo $query;
             $link->close();
         } catch (Exception $e) {
             $this->log('Error selectAll: ' . $query);
@@ -137,6 +137,7 @@ class util {
             $link = $this->conectar();
 
             $query = 'SELECT * FROM ' . $tabla;
+
             if ($order != '')
                 $query = $query . $where . ' ORDER BY ' . $order;
 
@@ -310,7 +311,7 @@ class util {
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
 
-    //  echo "<br>".$query."<br>";
+      echo "<br>".$query."<br>";
 
             if (!($result = $link->query($query)))
                 throw new Exception();
@@ -427,7 +428,7 @@ class util {
             $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
 
             $query = str_replace("º","",$query);
-         //  echo $query."<br>";
+           echo $query."<br>";
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
             $lastid = mysqli_insert_id($link);
@@ -467,10 +468,10 @@ class util {
             $query = str_replace("''",'null',$query);
 
             $query = str_replace("º","",$query);
-
+           // echo $query;
             if (!($result = $link->query($query)))
                 throw new Exception('Error en insertInto2.');
-echo $query;
+
             $lastid = mysqli_insert_id($link);
 
             $link->close();
@@ -516,7 +517,7 @@ echo $query;
         }catch (Exception $e){
             $this->log('eror update: ' . $e->getFile());
         }
-   // echo $query."<br/>";
+   //echo $query."<br/>";
 //        if (!($result = $link->query($query))) {
 //
 //            throw new Exception('Error en selectWhere.');

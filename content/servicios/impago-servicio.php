@@ -25,7 +25,6 @@ require_once ('../../clases/Servicio.php');
 $util = new util();
 check_session(1);
 
-
 if(isset($_POST['id']) && $_POST['id']!='')
 {
     $idServicio=$_POST['id'];
@@ -37,6 +36,9 @@ if(isset($_POST['id']) && $_POST['id']!='')
 
     $tipo=Servicio::getTipoServicio($_SESSION['REVENDEDOR'],$idServicio);
     $tipo=$tipo[0][0];
+
+
+
 
     if($restablecer==1)
          Servicio::setImpagoServicioPaquete($idContrato,$idLinea,$tipo,"",$idServicio,$idLineaDetalle);

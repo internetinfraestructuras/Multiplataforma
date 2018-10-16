@@ -39,13 +39,20 @@ class Factura
 
     public static function setImporteTotal($idFactura,$importe,$impuestos,$descuento,$total)
     {
-        echo "woo";
+
         $util = new util();
         $campos = array("IMPORTE_BRUTO","TOTAL","IMPUESTO","DESCUENTO");
         $values = array($importe,$total,$impuestos,$descuento);
         return $util->update('facturas', $campos, $values,"id=$idFactura");
     }
+    public static function setPagada($idEmpresa,$idFactura)
+    {
 
+        $util = new util();
+        $campos = array("ESTADO");
+        $values = array(ID_FACTURA_PAGADA);
+        return $util->update('facturas', $campos, $values,"id=$idFactura AND id_empresa=$idEmpresa");
+    }
     public static function getDiaFacturacion($idEmpresa)
     {
         $util = new util();
@@ -72,7 +79,7 @@ class Factura
         return $util->selectWhere3('facturas,facturas_lineas', array('facturas_lineas.id_linea_contrato','facturas_lineas.importe','facturas_lineas.descuento','facturas_lineas.impuesto'),
             ' facturas.id=facturas_lineas.id_factura AND facturas.id='.$idFactura);
     }
-    public static function getFacturasMesCurso($idEmpresa)
+    public static function getFacturasRecurrentesMesCurso($idEmpresa)
     {
         $util = new util();
         $diaFacturacion=self::getDiaFacturacion($idEmpresa);
@@ -86,7 +93,7 @@ class Factura
 
 
 
-        return $util->selectWhere3('facturas', array('NUMERO','FECHA','IMPUESTO','DESCUENTO','TOTAL','ID_CONTRATO'),'ID_EMPRESA ='.$idEmpresa." AND facturas.fecha>='$fechaInicio' AND facturas.fecha<='$fechaFin'");
+        return $util->selectWhere3('facturas', array('NUMERO','FECHA','IMPUESTO','DESCUENTO','TOTAL','ID_CONTRATO'),'ID_EMPRESA ='.$idEmpresa." AND facturas.fecha>='$fechaInicio' AND facturas.fecha<='$fechaFin' AND facturas.ID_CONTRATO IS NOT null");
     }
 
     public static function getFacturasMes($idEmpresa,$mesActual)
