@@ -389,7 +389,7 @@ class MasMovilAPI
                 array("instruction"=>$instructions,"activate"=>array("lineDetails"=>$lineDetails)));
 
 
-        $client = new SoapClient($this->servicio."cableMsisdnsErased-test.wsdl", $this->parametrosCliente);
+        $client = new SoapClient($this->servicio."cableMsisdnsErased.wsdl", $this->parametrosCliente);
         $resultado=$client->msisdnsMaintenance($parametros);
         return json_encode($resultado->return);
     }

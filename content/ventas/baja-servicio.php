@@ -22,6 +22,9 @@ if (!isset($_SESSION)) {
 }
 require_once('../../config/util.php');
 require_once ('../../clases/Servicio.php');
+
+
+
 $util = new util();
 check_session(1);
 

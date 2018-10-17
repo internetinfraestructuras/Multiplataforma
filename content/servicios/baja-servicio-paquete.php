@@ -35,7 +35,7 @@ if(isset($_POST['id']) && $_POST['id']!='')
     $mantenerPaquete=$_POST['mantenerPaquete'];
     $idLineaDetalle=$_POST['idLineaDetalle'];
 
-
+var_dump($_POST);
 
     if($mantenerPaquete=="true")
         Servicio::darBajaServicioPaquete($_SESSION['REVENDEDOR'],$idContrato,$idLinea,$idPaquete,$idServicio,$idLineaDetalle);

@@ -14,6 +14,7 @@ include_once('../../../config/util.php');
 require_once('../../../clases/airenetwork/clases/Linea.php');
 require_once('../../../clases/Empresa.php');
 
+
 $confAire=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
 
 $url=$confAire[0][3];
@@ -29,8 +30,14 @@ $apiAire=new Linea($url,$usuario,$pass);
 
 $rs=$apiAire->setCancelarSolicitudLinea($cod);
 
+
+
+
 switch($rs)
 {
+    case "0001":
+        $rs="0001:La cancelación de la solicitud de línea se ha efectuado correctamente";
+        break;
     case "0007":
         $rs="0007:Error al obtener la solicitud de línea";
     break;

@@ -10,6 +10,26 @@ require_once('db_config.php');
 
 define('DDBB','pruebas.');
 
+
+define("ID_API_MASMOVIL",1);
+define("ID_API_AIRENETWORKS",2);
+define("ID_API_INTERNET",3);
+define("ID_API_TELEFONIA_FIJA",4);
+define("ID_API_TV",5);
+
+
+/*TRANSACCIONES LOG API MOVILES*/
+define("ID_TRANSACCION_CAMBIO_TARIFA",1);
+define("ID_TRANSACCION_ACTIVAR_ROAMING",2);
+define("ID_TRANSACCION_DESACTIVAR_ROAMING",3);
+define("ID_TRANSACCION_CAMBIO_ICC",4);
+define("ID_TRANSACCION_BLOQUEO_TEMPORAL",5);
+define("ID_TRANSACCION_REACTIVACION_LINEA",6);
+define("ID_TRANSACCION_BAJA_LINEA",7);
+define("ID_TRANSACCION_CANCELAR_BAJA_LINEA",7);
+
+
+
 // cabeceras de los ficheros html
 define('AUTOR','Internet Infraestructuras S.L.');
 define('OWNER','AT Control');
@@ -76,6 +96,7 @@ define('DEF_REVENDEDOR','Revendedor');
 define('DEF_USUARIOS','Usuarios');
 define('DEF_CLIENTES','Clientes');
 define('DEF_PORTA_CONF','Portabilidades');
+define('DEF_LINEAS_SOLICITUDES','Solicitudes lineas');
 define('DEF_LISTADO_MOVILES','Líneas móviles activas');
 define('DEF_CDR','Líneas móviles activas');
 define('DEF_CAMPANAS','Campañas');

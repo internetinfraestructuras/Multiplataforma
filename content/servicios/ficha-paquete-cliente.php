@@ -311,19 +311,9 @@ $pvp=$listado[0][5];
                                                             <i class="fas fa-ban" style="font-size:1em; color:red; cursor: pointer" onclick="impago('<?php echo $id;?>','<?php echo $idLineaDetalle;?>');" title="Corte por impago"></i></button>
                                                         <?php
                                                         }
-                                                        echo ' <button type="button" rel="tooltip" class="">
-                                                    <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar(\'<?php echo $id;?>\',\'<?php echo $idLineaDetalle;?>\');" title="Dar de baja el servicio"></i>
-                                                </button>';
-
-                                                    ?>
-
-
-
-
-
-
-
-
+                                                        ?><button type="button" rel="tooltip" class="">
+                                                    <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>','<?php echo $idLineaDetalle;?>');" title="Dar de baja el servicio"></i>
+                                                </button>
                                             </td>
 
                                             </tr>
@@ -397,7 +387,7 @@ $pvp=$listado[0][5];
                                                     </button>
                                                 </a>
                                                 <button type="button" rel="tooltip" class="">
-                                                    <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>,'<?php echo $idLineaDetalle; ?>');"></i>
+                                                    <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>','<?php echo $idLineaDetalle; ?>');"></i>
                                                 </button>
 
 
@@ -525,7 +515,7 @@ $pvp=$listado[0][5];
                     success: function (data)
                     {
                         $(".spinner").css('display','none');
-                       // history.back();
+                       //    history.back();
                     }
                 });
             }
@@ -549,7 +539,7 @@ $pvp=$listado[0][5];
                     success: function (data)
                     {
                         $(".spinner").css('display','none');
-                        history.back();
+                      //  history.back();
                     }
                 });
             }

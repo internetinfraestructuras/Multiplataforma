@@ -311,7 +311,7 @@ class util {
             if ($order != null)
                 $query = $query . " ORDER BY ".$order ;
 
-      echo "<br>".$query."<br>";
+     // echo "<br>".$query."<br>";
 
             if (!($result = $link->query($query)))
                 throw new Exception();
@@ -428,7 +428,7 @@ class util {
             $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
 
             $query = str_replace("º","",$query);
-           echo $query."<br>";
+    //       echo $query."<br>";
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
             $lastid = mysqli_insert_id($link);

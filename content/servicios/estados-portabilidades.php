@@ -94,7 +94,7 @@ check_session(2);
                     <!-- ------ -->
                     <div class="panel panel-default">
                         <div class="panel-heading panel-heading-transparent">
-                            <strong>Estados <?php echo strtoupper(DEF_PORTA_CONF); ?> móviles</strong>
+                            <strong>Estados <?php echo strtoupper(DEF_LINEAS_SOLICITUDES); ?> móviles</strong>
                         </div>
 
                         <div class="panel-body">
@@ -143,7 +143,8 @@ check_session(2);
 
                                         </tr>
                                         </thead>
-                                        <tbody>
+                                        </tbody>
+
                                     <?php
                                         require_once("../../clases/airenetwork/clases/Linea.php");
                                         require_once('../../clases/Empresa.php');
@@ -176,7 +177,7 @@ check_session(2);
 
                                                 ?>
 
-                                                    <a onclick="cancelarSolicitud(<?php echo $cod; ?>)" ">
+                                                    <a onclick="cancelarSolicitud('<?php echo $cod; ?>')" ">
                                                 <button type="button" rel="tooltip">
                                                         <i class="fa fa-remove"></i> Cancelar
                                                     </button>
@@ -320,7 +321,7 @@ check_session(2);
 <!-- JAVASCRIPT FILES -->
 <script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
-<script type="text/javascript" src="assets/js/app.js"></script>
+<script type="text/javascript" src="../../assets/js/app.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.css">
 
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.js"></script>
@@ -332,7 +333,8 @@ check_session(2);
     }
 function cancelarSolicitud(numeroSolicitud)
 {
-    var respuesta = confirmar("¿Seguro/a de querer cancelar esta solicitud de portabilidad?");
+    var respuesta = confirmar("¿Seguro/a de querer cancelar esta solicitud línea?");
+
     if(respuesta)
     {
         jQuery.ajax({
@@ -343,7 +345,6 @@ function cancelarSolicitud(numeroSolicitud)
             data:{codSolicitud:numeroSolicitud},
             success: function(data)
             {
-
               alert(data);
             }
         });
