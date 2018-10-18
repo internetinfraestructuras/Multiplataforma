@@ -24,6 +24,7 @@ class Contrato
         return $util->selectWhere3("contratos", array("ID", "NUMERO", "ID_CLIENTE", "FECHA_INICIO", "FECHA_FIN", "ESTADO"),
             "contratos.id_empresa=$idEmpresa AND contratos.estado=1");
     }
+
     public static function getContratosBajaHoy($idEmpresa)
     {
         $util = new util();
@@ -89,8 +90,6 @@ class Contrato
         return $util->insertInto('contratos_lineas_productos', $campos, $values, true);
     }
 
-
-
     /*
      * SELECT ID_TIPO,ID_ASOCIADO,ID_CONTRATO,PRECIO_PROVEEDOR,BENEFICIO,IMPUESTO,PVP,PERMANENCIA
 FROM contratos_lineas,contratos_lineas_detalles
@@ -125,6 +124,48 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         return $util->selectWhere3("contratos_lineas", array("ID_TIPO", "ID_ASOCIADO", "ID_CONTRATO", "PRECIO_PROVEEDOR", "BENEFICIO", "IMPUESTO", "PVP", "PERMANENCIA","ID"),
             "contratos_lineas.id_contrato=$idContrato AND contratos_lineas.estado=1");
     }
+
+    /*
+     * NOS DEVUELVE EL CONCEPTO DE UNA LÍNEA DE CONTRATO PARA GENERAR LA FACTURACIÓN/REMESAS
+     * EL $idTipoLinea es 1 si es paquete, 2 si es servicio independiente,3 si es un producto,4 si es un bono.
+     */
+    public static function getConceptoLinea($idContrato,$idLinea,$idTipoLinea)
+    {
+
+        $util = new util();
+
+        if($idTipoLinea==ID_LINEA_PAQUETE)
+        {
+            $rs=$util->selectWhere3("contratos_lineas,paquetes,contratos",
+                array("paquetes.nombre"),
+                "
+                contratos_lineas.id_asociado=paquetes.id 
+                AND contratos_lineas.id=$idLinea 
+                AND contratos.id=contratos_lineas.id_contrato 
+                AND contratos.id=$idContrato");
+        }
+        else if($idTipoLinea==ID_LINEA_SERVICIO)
+        {
+            $rs=$util->selectWhere3("contratos_lineas,servicios,contratos",
+                array("servicios.nombre"),
+                "
+                contratos_lineas.id_asociado=servicios.id 
+                AND contratos_lineas.id=$idLinea 
+                AND contratos.id=contratos_lineas.id_contrato 
+                AND contratos.id=$idContrato");
+        }
+        else if($idTipoLinea==ID_LINEA_PRODUCTO)
+        {
+            echo "BONOS:En desarrollo";
+        }
+        else if($idTipoLinea==ID_LINEA_BONOS)
+        {
+            echo "BONOS:En desarrollo ";
+        }
+        return $rs;
+
+    }
+
 
     //obtiene las linea de detalle de un contrato
     public static function getLineaDetalles($idLinea)
@@ -328,6 +369,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
         return $util->update('contratos_lineas_detalles', $campos, $values, "id=" . $idLineaContrato);
     }
+
     public static function setLineaDetallesImpagoId($idLineaContrato, $fechaBaja=null)
     {
         $util = new util();
@@ -341,6 +383,7 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
 
         return $util->update('contratos_lineas_detalles', $campos, $values, "id=" . $idLineaContrato);
     }
+
     public static function setLineaDetallesImpago($idLineaDetalles)
     {
         $util = new util();
@@ -531,8 +574,6 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
             "contratos.id_cliente=clientes.id AND contratos.id=$idContrato AND contratos.id_empresa=$idEmpresa");
     }
 
-
-
     public static function getClienteDatosPorLineaDetalle($idEmpresa,$idLineaDetalle)
     {
         $util = new util();
@@ -685,8 +726,6 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         $result = $util->update('productos,almacenes', $campos, $values, "productos.id_almacen=almacenes.id AND productos.id=" . $idProducto . " AND almacenes.id_empresa=" . $_SESSION['REVENDEDOR']);
     }
 
-
-
     public static function setProductoBaja($idProducto, $estado, $fechaBaja = null)
     {
         $util = new util();
@@ -728,7 +767,6 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
                                             AND contratos_lineas_detalles.id_atributo_servicio=48 AND contratos_lineas_detalles.valor!=''
                                             AND contratos.id_empresa=$idEmpresa");
     }
-
 
     public static function getDNIClienteContrato($idEmpresa,$idContrato)
     {

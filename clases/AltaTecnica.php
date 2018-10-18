@@ -308,7 +308,7 @@ class AltaTecnica
         $configuracion=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
         $lineaAire=new Linea($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
 
-        $rs=$lineaAire->subirDocumento($codSolicitud,$tipoDocumento);
+        $rs=$lineaAire->setDocumentosSolicitud($dniCliente,$codSolicitud,$documento64,$tipoDocumento,$nombreFichero);
         var_dump($rs);
 
     }

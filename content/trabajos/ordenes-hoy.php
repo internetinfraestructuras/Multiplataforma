@@ -12,7 +12,10 @@ if (!isset($_SESSION)) {
 require_once('../../config/util.php');
 require_once ('../../clases/Orden.php');
 require_once ('../../clases/Usuarios.php');
+require_once ('../../clases/Servicio.php');
+require_once ('../../clases/Cobros.php');
 $util = new util();
+
 
 // solo los usuarios de nivel 3 a 0 pueden agregar clientes
 check_session(3);
@@ -128,6 +131,9 @@ $root="../../";
                                             <th>ESTADO</th>
                                             <th>CLIENTE</th>
                                             <th>ASIGNACION</th>
+                                            <th>COSTE SERVICIO</th>
+                                            <th>MODO COBRO</th>
+                                            <th>FACTURABLE</th>
                                             <th>OPCIONES</th>
                                         </tr>
                                         </thead>
@@ -135,8 +141,10 @@ $root="../../";
                                         <?php
 
                                         $listado=Orden::getOrdenesPendientes();
+                                        $empleados=Usuarios::getInstaladores();
+                                        $actuaciones=Servicio::getServiciosActuacion($_SESSION['REVENDEDOR']);
+                                        $modosCobro=Cobros::getModosCobro();
 
-                                      $empleados=Usuarios::getInstaladores();
                                         for($i=0;$i<count($listado);$i++)
                                         {
 
@@ -149,7 +157,7 @@ $root="../../";
                                             $apellidos=$listado[$i][6];
 
                                             echo "<tr>";
-                                            echo "<td><input name='ordenes[ordenId][]' value='$id' ></td><td>$fechaAlta</td><td>$estado</td><td>$cliente $apellidos<a href='/mul/ficha-cliente.php?idCliente=$idCliente' >&nbsp;<button type=\"button\" rel=\"tooltip\" ><i class=\"fa fa-eye\"></i></button></a></td>";
+                                            echo "<td><input name='ordenes[ordenId][]' value='$id'  class='form-control' readonly></td><td>$fechaAlta</td><td>$estado</td><td>$cliente $apellidos<a href='/mul/ficha-cliente.php?idCliente=$idCliente' >&nbsp;<button type=\"button\" rel=\"tooltip\" ><i class=\"fa fa-eye\"></i></button></a></td>";
                                             echo'<td><select id="empleados"  name="ordenes[orden][]" class="form-control">';
 
 
@@ -163,6 +171,42 @@ $root="../../";
 
                                                 echo "<option data-id='".$idEmpleado."' value='" .$idEmpleado. "'>".$nombre."--".$apellidos."</option>";
                                             }
+                                            echo '</select></td>';
+
+                                            echo'<td><select id="instalacion"  name="ordenes[instalacion][]" class="form-control">';
+
+
+                                            echo "<option data-id='".$id."' value='0'>Sin coste</option>";
+
+                                            for($j=0;$j<count($actuaciones);$j++)
+                                            {
+
+                                                $idServicio=$actuaciones[$j][0];
+                                                $nombre=$actuaciones[$j][1];
+
+                                                echo "<option data-id='".$idServicio."' value='" .$idServicio. "'>".$nombre."</option>";
+                                            }
+                                            echo '</select></td>';
+
+                                            echo'<td><select id="cobro"  name="ordenes[cobro][]" class="form-control">';
+
+
+                                            echo "<option data-id='".$id."' value='0'>No cobrar</option>";
+
+                                            for($j=0;$j<count($modosCobro);$j++)
+                                            {
+
+                                                $idModo=$modosCobro[$j][0];
+                                                $nombre=$modosCobro[$j][1];
+
+                                                echo "<option data-id='".$idModo."' value='" .$idModo. "'>".$nombre."</option>";
+                                            }
+                                            echo '</select></td>';
+                                            echo'<td><select id="factura"  name="ordenes[factura][]" class="form-control">';
+
+
+                                            echo "<option data-id='0' value='1'>Facturar</option>";
+                                            echo "<option data-id='1' value='0'>No facturar</option>";
                                             echo '</select></td>';
 
 
@@ -200,11 +244,6 @@ $root="../../";
                                 <!-- panel footer -->
                                 <div class="panel-footer">
                                     <div class="row">
-
-
-
-
-
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <center>
@@ -247,7 +286,7 @@ $root="../../";
 
 
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
-<!-- <script type="text/javascript" src="../../assets/js/app.js"></script>-->
+<script type="text/javascript" src="../../assets/js/app.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.css">
 
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.js"></script>
@@ -284,10 +323,6 @@ $root="../../";
             },
         })
     });
-function filtrar(id)
-{
-
-}
 
 
 </script>

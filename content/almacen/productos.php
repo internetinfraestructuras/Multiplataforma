@@ -163,7 +163,7 @@ $root="../../";
                                             </div>
                                             <div class="col-md-2 col-sm-6">
                                                 <label>Margen %: </label>
-                                                <input type="number" name="producto[beneficio]" value="" step=".01"
+                                                <input type="number" name="producto[beneficio]" value="" step=".01" id="beneficio"
                                                        class="form-control " onchange="calcularPVP(this.value)">
                                             </div>
                                             <div class="col-md-2 col-sm-6">
@@ -425,17 +425,26 @@ $root="../../";
 
 
     }
+
     function calcularPVP(val)
     {
         var precioProv=jQuery("#precio-prov").val();
-        var pvp=((precioProv*val)/100);
+
+        var pvp;
+        if(jQuery("#beneficio").val()!="")
+            pvp=((precioProv*val)/100);
+
+        console.log("PVP"+pvp);
         pvp=(parseFloat(precioProv)+parseFloat(pvp));
+        console.log("PVP2"+pvp);
+
         var tax=parseFloat(jQuery("#impuestos").val());
 
         pvp=(pvp*parseFloat((100+tax)/100));
 
         jQuery("#precio-pvp").val(redondearDecimales(pvp,2));
     }
+
     function redondearDecimales(numero, decimales) {
         numeroRegexp = new RegExp('\\d\\.(\\d){' + decimales + ',}');   // Expresion regular para numeros con un cierto numero de decimales o mas
         if (numeroRegexp.test(numero)) {         // Ya que el numero tiene el numero de decimales requeridos o mas, se realiza el redondeo

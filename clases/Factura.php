@@ -21,12 +21,12 @@ class Factura
         return $util->insertInto('facturas', $tabla, $values);
     }
 
-    public static function setNuevaLineaFactura($idFactura,$idLineaContrato,$importe,$impuesto)
+    public static function setNuevaLineaFactura($idFactura,$importe,$impuesto,$concepto)
     {
         $util = new util();
 
-        $tabla = array("ID_FACTURA","ID_LINEA_CONTRATO","IMPORTE","IMPUESTO");
-        $values = array($idFactura,$idLineaContrato,$importe,$impuesto);
+        $tabla = array("ID_FACTURA","IMPORTE","IMPUESTO","CONCEPTO");
+        $values = array($idFactura,$importe,$impuesto,$concepto);
 
         return $util->insertInto('facturas_lineas', $tabla, $values);
     }

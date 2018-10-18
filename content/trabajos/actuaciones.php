@@ -10,25 +10,9 @@ if (!isset($_SESSION)) {
 require_once('../../config/util.php');
 $util = new util();
 check_session(2);
-/*
- * SELECT ordenes_lineas.ID,ordenes_tipos.NOMBRE,productos.NUMERO_SERIE,contratos_lineas_tipo.NOMBRE
-FROM ordenes,ordenes_lineas,contratos_lineas_detalles,ordenes_tipos,productos,contratos_lineas,contratos_lineas_tipo
-where ordenes.id=ordenes_lineas.ID_ORDEN
-AND contratos_lineas_tipo.id=contratos_lineas.ID_TIPO
-AND contratos_lineas.id=contratos_lineas_detalles.ID_LINEA
-AND ordenes_lineas.ID_PRODUCTO=productos.ID
-AND ordenes_tipos.id=ordenes_lineas.ID_TIPO_ORDEN
-AND contratos_lineas_detalles.ID=ordenes_lineas.ID_LINEA_DETALLE_CONTRATO
- */
-$listado= $util->selectWhere3('ordenes,ordenes_lineas,contratos_lineas_detalles,ordenes_tipos,productos,contratos_lineas,contratos_lineas_tipo,contratos',
-    array("ordenes_lineas.id","ordenes_tipos.nombre","productos.numero_serie","contratos_lineas_tipo.nombre","contratos_lineas.id_tipo","contratos_lineas.id_asociado"),
-    "ordenes.id=ordenes_lineas.id_orden AND contratos_lineas_tipo.id=contratos_lineas.id_tipo AND contratos_lineas.id=contratos_lineas_detalles.id_linea
-    AND ordenes_lineas.id_producto=productos.id
-    AND ordenes_tipos.id=ordenes_lineas.id_tipo_orden
-    AND ordenes.id_contrato=contratos.id
-    AND contratos_lineas_detalles.id=ordenes_lineas.id_linea_detalle_contrato AND ordenes_lineas.id_orden=".$_GET['idOrden'].' AND contratos.id_empresa='.$_SESSION['REVENDEDOR']);
+require_once('../../clases/Orden.php');
 
-
+$listado=Orden::getOrdenCerradasPendientesFacturacion($_SESSION['REVENDEDOR']);
 
 
 
@@ -122,76 +106,64 @@ $listado= $util->selectWhere3('ordenes,ordenes_lineas,contratos_lineas_detalles,
                                 <fieldset>
 
                                 <div class="panel-body">
-                                        <table id="example2" class="table table-bordered table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th>ID LINEA</th>
-                                                <th>TIPO DE ORDEN</th>
-                                                <th>SERVICIO</th>
-                                                <th>PRODUCTO</th>
-                                                <th>TIPO PRODUCTO</th>
+                                    <table id="example2" class="table table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>ORDEN</th>
+                                            <th>CLIENTE</th>
+                                            <th>MODO COBRO</th>
+                                            <th>PVP</th>
 
-                                                <th>OPCIONES</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <?php
+                                            <th>OPCIONES</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
 
+    var_dump($listado);
 
+                                        for($i=0;$i<count($listado);$i++)
+                                        {
 
-                                            for($i=0;$i<count($listado);$i++)
-                                            {
+                                            $id=$listado[$i][0];
+                                            $fechaAlta=$listado[$i][1];
+                                            $estado=$listado[$i][2];
+                                            $idEstado=$listado[$i][3];
+                                            $cliente=$listado[$i][4];
+                                            $idCliente=$listado[$i][5];
+                                            $apellidos=$listado[$i][6];
 
-                                                $idLinea=$listado[0][0];
-                                                $tipoOrdenNombre=$listado[0][1];
-                                                $producto=$listado[0][2];
-                                                $tipoProducto=$listado[0][3];
-                                                $idTipo=$listado[0][4];//Si es de tipo paquete o de tipo servicio
-                                                $idAsociado=$listado[0][5];
+                                            echo "<tr>";
+                                            echo "<td><input name='ordenes[ordenId][]' value='$id'  class='form-control' readonly></td><td>$fechaAlta</td><td>$estado</td><td>$cliente $apellidos<a href='/mul/ficha-cliente.php?idCliente=$idCliente' >&nbsp;<button type=\"button\" rel=\"tooltip\" ><i class=\"fa fa-eye\"></i></button></a></td>";
 
-
-
-
-
-                                                if($idTipo==1)
-                                                    echo "ES PAQUETe";
-                                                if($idTipo==2)
-                                                {
-                                                        $servicio= $util->selectWhere3('servicios',
-                                                        array("servicios.nombre"),
-                                                        "servicios.id_empresa=".$_SESSION['REVENDEDOR']." AND servicios.id=".$idAsociado);
-                                                        $servicio=$servicio[0]['nombre'];
-                                                }
-                                                    echo "ES SERV";
-                                                if($idTipo==3)
-                                                    echo "ES PROD";
-
-
-
-                                                echo "<tr>";
-                                                echo "<td>$idLinea</td><td>$tipoOrdenNombre</td><td>$servicio</td><td>$producto</td><td>$tipoProducto</td>";
-
-                                                ?>
-                                                <td class="td-actions text-right">
-                                                    <a href="ficha-servicio.php?idServicio=<?php echo $idServicio;?>">
-                                                        <button type="button" rel="tooltip" >
-                                                            <i class="fa fa-pencil"></i>
-                                                        </button>
-                                                    </a>
-                                                    <button type="button" rel="tooltip" class="">
-                                                        <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>');"></i>
-                                                    </button>
-
-                                                </td>
-
-                                                </tr>
-
-                                                <?php
-                                            }
                                             ?>
-                                            </tbody>
+                                            <td class="td-actions text-right">
+                                                <a href="ficha-orden.php?idOrden=<?php echo $id; ?>">
+                                                    <button type="button" rel="tooltip" >
+                                                        <a target="_blank" href="imprimirOrden.php?idOrden=<?php echo $id;?>"
+                                                        <i class="fa fa-print"></i> &nbsp;
+                                                </a>
+                                                <a href="ficha-orden.php?idOrden=<?php echo $id; ?>">
+                                                    <button type="button" rel="tooltip" >
+                                                        <i class="fa fa-pencil"></i>
+                                                    </button>
+                                                </a>
+                                                </button>
+                                                </a>
+                                                <button type="button" rel="tooltip" class="">
+                                                    <i class="fa  fa-trash" style="font-size:1em; color:green; cursor: pointer" onclick="borrar('<?php echo $id;?>');"></i>
+                                                </button>
 
-                                        </table>
+                                            </td>
+                                            </tr>
+
+                                            <?php
+                                        }
+                                        ?>
+                                        </tbody>
+
+                                    </table>
 
                                 </div>
 

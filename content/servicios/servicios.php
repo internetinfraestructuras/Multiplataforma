@@ -155,7 +155,7 @@ check_session(3);
                                             </div>
                                             <div class="col-md-2 col-sm-6">
                                                 <label>Margen %: </label>
-                                                <input type="number" name="servicio[beneficio]" value="" step=".01"
+                                                <input type="number" name="servicio[beneficio]" value="" step=".01" id="beneficio"
                                                        class="form-control " onchange="calcularPVP(this.value)">
                                             </div>
                                             <div class="col-md-2 col-sm-6">
@@ -439,8 +439,15 @@ check_session(3);
     function calcularPVP(val)
     {
         var precioProv=jQuery("#precio-prov").val();
-        var pvp=((precioProv*val)/100);
+
+        var pvp;
+        if(jQuery("#beneficio").val()!="")
+            pvp=((precioProv*val)/100);
+
+        console.log("PVP"+pvp);
         pvp=(parseFloat(precioProv)+parseFloat(pvp));
+        console.log("PVP2"+pvp);
+
         var tax=parseFloat(jQuery("#impuestos").val());
 
         pvp=(pvp*parseFloat((100+tax)/100));

@@ -41,6 +41,7 @@ $pdf->SetSubject('FACTURA MES CURSO');
 $pdf->SetKeywords('FACTURA CLIENTE DEMO');
 $pdf->SetHeaderData("","","", " ORDEN DE TRABAJO #".$idOrden, array(0,64,255), array(0,64,128));
 
+$pdf->SetHeaderData($file="../..".$_SESSION['LOGO'],"10px", "  ORDEN DE TRABAJO #".$idOrden, array(0,64,255), array(0,64,128));
 $pdf->setFooterData(array(0,64,0), array(0,64,128));
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 $pdf->SetFont('dejavusans', '', 9, '', true);

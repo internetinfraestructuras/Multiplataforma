@@ -34,16 +34,45 @@ class FTP
     {
 
         $hoy = date("Ymd");
+
+        $mensual = date('m');
+
+        $anio=date('Y');
+
+        if($mensual==1)
+            $mensual=12;
+        else
+            $mensual--;
+
+
+        $mensual=str_pad($mensual,2,'0',STR_PAD_LEFT);
+
+        $mensual=$anio.$mensual;
+
         $fecha= $this->dia_anterior($hoy);
         $localFile="$fecha.txt";
-        $fecha="20180903";
-        if (ftp_get($this->conexion, $localFile, $this->rutaFichero.$fecha."_deg.txt", FTP_BINARY))
+        $localFileMensual=$mensual."_mes.txt";
+
+
+        if(!file_exists("../../cdr/".$localFile))
         {
-            echo "El fichero del CDR se ha descargado correctamente! $localFile\n";
+            if (ftp_get($this->conexion, "./../cdr/".$localFile, $this->rutaFichero.$fecha."_deg.txt", FTP_BINARY))
+                echo "Se ha descargado correctamente el fichero DIARIO!!!";
+            else
+                echo "Error al obtener el CDR diario";
         }
-        else {
-            echo "Error al descargar el CDR!! \n";
+
+       if(!file_exists("../../cdr/".$localFileMensual))
+        {
+            if (ftp_get($this->conexion, "./../cdr/".$localFileMensual, $this->rutaFichero.$localFileMensual, FTP_BINARY))
+                echo "Se ha descargado correctamente el fichero MENSUAL!!1";
+            else
+                echo "Error al obtener el CDR mensual";
         }
+
+
+
+
     }
 
     function dia_anterior($fecha)

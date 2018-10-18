@@ -92,14 +92,16 @@ echo "<hr>";
 
                 for($j=0;$j<count($lineasContrato);$j++)
                 {
-
-                    $idLinea=$lineasContrato[$j][0];
+                    $idTipo=$idLinea=$lineasContrato[$j][0];
                     $impuesto=$lineasContrato[$j][5];
                     $importe=$lineasContrato[$j][6];
 
+                    $concepto=Contrato::getConceptoLinea($idContrato,$idLinea,$idTipo);
+
+                    $concepto=$concepto[0][0];
                     $total+=$importe;
 
-                   $rs= Factura::setNuevaLineaFactura($idFactura,$idLinea,$importe,$impuesto);
+                   $rs= Factura::setNuevaLineaFactura($idFactura,$importe,$impuesto,$concepto);
 
                 }
 

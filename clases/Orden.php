@@ -142,6 +142,15 @@ class Orden
                     AND contratos.id_empresa=".$_SESSION['REVENDEDOR']." AND ordenes.fecha_alta<=DATE(now()) AND ordenes.id_tipo_estado=$idEstado");
     }
 
+    public static function getOrdenCerradasPendientesFacturacion($idEmpresa)
+    {
+
+
+        $util=new util();
+        return $util->selectWhere3('ordenes a right join ordenes_facturacion b on a.id=b.id_orden',
+            array("*"),
+            "");
+    }
 
     public static function getOrden($id=null)
     {
@@ -208,5 +217,19 @@ class Orden
 
         return $util->selectJoin('contratos_lineas_detalles',$campos, $join,'',$where);
 
+    }
+
+    public static function setFacturableOrden($idOrden,$facturable,$pvp,$impuesto,$descuento,$importe,$estado,$modoCobro)
+    {
+        $util=new util();
+
+
+        $t_ordenes=array("ID_ORDEN","FACTURAR","PVP","IMPUESTO","DTO","IMPORTE","ESTADO","ID_MODO_COBRO");
+
+        $values=array($idOrden,$facturable,$pvp,$impuesto,$descuento,$importe,$estado,$modoCobro);//TIPO DE ESTADO ES 1 DE APERTURA
+
+        $resOrden= $util->insertInto2('ordenes_facturacion', $t_ordenes, $values);
+
+        return $resOrden;
     }
 }

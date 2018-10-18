@@ -15,8 +15,6 @@ require_once ('masmovil/MasMovilAPI.php');
 require_once ('airenetwork/clases/Linea.php');
 require_once ('telefonia/classTelefonia.php');
 
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
 
 
 
@@ -720,7 +718,7 @@ ini_set('display_errors', '1');
         {
 
             Contrato::setLineaContratoBaja($idContrato, $idLineaContrato, $idServicio, $fechaBaja);
-            
+
             Contrato::setLineaDetallesBaja($idContrato, $fechaBaja);
             $ld = Contrato::getLineaDetalles($idLineaContrato);
              $pon="";
@@ -828,7 +826,7 @@ ini_set('display_errors', '1');
 
 
 
-         // Contrato::generarAnexo($idContrato, 1, $idPaquete, $idLinea, ID_ANEXO_CAMBIO_TARIFA_PAQ);
+        Contrato::generarAnexo($idContrato,2,$idServicio,$idLineaContrato,ID_ANEXO_BAJA_SERVICIO);
 
 
         }
@@ -1900,6 +1898,14 @@ ini_set('display_errors', '1');
         return $util->selectWhere3("servicios,servicios_externos", array("ID_EXTERNO"),
         "servicios.id=".$idServicio." AND servicios.id=servicios_externos.id_servicio AND servicios_externos.id_empresa=$idEmpresa");
         }
+
+        public static function getServiciosActuacion($idEmpresa)
+        {
+            $util=new util();
+            return $util->selectWhere3("servicios", array("ID","NOMBRE"),
+                "servicios.id_empresa=$idEmpresa AND servicios.id_servicio_tipo=".ID_SERVICIO_ACTUACION);
+        }
+
 
         public static function getServicioInternoIdAPIMasMovil($idAPI,$idEmpresa)
         {

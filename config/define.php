@@ -17,6 +17,12 @@ define("ID_API_INTERNET",3);
 define("ID_API_TELEFONIA_FIJA",4);
 define("ID_API_TV",5);
 
+//ID TIPOS LINEAS DE CONTRATO
+define("ID_LINEA_PAQUETE",1);
+define("ID_LINEA_SERVICIO",2);
+define("ID_LINEA_PRODUCTO",3);
+define("ID_LINEA_BONOS",4);
+
 
 /*TRANSACCIONES LOG API MOVILES*/
 define("ID_TRANSACCION_CAMBIO_TARIFA",1);
@@ -157,6 +163,7 @@ define('ID_SERVICIO_INTERNET',1);
 define('ID_SERVICIO_VOZIP',2);
 define('ID_SERVICIO_MOVIL',3);
 define('ID_SERVICIO_IPTV',4);
+define('ID_SERVICIO_ACTUACION',5);
 
 define('FIBRADB','fibra.');
 define('NUEVADB','multiplataforma.');

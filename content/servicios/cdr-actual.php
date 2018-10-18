@@ -49,7 +49,7 @@ $pdf->SetAuthor('REVENDEDOR');
 $pdf->SetTitle('CONTRATO DE CLIENTE');
 $pdf->SetSubject('LISTADO DE LLAMADAS');
 $pdf->SetKeywords('CONTRATO DE CLIENTE');
-$pdf->SetHeaderData("","","", " LISTADO DE LLAMADAS MENSUAL A DÍA DE HOY".$idContrato, array(0,64,255), array(0,64,128));
+$pdf->SetHeaderData($file="../..".$_SESSION['LOGO'],"10px", "  REGISTRO DE LLAMADAS ", array(0,64,255), array(0,64,128));
 
 $pdf->setFooterData(array(0,64,0), array(0,64,128));
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);

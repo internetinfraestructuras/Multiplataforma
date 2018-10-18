@@ -366,6 +366,7 @@ class Linea
             return $return;
 
     }
+
     public function setAltaPortabilidad($tarifa,$tipoCliente,$nif,$icc,$dc,$telefono,$modalidadActual,$iccOrigen,$dcOrigen)
     {
         $cliente = new nusoap_client($this->url,true);
