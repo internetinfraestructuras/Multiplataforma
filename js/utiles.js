@@ -242,3 +242,122 @@ function getnumIBAN(letra) {
     ls_letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     return ls_letras.search(letra) + 10;
 }
+
+function rellenarBic(valor, objeto)
+{
+
+    //alert(valor);
+    var subcode = valor.charAt(4) + valor.charAt(5) +valor.charAt(6) + valor.charAt(7);
+
+    //alert(subcode);
+    var tabla = new Object(); // or just {}
+    tabla['0156']='ABNAESMMXXX';
+    tabla['3524']='AHCFESMMXXX';
+    tabla['0188']='ALCLESMMXXX';
+    tabla['0136']='AREBESMMXXX';
+    tabla['0078']='BAPUES22XXX';
+    tabla['0065']='BARCESMMXXX';
+    tabla['2095']='BASKES2BXXX';
+    tabla['0190']='BBPIESMMXXX';
+    tabla['0168']='BBRUESMXXXX';
+    tabla['0182']='BBVAESMMXXX';
+    tabla['3081']='BCOEESMM081';
+    tabla['0198']='BCOEESMMXXX';
+    tabla['0131']='BESMESMMXXX';
+    tabla['0488']='BFASESMMXXX';
+    tabla['0186']='BFIVESBBXXX';
+    tabla['0128']='BKBKESMMXXX';
+    tabla['0138']='BKOAES22XXX';
+    tabla['0061']='BMARES2MXXX';
+    tabla['0219']='BMCEESMMXXX';
+    tabla['0149']='BNPAESMHXXX';
+    tabla['0058']='BNPAESMZXXX';
+    tabla['0160']='BOTKESMXXXX';
+    tabla['0152']='BPLCESMMXXX';
+    tabla['0155']='BRASESMMXXX';
+    tabla['0081']='BSABESBBXXX';
+    tabla['0049']='BSCHESMMXXX';
+    tabla['0154']='BSUIESMMXXX';
+    tabla['0094']='BVALESMMXXX';
+    tabla['2080']='CAGLESMMVIG';
+    tabla['2038']='CAHMESMMXXX';
+    tabla['2100']='CAIXESBBXXX';
+    tabla['3604']='CAPIESMMXXX';
+    tabla['3183']='CASDESBBXXX';
+    tabla['2085']='CAZRES2ZXXX';
+    tabla['0234']='CCOCESMMXXX';
+    tabla['3058']='CCRIES2AXXX';
+    tabla['3025']='CDENESBBXXX';
+    tabla['2045']='CECAESMM045';
+    tabla['2048']='CECAESMM048';
+    tabla['2056']='CECAESMM056';
+    tabla['2086']='CECAESMM086';
+    tabla['2000']='CECAESMMXXX';
+    tabla['2013']='CESCESBBXXX';
+    tabla['0130']='CGDIESMMXXX';
+    tabla['0122']='CITIES2XXXX';
+    tabla['1474']='CITIESMXSEC';
+    tabla['3035']='CLPEES2MXXX';
+    tabla['0159']='COBAESMXTMA';
+    tabla['1460']='CRESESMMXXX';
+    tabla['2108']='CSPAES2L108';
+    tabla['3656']='CSSOES2SFI';
+    tabla['0237']='CSURES2CXXX';
+    tabla['0019']='DEUTESBBASS';
+    tabla['0231']='DSBLESMMXXX';
+    tabla['1467']='EHYPESMXXXX';
+    tabla['9000']='ESPBESMMXXX';
+    tabla['1497']='ESSIESMMXXX';
+    tabla['0031']='ETCHES2GXXX';
+    tabla['0046']='GALEES2GXXX';
+    tabla['0487']='GBMNESMMXXX';
+    tabla['0167']='GEBAESMMBIL';
+    tabla['3682']='GVCBESBBETB';
+    tabla['9096']='IBRCESMMXXX';
+    tabla['1000']='ICROESMMXXX';
+    tabla['1465']='INGDESMMXXX';
+    tabla['3575']='INSGESMMXXX';
+    tabla['0232']='INVLESMMXXX';
+    tabla['9020']='IPAYESMMXXX';
+    tabla['3669']='IVALESMMXXX';
+    tabla['3641']='LISEESMMXXX';
+    tabla['0236']='LOYIESMMXXX';
+    tabla['0059']='MADRESMMXXX';
+    tabla['9094']='MEFFESBBXXX';
+    tabla['0162']='MIDLESMXXXX';
+    tabla['3563']='MISVESMMXXX';
+    tabla['3661']='MLCEESMMXXX';
+    tabla['0169']='NACNESMMXXX';
+    tabla['1479']='NATXESMMXXX';
+    tabla['0144']='PARBESMHXXX';
+    tabla['0216']='POHIESMMXXX';
+    tabla['0233']='POPIESMMXXX';
+    tabla['0229']='POPLESMMXXX';
+    tabla['0075']='POPUESMMXXX';
+    tabla['1459']='PRABESMMXXX';
+    tabla['0211']='PROAESMMXXX';
+    tabla['0083']='RENBESMMXXX';
+    tabla['3501']='RENTESMMXXX';
+    tabla['0108']='SOGEESMMAGM';
+    tabla['1524']='UBIBESMMXXX';
+    tabla['0226']='UBSWESMMNPB';
+    tabla['2103']='UCJAES2MXXX';
+    tabla['0196']='WELAESMMFU';
+    tabla['9091']='XBCNESBBXXX';
+    tabla['9092']='XRBVES2BXXX';
+    tabla['9093']='XRVVESVVXXX';
+    tabla['0239']='EVOBESMMXXX';
+    tabla['0049']='BSCHESMMXXX';
+    tabla['0030']='ESPCESMMXXX';
+
+
+    if (tabla.hasOwnProperty(subcode)) {
+        document.getElementById(objeto).value=tabla[subcode];
+    }
+    else{
+        if(valor=="")
+            document.getElementById(objeto).value="";
+        else
+            document.getElementById(objeto).value="";
+    }
+}

@@ -15,7 +15,7 @@ require_once ('masmovil/MasMovilAPI.php');
 require_once ('airenetwork/clases/Linea.php');
 require_once ('telefonia/classTelefonia.php');
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 ini_set('display_startup_errors', 1);
 
 

@@ -210,7 +210,28 @@ define('CONTRATO_PROCESO_ALTA_CAMBIO',8);
 define('CONTRATO_CANCELACION_CAMBIOS',9);
 define('CONTRATO_IMPAGO',10);
 
-
-
-
 define('DEF_MODULO_AIRE','Módulo AireNetworks');
+
+
+/* NOTIFICACIONES */
+
+define('EMAIL_NUEVA_PORTA_FIJO','telefonia@nexwrf.es');
+define('EMAIL_NUEVA_PORTA_MOVIL','telefonia@nexwrf.es');
+
+
+/* CODIGOS ERRORES PORTABILIDAD AIRENETWORKS */
+
+define('0007','Tarifa incorrecta');
+define('0008','Error en los datos del agente');
+define('0009','Error en los datos del agente');
+define('0010','Error al obtener los datos de la tarifa');
+define('0011','No existe la tarifa asociada para el tipo de cliente');
+define('0012','Campos SubscriberType o Dni, incorrectos');
+define('0013','Error al obtener los datos del cliente');
+
+/* TIPOS DOCUMENTOS MASMOVIL */
+
+define('TIPO_DOC_MASMOVIL_1','NIF');
+define('TIPO_DOC_MASMOVIL_2','NIE');
+define('TIPO_DOC_MASMOVIL_3','CIF');
+define('TIPO_DOC_MASMOVIL_4','PAS');

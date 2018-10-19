@@ -8,7 +8,7 @@ require_once('config/util.php');
 require_once('php/snmp/snmp.php');
 include_once("php/ssh2.php");
 
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 error_reporting('E_ALL');
 $util = new util();
 
@@ -86,7 +86,7 @@ $util = new util();
 
         include_once('Net/SSH2.php');
 
-        ini_set('display_errors',1);
+        ini_set('display_errors', 0);
         error_reporting('E_ALL');
 
         $ssh = new Net_SSH2('10.201.112.2');

@@ -10,17 +10,62 @@
 if (!isset($_SESSION)) {
     @session_start();
 }
+error_reporting(E_ALL);
+ini_set("display_errors", 0);
 
 include_once('define.php');
 include_once('def_tablas.php');
 
 date_default_timezone_set('Europe/Madrid');
-//
 
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
+
+
+
 class util
 {
+
+    function eliminar_tildes($cadena){
+
+        //Codificamos la cadena en formato utf8 en caso de que nos de errores
+        $cadena = utf8_encode($cadena);
+
+        //Ahora reemplazamos las letras
+        $cadena = str_replace(
+            array('á', 'à', 'ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä'),
+            array('a', 'a', 'a', 'a', 'a', 'A', 'A', 'A', 'A'),
+            $cadena
+        );
+
+        $cadena = str_replace(
+            array('é', 'è', 'ë', 'ê', 'É', 'È', 'Ê', 'Ë'),
+            array('e', 'e', 'e', 'e', 'E', 'E', 'E', 'E'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('í', 'ì', 'ï', 'î', 'Í', 'Ì', 'Ï', 'Î'),
+            array('i', 'i', 'i', 'i', 'I', 'I', 'I', 'I'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('ó', 'ò', 'ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô'),
+            array('o', 'o', 'o', 'o', 'O', 'O', 'O', 'O'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('ú', 'ù', 'ü', 'û', 'Ú', 'Ù', 'Û', 'Ü'),
+            array('u', 'u', 'u', 'u', 'U', 'U', 'U', 'U'),
+            $cadena );
+
+        $cadena = str_replace(
+            array('ñ', 'Ñ', 'ç', 'Ç'),
+            array('n', 'N', 'c', 'C'),
+            $cadena
+        );
+
+        return $cadena;
+    }
+
+
     function write_log($cadena,$tipo=null)
     {
         $arch = fopen( $_SERVER['DOCUMENT_ROOT']."/logs/logmultiplataforma-".date("Y-m-d").".txt", "a+");
@@ -73,6 +118,23 @@ class util
 
         return $string;
     }
+
+    function sumasdiasemana($fecha,$dias,$formato)
+    {
+        $datestart= strtotime($fecha);
+        $datesuma = 15 * 86400;
+        $diasemana = date('N',$datestart);
+        $totaldias = $diasemana+$dias;
+        $findesemana = intval( $totaldias/5) *2 ;
+        $diasabado = $totaldias % 5 ;
+        if ($diasabado==6) $findesemana++;
+        if ($diasabado==0) $findesemana=$findesemana-2;
+
+        $total = (($dias+$findesemana) * 86400)+$datestart ;
+        return $fechafinal = date($formato, $total);
+    }
+
+
 
     public function verErrores($estado)
     {
@@ -874,8 +936,34 @@ class util
         return $ip;
     }
 
+    function enviarEmail($remitente, $destino, $responder=null, $asunto, $texto ){
 
+        include_once('Mail/Mail.php');
+
+        if($responder==null)
+            $responder=$remitente;
+
+        $headers = array(
+            'From' => $remitente,
+            'To' => $destino,
+            'Subject' => $asunto,
+            'Reply-To' => $responder
+        );
+
+        $smtp = Mail::factory('smtp', array(
+            'host' => 'ssl://smtp.gmail.com',
+            'port' => '465',
+            'auth' => true,
+            'username' => 'rubencorralescorbacho@gmail.com', //your gmail account
+            'password' => 'Wirucoco01..' // your password
+        ));
+
+        return $smtp->send($destino, $headers, $texto);
+    }
 }
+// fin clase util
+
+
 
 function limpiar($c)
 {
@@ -1015,6 +1103,8 @@ function esmovil()
         // do something for everything else
         return false;
     }
+
+
 }
 
 function timestamp2date($t)
@@ -1198,6 +1288,8 @@ class PHPTelnet
                 break;
         }
     }
+
+
 }
 
 

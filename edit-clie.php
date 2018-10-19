@@ -291,7 +291,7 @@ check_session(2);
                                         <br>
                                         <label>IBAN</label>
                                         <input type="tel" name="clientes[iban]" id="iban" placeholder="ES4621001111222233334444"
-                                               class="form-control">
+                                               required onchange="rellenarBic(this.value, 'swift')" oninput="rellenarBic(this.value, 'swift')" class="form-control">
                                     </div>
                                     <div class="col-md-4">
                                         <br>
@@ -299,6 +299,7 @@ check_session(2);
                                         <input type="tel" name="clientes[swift]" id="swift"  placeholder="CAIXESBBXXX"
                                                class="form-control">
                                     </div>
+
                                 </div>
                             </div>
                         </div>

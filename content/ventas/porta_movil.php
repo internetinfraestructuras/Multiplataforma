@@ -5,7 +5,6 @@
 // todo: -------------------------------------------------------------
 
 
-
 if (!isset($_SESSION)) {
     @session_start();
 }
@@ -21,9 +20,9 @@ check_session(3);
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
-    <title><?php echo OWNER ." / ". DEF_T_FIJO; ?> / Solicitud</title>
+    <title><?php echo OWNER . " / " . DEF_T_FIJO; ?> / Solicitud</title>
     <meta name="description" content=""/>
-    <meta name="Author" content="<?php echo AUTOR; ?>" />
+    <meta name="Author" content="<?php echo AUTOR; ?>"/>
 
     <!-- mobile settings -->
     <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0"/>
@@ -33,7 +32,7 @@ check_session(3);
           rel="stylesheet" type="text/css"/>
 
     <!-- CORE CSS -->
-<!--    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>-->
+    <!--    <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>-->
 
     <!-- THEME CSS -->
     <link href="../../assets/css/essentials.css" rel="stylesheet" type="text/css"/>
@@ -44,7 +43,32 @@ check_session(3);
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="../../assets/css/portabilidades.css" rel="stylesheet" type="text/css"/>
-    <link href="../../assets/plugins/dropzone/css/dropzone.css" rel="stylesheet" type="text/css" />
+    <link href="../../assets/plugins/dropzone/css/dropzone.css" rel="stylesheet" type="text/css"/>
+    <style>
+        /*.radio i,  {*/
+        /*position: absolute;*/
+        /*top: 5px;*/
+        /*left: 0;*/
+        /*display: block;*/
+        /*width: 50PX;*/
+        /*height: 50PX;*/
+        /*outline: none;*/
+        /*border-width: 2px;*/
+        /*border-style: solid;*/
+        /*border-color: rgba(0,0,0,0.3);*/
+        /*background: rgba(255,255,255,0.3);*/
+        /*margin-left:50px;*/
+        /*}*/
+
+        /*.radio input + i:after {*/
+        /*content: '';*/
+        /*top: 5px;*/
+        /*left: 5px;*/
+        /*width: 35px;*/
+        /*height: 35px;*/
+        /*border-radius: 50%;*/
+        /*}*/
+    </style>
 </head>
 
 <body>
@@ -65,7 +89,7 @@ check_session(3);
     <!-- HEADER -->
     <header id="header">
 
-        <?php require_once ('../../menu-superior.php'); ?>
+        <?php require_once('../../menu-superior.php'); ?>
 
     </header>
     <!-- /HEADER -->
@@ -96,7 +120,8 @@ check_session(3);
                     <li>Donante</li>
                     <li>Líneas</li>
                     <li>Documentos</li>
-                    <li>Activar</li>
+                    <li>Firmar</li>
+                    <li>Finalizar</li>
                 </ul>
                 <div class="spinner" id="animacion1">
                     <div></div>
@@ -116,7 +141,8 @@ check_session(3);
                         </div>
                         <div class="col-md-4 col-sm-3 text-right">
                             <a href="/add-clie.php">
-                                <span class="btn btn-primary" style="margin-top:25px;padding-top:9px;" >Crear uno nuevo</span>
+                                <span class="btn btn-primary"
+                                      style="margin-top:25px;padding-top:9px;">Crear uno nuevo</span>
                             </a>
                             <br><br>
                         </div>
@@ -136,14 +162,15 @@ check_session(3);
                             </div>
                             <div class="col-md-2 col-sm-4">
                                 <label>Tipo de Cliente</label>
-                                <select disabled name="tipocli" id="tipocli"  class="form-control pointer">
+                                <select disabled name="tipocli" id="tipocli" class="form-control pointer">
                                     <option value="-1">--- Seleccionar uno ---</option>
                                     <?php $util->carga_select('clientes_tipos', 'ID', 'NOMBRE', 'ID'); ?>
                                 </select>
                             </div>
                             <div class="col-md-2 col-sm-4">
                                 <label>Tipo de Documento</label>
-                                <select disabled name="tipodoc" id="tipodoc" onchange="cambia_tipo_cliente(this.value)" class="form-control pointer">
+                                <select disabled name="tipodoc" id="tipodoc" onchange="cambia_tipo_cliente(this.value)"
+                                        class="form-control pointer">
                                     <option value="-1">--- Seleccionar uno ---</option>
                                     <?php $util->carga_select('tipos_documentos', 'ID', 'NOMBRE', 'ID'); ?>
                                 </select>
@@ -164,9 +191,9 @@ check_session(3);
                             <div class="col-md-2 col-sm-3">
                                 <label>Nacionalidad </label>
                                 <select disabled name="nacion" id="nacion"
-                                        class="form-control pointer"  onchange="carga_comunidades(this.value)">
+                                        class="form-control pointer" onchange="carga_comunidades(this.value)">
                                     <option value="-1">--- Seleccionar una ---</option>
-                                    <?php $util->carga_select('pais', 'id', 'paisnombre', 'paisnombre','','','',28); ?>
+                                    <?php $util->carga_select('pais', 'id', 'paisnombre', 'paisnombre', '', '', '', 28); ?>
 
                                 </select>
                             </div>
@@ -233,11 +260,13 @@ check_session(3);
                         <div class="form-group">
                             <div class="col-md-3 col-sm-3">
                                 <label>Entidad </label>
-                                <input disabled type="text" name="banco" id="banco" class="form-control datoscli required" placeholder="Nombre del banco o caja">
+                                <input disabled type="text" name="banco" id="banco"
+                                       class="form-control datoscli required" placeholder="Nombre del banco o caja">
                             </div>
                             <div class="col-md-4 col-sm-6">
                                 <label>IBAN</label>
-                                <input disabled type="text" name="iban" id="iban" class="form-control datoscli required">
+                                <input disabled type="text" name="iban" id="iban"
+                                       class="form-control datoscli required">
                             </div>
                             <div class="col-md-2 col-sm-3">
                                 <label>Swift</label>
@@ -245,7 +274,8 @@ check_session(3);
                             </div>
 
                             <div class="col-md-3">
-                                <label>Consentimientos LOPD <a href="lopd.html" target="_blank"><i class="fa fa-question-circle"></i></a> </label>
+                                <label>Consentimientos LOPD <a href="lopd.html" target="_blank"><i
+                                                class="fa fa-question-circle"></i></a> </label>
                                 <br>
                                 <select disabled name="consentimiento" id="consentimiento"
                                         class="form-control pointer">
@@ -276,7 +306,7 @@ check_session(3);
                     ?>
 
                     <div id="error"></div>
-                    <input  type="button" name="" id="atras1" onclick="cancelar();"
+                    <input type="button" name="" id="atras1" onclick="cancelar();"
                            class="ocultar action-button-previous"
                            value="Paso Anterior"/>
                     <input type="button" name="next" id="next1" class="next action-button" value="Continuar"/>
@@ -289,28 +319,28 @@ check_session(3);
                     </div>
                     <div class="row">
                         <?php
-                            $util = new util();
-                            $donantes = $util->selectWhere('operadores_telefonia', array('ID', 'NOMBRE','LOGO'), ' TIPO=1 OR TIPO=3 ', 'ID');
-                            while ($row = mysqli_fetch_array($donantes)) {
-                                echo '
+                        $util = new util();
+                        $donantes = $util->selectWhere('operadores_telefonia', array('ID', 'NOMBRE', 'LOGO'), ' TIPO=1 OR TIPO=3 ', 'ID');
+                        while ($row = mysqli_fetch_array($donantes)) {
+                            echo '
                                 <div class="col-xs-3 col-sm-3 text-center">
                                     <label class="image-radio">
-                                        <img class="img-responsive" src="../../'.$row[2].'" style="border-radius:5px; width:120px; height:120px"/>
-                                        <input type="radio" id="donante" name="donante" value="'.$row[0].'" />
+                                        <img class="img-responsive" src="../../' . $row[2] . '" style="border-radius:5px; width:120px; height:120px"/>
+                                        <input type="radio" id="donante" name="donante" value="' . $row[0] . '" />
                                         <i class="glyphicon glyphicon-ok hidden"></i>
                                     </label>
                                     <br>
-                                    '.$row[1].'
+                                    ' . $row[1] . '
                                 </div>
                                 ';
-                            }
+                        }
 
                         ?>
                     </div>
 
-                    <input  type="button" name="previous" class="previous action-button-previous"
+                    <input type="button" name="previous" class="previous action-button-previous"
                            value="Paso Anterior"/>
-                    <input  type="button" name="next" id="next3" class="next action-button" value="Continuar"/>
+                    <input type="button" name="next" id="next2" class="next action-button" value="Continuar"/>
                 </fieldset>
 
                 <fieldset class="caja">
@@ -320,9 +350,9 @@ check_session(3);
                     <div class="row">
                         <div class="col-md-4 col-xs-12">
                             <label>Tarifa que desea contratar</label>
-                            <select name="tarifa" id="tarifa"  class="form-control pointer">
+                            <select name="tarifa" id="tarifa" class="form-control pointer">
                                 <option value="-1">--- Seleccionar uno ---</option>
-                                <?php $util->carga_select('servicios', 'ID', 'NOMBRE,PVP', 'ID', 'ID_SERVICIO_TIPO=3',2); ?>
+                                <?php $util->carga_select('servicios', 'ID', 'NOMBRE, ID_PROVEEDOR', 'ID', 'ID_SERVICIO_TIPO=3', 2); ?>
                             </select>
                             <br><br><br><br>
                         </div>
@@ -341,19 +371,20 @@ check_session(3);
                     <div class="row">
                         <div class="col-md-3 col-xs-12">
                             <label>Número tarjeta SIM (Nueva)</label>
-                            <input  type="number" name="icc" id="icc" class="form-control datoscli">
+                            <input type="number" name="icc" id="icc" class="form-control datoscli">
                         </div>
                         <div class="col-md-3 col-xs-12">
                             <label>Digito de control SIM* (Nueva)</label>
-                            <input  type="number" name="dc" id="dc"   class="form-control datoscli" style="width:60px">
+                            <input type="number" name="dc" id="dc" class="form-control datoscli" style="width:60px">
                         </div>
                         <div class="col-md-3 col-xs-12">
                             <label>Número tarjeta SIM (Antigua)</label>
-                            <input  type="number" name="iccorigen" id="iccorigen" class="form-control datoscli">
+                            <input type="number" name="iccorigen" id="iccorigen" class="form-control datoscli">
                         </div>
                         <div class="col-md-3 col-xs-12">
                             <label>Digito de control SIM* (Antigua)</label>
-                            <input  type="number" name="dcorigen" id="dcorigen"   class="form-control datoscli" style="width:60px">
+                            <input type="number" name="dcorigen" id="dcorigen" class="form-control datoscli"
+                                   style="width:60px">
                         </div>
                     </div>
 
@@ -363,7 +394,8 @@ check_session(3);
                         </div>
                         <div class="col-md-3 col-xs-12">
                             <label>Número Teléfono a portar</label>
-                            <input  type="number" name="telportar" id="telportar"  class="form-control datoscli" style="width:150px">
+                            <input type="number" name="telportar" id="telportar" class="form-control datoscli"
+                                   style="width:150px">
                         </div>
 
                         <div class="col-md-3 col-xs-12">
@@ -379,20 +411,44 @@ check_session(3);
                     </div>
                     <br><br>
                     <h6><b><i>*Disponible en algunas sim</i></b></h6>
-                    <input  type="button" name="previous" class="previous action-button-previous"
+                    <input type="button" name="previous" class="previous action-button-previous"
                            value="Paso Anterior"/>
-                    <input  type="button" name="next" id="next4" class="next action-button" value="Continuar"/>
+                    <input type="button" name="next" id="next3" class="next action-button" value="Continuar"/>
                 </fieldset>
 
                 <fieldset class="caja">
 
+                    <div class="row ocultarsiesmasmovil" style="display:block">
+                        <div class="col-xs-1"></div>
+                        <div class="col-xs-10 text-center" id="uploaded_image"
+                             style="border-right: #0f0f0f 2px dotted;border-left: #0f0f0f 2px dotted">
+                        </div>
+                        <div class="col-xs-1"></div>
+                    </div>
+                    <div class="row ocultarsiesaire text-center" style="display:block">
+                        <br><br><br><br>
+                        <h2>No se requiere ninguna acción en esta pantalla. Pulse continuar</h2>
+                    </div>
 
-                    <div class="row">
+
+                    <input type="button" name="previous" class="previous action-button-previous" value="Paso Anterior"/>
+                    <input type="button" name="next" id="next4" class="next action-button" value="Continuar"/>
+
+                </fieldset>
+
+                <fieldset class="caja">
+                    <div class="row ocultarsiesaire text-center" id="aquilafirma" style="display:block">
+
+
+                    </div>
+
+                    <div class="row ocultarsiesmasmovil" style="display:block">
                         <div class="col-xs-12 col-sm-4 text-center" style="border-right: #0f0f0f 2px dotted ">
                             <label><b>Descargue este documento</b></label><br>
                             <p>Haga clic sobre el icono de PDF para comenzar la descarga.</p><br>
                             <img src="../../img/descargue.png" class="img-responsive"><br>
-                            <img src="../../img/pdf.png" class="img-responsive"  onclick="imprimir(numero_contrato)" style="cursor:pointer;margin-top:100px"><br><br><br>
+                            <img src="../../img/pdf.png" class="img-responsive" onclick="imprimir(numero_contrato)"
+                                 style="cursor:pointer;margin-top:100px"><br><br><br>
                         </div>
                         <div class="col-xs-12 col-sm-4  text-center" style="border-right: #0f0f0f 2px dotted ">
                             <label><b>Firme el documento</b></label><br>
@@ -405,17 +461,20 @@ check_session(3);
                         </div>
                         <div class="col-xs-12 col-sm-4 text-center">
                             <label><b>Cargue el documento</b></label><br>
-                            <p>Una vez firmado y escaneado, arrastrelo hasta la zona de lineas inclinada.</p><br>
+                            <p>Una vez firmado y escaneado, arrastrelo hasta la zona de lineas inclinadas.</p><br>
 
                             <img src="../../img/cargue.png" class="img-responsive">
-                            <div action="upload.php" method="post" class="dropzone" id="my-dropzone" style="width:98%;height:80%;min-height:250px;margin:1%;"></div>
+                            <div action="upload.php" method="post" class="dropzone" id="my-dropzone"
+                                 style="width:98%;height:80%;min-height:250px;margin:1%;"></div>
                             <br>
 
 
                         </div>
                     </div>
-                    <input  type="button" name="previous" class="previous action-button-previous" value="Paso Anterior"/>
-                    <input  type="button" name="next" id="next4" class="next action-button" value="Continuar"/>
+
+
+                    <input type="button" name="previous" class="previous action-button-previous" value="Paso Anterior"/>
+                    <input type="button" name="next" id="next5" class="next action-button" value="Continuar"/>
 
                 </fieldset>
 
@@ -427,24 +486,25 @@ check_session(3);
                         <div class="col-xs-12">
                             <?php
                             $util = new util();
-                            $texto = $util->selectWhere('textos_legales', array('ID', 'TEXTO','TEXTO_ACEPTACION'), ' UBICACION="porta1" ', 'ID');
+                            $texto = $util->selectWhere('textos_legales', array('ID', 'TEXTO', 'TEXTO_ACEPTACION'), ' UBICACION="porta1" ', 'ID');
                             $row = mysqli_fetch_array($texto);
                             echo $row[1];
                             echo "<br><br>";
-                            $texto = $util->selectWhere('textos_legales', array('ID', 'TEXTO','TEXTO_ACEPTACION'), ' UBICACION="porta2" ', 'ID');
+                            $texto = $util->selectWhere('textos_legales', array('ID', 'TEXTO', 'TEXTO_ACEPTACION'), ' UBICACION="porta2" ', 'ID');
                             $row = mysqli_fetch_array($texto);
                             echo $row[1];
 
                             ?>
 
                             <label class="checkbox">
-                                <input type="checkbox" value="1" onclick="goToAnchor('signature-pad')">
+<!--                                <input type="checkbox" value="1" onclick="goToAnchor('signature-pad')">-->
+                                <input type="checkbox" value="1">
                                 <i></i> Aceptar y firmar el contrato
                             </label>
 
                         </div>
                     </div>
-                    <input  type="button" name="previous" class="previous action-button-previous" value="Paso Anterior"/>
+                    <input type="button" name="previous" class="previous action-button-previous" value="Paso Anterior"/>
                 </fieldset>
             </form>
         </div>
@@ -453,65 +513,69 @@ check_session(3);
         <div class="container">
             <!-- Modal -->
             <div class="modal fade" id="imprimir" role="dialog">
-            <div class="modal-dialog">
+                <div class="modal-dialog">
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Proceso completado correctamente</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-xs-12 text-center">
-                                <p>La solicitud de portabilidad ha sido generada correctamente. Por favor imprima el contrato</p>
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Proceso completado correctamente</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-xs-12 text-center">
+                                    <p>La solicitud de portabilidad ha sido generada correctamente. Por favor imprima el
+                                        contrato</p>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-lg-3"></div>
+                                <div class="col-lg-3">
+                                    <br><br>
+                                    <a href="/index.php"><img src="../../img/exit.png"></a>
+                                </div>
+                                <div class="col-lg-3">
+                                    <br><br>
+                                    <a href="" id="imprimir_img" target="_blank"><img src="../../img/printer.png"></a>
+                                </div>
+                                <div class="col-lg-3"></div>
                             </div>
                         </div>
-                        <br><br>
-                        <div class="row">
-                            <div class="col-lg-3"></div>
-                            <div class="col-lg-3">
-                                <br><br>
-                                <a href="/index.php"><img src="../../img/exit.png"></a>
-                            </div>
-                            <div class="col-lg-3">
-                                <br><br>
-                                <a href="" id="imprimir_img" target="_blank"><img src="../../img/printer.png"></a>
-                            </div>
-                            <div class="col-lg-3"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal"
+                                    onclick="location.href='porta_fijo.php';">Cerrar
+                            </button>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="location.href='porta_fijo.php';">Cerrar</button>
-                    </div>
+
                 </div>
-
-            </div>
             </div>
         </div>
-
-        <div id="signature-pad" class="signature-pad" style="position: relative; margin-top:900px;">
+        <div id="divfirma">
+        <div id="signature-pad" class="signature-pad">
             <div class="signature-pad--body">
                 <canvas></canvas>
             </div>
             <div class="signature-pad--footer">
-                <div class="description">Firme y finalice</div>
+                <span class="btn btn-default button clear" style="border-radius:150px; min-width: 40px;" data-action="clear"><center><i class="fa fa-eraser"></i></center></span>
 
                 <div class="signature-pad--actions">
                     <div>
-                        <br><br><br><br>
-                        <button type="button" class="btn btn-default button clear" data-action="clear">Borrar</button>
-                        <br><br><br><br>
+                        <br><br>
+
+                        <br><br>
                     </div>
                     <div>
-                        <br><br><br><br>
-                        <button type="button" class="btn btn-success button save" data-action="save-svg">Finalizar</button>
-                        <br><br><br><br>
+                        <!--                                        <br><br><br><br>-->
+                        <!--                                        <button type="button" class="btn btn-success button save" data-action="save-svg">Finalizar-->
+                        <!--                                        </button>-->
+                        <!--                                        <br><br><br><br>-->
                     </div>
                 </div>
             </div>
         </div>
-
+        </div>
 </div>
 
 <!-- JAVASCRIPT FILES -->
@@ -523,27 +587,65 @@ check_session(3);
 <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 <script src="../firma/js/signature_pad.umd.js"></script>
 <script src="../firma/js/app.js"></script>
+
 <script>
     var nuevo = 0;
     var id_cliente_seleccionado = 0;
-    var numero_contrato=0;
+    var numero_contrato = 0;
+
+    var errores_porta_aire=[];
+    errores_porta_aire['0007']='Campo tarifa incorrecto.';
+    errores_porta_aire['0008']='Error al obtener sus datos como agente.';
+    errores_porta_aire['0009']='Error al obtener sus datos como agente.';
+    errores_porta_aire['0010']='Error al obtener los datos de la tarifa.';
+    errores_porta_aire['0011']='No existe ninguna tarifa asociada para el tipo de cliente insertado.';
+    errores_porta_aire['0012']='Campos subscriberType o nif incorrectos.';
+    errores_porta_aire['0013']='Error al obtener los datos del cliente.';
+    errores_porta_aire['0014']='No existe ningún cliente asociado con el nif indicado.';
+    errores_porta_aire['0015']='Campos icc o digito_control vacíos.';
+    errores_porta_aire['0016']='Campo telefono vacío.';
+    errores_porta_aire['0017']='Campo telefono incorrecto.';
+    errores_porta_aire['0018']='Campo modalidad_actual vacío.';
+    errores_porta_aire['0019']='Campo modalidad_actual incorrecto.';
+    errores_porta_aire['0020']='Campo icc no numérico.';
+    errores_porta_aire['0021']='El campo digito_control no corresponde con el campo icc.';
+    errores_porta_aire['0022']='La SIM insertada no se encuentra aprovisionada en el sistema.';
+    errores_porta_aire['0023']='La SIM no corresponde al rango que usted tiene asignado.';
+    errores_porta_aire['0024']='La SIM introducida ya está en uso en otra línea.';
+    errores_porta_aire['0025']='Para la tarifa seleccionada el campo telefono_asociado no puede ser vacío.';
+    errores_porta_aire['0026']='El teléfono asociado que ha introducido no pertenece a un teléfono suyo.';
+    errores_porta_aire['0027']='El teléfono asociado ya tiene asociada una tarifa.';
+    errores_porta_aire['0028']='Error al obtener sus solicitudes.';
+    errores_porta_aire['0029']='El teléfono insertado ya dispone de una solicitud en el sistema no cancelada.';
+    errores_porta_aire['0030']='No se encuentra el cliente en el sistema.';
+    errores_porta_aire['0031']='Campos icc_origen o dc_origen vacíos.';
+    errores_porta_aire['0032']='El campo dc_origen no se corresponde con el campo icc_origen.';
+    errores_porta_aire['0033']='Error no se han insertado los datos de la portabilidad correctamente.';
+    errores_porta_aire['0034']='Error no se han insertado los datos de la portabilidad correctamente.';
+    errores_porta_aire['0035']='Error al insertar la solicitud de línea.';
+    errores_porta_aire['0036']='Error al insertar la solicitud de línea.';
+    errores_porta_aire['0037']='Error no se ha podido aprovisionar la SIM.';
+    errores_porta_aire['0038']='Campos bonos_d o bonos_v contienen más de un elemento.';
+    errores_porta_aire['0039']='Campos bonos_d o bonos_v no son compatibles con la tarifa seleccionada.';
+    errores_porta_aire['0040']='Error bonos de datos no asignados correctamente.';
+    errores_porta_aire['0041']='Error bonos de voz no asignados correctamente.';
 
 
-    $(document).ready(function(){
+    $(document).ready(function () {
         // add/remove checked class
-        $(".image-radio").each(function(){
-            if($(this).find('input[type="radio"]').first().attr("checked")){
+        $(".image-radio").each(function () {
+            if ($(this).find('input[type="radio"]').first().attr("checked")) {
                 $(this).addClass('image-radio-checked');
-            }else{
+            } else {
                 $(this).removeClass('image-radio-checked');
             }
         });
         // sync the input state
-        $(".image-radio").on("click", function(e){
+        $(".image-radio").on("click", function (e) {
             $(".image-radio").removeClass('image-radio-checked');
             $(this).addClass('image-radio-checked');
             var $radio = $(this).find('input[type="radio"]');
-            $radio.prop("checked",!$radio.prop("checked"));
+            $radio.prop("checked", !$radio.prop("checked"));
 
             e.preventDefault();
         });
@@ -555,11 +657,15 @@ check_session(3);
 
     });
 
-    loadScript(plugin_path + 'dropzone/dropzone.js', function() {
+    function cambio_de_tarifa(item) {
+        alert(item.value);
+    }
+
+    loadScript(plugin_path + 'dropzone/dropzone.js', function () {
 
         Dropzone.options.myDropzone = {
-            init: function() {
-                this.on("addedfile", function(file) {
+            init: function () {
+                this.on("addedfile", function (file) {
                     // Create the remove button
                     var removeButton = Dropzone.createElement("<button class='btn btn-sm btn-default fullwidth margin-top-10'>Remove file</button>");
 
@@ -567,7 +673,7 @@ check_session(3);
                     var _this = this;
 
                     // Listen to the click event
-                    removeButton.addEventListener("click", function(e) {
+                    removeButton.addEventListener("click", function (e) {
                         // Make sure the button click doesn't submit the form:
                         e.preventDefault();
                         e.stopPropagation();
@@ -585,6 +691,7 @@ check_session(3);
         }
 
     });
+
     function goToAnchor(anchor) {
         var loc = document.location.toString().split('#')[0];
         document.location = loc + '#' + anchor;
@@ -598,7 +705,7 @@ check_session(3);
     // cargo las regiones por Ajax, cada vez que se cambia el pais
     function carga_comunidades(id, sel = 0) {
         var select = $("#regiones");
-        var select2= $("#tit-regiones");
+        var select2 = $("#tit-regiones");
         select.empty();
         select2.empty();
         select.append('<option value="-1">--- Seleccionar una ---</option>');
@@ -614,7 +721,7 @@ check_session(3);
                     if (sel > 0 && sel == data[i].id) {
                         select.append('<option value="' + data[i].id + '" selected>' + data[i].region + '</option>');
                         select2.append('<option value="' + data[i].id + '" selected>' + data[i].region + '</option>');
-                    }else {
+                    } else {
                         select.append('<option value="' + data[i].id + '">' + data[i].region + '</option>');
                         select2.append('<option value="' + data[i].id + '">' + data[i].region + '</option>');
                     }
@@ -623,7 +730,6 @@ check_session(3);
             }
         });
     }
-
 
 
     // cargo las provincias por Ajax, cada vez que se cambia la comunidad
@@ -642,10 +748,10 @@ check_session(3);
             data: {id: id},
             success: function (data) {
                 $.each(data, function (i) {
-                    if (sel > 0 && sel == data[i].id){
+                    if (sel > 0 && sel == data[i].id) {
                         select.append('<option value="' + data[i].id + '" selected>' + data[i].provincia + '</option>');
                         select2.append('<option value="' + data[i].id + '" selected>' + data[i].provincia + '</option>');
-                    }else {
+                    } else {
                         select.append('<option value="' + data[i].id + '">' + data[i].provincia + '</option>');
                         select2.append('<option value="' + data[i].id + '">' + data[i].provincia + '</option>');
                     }
@@ -670,10 +776,10 @@ check_session(3);
             data: {id: id},
             success: function (data) {
                 $.each(data, function (i) {
-                    if (sel > 0 && sel == data[i].id){
+                    if (sel > 0 && sel == data[i].id) {
                         select.append('<option value="' + data[i].id + '" selected>' + data[i].municipio + '</option>');
                         select2.append('<option value="' + data[i].id + '" selected>' + data[i].municipio + '</option>');
-                    }else {
+                    } else {
                         select.append('<option value="' + data[i].id + '">' + data[i].municipio + '</option>');
                         select2.append('<option value="' + data[i].id + '">' + data[i].municipio + '</option>');
                     }
@@ -683,27 +789,29 @@ check_session(3);
     }
 
     function cambia_tipo_cliente(valor) {
-        if(valor==1)
+        if (valor == 1)
             $("#tipodocumento").text('Dni');
-        if(valor==2)
+        if (valor == 2)
             $("#tipodocumento").text('Nie');
-        if(valor==3)
+        if (valor == 3)
             $("#tipodocumento").text('Cif');
-        if(valor==4)
+        if (valor == 4)
             $("#tipodocumento").text('Pasaporte');
 
     }
+
     function cambia_consentimiento(item) {
-        if(item.id=="consentimiento['1']"){
-            if(item.checked==true) {
+        if (item.id == "consentimiento['1']") {
+            if (item.checked == true) {
                 $(".consentimiento").prop('checked', false);
                 $(item).prop('checked', true);
             }
-        } else if(item.checked==true) {
+        } else if (item.checked == true) {
             document.getElementById("consentimiento['1']").checked = false;
         }
 
     }
+
     // cargo los clientes para que pueda seleccionarse y editarlo
     function carga_clientes() {
         var select = $("#id");
@@ -733,8 +841,6 @@ check_session(3);
         $("#atras1").val('Cancelar');
         $("#next1").val('Continuar');
     }
-
-
 
 
     // cuando se selecciona un cliente, recibo el id y lo cargo por ajax desde carga_cli que al pasarle una id
@@ -785,8 +891,55 @@ check_session(3);
         });
 
         id_cliente_seleccionado = id;
+        cargarDocumentosCliente(id);
+
         $("#next1").css('display', 'block');
 
+    }
+
+    function cargarDocumentosCliente(idCliente) {
+        $('#uploaded_image').empty();
+        $('#uploaded_image').append("<h4>Cargue un nuevo documento o seleccione el documento de identidad para este cliente</h4><br>");
+        $('#uploaded_image').append(' <div class="col-xs-12">' +
+            '<input class="btn btn-warning"  onclick="return cargarDocumentos();" type="file" name="file" id="file" style="width:100%"/>' +
+            '<br />' +
+            '<table style="width:100%" id="uploaded_image"></table>' +
+            '</div>');
+
+        $.ajax({
+            url: '../../php/carga_documentos_clientes.php',
+            type: 'POST',
+            cache: false,
+            cache: false,
+            async: true,
+            data: {
+                cliente: idCliente,
+                tipos: [1, 2]
+            },
+            success: function (data) {
+
+                // $('#uploaded_image').append("<table>");
+
+                $.each(data, function (i) {
+
+                    if (data[i].nombre.substring(49, 52).toLowerCase() == 'pdf')
+                        $('#uploaded_image').append("<div class='row'><div class='col-xs-2 text-center'><b>" + data[i].tipo + "</b></div><div class='col-xs-4 text-center'>" + pdf2jpg('../../' + data[i].nombre) + "</div><div class='col-xs-2'>" +
+                            "<label class='radio'>" +
+                            "<input type='radio' name='document' value='" + data[i].nombre + "'>" +
+                            "<i></i>Seleccionar" +
+                            "</label></div></div>");
+                    else
+                        $('#uploaded_image').append("<div class='row'><div class='col-xs-2 text-center'><b>" + data[i].tipo + "</b></div><div class='col-xs-4 text-center'><img src='../../" + data[i].nombre + "' style='max-height:130px'></div><div class='col-xs-2'>" +
+                            "<label class='radio'>" +
+                            "<input type='radio' name='document' value='" + data[i].nombre + "'>" +
+                            "<i></i>Seleccionar" +
+                            "</label></div></div>");
+
+                });
+                // $('#uploaded_image').append("</table>");
+
+            }
+        });
     }
 
     /*
@@ -823,49 +976,107 @@ check_session(3);
 
 
                 $("#next1").css('display', 'block');
+
             }
 
         }
 
-        if (this.id == 'next3') {
-            // var donante = $("input[name=donante]:checked").val();
-            //
-            // if (donante == undefined){
-            //     alert("Debe seleccionar el operador donante");
-            //     return;
-            // }
-        }
 
-        if (this.id == 'next4') {
+        if (this.id == 'next3') {
             var modalidad = $("#modalidad").val();
 
-            if (modalidad == 0){
-                alertaOk("ATENCIÓN","Debe seleccionar el tipo de linea a portar","warning");
+            if (modalidad == undefined) {
+                alertaOk("ATENCIÓN", "Debe seleccionar la modalidad de abono de linea en el operador actual (Prepago / Contrato)", "warning");
                 return;
             }
 
             var num_porta = $("#telportar").val();
-            if (num_porta == ""){
-                alertaOk("ATENCIÓN","Debe especificar el / los numero/s a portar");
+            if (num_porta == "") {
+                alertaOk("ATENCIÓN", "Debe especificar el / los numero/s a portar");
                 return;
             }
 
             var icc = $("#icc").val();
-            if (icc == ""){
-                alertaOk("ATENCIÓN","Debe especificar número icc de la sim NUEVA");
+            if (icc == "") {
+                alertaOk("ATENCIÓN", "Debe especificar número icc de la sim NUEVA");
                 return;
             }
 
             var iccO = $("#iccorigen").val();
-            if (iccO == ""){
-                alertaOk("ATENCIÓN","Debe especificar número icc de la sim ANTIGUA");
+            if (iccO == "") {
+                alertaOk("ATENCIÓN", "Debe especificar número icc de la sim ANTIGUA");
                 return;
             }
 
-            guardar_contrato();
 
+            var dc = $("#dc").val();
+
+            var operador = parseFloat(jQuery("#tarifa").find(':selected').data("extra")) || 0;
+
+            if (operador == <?php echo ID_PROVEEDOR_AIRENETWORKS; ?> && dc == '') {
+                alertaOk("ATENCIÓN", "Debe especificar número DC de la sim NUEVA");
+                return;
+            }
+
+
+            if (operador == <?php echo ID_PROVEEDOR_AIRENETWORKS; ?>) {
+                $(".ocultarsiesaire").css('display', 'none');
+                $(".ocultarsiesmasmovil").css('display', 'block');
+            } else {
+                $(".ocultarsiesmasmovil").css('display', 'none');
+                $(".ocultarsiesaire").css('display', 'block');
+            }
+            if (operador == <?php echo ID_PROVEEDOR_MASMOVIL; ?>)
+                if(!guardar_contrato())
+                    return;
         }
 
+        if (this.id == 'next4') {
+
+            var operador = parseFloat(jQuery("#tarifa").find(':selected').data("extra")) || 0;
+
+            try {
+                if (operador == <?php echo ID_PROVEEDOR_AIRENETWORKS; ?>) {
+
+                    var documento = $('input[name=document]:checked').val();
+
+                    var name = document.getElementById("file").files[0].name;
+
+                    var form_data = new FormData();
+                    var ext = name.split('.').pop().toLowerCase();
+                    if (jQuery.inArray(ext, ['gif', 'png', 'jpg', 'jpeg', 'pdf']) == -1) {
+                        alert("Por favor seleccione un documento válido (gif, png, jpg, pdf)");
+                    }
+                    var oFReader = new FileReader();
+                    oFReader.readAsDataURL(document.getElementById("file").files[0]);
+                    var f = document.getElementById("file").files[0];
+                    var fsize = f.size || f.fileSize;
+                    if (fsize > 2000000) {
+                        alertaOk("ATENCIÓN", "El tamaño del fichero exece de lo permitido (2Mb)", "warning", "Entendido", "");
+                        return;
+                    }
+
+
+                    if (documento == undefined && name == undefined) {
+                        alertaOk('Atención', 'Debe seleccionar o cargar un documento de identificación del cliente o empresa', 'warning', 'Entendido', '');
+                        return;
+                    }
+
+                } else {
+                    elementos = $("#divfirma > div").detach();
+                    elementos.appendTo('#aquilafirma');
+                }
+            }
+            catch (err) {
+                console.log(err.message);
+
+            }
+
+            if (operador == <?php echo ID_PROVEEDOR_AIRENETWORKS; ?>)
+                if(!guardar_contrato())
+                    return;
+
+        }
 
         if (avanzar) {
             //activate next step on progressbar using the index of next_fs
@@ -907,7 +1118,9 @@ check_session(3);
         // paso 1 quiere decir que se ha seleccionado o creado el cliente,
         // entonces creamos el contrato en borrador y guardamos el id del borrador
 
-        
+
+        $(".spinner").css('display','block');
+
         var donante = $("#donante").val();
         var tarifa = $("#tarifa").val();
         var icc = $("#icc").val();
@@ -918,6 +1131,8 @@ check_session(3);
         var modalidad = $("#modalidad").val();
         var tipo_cli = $("#tipocli").val();
         var tipo_doc = $("#tipodoc").val();
+        var documento = $('input[name=document]:checked').val();
+
 
         $.ajax({
             url: 'guardar-porta.php',
@@ -927,27 +1142,35 @@ check_session(3);
             data: {
                 action: 'porta',
                 id_cliente: id_cliente_seleccionado,
-                donante :donante,
-                tarifa  :tarifa,
-                icc :icc,
-                dc :dc,
-                iccorigen :iccO,
-                dcorigen :dcO,
-                num_porta :telportar,
-                modalidad :modalidad,
-                firma : firma,
-                tipo:3,
-                tipo_cli:tipo_cli,
-                tipo_doc:tipo_doc
+                donante: donante,
+                tarifa: tarifa,
+                icc: icc,
+                dc: dc,
+                iccorigen: iccO,
+                dcorigen: dcO,
+                num_porta: telportar,
+                modalidad: modalidad,
+                firma: firma,
+                tipo: 3,
+                tipo_cli: tipo_cli,
+                tipo_doc: tipo_doc,
+                documento: documento
             },
             success: function (data) {
+                $(".spinner").css('display','none');
 
-                if(parseInt(data)>0){
-                    // alerta("RESPUESTA SERVIDOR","La solicitud de portabilidad se ha generado correctamente, ahora puede imprimir el documento si lo desea",
-                    //     "success","Cerrar","Imprimir Documento","home", "imprimir", "",data);
-                    numero_contrato = data;
-                    if(parseInt(data)<50){
-                        alertaOk('ERROR OPERACIÓN','El servidor ha devuelto el siguiente error: ' + errores[data], 'warning','Entendido','' );
+                var operador = parseFloat(jQuery("#tarifa").find(':selected').data("extra")) || 0;
+
+                if (operador == <?php echo ID_PROVEEDOR_AIRENETWORKS; ?>){
+                    alertaOk("ATENCIÓN", "Ha ocurrido el siguiente error: " + errores_porta_aire[data.replace(/\s/g, "")], "warning", "Entendido", "");
+
+                } else {
+
+                    if (data[0].activationCode != 'OK-001') {
+                        alertaOk("ATENCIÓN", "Ha ocurrido el siguiente error: " + data[0].activateDescription, "warning", "Entendido", "");
+                        return false;
+                    } else {
+                        return true;
                     }
                 }
 
@@ -957,8 +1180,9 @@ check_session(3);
 
 
     }
-    function imprimir(solicitud){
-        window.open("../servicios/airenetworks/obtener-documento.php?codSolicitud="+solicitud+"&tipo=PORTABILIDAD","_blank");
+
+    function imprimir(solicitud) {
+        window.open("../servicios/airenetworks/obtener-documento.php?codSolicitud=" + solicitud + "&tipo=PORTABILIDAD", "_blank");
     }
 
 
@@ -997,6 +1221,27 @@ check_session(3);
         });
     });
 
+
+    function pdf2jpg(fichero) {
+
+        var formData = new FormData();
+        formData.append('File', fichero);
+
+        $.ajax({
+            url: 'https://v2.convertapi.com/convert/pdf/to/jpg?Secret=gPPayyE8UeOCnZTJ',
+            data: formData,
+            processData: false,
+            contentType: false,
+            method: 'POST',
+            async: true,
+            cache: true,
+            success: function (data) {
+                console.log(data);
+                return data;
+            }
+        });
+
+    }
 
 
 </script>

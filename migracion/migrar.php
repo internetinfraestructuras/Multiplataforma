@@ -9,7 +9,7 @@
 
 
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 
 
 $link = new mysqli('5.40.80.11', 'root', 'telereq1430*sql','fibra');

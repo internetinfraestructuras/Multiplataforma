@@ -272,7 +272,7 @@ check_session(3);
                                         <br>
                                         <label>IBAN</label>
                                         <input type="tel" name="clientes[iban]" id="iban" placeholder="ES4621001111222233334444"
-                                               class="form-control">
+                                               required onchange="rellenarBic(this.value, 'swift')" oninput="rellenarBic(this.value, 'swift')" class="form-control">
                                     </div>
                                     <div class="col-md-4">
                                         <br>
@@ -372,6 +372,7 @@ check_session(3);
 <script type="text/javascript">var plugin_path = 'assets/plugins/';</script>
 <script type="text/javascript" src="assets/plugins/jquery/jquery-2.2.3.min.js"></script>
 <script type="text/javascript" src="assets/js/app.js"></script>
+<script type="text/javascript" src="js/utiles.js"></script>
 
 
 

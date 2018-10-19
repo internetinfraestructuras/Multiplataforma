@@ -11,12 +11,15 @@ $util = new util();
 check_session(3);
 
 $campos=array('clientes_documentos.DOCUMENTO','clientes_documentos_tipos.NOMBRE');
+$where="";
 
 if(isset($_POST['cliente']) && $_POST['cliente']!='') {
+    if(isset($_POST['tipos']) && $_POST['tipos']!='')
+        $where = "clientes_documentos.ID_TIPO_DOCUMENTO in (" . implode(",",$_POST['tipos']). ") AND ";
 
     $result = $util->selectJoin("clientes_documentos", $campos,
         " JOIN clientes_documentos_tipos ON clientes_documentos_tipos.ID = clientes_documentos.ID_TIPO_DOCUMENTO" ,
-        "clientes_documentos.ID"," clientes_documentos.ID_CLIENTE = ". $_POST['cliente']);
+        "clientes_documentos.ID",$where." clientes_documentos.ID_CLIENTE = ". $_POST['cliente']);
 
     $aItems = array();
 

@@ -49,6 +49,8 @@ class Cliente
         $data = array("user" => $this->user, "pass" => $this->pass,"fiscalId"=>$dni);
         $result = $client->call("getCliente", array($data));
         $error = $client->getError();
+//        var_dump($error);
+
         if ($error)
             return $error;
         else
@@ -111,9 +113,11 @@ class Cliente
             "documento_name"=>$docNombre,
             "documento"=>$documento);
 
+        var_dump($datos);
+
        $return = $cliente->call("setAltaClienteFinal",array($datos));
         $error = $cliente->getError();
-        if ($error)  echo "<pre>".$error."</pre>";
+        if ($error)  echo "crearCliente: <pre>".$error."</pre>";
 
         echo json_encode($return);
     }
@@ -159,6 +163,54 @@ class Cliente
 
     }
 
-
-
 }
+/*
+array(23) {
+    ["user"]=>
+  string(9) "B10452795"
+    ["pass"]=>
+  string(11) "Telereq1430"
+    ["subscriberType"]=>
+  string(1) "1"
+    ["marketingConsent"]=>
+  string(1) "4"
+    ["documentType"]=>
+  string(1) "1"
+    ["fiscalId"]=>
+  string(9) "31689245Y"
+    ["name"]=>
+  string(5) "RUBEN"
+    ["contactName"]=>
+  string(5) "RUBEN"
+    ["contactFamilyName1"]=>
+  string(8) "CORRALES"
+    ["contactFamilyName2"]=>
+  string(8) "CORBACHO"
+    ["birthday"]=>
+  string(10) "1974-05-15"
+    ["contactDocumentType"]=>
+  string(1) "1"
+    ["contactFiscalId"]=>
+  string(9) "31689245Y"
+    ["emailAddress"]=>
+  string(14) "info@ruben.com"
+    ["contactPhone"]=>
+  string(9) "691934413"
+    ["addressRegion"]=>
+  string(10) "Andalucía"
+    ["addressProvince"]=>
+  string(6) "Cádiz"
+    ["addressCity"]=>
+  string(10) "Bosque, El"
+    ["addressPostalCode"]=>
+  string(5) "11670"
+    ["addressStreet"]=>
+  string(14) "CALLE JEREZ, 7"
+    ["addressNumber"]=>
+  string(1) "0"
+    ["documento_name"]=>
+  string(0) ""
+    ["documento"]=>
+  string(0) ""
+}
+*/

@@ -8,29 +8,29 @@
 //
 
 include_once 'config/util.php';
-include_once 'clases/Clientes.php';
-include_once 'clases/AltaTecnica.php';
-$cli=new Clientes();
-
-$datosCliente = $cli->getClienteAltaMasMovil(2900);
-$datosCliente = mysqli_fetch_array($datosCliente);
-//print_r($datosCliente);
-
-$codBanco=substr($datosCliente[13],4,4);
-$oficina=substr($datosCliente[13],8,4);
-$dc=substr($datosCliente[13],12,2);
-$ccc=substr($datosCliente[13],14,10);
-$codProv=substr($datosCliente[11],0,2);
-$icc="";
-$idServicio=55;
-
-echo $codBanco. " ".$oficina. " ".$dc. " ".$ccc. " ".$codProv;
-
-var_dump(AltaTecnica::addNuevaLineaMasMovil($datosCliente[0]." ".$datosCliente[1],
-    $datosCliente[0], $datosCliente[2],$datosCliente[3], $datosCliente[0], $datosCliente[4],
-    $datosCliente[5], $datosCliente[4], $datosCliente[6], $datosCliente[7], $datosCliente[8], $codProv,
-    $datosCliente[10], $datosCliente[11], $datosCliente[0] . " ". $datosCliente[1],$datosCliente[12],
-    $codBanco, $oficina, $dc, $ccc, $icc, $idServicio));
+//include_once 'clases/Clientes.php';
+//include_once 'clases/AltaTecnica.php';
+//$cli=new Clientes();
+//
+//$datosCliente = $cli->getClienteAltaMasMovil(2900);
+//$datosCliente = mysqli_fetch_array($datosCliente);
+////print_r($datosCliente);
+//
+//$codBanco=substr($datosCliente[13],4,4);
+//$oficina=substr($datosCliente[13],8,4);
+//$dc=substr($datosCliente[13],12,2);
+//$ccc=substr($datosCliente[13],14,10);
+//$codProv=substr($datosCliente[11],0,2);
+//$icc="";
+//$idServicio=55;
+//
+//echo $codBanco. " ".$oficina. " ".$dc. " ".$ccc. " ".$codProv;
+//
+//var_dump(AltaTecnica::addNuevaLineaMasMovil($datosCliente[0]." ".$datosCliente[1],
+//    $datosCliente[0], $datosCliente[2],$datosCliente[3], $datosCliente[0], $datosCliente[4],
+//    $datosCliente[5], $datosCliente[4], $datosCliente[6], $datosCliente[7], $datosCliente[8], $codProv,
+//    $datosCliente[10], $datosCliente[11], $datosCliente[0] . " ". $datosCliente[1],$datosCliente[12],
+//    $codBanco, $oficina, $dc, $ccc, $icc, $idServicio));
 
 /*
  * * $nombre, 0 + 1
@@ -75,6 +75,8 @@ var_dump(AltaTecnica::addNuevaLineaMasMovil($datosCliente[0]." ".$datosCliente[1
  *
 
  */
+$util = new util();
+echo $util->enviarEmail('rubencorralescorbacho@gmail.com', 'desarrollo@grupoliontelecom.es',null, 'asunto', 'texto');
 
 
 ?>

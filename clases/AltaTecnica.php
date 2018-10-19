@@ -6,11 +6,18 @@
  * Time: 13:39
  */
 
+/*
+-El operador donante no es necesario, permitir pasar sin elegir ningún donante.
+-Modalidad actual. (prepago/postpago).
+-El icc de origen y dc origen, aunque para más movil no es necesario DC. (Esto solo para AIRE).
+-ICC destino(MASMOVIL) y en AIRE (ICC y DC).
+-Descargar documento de portabilidad AIRE, y poder subirlo ya firmado.
+ */
 
-include_once ('../config/define.php');
+//require_once '../config/define.php';
 
 include_once ('../config/util.php');
-include_once ('Servicio.php');
+require_once ('Servicio.php');
 
 class AltaTecnica
 {
@@ -22,7 +29,7 @@ class AltaTecnica
                                         $paqueteDestino,$numero)
     {
 
-        require_once ('telefonia/classTelefonia.php');
+        require_once ($_SERVER['DOCUMENT_ROOT'].'clases/telefonia/classTelefonia.php');
 
         $telefonia=new Telefonia();
 
@@ -132,6 +139,62 @@ class AltaTecnica
         return $rs;
     }
 
+
+    public static function addNuevaPortabilidadMasMovil($nombre,$nombreEmpresa,$tipoCliente,$tipoDocumento,$dni,
+                                                        $nombreContacto,$apellido1,$apellido2,$telContacto,$movilContacto,$faxContacto,$emailContacto,$telefonoContacto,
+                                                        $calle,$numeroCalle,$piso,$localidad,$codigoProvincia,$codigoPais,$codigoPostal,
+                                                        $titularCuenta,$nombreBanco,$codigoBanco,$oficina,$digitoControl,$numeroCuenta,$iccTarjeta,$idServicio,$iccNuevo,$donante,$telefono,$tipoAbono,$fechaPortabilidad
+    )
+    {
+
+        require_once ('masmovil/MasMovilAPI.php');
+
+        $apiMasMovil=new MasMovilAPI();
+        $rs=$apiMasMovil->getListadoClientes($dni);
+
+        if(@$rs->activationCode==NO_EXISTE_CLIENTE_MASMOVIL)
+        {
+            sleep(1);
+            $rs=$apiMasMovil->crearNuevoCliente($nombre,$nombreEmpresa,$tipoDocumento,$dni,
+                $nombreContacto,$telContacto,$movilContacto,$faxContacto,$emailContacto,
+                $calle,$localidad,$codigoProvincia,$codigoPais,$codigoPostal,
+                $titularCuenta,$nombreBanco,$codigoBanco,$oficina,$digitoControl,$numeroCuenta);
+
+            if($rs->activationCode==OPERACION_OK_MASMOVIL)
+            {
+
+                $refCliente=$rs->customerId;
+                $ser=new Servicio();
+                $idExterno=Servicio::getIdExternoApi($idServicio,$_SESSION['REVENDEDOR']);
+                if($idExterno!=NULL)
+                {
+                    $idExterno=$idExterno[0][0];
+                    $rs=$apiMasMovil->altaPortabilidad($refCliente,$iccNuevo,$donante,$telefono,$tipoAbono,$fechaPortabilidad,$idExterno,"",$tipoCliente,$nombre
+                        ,$apellido1,$apellido2,$tipoDocumento,$dni,$nombreEmpresa,$emailContacto,$telefonoContacto,$calle,$numeroCalle,$piso,$localidad,$codigoProvincia,$codigoPais,$codigoPostal,$iccTarjeta);
+
+                }
+
+            }
+        }
+        else
+        {
+
+            $refCliente=$rs->Client[0]->refCustomerId;
+            $ser=new Servicio();
+            $idExterno=Servicio::getIdExternoApi($idServicio,$_SESSION['REVENDEDOR']);
+            if($idExterno!=NULL)
+            {
+                $idExterno=$idExterno[0][0];
+                $rs=$apiMasMovil->altaPortabilidad($refCliente,$iccNuevo,$donante,$telefono,$tipoAbono,$fechaPortabilidad,$idExterno,"",$tipoCliente,$nombre
+                    ,$apellido1,$apellido2,$tipoDocumento,$dni,$nombreEmpresa,$emailContacto,$telefonoContacto,$calle,$numeroCalle,$piso,$localidad,$codigoProvincia,$codigoPais,$codigoPostal,$iccTarjeta);
+            }
+
+
+        }
+
+        return $rs;
+    }
+
     /*
      * FUNCION PARA AÑADIR UNA LÍNEA EN AIRENETWORK, SI EL CLIENTE PASADO NO EXISTE SE CREA EN LA APLICACIÓN Y A POSTERIOR SE LE AÑADE LA LINEA NUEVA
      *
@@ -175,10 +238,7 @@ class AltaTecnica
 
     }
 
-    public static function addNuevaPortabilidadAireNetworks($idEmpresa,$idServicio,$tipoCliente,$consentimiento,$nombre,
-                                                            $apellido1,$apellido2,$fechaNacimiento,$email,$region,$provincia,
-                                                            $ciudad,$cp,$direccion,$numero,$docNombre,$documento,$tipoDocumento,
-                                                            $nif,$icc,$dc,$telefono,$modalidadActual,$iccOrigen,$dcOrigen)
+    public static function addNuevaPortabilidadAireNetworks($idEmpresa,$idServicio,$tipoCliente,$consentimiento,$nombre,$apellido1,$apellido2,$fechaNacimiento,$email,$region,$provincia,$ciudad,$cp,$direccion,$numero,$docNombre,$documento,$tipoDocumento,$nif,$icc,$dc,$telefono,$modalidadActual,$iccOrigen,$dcOrigen)
     {
 
         require_once ('airenetwork/clases/Cliente.php');
@@ -190,14 +250,16 @@ class AltaTecnica
         $configuracion=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
 
 
+
         $clienteAire=new Cliente($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
         $lineaAire=new Linea($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
 
         $rs=$clienteAire->getClientByDNI($nif);
 
+
         if($rs==NULL)
             $rs=$clienteAire->crearCliente($tipoCliente,$consentimiento,$tipoDocumento,$nif,$nombre,$apellido1,$apellido2,$fechaNacimiento,$email,$telefono,$region,$provincia,$ciudad,$cp,$direccion,$numero,$docNombre,$documento);
-
+//            echo "AltaTecnica L262: " ; var_dump($rs);
 
         $rservicio=Servicio::getIdExternoApi($idServicio,$_SESSION['REVENDEDOR']);
 
@@ -207,9 +269,8 @@ class AltaTecnica
             $tarifa=$rservicio[0]['ID_EXTERNO'];
 
             $rsP=$lineaAire->setAltaPortabilidad($tarifa,$tipoCliente,$nif,$icc,$dc,$telefono,$modalidadActual,$iccOrigen,$dcOrigen);
-            return $rsP;
-        } else
-            return "Error";
+            echo $rsP;
+        }
 
     }
 
@@ -235,7 +296,7 @@ class AltaTecnica
         $lineaAire=new Linea($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
 
         $rs=$lineaAire->getDocumentosSolicitud($codigoSolicitud,$tipoDocumento);
-//        var_dump($rs);
+        var_dump($rs);
 
     }
 
@@ -247,6 +308,7 @@ class AltaTecnica
      * $tipoDocumento= DOCUMENTO/PORTABILIDAD/CONTRATOS/OTROS
      * $nombreFichero= Nombre del fichero pasado en base64.
      */
+
     public static function setDocumentosPortabilidadAireNetworks($dniCliente,$codSolicitud,$documento64,$tipoDocumento,$nombreFichero)
     {
         require_once ('airenetwork/clases/Linea.php');
@@ -254,14 +316,23 @@ class AltaTecnica
         $configuracion=Empresa::getConfiguracionAireNetworks($_SESSION['REVENDEDOR']);
         $lineaAire=new Linea($configuracion[0][3],$configuracion[0][1],$configuracion[0][2]);
 
-        $rs=$lineaAire->subirDocumento($codSolicitud,$tipoDocumento);
+        $rs=$lineaAire->setDocumentosSolicitud($dniCliente,$codSolicitud,$documento64,$tipoDocumento,$nombreFichero);
         var_dump($rs);
 
     }
-
-    public function geterrores($clase, $error){
-        $msg = 'ERROR-'.$clase.'-'.$error;
-        return $msg;
-    }
 }
+
+/*
+
+<br />
+<b>Warning</b>:  file_get_contents(): Filename cannot be empty in <b>C:\Users\Ruben\Dropbox\Multiplataforma\content\ventas\guardar-porta.php</b> on line <b>68</b><br />
+<br />
+<b>Notice</b>:  Object of class stdClass could not be converted to int in <b>C:\Users\Ruben\Dropbox\Multiplataforma\content\ventas\guardar-porta.php</b> on line <b>137</b><br />
+<br />
+<b>Catchable fatal error</b>:  Object of class stdClass could not be converted to string in <b>C:\Users\Ruben\Dropbox\Multiplataforma\content\ventas\guardar-porta.php</b> on line <b>159</b><br />
+
+ */
 ?>
+
+
+
