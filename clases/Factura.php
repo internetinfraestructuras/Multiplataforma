@@ -9,14 +9,21 @@
 class Factura
 {
     //Crea la cabecera de un nuevo contrato
-    public static function setNuevaFactura($idContrato,$idEmpresa,$impuesto,$descuento)
+    public static function setNuevaFactura($idContrato,$idEmpresa,$impuesto,$descuento,$idCliente)
     {
         $util = new util();
-        $tabla = array("NUMERO","ID_CONTRATO","ID_EMPRESA","ESTADO","IMPUESTO","DESCUENTO");
-
         $numero=self::getUltimaFacturaEmpresa($idEmpresa);
+        if($idContrato!="")
+        {
+            $tabla = array("NUMERO","ID_CONTRATO","ID_EMPRESA","ESTADO","IMPUESTO","DESCUENTO","ID_CLIENTE");
+            $values = array($numero,$idContrato,$idEmpresa,1,$impuesto,$descuento,$idCliente);
+        }
 
-        $values = array($numero,$idContrato,$idEmpresa,1,$impuesto,$descuento);
+        else
+        {
+            $tabla = array("NUMERO","ID_EMPRESA","ESTADO","IMPUESTO","DESCUENTO","ID_CLIENTE");
+            $values = array($numero,$idEmpresa,1,$impuesto,$descuento,$idCliente);
+        }
 
         return $util->insertInto('facturas', $tabla, $values);
     }

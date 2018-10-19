@@ -91,12 +91,12 @@ $listado=Orden::getOrdenCerradasPendientesFacturacion($_SESSION['REVENDEDOR']);
 
             <div class="row">
 
-                <div class="col-md-8">
+                <div class="col-md-10">
 
                     <!-- ------ -->
                     <div class="panel panel-default">
                         <div class="panel-heading panel-heading-transparent">
-                            <strong>EDITAR <?php echo strtoupper(DEF_ORDENES); ?></strong>
+                            <strong>EDITAR <?php echo strtoupper(DEF_ORDENES); ?> CON INSTALACIÓN </strong>
                         </div>
 
                         <div class="panel-body">
@@ -110,9 +110,14 @@ $listado=Orden::getOrdenCerradasPendientesFacturacion($_SESSION['REVENDEDOR']);
                                         <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>ORDEN</th>
+                                            <th># ORDEN</th>
                                             <th>CLIENTE</th>
+                                            <th>FECHA APERTURA</th>
+                                            <th>FECHA CIERRE</th>
+                                            <th>ESTADO COBRO</th>
+                                            <th>FACTURABLE</th>
                                             <th>MODO COBRO</th>
+                                            <th>ESTADO</th>
                                             <th>PVP</th>
 
                                             <th>OPCIONES</th>
@@ -121,27 +126,51 @@ $listado=Orden::getOrdenCerradasPendientesFacturacion($_SESSION['REVENDEDOR']);
                                         <tbody>
                                         <?php
 
-    var_dump($listado);
-
                                         for($i=0;$i<count($listado);$i++)
                                         {
 
-                                            $id=$listado[$i][0];
-                                            $fechaAlta=$listado[$i][1];
-                                            $estado=$listado[$i][2];
-                                            $idEstado=$listado[$i][3];
-                                            $cliente=$listado[$i][4];
-                                            $idCliente=$listado[$i][5];
-                                            $apellidos=$listado[$i][6];
+                                            $id=$listado[$i]['ID'];
+                                            $numero=$listado[$i]['NUMERO'];
+                                            $contrato=$listado[$i]['ID_CONTRATO'];
+                                            $fechaAlta=$listado[$i]['FECHA_ALTA'];
+                                            $fechaBaja=$listado[$i]['FECHA_FIN'];
+
+                                            $tipoEstado=$listado[$i]['ESTADO_COBRO'];
+                                            $tipoEstado=Orden::getEstadoCobro($tipoEstado);
+                                            $tipoEstado=$tipoEstado[0][0];
+
+                                            $facturar=$listado[$i]['FACTURAR'];
+                                            $nombre=$listado[$i]['NOMBRE_CLIENTE'];
+                                            $apellidos=$listado[$i]['APELLIDOS_CLIENTE'];
+
+                                            if($facturar==0)
+                                                $facturar="NO";
+                                            else
+                                                $facturar="SI";
+
+                                            $modoCobro=$listado[$i]['MODO_COBRO'];
+                                            $pvp=$listado[$i]['PVP'];
+                                            $estado=$listado[$i]['NOMBRE_ESTADO'];
+
 
                                             echo "<tr>";
-                                            echo "<td><input name='ordenes[ordenId][]' value='$id'  class='form-control' readonly></td><td>$fechaAlta</td><td>$estado</td><td>$cliente $apellidos<a href='/mul/ficha-cliente.php?idCliente=$idCliente' >&nbsp;<button type=\"button\" rel=\"tooltip\" ><i class=\"fa fa-eye\"></i></button></a></td>";
+                                            echo "<td><input name='ordenes[ordenId][]' value='$id'  size='5px' class='form-control' readonly></td>
+                                                    <td>$id</td>
+                                                    <td>$nombre $apellidos </td>
+                                                    <td>$fechaAlta</td>
+                                                    <td>$fechaBaja</td>
+                                                    <td>$tipoEstado</td>
+                                                    <td>$facturar</td>
+                                                    <td>$modoCobro</td>
+                                                    <td>$estado</td>
+                                                    <td>$pvp</td>
+                                                  ";
 
                                             ?>
                                             <td class="td-actions text-right">
                                                 <a href="ficha-orden.php?idOrden=<?php echo $id; ?>">
                                                     <button type="button" rel="tooltip" >
-                                                        <a target="_blank" href="imprimirOrden.php?idOrden=<?php echo $id;?>"
+                                                        <a target="_blank" href="facturar.php?idLinea=<?php echo $id;?>&idContrato=<?php echo $contrato;?>"
                                                         <i class="fa fa-print"></i> &nbsp;
                                                 </a>
                                                 <a href="ficha-orden.php?idOrden=<?php echo $id; ?>">
@@ -177,7 +206,7 @@ $listado=Orden::getOrdenCerradasPendientesFacturacion($_SESSION['REVENDEDOR']);
 
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-2">
 
                     <div class="panel panel-default">
                         <div class="panel-body">

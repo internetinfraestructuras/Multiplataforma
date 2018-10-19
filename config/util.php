@@ -428,7 +428,7 @@ class util {
             $query="INSERT INTO ".$tabla." (".$columnas.") VALUES ('".$valores."')";
 
             $query = str_replace("º","",$query);
-    //       echo $query."<br>";
+          echo $query."<br>";
             if (!($result = $link->query($query)))
                 throw new Exception('Error en selectWhere.');
             $lastid = mysqli_insert_id($link);
@@ -517,7 +517,7 @@ class util {
         }catch (Exception $e){
             $this->log('eror update: ' . $e->getFile());
         }
-   //echo $query."<br/>";
+   echo $query."<br/>";
 //        if (!($result = $link->query($query))) {
 //
 //            throw new Exception('Error en selectWhere.');

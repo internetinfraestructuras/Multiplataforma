@@ -1931,8 +1931,8 @@ require_once ('telefonia/classTelefonia.php');
         //Nos devuelve los datos del servicio del cliente
         public static function getDetallesServicio($idServicio)
         {
-        $util=new util();
-        return $util->selectWhere3("servicios", array("PRECIO_PROVEEDOR","IMPUESTO","BENEFICIO","PVP","ID"),
+            $util=new util();
+                return $util->selectWhere3("servicios", array("PRECIO_PROVEEDOR","IMPUESTO","BENEFICIO","PVP","ID","NOMBRE"),
         "servicios.id=".$idServicio." AND servicios.id_empresa=".$_SESSION['REVENDEDOR']);
         }
 

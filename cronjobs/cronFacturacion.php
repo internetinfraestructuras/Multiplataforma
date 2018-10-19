@@ -52,6 +52,8 @@ echo "<hr>";
             $lineasContrato=Contrato::getLineasContratoAlta($idContrato);
 
             $campanas=Contrato::getCampanasContrato($idContrato);
+            $datos=Contrato::getClienteDatos($idContrato,$idEmpresa);
+            $idCliente=$datos[0]['ID'];
 
             if(!empty($campanas))
             {
@@ -84,7 +86,7 @@ echo "<hr>";
 
             if($flagFactura==false)
             {
-                $idFactura=Factura::setNuevaFactura($listaContratos[$i][0],$_SESSION['REVENDEDOR'],$total,$impuesto,$descuento);
+                $idFactura=Factura::setNuevaFactura($listaContratos[$i][0],$idEmpresa,$impuesto,$descuento,$idCliente);
 
                 $total=0;
                 $totalDto=0;

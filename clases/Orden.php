@@ -112,6 +112,15 @@ class Orden
         $result = $util->update('ordenes', $campos, $values, "ordenes.id=".$idOrden);
     }
 
+    public static function cambiarEstadoOrdenFacturable($idOrdenLinea,$idEstado)
+    {
+        $util=new util();
+        $campos=array("estado");
+        $values=array($idEstado);
+        $result = $util->update('ordenes_facturacion', $campos, $values, "ordenes_facturacion.id=".$idOrdenLinea);
+    }
+
+
     public static function getOrdenesPendientes($id=null)
     {
         if($id!=null)
@@ -145,11 +154,44 @@ class Orden
     public static function getOrdenCerradasPendientesFacturacion($idEmpresa)
     {
 
-
         $util=new util();
-        return $util->selectWhere3('ordenes a right join ordenes_facturacion b on a.id=b.id_orden',
-            array("*"),
-            "");
+        return $util->selectWhere3('ordenes,
+        ordenes_estados,
+        contratos,
+        clientes,
+        modos_cobro,
+        ordenes_facturacion',
+            array("ordenes_facturacion.ID,ordenes.NUMERO,
+            ordenes.ID_CONTRATO,
+            ordenes_estados.NOMBRE as NOMBRE_ESTADO,
+            clientes.NOMBRE AS NOMBRE_CLIENTE,
+            clientes.apellidos AS APELLIDOS_CLIENTE,
+            ordenes.FECHA_ALTA,
+            ordenes.FECHA_FIN,
+            ordenes_facturacion.FACTURAR,
+            ordenes_facturacion.ESTADO as ESTADO_COBRO,
+            ordenes_facturacion.PVP,
+            modos_cobro.NOMBRE as MODO_COBRO
+            "),
+            "ordenes_facturacion.id_orden=ordenes.id 
+            AND modos_cobro.id=ordenes_facturacion.ID_MODO_COBRO 
+            AND ordenes.id_tipo_estado=ordenes_estados.id 
+            AND contratos.id=ordenes.id_contrato 
+       
+            AND contratos.id_cliente=clientes.id 
+            AND ordenes.ID_TIPO_ESTADO=4",
+
+            "",
+            "ordenes.id");
+    }
+
+    public static function getEstadoCobro($idEstado)
+    {
+        $util=new util();
+        return $util->selectWhere3('ordenes_estados',
+            array("ordenes_estados.NOMBRE
+            "),
+            "id=$idEstado");
     }
 
     public static function getOrden($id=null)
@@ -219,7 +261,7 @@ class Orden
 
     }
 
-    public static function setFacturableOrden($idOrden,$facturable,$pvp,$impuesto,$descuento,$importe,$estado,$modoCobro)
+    public static function setFacturableOrden($idOrden,$facturable,$pvp,$impuesto,$descuento,$importe,$estado,$modoCobro,$idServicio)
     {
         $util=new util();
 
@@ -228,8 +270,46 @@ class Orden
 
         $values=array($idOrden,$facturable,$pvp,$impuesto,$descuento,$importe,$estado,$modoCobro);//TIPO DE ESTADO ES 1 DE APERTURA
 
-        $resOrden= $util->insertInto2('ordenes_facturacion', $t_ordenes, $values);
+        $idOrdenFacturable= $util->insertInto2('ordenes_facturacion', $t_ordenes, $values);
 
-        return $resOrden;
+        self::setLineaFacturableOrden($idOrdenFacturable,$idServicio,$importe,$impuesto,$descuento,$pvp);
+
     }
+
+
+    public static function setLineaFacturableOrden($idOrdenFacturable,$idServicio,$importe,$impuesto,$dto,$pvp)
+    {
+        $util=new util();
+
+
+        $t_ordenes=array("ID_ORDEN_FACTURACION","ID_SERVICIO","IMPORTE","IMPUESTO","DTO","PVP");
+
+        $values=array($idOrdenFacturable,$idServicio,$importe,$impuesto,$dto,$pvp);//TIPO DE ESTADO ES 1 DE APERTURA
+
+        $idOrdenFacturable= $util->insertInto2('ordenes_facturacion_lineas', $t_ordenes, $values);
+
+    }
+
+
+
+    public static function getCabeceraFacturacion($idLineaOrdenFacturacion)
+    {
+        $util=new util();
+        return $util->selectWhere3('ordenes_facturacion',
+            array("ordenes_facturacion.id,ordenes_facturacion.pvp,ordenes_facturacion.impuesto,ordenes_facturacion.dto,ordenes_facturacion.importe,ordenes_facturacion.id_orden"),
+            "ordenes_facturacion.id=$idLineaOrdenFacturacion");
+
+    }
+
+
+    public static function getLineasFacturacion($idOrdenFacturacion)
+    {
+        $util=new util();
+        return $util->selectWhere3('ordenes_facturacion_lineas',
+            array("*"),
+            "ordenes_facturacion_lineas.id_orden_facturacion=$idOrdenFacturacion");
+
+    }
+
+
 }

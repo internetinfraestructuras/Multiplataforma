@@ -87,9 +87,8 @@ if(isset($_POST['action']) && $_POST['action'] == 'ordenes')
                     else
                         $facturable=0;
 
-
                     $detallesServicio=Servicio::getDetallesServicio($instalacion[$i]);
-                    Orden::setFacturableOrden($ordenesId[$i],$facturable,$detallesServicio[0][3],$detallesServicio[0][1],"0",$detallesServicio[0][0],1,$cobro[0][$i]);
+                    Orden::setFacturableOrden($ordenesId[$i],$facturable,$detallesServicio[0][3],$detallesServicio[0][1],"0",$detallesServicio[0][0],1,$cobro[0][$i],$instalacion[$i]);
                 }
 
 
