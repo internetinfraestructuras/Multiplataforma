@@ -958,6 +958,15 @@ class MasMovilAPI
         return $resOrden;
     }
 
+    public function getNumerosPendientes($idEmpresa)
+    {
+
+        $util = new util();
+        return $util->selectWhere3('altas_mas_movil', array('ID','ID_LINEA_DETALLE','ICC'),'id_empresa='.$idEmpresa.' AND estado=1',"ID");
+
+
+    }
+
 
 
 }

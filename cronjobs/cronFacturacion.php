@@ -45,6 +45,7 @@ echo "<hr>";
 
         for($i=0;$i<count($listaContratos);$i++)
         {
+
             $dto=0;
             $fechaAlta=$listaContratos[$i][3];
             $idContrato=$listaContratos[$i][0];

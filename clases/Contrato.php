@@ -165,7 +165,31 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         return $rs;
 
     }
+    public static function setAtributoLineaDetalle($idLineaDetalle,$valor)
+    {
+        $util = new util();
 
+        $campos = array("ESTADO","VALOR");
+        $values = array(1,$valor);
+
+        $result = $util->update('contratos_lineas_detalles', $campos, $values,
+            "contratos_lineas_detalles.id=$idLineaDetalle");
+
+
+    }
+
+    //TABLA DE NUMEROS PENDIENTES DE NUMERACIÓN POR PARTE DE MÁS MOVIL.
+    public static function setNumeroPendiente($id,$estado)
+    {
+        $util = new util();
+
+        $campos = array("ESTADO","FECHA_OBTENCION");
+        $values = array($estado,date());
+
+        $result = $util->update('altas_mas_movil', $campos, $values,
+            "id=$id");
+
+    }
 
     //obtiene las linea de detalle de un contrato
     public static function getLineaDetalles($idLinea)
@@ -574,10 +598,12 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
             "contratos.id_cliente=clientes.id AND contratos.id=$idContrato AND contratos.id_empresa=$idEmpresa");
     }
 
+
+
     public static function getClienteDatosPorLineaDetalle($idEmpresa,$idLineaDetalle)
     {
         $util = new util();
-        return $util->selectWhere3("contratos_lineas_detalles,contratos_lineas,contratos,clientes", array("clientes.DNI"),
+        return $util->selectWhere3("contratos_lineas_detalles,contratos_lineas,contratos,clientes", array("clientes.DNI","contratos.ID"),
             " contratos_lineas_detalles.ID_LINEA=contratos_lineas.id
                      AND contratos_lineas.ID_CONTRATO=contratos.id
                      AND contratos.id_empresa=$idEmpresa
