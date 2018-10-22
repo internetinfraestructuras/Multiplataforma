@@ -25,6 +25,14 @@ class Contrato
             "contratos.id_empresa=$idEmpresa AND contratos.estado=1");
     }
 
+    public static function getContratosAltaEmpresaFecha($idEmpresa,$fecha)
+    {
+        $util = new util();
+
+        return $util->selectWhere3("contratos", array("ID", "NUMERO", "ID_CLIENTE", "FECHA_INICIO", "FECHA_FIN", "ESTADO"),
+            "contratos.id_empresa=$idEmpresa AND contratos.estado=1 AND contratos.fecha_inicio<=$fecha AND contratos.fecha_fin>=$fecha");
+    }
+
     public static function getContratosBajaHoy($idEmpresa)
     {
         $util = new util();
@@ -62,7 +70,15 @@ class Contrato
         $util = new util();
 
         return $util->selectWhere3("contratos_campanas,campanas", array("ID_CAMPANA","DTO","DTO_HASTA","campanas.NOMBRE"),
-            "contratos_campanas.id_contrato=$idContrato AND contratos_campanas.dto_hasta>=date(now()) AND campanas.id=contratos_campanas.id_campana");
+            "contratos_campanas.id_contrato=$idContrato AND contratos_campanas.dto_hasta<=date(now()) AND campanas.id=contratos_campanas.id_campana");
+    }
+
+    public static function getCampanasContratoFecha($idContrato,$fecha)
+    {
+        $util = new util();
+
+        return $util->selectWhere3("contratos_campanas,campanas", array("ID_CAMPANA","DTO","DTO_HASTA","campanas.NOMBRE"),
+            "contratos_campanas.id_contrato=$idContrato AND contratos_campanas.dto_hasta>=$fecha AND campanas.id=contratos_campanas.id_campana");
     }
 
     // Agrega documentos tipo firma y escaneados al contrato (Rubén)
@@ -197,6 +213,53 @@ contratos_lineas_detalles.ID_SERVICIO=25 AND contratos_lineas.id_contrato=2 AND 
         $util = new util();
         return $util->selectWhere3("contratos_lineas_detalles", array("ID_TIPO_SERVICIO", "ID_ATRIBUTO_SERVICIO", "VALOR", "ID","ID_SERVICIO","ID","ESTADO"),
             "contratos_lineas_detalles.estado!=2 AND contratos_lineas_detalles.id_linea=$idLinea");
+    }
+
+    /*
+     * FUNCIÓN QUE DEVUELVE LOS CONTRATOS
+     * LOS IMPORTES
+     */
+    public static function getContratosImportes($idEmpresa,$fecha)
+    {
+
+        $listaContratos=Contrato::getContratosAltaEmpresaFecha($idEmpresa,$fecha);
+        $total=0;
+        $totalDto=0;
+        $fechaActual=date('Ymd');
+        $arrayContratos=array();
+        for($i=0;$i<count($listaContratos);$i++)
+        {
+
+            $idContrato=$listaContratos[$i]['ID'];
+            $fechaAlta=$listaContratos[$i][3];
+
+           $campanas= Contrato::getCampanasContratoFecha($idContrato,$fecha);
+
+           if($campanas!=null)
+           {
+
+               for($l=0;$l<count($campanas);$l++)
+                   $dto=$campanas[$l][1];
+
+           }
+
+            $lineasContrato=Contrato::getLineasContratoAlta($idContrato);
+            for($j=0;$j<count($lineasContrato);$j++)
+            {
+                $impuesto=$lineasContrato[$j][5];
+                $importe=$lineasContrato[$j][6];
+                $total+=$importe;
+
+            }
+
+            if($dto!=0)
+                $total=$total-($total*$dto/100);
+
+
+           $arrayContratos[$i]=array("idContrato"=>$idContrato,"importe"=>$total);
+        }
+var_dump($arrayContratos);
+        return $arrayContratos;
     }
 
     public static function getLineaDetallesId($idLinea)

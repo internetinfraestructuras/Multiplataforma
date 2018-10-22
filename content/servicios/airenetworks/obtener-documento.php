@@ -9,7 +9,7 @@
 if (!isset($_SESSION)) {
     @session_start();
 }
-header('Content-type: application/pdf');
+//header('Content-type: application/pdf');
 require_once('../../../config/util.php');
 require_once('../../../clases/airenetwork/clases/Linea.php');
 

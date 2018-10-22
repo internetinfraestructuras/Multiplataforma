@@ -29,13 +29,14 @@ if(isset($_POST['action']) && $_POST['action'] == 'productos')
     $is_ajax = (isset($_POST['is_ajax']) && $_POST['is_ajax'] == 'true') ? true : false;
 
     //check post data
+    /*
     if ($post_data === null) {
         if ($is_ajax === false) {
             _redirect('#alert_mandatory');
         } else {
             die('_mandatory_');
         }
-    }
+    }*/
 
     // EXTRACT DATA FROM POST
     foreach ($post_data as $key => $value)
@@ -62,6 +63,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'productos')
         $beneficio=$util->cleanstring($post_data['beneficio']);
         $pvp=$util->cleanstring($post_data['precio-pvp']);
         $impuesto=$util->cleanstring($post_data['impuesto']);
+        $cantidad=$post_data['cantidad'];
         $atributos=$post_data['atributo'];
 
     }
@@ -73,11 +75,23 @@ if(isset($_POST['action']) && $_POST['action'] == 'productos')
 
 
 
-    $values = array( $almacen[0],$proveedor,$tipo,$modelo,1,$numeroSerie,$precioProv,$beneficio,$pvp,$impuesto);
 
-    // llama a la funcion insertInto de la clase util que recibe la tabla (string) y dos arrays (campos y valores)
 
-    $resultProducto = $util->insertInto('productos', $t_productos, $values);
+
+    $secuencia=substr($numeroSerie,-5);
+    $secuenciaFija=substr($numeroSerie,0,-5);
+
+    $secuencia=intval($secuencia);
+
+    for($k=0;$k<$cantidad;$k++)
+    {
+
+        $ssid=$secuenciaFija.$secuencia;
+        $values = array( $almacen[0],$proveedor,$tipo,$modelo,1,$ssid,$precioProv,$beneficio,$pvp,$impuesto);
+        $resultProducto = $util->insertInto('productos', $t_productos, $values);
+        $secuencia++;
+    }
+
 
 
     $util->log('El administrador:'.$_SESSION['USER_ID'].' ha creado el cliente:'.$dni.' con el resultado:'.$result);
@@ -203,7 +217,7 @@ if((isset($_POST['oper']) && $_POST['oper'] == 'edit')&&(isset($_POST['id']) && 
 }
 
 
-
+/*
 function _redirect($hash) {
 
     $HTTP_REFERER = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
@@ -213,7 +227,7 @@ function _redirect($hash) {
 
     header("Location: {$HTTP_REFERER}{$hash}");
     exit;
-}
+}*/
 
 
 

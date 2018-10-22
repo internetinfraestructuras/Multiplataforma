@@ -66,7 +66,7 @@ $idModelo=$producto[0][11];
     <link href="../../assets/css/essentials.css" rel="stylesheet" type="text/css"/>
     <link href="../../assets/css/layout.css" rel="stylesheet" type="text/css"/>
     <link href="../../assets/css/color_scheme/green.css" rel="stylesheet" type="text/css" id="color_scheme"/>
-    <script type="text/javascript" src="js/utiles.js"></script>
+    <script type="text/javascript" src="../../js/utiles.js"></script>
 
 </head>
 <!--
@@ -145,7 +145,7 @@ $idModelo=$producto[0][11];
                                             <div class="col-md-10 col-sm-5">
                                                 <label>Número de Serie:</label>
                                                 <input type="text" name="numeroSerie" id="apellidos"
-                                                       class="form-control " value="<?php echo $numeroSerie; ?>">
+                                                       class="form-control " value="<?php echo $numeroSerie; ?>" required>
                                             </div>
 
                                         </div>
@@ -157,7 +157,7 @@ $idModelo=$producto[0][11];
                                             <div class="col-md-4 col-sm-3">
                                                 <label>Proveedor </label><br>
                                                 <select name="proveedor" id="proveedores"
-                                                        class="form-control pointer "  onchange="carga_tipos(this.value)">
+                                                        class="form-control pointer "  onchange="carga_tipos(this.value)" required>
                                                 <option value="<?php echo $idProveedor;?>">--- Seleccionar una ---</option>
                                                 <?php $util->carga_select('proveedores', 'id', 'nombre', 'nombre','id_tipo_proveedor=1','','',$idProveedor); ?>
                                                 </select>
@@ -166,7 +166,7 @@ $idModelo=$producto[0][11];
                                             <div class="col-md-4 col-sm-6">
                                                 <label>Tipo </label><br>
                                                 <select name="tipo" id="tipos"
-                                                        class="form-control pointer " onchange="carga_modelos(this.value)">
+                                                        class="form-control pointer " onchange="carga_modelos(this.value)" required>
                                                     <option value="<?php echo $idTipo; ?>">--- Seleccionar una ---</option>
                                                     <?php $util->carga_select('productos_tipos', 'id', 'nombre', 'nombre','','','',$idTipo); ?>
                                                 </select>
@@ -174,7 +174,7 @@ $idModelo=$producto[0][11];
                                             <div class="col-md-4 col-sm-6">
                                                 <label>Modelo</label>
                                                 <select name="modelo" id="modelos"
-                                                        class="form-control pointer " onchange="carga_atributos(this.value)">
+                                                        class="form-control pointer " onchange="carga_atributos(this.value)" required>
                                                     <option value="<?php echo $idModelo;?>">--- Seleccionar una ---</option>
                                                     <?php $util->carga_select('productos_modelos', 'id', 'nombre', 'nombre','id_tipo='.$idTipo,'','',$idModelo); ?>
                                                 </select>
@@ -188,22 +188,22 @@ $idModelo=$producto[0][11];
                                             <div class="col-md-3 col-sm-4">
                                                 <label>Precio Proveedor</label>
                                                 <input type="text" name="coste" id="dni"
-                                                       class="form-control " placeholder="99999999A"  value=<?php echo $precioProv; ?>>
+                                                       class="form-control " placeholder="99999999A"  value=<?php echo $precioProv; ?> required>
                                             </div>
                                             <div class="col-md-3 col-sm-4">
                                                 <label>Margen</label>
                                                 <input type="text" name="margen" id="dni"
-                                                       class="form-control " placeholder="99999999A" value=<?php echo $margen; ?>>
+                                                       class="form-control " placeholder="99999999A" value=<?php echo $margen; ?> required>
                                             </div>
                                             <div class="col-md-3 col-sm-4">
                                                 <label>PVP</label>
                                                 <input type="text" name="pvp" id="dni"
-                                                       class="form-control " placeholder="99999999A" value=<?php echo $pvp; ?>>
+                                                       class="form-control " placeholder="99999999A" value=<?php echo $pvp; ?> required>
                                             </div>
                                             <div class="col-md-3 col-sm-4">
                                                 <label>IMPUESTOS</label>
                                                 <input type="text" name="impuesto" id="dni"
-                                                       class="form-control " placeholder="99999999A" value=<?php echo $impuestos; ?>>
+                                                       class="form-control " placeholder="99999999A" value=<?php echo $impuestos; ?> required>
                                             </div>
                                         </div>
                                     </div>

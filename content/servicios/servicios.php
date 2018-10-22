@@ -118,7 +118,7 @@ check_session(3);
                                             <div class="col-md-4 col-sm-4">
                                                 <label>Servicio:</label>
                                                 <select name="servicio[tipo]" id="servicios" onchange="carga_atributos(this.value)"
-                                                        class="form-control pointer ">
+                                                        class="form-control pointer " required>
                                                     <option value="">--- Seleccionar una ---</option>
                                                     <?php
                                                     $util->carga_select('servicios_tipos', 'id', 'nombre', 'nombre'); ?>
@@ -127,7 +127,7 @@ check_session(3);
                                             <div class="col-md-4 col-sm-4">
                                                 <label>Proveedor:</label>
                                                 <select name="servicio[proveedor]" id="proveedores" onchange="carga_tipos(this.value)"
-                                                        class="form-control pointer ">
+                                                        class="form-control pointer " required>
                                                     <option value="">--- Seleccionar una ---</option>
                                                     <?php
                                                     $util->carga_select('proveedores', 'id', 'nombre', 'nombre',"id_empresa=".(int)$_SESSION['REVENDEDOR']." AND ID_TIPO_PROVEEDOR=2"); ?>
@@ -136,7 +136,7 @@ check_session(3);
                                             <div class="col-md-4 col-sm-6">
                                                 <label>Nombre: </label>
                                                 <input type="text" name="servicio[nombre]" value=""
-                                                       class="form-control ">
+                                                       class="form-control " required>
                                             </div>
 
                                         </div>
@@ -151,22 +151,22 @@ check_session(3);
                                             <div class="col-md-2 col-sm-6">
                                                 <label>Precio proveedor: </label>
                                                 <input type="number" name="servicio[precio-proveedor]" value="" id="precio-prov" step=".01"
-                                                       class="form-control " onchange="calcularPVP(this.value)">
+                                                       class="form-control " onchange="calcularPVP(this.value)" required>
                                             </div>
                                             <div class="col-md-2 col-sm-6">
                                                 <label>Margen %: </label>
                                                 <input type="number" name="servicio[beneficio]" value="" step=".01" id="beneficio"
-                                                       class="form-control " onchange="calcularPVP(this.value)">
+                                                       class="form-control " onchange="calcularPVP(this.value)" required>
                                             </div>
                                             <div class="col-md-2 col-sm-6">
                                                 <label>Impuestos: </label>
                                                 <input type="number" name="servicio[impuesto]" value="21" id="impuestos" onchange="calcularPVP(this.value)" step=".01"
-                                                       class="form-control ">
+                                                       class="form-control " required>
                                             </div>
                                             <div class="col-md-2 col-sm-6">
                                                 <label>PVP: </label>
                                                 <input type="number" name="servicio[precio-pvp]" value="" id="precio-pvp" onchange="calcularPVP(this.value)" step=".01"
-                                                       class="form-control ">
+                                                       class="form-control " required>
                                             </div>
 
                                         </div>

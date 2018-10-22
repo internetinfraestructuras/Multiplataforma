@@ -118,7 +118,7 @@ check_session(3);
                                             <div class="col-md-4 col-sm-4">
                                                 <label>Proveedor:</label>
                                                 <select name="modelo[proveedor]" id="proveedores" onchange="carga_tipos(this.value)"
-                                                        class="form-control pointer ">
+                                                        class="form-control pointer " required>
                                                     <option value="">--- Seleccionar una ---</option>
                                                     <?php
                                                     $util->carga_select('proveedores', 'id', 'nombre', 'nombre',"id_empresa=".(int)$_SESSION['REVENDEDOR']." AND ID_TIPO_PROVEEDOR=1"); ?>
@@ -128,7 +128,7 @@ check_session(3);
 
                                                 <label>Tipo:</label>
                                                 <select name="modelo[tipo]" id="tipos"
-                                                        class="form-control pointer " onchange="carga_modelos(this.value)">
+                                                        class="form-control pointer " onchange="carga_modelos(this.value)" required>
                                                     <option value="">--- Seleccionar una ---</option>
 
                                                 </select>
@@ -136,7 +136,7 @@ check_session(3);
                                             <div class="col-md-4 col-sm-4">
                                                 <label>Nombre modelo </label>
                                                 <input type="text" name="modelo[nombre]" value=""
-                                                       class="form-control ">
+                                                       class="form-control " required>
                                             </div>
                                         </div>
                                     </div>

@@ -126,7 +126,7 @@ $root="../../";
                                             </div>
                                             <div class="col-md-4 col-sm-4">
 
-                                                <label>Tipo:</label>
+                                                <label id="label-tipo">Tipo:</label>
                                                 <select name="producto[tipo]" id="tipos"
                                                         class="form-control pointer " onchange="carga_modelos(this.value)">
                                                     <option value="">--- Seleccionar una ---</option>
@@ -151,29 +151,34 @@ $root="../../";
                                     <div class="row">
                                         <div class="form-group">
 
-                                            <div class="col-md-4 col-sm-6">
+                                            <div class="col-md-3 col-sm-6">
                                                 <label>Número Serie: </label>
                                                 <input type="text" name="producto[numero-serie]" value=""
-                                                       class="form-control ">
+                                                       class="form-control " required>
                                             </div>
                                             <div class="col-md-2 col-sm-6">
                                                 <label>Precio proveedor: </label>
                                                 <input type="number" name="producto[precio-proveedor]" value="" id="precio-prov" step=".01"
-                                                       class="form-control " onchange="calcularPVP(this.value)">
+                                                       class="form-control " onchange="calcularPVP(this.value)" required>
                                             </div>
                                             <div class="col-md-2 col-sm-6">
                                                 <label>Margen %: </label>
                                                 <input type="number" name="producto[beneficio]" value="" step=".01" id="beneficio"
-                                                       class="form-control " onchange="calcularPVP(this.value)">
+                                                       class="form-control " onchange="calcularPVP(this.value)" required>
                                             </div>
                                             <div class="col-md-2 col-sm-6">
                                                 <label>PVP: </label>
                                                 <input type="number" name="producto[precio-pvp]" value="" id="precio-pvp" onchange="calcularPVP(this.value)" step=".01"
-                                                       class="form-control ">
+                                                       class="form-control " required>
                                             </div>
                                             <div class="col-md-2 col-sm-6">
                                                 <label>Impuestos: </label>
                                                 <input type="number" name="producto[impuesto]" value="21" id="impuestos" onchange="calcularPVP(this.value)" step=".01"
+                                                       class="form-control " required>
+                                            </div>
+                                            <div class="col-md-1 col-sm-6">
+                                                <label>Cantidad: </label>
+                                                <input type="number" name="producto[cantidad]" value="1" id="impuestos" onchange="calcularPVP(this.value)" step=".01"
                                                        class="form-control ">
                                             </div>
                                         </div>
@@ -322,7 +327,7 @@ $root="../../";
 
 <script type="text/javascript">var plugin_path = '../../assets/plugins/';</script>
 <script type="text/javascript" src="../../assets/plugins/jquery/jquery-2.2.3.min.js"></script>
-<script type="text/javascript" src="../../assets/js/app.js"></script>
+<!--<script type="text/javascript" src="../../assets/js/app.js"></script>-->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.css">
 
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.js"></script>
@@ -378,6 +383,7 @@ $root="../../";
             data:{id:id},
             success: function(data)
             {
+
                 $.each(data, function(i){
                     select.append('<option value="'+data[i].id+'">'+data[i].nombre+'</option>');
                 });
@@ -397,6 +403,8 @@ $root="../../";
             data:{id:id},
             success: function(data)
             {
+
+
                 $.each(data, function(i){
                     select.append('<option value="'+data[i].id+'">'+data[i].nombre+'</option>');
                 });
@@ -418,7 +426,7 @@ $root="../../";
             {
                 $.each(data, function(i)
                 {
-                    div.append('<div class="col-md-1 col-sm-1"> <label>'+data[i].NOMBRE+'</label><input type="text" name="producto[atributo][]"  class="form-control " /><input type="text" value="'+data[i].ID+'" hidden name="producto[atributo][]"/></div>');
+                    div.append('<div class="col-md-3 col-sm-3"> <label>'+data[i].NOMBRE+'</label><input type="text" name="producto[atributo][]"  class="form-control " /><input type="text" value="'+data[i].ID+'" hidden name="producto[atributo][]"/></div>');
                 });
             }
         });

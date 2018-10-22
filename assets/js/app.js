@@ -12,6 +12,7 @@
 
 
 *************************************************** **/
+
 	window.width = jQuery(window).width();
 
 	jQuery(window).ready(function() {
@@ -968,6 +969,7 @@
 							_t.validate({
 								submitHandler: function(form) {
 
+
 									// Show spin icon
 									jQuery(form).find('.input-group-addon').find('.fa-envelope').removeClass('fa-envelope').addClass('fa-refresh fa-spin');
 
@@ -975,37 +977,14 @@
 
 										target: 	jQuery(form).find('.validate-result').length > 0 ? jQuery(form).find('.validate-result') : '',
 
-										error: 		function(data) { 
-											_toastr("Error al procesar",_Tposition,"error",false);
+										error: 		function(data)
+										{
+                                            alertaOk("Atención","La operación no se ha realizado corramente.","error","ok","");
 										},
 
-										success: 	function(data) {
-											var data = data.trim();
-
-											// SMTP ERROR
-											if(data == '_failed_') {
-												_toastr("ERROR: Verifique Usuario o Email Duplicados",_Tposition,"error",false);
-											}
-
-											// CAPTCHA ERROR
-											else if(data == '_captcha_') {
-												_toastr("Invalid Captcha!",_Tposition,"error",false);
-
-
-											// SUCCESS
-											} else {
-
-												// Remove spin icon
-												jQuery(form).find('.input-group-addon').find('.fa-refresh').removeClass('fa-refresh fa-spin').addClass('fa-envelope');
-
-												// Clear the form
-												jQuery(form).find('input.form-control').val('');
-                                                $('.form-control').prop('selectedIndex',0);
-
-												// Toastr Message
-												_toastr(_Smessage,_Tposition,_Ttype,_Turl);
-											
-											}
+										success: 	function(data)
+										{
+                                            alertaOk("Atención","La operación se ha realizado correctamente.","warning","ok","");
 										}
 									});
 
@@ -1938,7 +1917,9 @@
 	NOTE:
 		_onclick = url to redirect (example: http://www.stepofweb.com)
  **************************************************************** **/
-	function _toastr(_message,_position,_notifyType,_onclick) {
+	function _toastr(_message,_position,_notifyType,_onclick)
+{
+
 		var _btn 	= jQuery(".toastr-notify");
 
 		if(_btn.length > 0 || _message != false) {

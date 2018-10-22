@@ -118,8 +118,8 @@ check_session(3);
                                             <div class="col-md-4 col-sm-6">
                                                 <label>Proveedor:</label>
                                                 <select name="tipo[proveedor]" id="tipos"
-                                                        class="form-control pointer ">
-                                                    <option value="">--- Seleccionar una ---</option>
+                                                        class="form-control pointer " required>
+                                                    <option value="" >--- Seleccionar una ---</option>
                                                     <?php
                                                     $util->carga_select('proveedores', 'id', 'nombre', 'nombre',"id_empresa=".(int)$_SESSION['REVENDEDOR']." AND ID_TIPO_PROVEEDOR=1"); ?>
                                                 </select>
@@ -127,7 +127,7 @@ check_session(3);
                                             <div class="col-md-4 col-sm-6">
                                                 <label>Tipo de Servicio:</label>
                                                 <select name="tipo[servicio]" id="tipos"
-                                                        class="form-control pointer ">
+                                                        class="form-control pointer " required>
                                                     <option value="">--- Seleccionar una ---</option>
                                                     <?php
                                                     $util->carga_select('servicios_tipos', 'id', 'nombre', 'nombre',""); ?>
@@ -137,7 +137,7 @@ check_session(3);
                                             <div class="col-md-4 col-sm-6">
                                                 <label>Nombre tipo: </label>
                                                 <input type="text" name="tipo[nombre]" value=""
-                                                       class="form-control ">
+                                                       class="form-control " required>
                                             </div>
 
                                         </div>
@@ -285,7 +285,7 @@ check_session(3);
 
     $(function () {
         $('#example1').DataTable()
-        $('#example2').DataTable({
+        $('#example1').DataTable({
             'paging'      : true,
             'lengthChange': false,
             'searching'   : true,

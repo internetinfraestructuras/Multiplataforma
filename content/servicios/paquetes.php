@@ -95,7 +95,7 @@ $root="../../";
             <div class="row">
                 <div class="col-lg-12">
                     <label>Nombre del paquete: </label>
-                    <input type="text" name="paquete[nombre]"  id="impuestos" onchange="calcularPVP(this.value)" step=".01" class="form-control ">
+                    <input type="text" name="paquete[nombre]"  id="impuestos" onchange="calcularPVP(this.value)" step=".01" class="form-control " required>
                 </div>
             </div>
             <br/>
@@ -181,7 +181,7 @@ $root="../../";
                     </select>
                     <a  id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px" onclick="anadirProducto('movil')"><i class="fa fa-recycle"></i> Deseleccionar </a>
                     <label>COSTE SERVICIO: </label>
-                    <input type="text"  id="precio-movil" onchange="calcularPVP(this.value)" step=".01" class="form-control ">
+                    <input type="text"  id="precio-movil" onchange="calcularPVP(this.value)" step=".01" class="form-control " >
 
                 </div>
                 <div class="col-lg-3 col-sm-4 col-md-3 col-xs-12">
@@ -208,7 +208,7 @@ $root="../../";
                     </select>
                     <a id="" class="btn btn-3d btn-teal" style="width:100%;margin-bottom:15px" onclick="resetearSelect('tv')"><i class="fa fa-recycle"></i> Deseleccionar </a>
                     <label>COSTE SERVICIO: </label>
-                    <input type="text"  id="precio-tv" onchange="calcularPVP(this.value)" step=".01" class="form-control ">
+                    <input type="text"  id="precio-tv" onchange="calcularPVP(this.value)" step=".01" class="form-control " >
                 </div>
 
             </div>
@@ -233,33 +233,33 @@ $root="../../";
             <div class="row">
                 <div class="col-lg-3">
                     <label>Precio coste: </label>
-                    <input type="text" name="paquete[precio-coste]"  id="precio-coste"  step=".01" class="form-control" onchange="calcularPrecioFinal(this.value)">
+                    <input type="text" name="paquete[precio-coste]"  id="precio-coste"  step=".01" class="form-control" onchange="calcularPrecioFinal(this.value)" required>
                 </div>
                 <div class="col-lg-3">
                     <label>Margen %: </label>
-                    <input type="text" name="paquete[precio-beneficio]"  id="precio-margen"  step=".01" class="form-control " onchange="calcularPrecioFinal(this.value)">
+                    <input type="text" name="paquete[precio-beneficio]"  id="precio-margen"  step=".01" class="form-control " onchange="calcularPrecioFinal(this.value)" required>
                 </div>
                 <div class="col-lg-3">
                     <label>Impuestos : </label>
-                    <input type="text" name="paquete[precio-impuestos]"  id="precio-impuestos"  step=".01" class="form-control " value="21" onchange="calcularPrecioFinal(this.value)">
+                    <input type="text" name="paquete[precio-impuestos]"  id="precio-impuestos"  step=".01" class="form-control " value="21" onchange="calcularPrecioFinal(this.value)" required>
                 </div>
                 <div class="col-lg-3">
                     <label>PVP: </label>
-                    <input type="text" name="paquete[precio-pvp]"  id="precio-pvp"  step=".01" class="form-control" onchange="calcularMargen(this)">
+                    <input type="text" name="paquete[precio-pvp]"  id="precio-pvp"  step=".01" class="form-control" onchange="calcularMargen(this)" required>
                 </div>
             </div>
                 <div class="row">
                     <div class="col-lg-4">
                         <label>Precio Instalación: </label>
-                        <input type="text" name="paquete[precio-instalacion]"  id="precio-instalacion"  step=".01" class="form-control" >
+                        <input type="text" name="paquete[precio-instalacion]"  id="precio-instalacion"  step=".01" class="form-control" required>
                     </div>
                     <div class="col-lg-4">
                         <label>Impuestos Instalación: </label>
-                        <input type="text" name="paquete[impuestos-instalacion]"  id="precio-instalacion"  step=".01" class="form-control" >
+                        <input type="text" name="paquete[impuestos-instalacion]"  id="precio-instalacion"  step=".01" class="form-control" required >
                     </div>
                     <div class="col-lg-4">
                         <label>PVP Instalación: </label>
-                        <input type="text" name="paquete[pvp-instalacion]"  id="precio-instalacion"  step=".01" class="form-control" >
+                        <input type="text" name="paquete[pvp-instalacion]"  id="precio-instalacion"  step=".01" class="form-control" required >
                     </div>
 
                 </div>

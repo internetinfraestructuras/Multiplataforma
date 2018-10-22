@@ -119,7 +119,7 @@ check_session(3);
                                             <div class="col-md-12 col-sm-6">
                                                 <label>Nombre Proveedor: </label>
                                                 <input type="text" name="proveedor[nombre]" value=""
-                                                       class="form-control ">
+                                                       class="form-control " required>
                                             </div>
                                         </div>
                                     </div>

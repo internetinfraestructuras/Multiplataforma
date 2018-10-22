@@ -119,7 +119,7 @@ check_session(3);
                                             <div class="col-md-12 col-sm-6">
                                                 <label>Nombre Proveedor: </label>
                                                 <input type="text" name="proveedor[nombre]" value=""
-                                                       class="form-control ">
+                                                       class="form-control " required>
                                             </div>
                                         </div>
                                     </div>
@@ -334,7 +334,7 @@ check_session(3);
 
     $(function () {
         $('#example1').DataTable()
-        $('#example2').DataTable({
+        $('#example1').DataTable({
             'paging'      : true,
             'lengthChange': false,
             'searching'   : true,
