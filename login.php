@@ -60,6 +60,7 @@ error_reporting('E_ALL');
             $where = ' (usuarios.email="' . $email . '" and usuarios.clave="' . $pass . '") OR (usuarios.usuario="' . $email . '" and usuarios.clave="' . $pass . '") ';
             $result = $util->selectJoin("usuarios",array("usuarios.id", "usuarios.nombre", "usuarios.apellidos", "nivel", " usuarios.id_empresa", "empresas.logo as logo", "municipios.municipio as localidad"), "join empresas on usuarios.id_empresa = empresas.id join municipios on municipios.id = empresas.MUNICIPIO","",$where);
 
+
             $row = mysqli_fetch_array($result);
 
             if (intval($row[0]) > 0)

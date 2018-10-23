@@ -6,288 +6,320 @@
  * Time: 8:07
  */
 require_once('config/define.php');
-$root="/";
+$root="/ml/";
+
 ?>
-<nav id="sideNav"><!-- MAIN MENU -->
-<ul class="nav nav-list">
-    <li class="active"><!-- dashboard -->
-        <a class="dashboard" href="<?php echo $root;?>index.php"><!-- warning - url used by default by ajax (if eneabled) -->
-            <center><span style="font-size: 2em; color: #898989;">AT Control</span></center>
-        </a>
-    </li>
-    <li class="active"><!-- dashboard -->
-            <center><span style="color: #898989;">Menú de Gestión</span></center>
-    </li>
-
-    <li>
-        <a href="#">
-            <i class="fa fa-menu-arrow pull-right"></i>
-            <i class="main-icon fa fa-users"></i><span><?php echo MNU_ITEM_3; ?> </span>
-        </a>
-        <ul><!-- submenus -->
-            <li><a href="<?php echo $root;?>add-clie.php">Agregar</a></li>
-            <li><a href="<?php echo $root;?>edit-clie.php">Modificar</a></li>
-            <li><a href="<?php echo $root;?>listado-clientes.php">Listar</a></li>
-            <li><a href="<?php echo $root;?>del-clie.php">Borrar</a></li>
-            <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->
-        </ul>
-    </li>
-
-    <li>
-        <a href="#">
-            <i class="fa fa-menu-arrow pull-right"></i>
-            <i class="main-icon fa fa-shopping-cart"></i><span><?php echo MNU_ITEM_8; ?> </span>
-        </a>
-        <ul><!-- submenus -->
-            <li><a href="<?php echo $root;?>content/almacen/productos.php">Productos</a></li>
-            <li><a href="<?php echo $root;?>content/almacen/proveedores.php">Proveedores</a></li>
-            <li><a href="<?php echo $root;?>content/almacen/tipos.php">Tipos</a></li>
-            <li><a href="<?php echo $root;?>content/almacen/modelos.php">Modelos</a></li>
-            <li><a href="<?php echo $root;?>content/almacen/atributos.php">Atributos</a></li>
-
-            <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->
-        </ul>
-    </li>
-
-    <li>
-        <a href="#">
-            <i class="fa fa-menu-arrow pull-right"></i>
-            <i class="main-icon"><img src="/img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_10; ?> </span>
-        </a>
-        <ul><!-- submenus -->
-            <li><a href="<?php echo $root;?>content/servicios/servicios.php">Servicios</a></li>
-            <li><a href="<?php echo $root;?>content/servicios/proveedores.php">Proveedores</a></li>
-            <li><a href="<?php echo $root;?>content/servicios/paquetes.php">Paquetes</a></li>
-            <li><a href="<?php echo $root;?>content/servicios/listados-moviles.php">CDR´s</a></li>
-
-
-            <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->
-        </ul>
-    </li>
-
-    <li>
-        <a href="#">
-            <i class="fa fa-menu-arrow pull-right"></i>
-            <i class="main-icon"><img src="/img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_9; ?> </span>
-        </a>
-        <ul><!-- submenus -->
-            <li><a href="<?php echo $root;?>contratar.php">Alta contrato</a></li>
-            <li><a href="<?php echo $root;?>edit-contrato.php">Modificar contrato</a></li>
-            <li><a href="<?php echo $root;?>content/ventas/solicitudes-cambios.php">Solicitudes cambios</a></li>
-            <li><a href="<?php echo $root;?>content/ventas/contratos.php">Contratos</a></li>
-            <li><a href="<?php echo $root;?>content/ventas/campanas.php">Promociones</a></li>
-            <li><a href="#">Solicitar Portabilidad</a>
-                <ul>
-                    <li><a href="<?php echo $root;?>content/ventas/porta_fijo.php">Fijo</a></li>
-                    <li><a href="<?php echo $root;?>content/ventas/porta_movil.php">Móvil</a></li>
-                </ul></li>
-            <li><a href="<?php echo $root;?>edit-clie.php">Ver Estado Portabilidad</a></li>
-            <li><a href="<?php echo $root;?>del-clie.php">Borrar</a></li>
-            <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->
-        </ul>
-    </li>
-
-    <li>
-        <a href="#">
-            <i class="fa fa-menu-arrow pull-right"></i>
-            <i class="main-icon"><img src="/img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_11; ?> </span>
-        </a>
-        <ul><!-- submenus -->
-            <li><a href="<?php echo $root;?>content/trabajos/ordenes-hoy.php">Ordenes de hoy</a></li>
-            <li><a href="<?php echo $root;?>content/trabajos/ordenes.php">Ordenes de trabajo</a></li>
-
-
-        </ul>
-    </li>
-    <li>
-        <a href="#">
-            <i class="fa fa-menu-arrow pull-right"></i>
-            <i class="main-icon"><img src="/img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_13; ?> </span>
-        </a>
-        <ul><!-- submenus -->
-            <li><a href="<?php echo $root;?>content/facturacion/facturas.php">Facturas</a></li>
-
-
-        </ul>
-    </li>
-    <li>
-        <a href="#">
-            <i class="fa fa-menu-arrow pull-right"></i>
-            <i class="main-icon"><img src="/img/tasks-solid.svg" style="color:#C1C8C8;height:22px;"></i><span><?php echo MNU_ITEM_12; ?> </span>
-        </a>
-        <ul><!-- submenus -->
-            <li><a href="<?php echo $root;?>content/configuracion/configuracion-contratos.php">Contratos</a></li>
-            <li><a href="<?php echo $root;?>content/configuracion/configuracion-portabilidades.php">Portabilidades</a></li>
-            <li><a href="<?php echo $root;?>content/configuracion/configuracion-facturacion.php">Facturación</a></li>
-
-
-        </ul>
-    </li>
-
-
-
-
-    <?php if (intval($_SESSION['USER_LEVEL'])==0) { ?>
-
-        <li>
-            <a href="#">
-                <i class="fa fa-menu-arrow pull-right"></i>
-                <i class="main-icon fa fa-usd"></i> <span><?php echo MNU_ITEM_2; ?></span>
-            </a>
-            <ul><!-- submenus -->
-                <li><a href="<?php echo $root;?>add-reve.php">Agregar</a></li>
-                <li><a href="<?php echo $root;?>edit-reve.php">Modificar</a></li>
-                <li><a href="<?php echo $root;?>list-reve.php">Listar</a></li>
-<!--                <li><a href="<?php echo $root;?>cons-reve.php">Consultar</a></li>-->
-            </ul>
-        </li>
-    <?php } ?>
-
-    <?php if (intval($_SESSION['USER_LEVEL'])==0 || intval($_SESSION['USER_LEVEL'])==1) { ?>
-        <li>
-            <a href="#">
-                <i class="fa fa-menu-arrow pull-right"></i>
-                <i class="main-icon fa fa-user"></i> <span><?php echo MNU_ITEM_1; ?></span>
-            </a>
-            <ul><!-- submenus -->
-                <li><a href="<?php echo $root;?>add-user.php">Agregar</a></li>
-                <li><a href="<?php echo $root;?>edit-user.php">Modificar</a></li>
-                <li><a href="<?php echo $root;?>list-user.php">Listar</a></li>
-<!--                <li><a href="<?php echo $root;?>cons-user.php">Consultar</a></li>-->
-                <?php if (intval($_SESSION['USER_LEVEL'])==0){
-                    echo '<li><a href="<?php echo $root;?>suplantar.php">Suplantar</a></li>';
-                }?>
-            </ul>
-        </li>
-    <?php } ?>
-</ul>
-<ul class="nav nav-list">
-    <li class="active"><!-- dashboard -->
-        <center><span style="color: #898989;">Menú Técnico</span></center>
-    </li>
-
-    <?php if (intval($_SESSION['USER_LEVEL'])==0) { ?>
-        <li>
-            <a href="#">
-                <i class="fa fa-menu-arrow pull-right"></i>
-                <i class="main-icon fa fa-server"></i> <span><?php echo MNU_ITEM_6; ?></span>
-            </a>
-            <ul><!-- submenus -->
-                <li><a href="<?php echo $root;?>add-olts.php">Agregar</a></li>
-<!--                <li><a href="<?php echo $root;?>list-olts.php">Listar</a></li>-->
-                <li><a href="<?php echo $root;?>perfiles-olt.php">Gestionar</a></li>
-<!--                <li><a href="<?php echo $root;?>cons-olts.php">Consultar</a></li>-->
-            </ul>
-        </li>
-    <?php } ?>
-
-    <li>
-        <a href="#">
-            <i class="fa fa-menu-arrow pull-right"></i>
-            <i class="main-icon fa fa-hdd-o"></i> <span><?php echo MNU_ITEM_5; ?></span>
-        </a>
-        <ul><!-- submenus -->
-            <li><a href="<?php echo $root;?>content/instalador/instalador.php">Órdenes de trabajo</a></li>
-            <li><a href="<?php echo $root;?>asignacion.php">Dar Altas</a></li>
-            <?php if (intval($_SESSION['USER_LEVEL'])<2) { ?>
-                <li><a href="<?php echo $root;?>bajas.php">Dar Bajas</a></li>
-                <li><a href="<?php echo $root;?>modificar.php">Modificar</a></li>
-                <li><a href="<?php echo $root;?>listados_altas.php">Listados y consultas</a></li>
-            <?php } ?>
-
-
-        </ul>
-    </li>
-    <li>
-        <a href="#">
-            <i class="fa fa-menu-arrow pull-right"></i>
-            <i class="main-icon fa fa-wrench"></i> <span><?php echo MNU_ITEM_7; ?></span>
-        </a>
-        <ul><!-- submenus -->
-            <li><a href="<?php echo $root;?>ver_estado_ont.php">Comprobar Estado Ont</a></li>
-            <li><a href="<?php echo $root;?>ver_ip_serial.php">Obtener IP & SERIAL</a></li>
-            <li><a href="<?php echo $root;?>ver_estado_olt.php">Comprobar Estado Olt</a></li>
-            <li><a href="<?php echo $root;?>salvar_cabeceras.php">Salvar configuración cabecera</a></li>
-            <?php if (intval($_SESSION['USER_LEVEL'])==0) { ?>
-                <li><a href="<?php echo $root;?>olt_commands.php">Comandos Especiales</a></li>
-
-            <?php } ?>
-        </ul>
-    </li>
-
-
-        <li>
-            <a href="#">
-                <i class="fa fa-menu-arrow pull-right"></i>
-                <i class="main-icon fa fa-cogs"></i> <span><?php echo MNU_ITEM_4; ?></span>
-            </a>
-            <ul><!-- submenus -->
-                <?php if (intval($_SESSION['USER_LEVEL'])==0) { ?>
-                    <li><a href="<?php echo $root;?>tipos-usuarios.php">Tipos usuarios</a></li>
-                    <li><a href="<?php echo $root;?>niveles.php">Niveles acceso</a></li>
-                <?php } ?>
-                <li><a href="<?php echo $root;?>config_pppoe.php">Servidor PPPoE</a></li>
-
-            </ul>
-        </li>
-
-
-</ul>
-
-<!-- SECOND MAIN LIST -->
-<ul class="nav nav-list">
-    <li class="active"><!-- dashboard -->
-        <center><span style="color: #898989;">Útiles</span></center>
-    </li>
-    <li>
-        <a href="<?php echo $root;?>calendar.php">
-            <i class="main-icon fa fa-calendar"></i>
-            <span>Calendario</span>
-        </a>
-    </li>
-    <li>
-        <a href="<?php echo $root;?>invoice.html">
-            <i class="main-icon fa fa-inbox"></i>
-            <span>Mensajes</span>
-        </a>
-    </li>
-    <li>
-        <a href="<?php echo $root;?>ayuda.php">
-            <i class="main-icon fa fa-question"></i>
-            <span>Ayuda</span>
-        </a>
-    </li>
-    <li>
-        <a href="<?php echo $root;?>novedades.php">
-            <i class="main-icon fa fa-newspaper-o blink"></i>
-            <span class="blink">Novedades</span>
-        </a>
-    </li>
-</ul>
-    <center>
-    <?php if($_SESSION['LOGO']!='') echo "<img style='max-width:200px' src='".$_SESSION['LOGO']."'>";?>
-    </center>
-    <br><br>
-    <div id="aquiprocesando"></div>
-</nav>
+<script src="/ml/assets/sweetalert/sweetalert2.all.min.js"></script>
+<script src="/ml/assets/sweetalert/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="/ml/assets/sweetalert/sweetalert2.min.css">
 
 <script>
-    function salvarcabecera() {
-        trabajando();
-        trabajando(1);
-        $.ajax({
-            url: 'salvar_cabeceras.php',
-            type: 'POST',
-            cache: false,
-            async: true,
-            data: {
-                cabecera: id
-            },
-            success: function () {
-                trabajando(0);
+
+    function alerta(titulo, texto, icono, botonSi, botonNo, funcionAceptar, funcionCancelar) {
+
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success next',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: true
+        });
+
+        swalWithBootstrapButtons({
+            title: titulo,
+            html: texto,
+            type: icono,
+            showCancelButton: true,
+            confirmButtonText: botonSi,
+            cancelButtonText: botonNo,
+            reverseButtons: true,
+            width: 500
+        }).then((result) => {
+            if (result.value) {
+                self[funcionAceptar]();
+            } else if (result.dismiss === swal.DismissReason.cancel) {
+                self[funcionCancelar]();
             }
+        })
+    }
+
+    function alertaOk(titulo, texto, icono, botonSi, funcion) {
+
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success',
+            buttonsStyling: true
+        });
+
+        swalWithBootstrapButtons({
+            title: titulo,
+            html: texto,
+            type: icono,
+            confirmButtonText: botonSi,
+            reverseButtons: true,
+            width: 500
+        }).then((result) => {
+            if (result.value && funcion!='') {
+                self[funcion]();
+            }
+        })
+    }
+
+    function alertaOkKo(titulo, texto, icono, botonSi, botonNo) {
+
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: true
+        });
+
+        swalWithBootstrapButtons({
+            title: titulo,
+            html: texto,
+            type: icono,
+            showCancelButton: true,
+            confirmButtonText: botonSi,
+            cancelButtonText: botonNo,
+            reverseButtons: true,
+            width: 500
+        }).then((result) => {
+            if (result.value) {
+                return true;
+            } else if (result.dismiss === swal.DismissReason.cancel) {
+                return false;
+            }
+        })
+    }
+
+
+
+
+
+    function alerta2(titulo, texto, icono, pie) {
+
+        swal({
+            type: icono,
+            title: titulo,
+            html: texto,
+            footer: pie
+        })
+    }
+
+    function confirmacion(texto, tiempo) {
+        swal({
+            position: 'top-end',
+            type: 'success',
+            title: texto,
+            showConfirmButton: false,
+            timer: tiempo
         });
     }
+
+    function error(texto, tiempo) {
+        swal({
+            position: 'top-end',
+            type: 'error',
+            title: texto,
+            showConfirmButton: false,
+            timer: tiempo
+        });
+    }
+
+
+
+
+    function alertaTiempo(titulo, texto, tiempo) {
+        let timerInterval;
+        swal({
+            title: titulo,
+            html: 'Por favor espere... <strong></strong>',
+            timer: tiempo,
+            onOpen: () => {
+                swal.showLoading();
+                timerInterval = setInterval(() => {
+                    swal.getContent().querySelector('strong')
+                        .textContent = swal.getTimerLeft()
+                }, 100)
+            },
+            onClose: () => {
+                clearInterval(timerInterval)
+            }
+        }).then((result) => {
+            if (
+                // Read more about handling dismissals
+                result.dismiss === swal.DismissReason.timer
+            ) {
+            }
+        })
+    }
+
+
 </script>
+
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<nav id="sideNav"><!-- MAIN MENU -->
+    <ul class="nav nav-list">
+        <li class="active"><!-- dashboard -->
+            <a class="dashboard" href="<?php echo $root;?>index.php"><!-- warning - url used by default by ajax (if eneabled) -->
+                <center><span style="font-size: 2em; color: #898989;">AT Control</span></center>
+            </a>
+        </li>
+        <li class="active"><!-- dashboard -->
+            <center><span style="color: #898989;">Menú de Gestión</span></center>
+        </li>
+
+        <li>
+            <a href="#">
+                <i class="fa fa-menu-arrow pull-right"></i>
+                <i class="main-icon fa fa-users"></i><span><?php echo MNU_ITEM_3; ?> </span>
+            </a>
+            <ul><!-- submenus -->
+                <li><a href="<?php echo $root;?>add-clie.php">Agregar</a></li>
+                <li><a href="<?php echo $root;?>edit-clie.php">Modificar</a></li>
+                <li><a href="<?php echo $root;?>listado-clientes.php">Listar</a></li>
+                <li><a href="<?php echo $root;?>del-clie.php">Borrar</a></li>
+                <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->
+            </ul>
+        </li>
+
+        <li>
+            <a href="#">
+                <i class="fa fa-menu-arrow pull-right"></i>
+                <i class="main-icon fa fa-shopping-cart"></i><span><?php echo MNU_ITEM_8; ?> </span>
+            </a>
+            <ul><!-- submenus -->
+                <li><a href="<?php echo $root;?>content/almacen/productos.php">Productos</a></li>
+                <li><a href="<?php echo $root;?>content/almacen/proveedores.php">Proveedores</a></li>
+                <li><a href="<?php echo $root;?>content/almacen/tipos.php">Tipos</a></li>
+                <li><a href="<?php echo $root;?>content/almacen/modelos.php">Modelos</a></li>
+                <li><a href="<?php echo $root;?>content/almacen/atributos.php">Atributos</a></li>
+
+                <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->
+            </ul>
+        </li>
+
+        <li>
+            <a href="#">
+                <i class="fa fa-menu-arrow pull-right"></i>
+                <i class="main-icon fas fa-server"></i><span><?php echo MNU_ITEM_10; ?> </span>
+            </a>
+            <ul><!-- submenus -->
+                <li><a href="<?php echo $root;?>content/servicios/proveedores.php">Proveedores</a></li>
+                <li><a href="<?php echo $root;?>content/servicios/servicios.php">Servicios</a></li>
+                <li><a href="<?php echo $root;?>content/servicios/paquetes.php">Paquetes</a></li>
+                <li><a href="<?php echo $root;?>content/servicios/listados-moviles.php">CDR´s</a></li>
+
+                <li><a href="#">Líneas Moviles</a>
+                    <ul>
+                        <li><a href="<?php echo $root;?>content/servicios/listados-moviles.php">Lineas Móviles</a></li>
+                        <li><a href="<?php echo $root;?>content/servicios/estados-portabilidades.php">Estados Portabilidades</a></li>
+                    </ul></li>
+
+
+                <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->
+            </ul>
+        </li>
+
+        <li>
+            <a href="#">
+                <i class="fa fa-menu-arrow pull-right"></i>
+                <i class="main-icon fas fa-file-contract"></i><span><?php echo MNU_ITEM_9; ?> </span>
+            </a>
+            <ul><!-- submenus -->
+                <li><a href="<?php echo $root;?>contratar.php">Alta contrato</a></li>
+                <li><a href="<?php echo $root;?>content/ventas/contratos.php">Lista contratos</a></li>
+                <li><a href="<?php echo $root;?>content/ventas/contratos.php">Contratos</a></li>
+                <li><a href="<?php echo $root;?>content/ventas/campanas.php">Promociones</a></li>
+                <li><a href="#">Solicitar Portabilidad</a>
+                    <ul>
+                        <li><a href="<?php echo $root;?>content/ventas/porta_fijo.php">Fijo</a></li>
+                        <li><a href="<?php echo $root;?>content/ventas/porta_movil.php">Móvil</a></li>
+                    </ul></li>
+                <li><a href="<?php echo $root;?>edit-clie.php">Ver Estado Portabilidad</a></li>
+                <li><a href="<?php echo $root;?>del-clie.php">Borrar</a></li>
+                <!--            <li><a href="<?php echo $root;?>cons-clie.php">Consultar</a></li>-->
+            </ul>
+        </li>
+
+        <li>
+            <a href="#">
+                <i class="fa fa-menu-arrow pull-right"></i>
+                <i class="main-icon fas fa-people-carry"></i><span><?php echo MNU_ITEM_11; ?> </span>
+            </a>
+            <ul><!-- submenus -->
+                <li><a href="<?php echo $root;?>content/trabajos/actuaciones.php">Actuaciones</a></li>
+                <li><a href="<?php echo $root;?>content/trabajos/ordenes-hoy.php">Ordenes sin asignar</a></li>
+                <li><a href="<?php echo $root;?>content/trabajos/ordenes.php">Ordenes</a></li>
+
+
+
+            </ul>
+        </li>
+        <li>
+            <a href="#">
+                <i class="fa fa-menu-arrow pull-right"></i>
+                <i class="main-icon fas fa-file-invoice"></i><?php echo MNU_ITEM_13; ?> </span>
+            </a>
+            <ul><!-- submenus -->
+                <li><a href="<?php echo $root;?>content/facturacion/facturas.php">Facturas</a></li>
+
+
+            </ul>
+        </li>
+        <li>
+            <a href="#">
+                <i class="fa fa-menu-arrow pull-right"></i>
+                <i class="main-icon fas fa-folder"></i><span><?php echo MNU_ITEM_12; ?> </span>
+            </a>
+            <ul><!-- submenus -->
+                <li><a href="<?php echo $root;?>content/configuracion/configuracion-contratos.php">Contratos</a></li>
+                <li><a href="<?php echo $root;?>content/configuracion/configuracion-portabilidades.php">Portabilidades</a></li>
+                <li><a href="<?php echo $root;?>content/configuracion/configuracion-facturacion.php">Facturación</a></li>
+                <li><a href="<?php echo $root;?>content/configuracion/configuracion-airenetwork.php">Módulo AireNetworks</a></li>
+
+
+            </ul>
+        </li>
+
+
+
+
+
+        <?php if (intval($_SESSION['USER_LEVEL'])==0) { ?>
+
+            <li>
+                <a href="#">
+                    <i class="fa fa-menu-arrow pull-right"></i>
+                    <i class="main-icon fa fa-usd"></i> <span><?php echo MNU_ITEM_2; ?></span>
+                </a>
+                <ul><!-- submenus -->
+                    <li><a href="<?php echo $root;?>add-reve.php">Agregar</a></li>
+                    <li><a href="<?php echo $root;?>edit-reve.php">Modificar</a></li>
+                    <li><a href="<?php echo $root;?>list-reve.php">Listar</a></li>
+                    <!--                <li><a href="<?php echo $root;?>cons-reve.php">Consultar</a></li>-->
+                </ul>
+            </li>
+        <?php } ?>
+
+        <?php if (intval($_SESSION['USER_LEVEL'])==0 || intval($_SESSION['USER_LEVEL'])==1) { ?>
+            <li>
+                <a href="#">
+                    <i class="fa fa-menu-arrow pull-right"></i>
+                    <i class="main-icon fa fa-user"></i> <span><?php echo MNU_ITEM_1; ?></span>
+                </a>
+                <ul><!-- submenus -->
+                    <li><a href="<?php echo $root;?>add-user.php">Agregar</a></li>
+                    <li><a href="<?php echo $root;?>edit-user.php">Modificar</a></li>
+                    <li><a href="<?php echo $root;?>list-user.php">Listar</a></li>
+                    <!--                <li><a href="<?php echo $root;?>cons-user.php">Consultar</a></li>-->
+                    <?php if (intval($_SESSION['USER_LEVEL'])==0){
+                        echo '<li><a href="<?php echo $root;?>suplantar.php">Suplantar</a></li>';
+                    }?>
+                </ul>
+            </li>
+        <?php } ?>
+    </ul>
+
+
+
+
 
 
